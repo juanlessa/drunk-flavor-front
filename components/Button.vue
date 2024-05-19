@@ -1,30 +1,31 @@
 <template>
-    <button :class="buttonStyles({ variant: props.variant, size: props.size })">
+    <button
+        :class="buttonStyles({ variant: props.variant, size: props.size })"
+        :disabled="props.disabled"
+    >
         <slot />
     </button>
 </template>
+
 <script setup lang="ts">
+import { type PropType } from 'vue'
 import { tv } from 'tailwind-variants'
 
 type ButtonVariant = 'primary' | 'secondary' | 'delete'
-type ButtonSize = 'md' | 'sm'
+type ButtonSize = 'sm' | 'md'
 
 const buttonStyles = tv({
-    base: 'h-10 w-full max-w-80 tablet:max-w-64 rounded-full cursor-pointer font-normal text-center px-4',
+    base: 'w-full max-w-80 tablet:max-w-64 rounded-full font-normal text-center px-4 disabled:cursor-not-allowed',
     variants: {
         variant: {
-            primary: 'bg-blue-400 text-white',
-            secondary: 'bg-gray-300 text-black',
-            delete: 'bg-red-300 text-black dark:bg-red-600 dark:text-white'
+            primary: 'bg-blue-700 hover:bg-blue-500 disabled:bg-blue-400 text-white',
+            secondary: 'bg-gray-300  hover:bg-gray-100 disabled:bg-gray-100 text-black',
+            delete: 'bg-red-600 hover:bg-red-400 disabled:bg-red-300  text-white'
         },
         size: {
-            sm: 'h-8',
-            md: 'h-10 text-base'
+            sm: 'py-1 text-base',
+            md: 'py-2 text-base'
         }
-    },
-    defaultVariants: {
-        variant: 'primary',
-        size: 'md'
     }
 })
 
@@ -36,6 +37,10 @@ const props = defineProps({
     size: {
         type: String as PropType<ButtonSize>,
         default: 'md'
+    },
+    disabled: {
+        type: Boolean,
+        default: false
     }
 })
 </script>
