@@ -4,7 +4,7 @@
             <input
                 :id="props.id"
                 :value="props.modelValue"
-                class="w-full text-lg font-normal leading-6 outline-none border-none text-dark bg-transparent placeholder-gray-600"
+                class="w-full text-lg leading-6 font-normal outline-none border-none text-black bg-transparent placeholder-gray-600"
                 :type="props.type"
                 :name="props.name"
                 :placeholder="props.placeholder"
@@ -12,16 +12,23 @@
                 @input="handleUpdateInput"
                 @blur="handleBlurInput"
             />
-            <div v-if="props.suffix && !props.suffixOutside" class="text-suffix">
+            <div
+                v-if="props.suffix && !props.suffixOutside"
+                class="text-base text-normal text-white dark:text-black"
+            >
                 {{ props.suffix }}
             </div>
         </div>
-        <div v-if="props.suffix && props.suffixOutside" class="text-suffix">
+        <div
+            v-if="props.suffix && props.suffixOutside"
+            class="text-base text-normal text-black dark:text-white"
+        >
             {{ props.suffix }}
         </div>
     </div>
 </template>
 <script setup lang="ts">
+import { type PropType } from 'vue'
 import { tv } from 'tailwind-variants'
 
 const textInputContainerStyle = tv({
@@ -38,11 +45,11 @@ const textInputContainerStyle = tv({
 
 const props = defineProps({
     modelValue: {
-        type: String,
+        type: [String, Number],
         required: true
     },
     type: {
-        type: String,
+        type: String as PropType<'text' | 'number'>,
         default: 'text'
     },
     name: {
@@ -94,46 +101,17 @@ const handleBlurInput = (event: Event) => {
     emit('update:modelValue', inputElement.value)
     emit('blur')
 }
-
-/*
-
-<template>
-    <div class="flex items-center gap-3">
-        <div
-            :class="[
-                'flex items-center gap-2 bg-white py-2 px-3 rounded-lg box-border border-2 border-white input-container-focus-border',
-                { border: props.border },
-                { 'border-gray-500': props.border },
-                { '!border-red-500': props.hasError },
-                { '!border-2': props.hasError }
-            ]"
-        >
-            <input
-                :id="props.id"
-                :value="props.modelValue"
-                class="w-full text-lg font-normal leading-6 outline-none border-none text-dark bg-transparent placeholder-gray-600"
-                :type="props.type"
-                :name="props.name"
-                :placeholder="props.placeholder"
-                :pattern="`${props.pattern}`"
-                @input="handleUpdateInput"
-                @blur="handleBlurInput"
-            />
-            <div v-if="props.suffix && !props.suffixOutside" class="text-suffix">
-                {{ props.suffix }}
-            </div>
-        </div>
-        <div v-if="props.suffix && props.suffixOutside" class="text-suffix">
-            {{ props.suffix }}
-        </div>
-    </div>
-</template>
-
-
-*/
 </script>
 <style scoped>
 .input-container-focus-border:has(> input:focus) {
     border-color: black;
 }
+
+/* remove arrows or spinners */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* end remove arrows or spinners */
 </style>
