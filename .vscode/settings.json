@@ -1,0 +1,6 @@
+{
+    // Tailwind Variants IntelliSense 
+    "tailwindCSS.experimental.classRegex": [
+        ["tv\\((([^()]*|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+    ]
+}
