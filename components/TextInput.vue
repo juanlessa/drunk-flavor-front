@@ -1,10 +1,10 @@
 <template>
-    <div class="flex items-center gap-3">
+    <div class="w-full flex items-center gap-3">
         <div :class="textInputContainerStyle({ hasError: props.hasError, border: props.border })">
             <input
                 :id="props.id"
                 :value="props.modelValue"
-                class="w-full text-lg leading-6 font-normal outline-none border-none text-black bg-transparent placeholder-gray-600"
+                class="flex-1 py-2 text-lg leading-6 font-normal outline-none border-none text-black bg-transparent placeholder-gray-600"
                 :type="props.type"
                 :name="props.name"
                 :placeholder="props.placeholder"
@@ -32,7 +32,7 @@ import { type PropType } from 'vue'
 import { tv } from 'tailwind-variants'
 
 const textInputContainerStyle = tv({
-    base: 'flex items-center gap-2 bg-white py-2 px-3 rounded-lg box-border border-2 border-white input-container-focus-border',
+    base: 'flex-1 flex items-center gap-2 bg-white  px-3 rounded-lg box-border border-2 border-white input-container-focus-border',
     variants: {
         border: {
             true: 'border-gray-600'
