@@ -1,4 +1,4 @@
 export type SelectInputOption = {
-    label: string
-    value: string
-}
+	label: string;
+	value: string;
+};

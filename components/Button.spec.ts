@@ -1,21 +1,21 @@
-import { describe, it, expect, beforeEach, afterAll } from 'vitest'
-import { render, cleanup } from '@testing-library/vue'
-import Button from '~/components/Button.vue'
+import { describe, it, expect, beforeEach, afterAll } from 'vitest';
+import { render, cleanup } from '@testing-library/vue';
+import Button from '~/components/Button.vue';
 
 describe('Button.vue', () => {
-    beforeEach(() => {
-        cleanup()
-    })
-    afterAll(() => {
-        cleanup()
-    })
-    it('renders slot content', () => {
-        const { getByText } = render(Button, {
-            slots: {
-                default: 'submit'
-            }
-        })
+	beforeEach(() => {
+		cleanup();
+	});
+	afterAll(() => {
+		cleanup();
+	});
+	it('renders slot content', () => {
+		const { getByText } = render(Button, {
+			slots: {
+				default: 'submit'
+			}
+		});
 
-        expect(getByText('submit')).toBeDefined()
-    })
-})
+		expect(getByText('submit')).toBeDefined();
+	});
+});
