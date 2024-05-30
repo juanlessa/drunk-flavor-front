@@ -1,6 +1,9 @@
 {
-    // Tailwind Variants IntelliSense 
-    "tailwindCSS.experimental.classRegex": [
-        ["tv\\((([^()]*|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-    ]
+	// Tailwind Variants IntelliSense
+	"tailwindCSS.experimental.classRegex": [
+		["tv\\((([^()]*|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+	],
+
+	// Enable ESlint flat config support
+	"eslint.experimental.useFlatConfig": true
 }
