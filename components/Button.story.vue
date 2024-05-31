@@ -8,7 +8,7 @@
 		<Variant title="Primary" :init-state="initState">
 			<template #default="{ state }">
 				<Button variant="primary" :size="state.size" :disabled="state.disabled">
-					primary
+					submit
 				</Button>
 			</template>
 		</Variant>

@@ -2,7 +2,9 @@
 	<button
 		:class="buttonStyles({ variant: props.variant, size: props.size })"
 		:disabled="props.disabled">
-		<slot />
+		<slot>
+			{{ props.value }}
+		</slot>
 	</button>
 </template>
 
@@ -29,6 +31,10 @@ const buttonStyles = tv({
 });
 
 const props = defineProps({
+	value: {
+		type: String,
+		default: ''
+	},
 	variant: {
 		type: String as PropType<ButtonVariant>,
 		default: 'primary'
