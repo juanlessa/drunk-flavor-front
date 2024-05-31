@@ -1,6 +1,6 @@
 <template>
 	<Story title="Atoms/TextInput">
-		<template #controls="{ state }">
+		<template #controls="{ state }: { state: State }">
 			<HstText v-model="state.placeholder" title="placeholder" />
 			<HstCheckbox v-model="state.hasError" title="has error" />
 			<HstCheckbox v-model="state.border" title="border" />
@@ -10,9 +10,10 @@
 		</template>
 
 		<Variant title="default" :init-state="initState">
-			<template #default="{ state }">
+			<template #default="{ state }: { state: State }">
 				<TextInput
 					:id="state.id"
+					v-model="state.modelValue"
 					:type="state.type"
 					:name="state.name"
 					:has-error="state.hasError"
@@ -22,9 +23,10 @@
 		</Variant>
 
 		<Variant title="sufix" :init-state="initState">
-			<template #default="{ state }">
+			<template #default="{ state }: { state: State }">
 				<TextInput
 					:id="state.id"
+					v-model="state.modelValue"
 					:type="state.type"
 					:name="state.name"
 					suffix="ml"
@@ -35,9 +37,10 @@
 		</Variant>
 
 		<Variant title="sufix-outside" :init-state="initState">
-			<template #default="{ state }">
+			<template #default="{ state }: { state: State }">
 				<TextInput
 					:id="state.id"
+					v-model="state.modelValue"
 					:type="state.type"
 					:name="state.name"
 					suffix="ml"
@@ -52,8 +55,18 @@
 <script lang="ts" setup>
 const textInputTypeOptions = ['text', 'number'];
 
-function initState() {
+type State = {
+	modelValue: string;
+	id: string;
+	name: string;
+	type: 'text' | 'number';
+	hasError: boolean;
+	border: boolean;
+	placeholder: string;
+};
+function initState(): State {
 	return {
+		modelValue: '',
 		id: '',
 		name: '',
 		type: 'text',

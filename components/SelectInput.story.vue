@@ -1,6 +1,6 @@
 <template>
 	<Story title="Atoms/SelectInput">
-		<template #controls="{ state }">
+		<template #controls="{ state }: { state: State }">
 			<HstCheckbox v-model="state.hasError" title="has error" />
 			<HstCheckbox v-model="state.border" title="border" />
 			<HstText v-model="state.id" title="id" />
@@ -8,11 +8,11 @@
 		</template>
 
 		<Variant title="default" :init-state="initState">
-			<template #default="{ state }">
+			<template #default="{ state }: { state: State }">
 				<div class="p-3">
 					<SelectInput
 						:id="state.id"
-						v-model="selectedOption"
+						v-model="state.modelValue"
 						:name="state.name"
 						:placeholder="state.placeholder"
 						:has-error="state.hasError"
@@ -24,7 +24,6 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
 import type { SelectInputOption } from '~/types/SelectInput';
 
 const selectInputOptions: SelectInputOption[] = [
@@ -33,10 +32,18 @@ const selectInputOptions: SelectInputOption[] = [
 	{ label: 'Syrup', value: '3' }
 ];
 
-const selectedOption = ref('');
+type State = {
+	modelValue: string;
+	id: string;
+	name: string;
+	hasError: boolean;
+	border: boolean;
+	placeholder: string;
+};
 
-function initState() {
+function initState(): State {
 	return {
+		modelValue: '',
 		id: '',
 		name: '',
 		hasError: false,

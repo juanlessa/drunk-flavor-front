@@ -1,12 +1,12 @@
 <template>
 	<Story title="Atoms/Button">
-		<template #controls="{ state }">
+		<template #controls="{ state }: { state: State }">
 			<HstSelect v-model="state.size" title="Size" :options="buttonSizeOptions" />
 			<HstCheckbox v-model="state.disabled" title="Disabled" />
 		</template>
 
 		<Variant title="Primary" :init-state="initState">
-			<template #default="{ state }">
+			<template #default="{ state }: { state: State }">
 				<Button variant="primary" :size="state.size" :disabled="state.disabled">
 					submit
 				</Button>
@@ -14,7 +14,7 @@
 		</Variant>
 
 		<Variant title="Secondary" :init-state="initState">
-			<template #default="{ state }">
+			<template #default="{ state }: { state: State }">
 				<Button variant="secondary" :size="state.size" :disabled="state.disabled">
 					cancel
 				</Button>
@@ -22,7 +22,7 @@
 		</Variant>
 
 		<Variant title="Delete" :init-state="initState">
-			<template #default="{ state }">
+			<template #default="{ state }: { state: State }">
 				<Button variant="delete" :size="state.size" :disabled="state.disabled">
 					delete
 				</Button>
@@ -33,7 +33,11 @@
 <script lang="ts" setup>
 const buttonSizeOptions = ['sm', 'md'];
 
-function initState() {
+type State = {
+	size: 'md' | 'sm';
+	disabled: boolean;
+};
+function initState(): State {
 	return {
 		size: 'md',
 		disabled: false
