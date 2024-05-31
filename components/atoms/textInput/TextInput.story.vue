@@ -53,13 +53,13 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-const textInputTypeOptions = ['text', 'number'];
+import { type TextInputType, textInputTypeOptions } from './TextInput';
 
 type State = {
 	modelValue: string;
 	id: string;
 	name: string;
-	type: 'text' | 'number';
+	type: TextInputType;
 	hasError: boolean;
 	border: boolean;
 	placeholder: string;

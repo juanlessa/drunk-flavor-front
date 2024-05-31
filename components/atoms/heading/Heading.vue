@@ -6,6 +6,7 @@
 <script setup lang="ts">
 import { type PropType } from 'vue';
 import { tv } from 'tailwind-variants';
+import type { HeadingSize, HeadingType } from './Heading';
 
 const HeadingStyle = tv({
 	base: 'text-black dark:text-white leading-shorter',
@@ -22,9 +23,6 @@ const HeadingStyle = tv({
 		}
 	}
 });
-
-type HeadingType = 'h1' | 'h2' | 'h3' | 'h4';
-type HeadingSize = 'sm' | 'md' | 'lg' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl';
 
 const props = defineProps({
 	size: {

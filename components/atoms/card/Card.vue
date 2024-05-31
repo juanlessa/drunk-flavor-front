@@ -6,9 +6,10 @@
 <script setup lang="ts">
 import { type PropType } from 'vue';
 import { tv } from 'tailwind-variants';
+import type { CardRounded } from './Card';
 
 const cardStyle = tv({
-	base: 'relative bg-white dark:bg-black p-2',
+	base: 'relative bg-white dark:bg-black',
 	variants: {
 		rounded: {
 			px: 'rounded-px',
@@ -20,7 +21,6 @@ const cardStyle = tv({
 		}
 	}
 });
-type CardRounded = 'px' | 'xs' | 'sm' | 'md' | 'lg' | 'full';
 
 const props = defineProps({
 	rounded: {

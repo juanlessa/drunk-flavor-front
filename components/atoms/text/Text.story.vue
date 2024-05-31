@@ -17,40 +17,8 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-const textSizeOptions = [
-	'xxs',
-	'xs',
-	'sm',
-	'md',
-	'lg',
-	'xl',
-	'2xl',
-	'4xl',
-	'5xl',
-	'6xl',
-	'7xl',
-	'8xl',
-	'9xl'
-];
-const textTypeOptions = ['p', 'span', 'strong'];
-const textWeightOptions = ['regular', 'medium', 'bold'];
-
-type TextType = 'p' | 'span' | 'strong';
-type TextWeight = 'regular' | 'medium' | 'bold';
-type TextSize =
-	| 'xxs'
-	| 'xs'
-	| 'sm'
-	| 'md'
-	| 'lg'
-	| 'xl'
-	| '2xl'
-	| '4xl'
-	| '5xl'
-	| '6xl'
-	| '7xl'
-	| '8xl'
-	| '9xl';
+import type { TextSize, TextType, TextWeight } from './Text';
+import { textSizeOptions, textTypeOptions, textWeightOptions } from './Text';
 
 type State = {
 	value: string;

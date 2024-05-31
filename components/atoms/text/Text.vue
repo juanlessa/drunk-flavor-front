@@ -6,6 +6,7 @@
 <script setup lang="ts">
 import { type PropType } from 'vue';
 import { tv } from 'tailwind-variants';
+import type { TextSize, TextType, TextWeight } from './Text';
 
 const textStyle = tv({
 	base: 'text-black dark:text-white',
@@ -32,23 +33,6 @@ const textStyle = tv({
 		}
 	}
 });
-
-type TextType = 'p' | 'span' | 'strong';
-type TextWeight = 'regular' | 'medium' | 'bold';
-type TextSize =
-	| 'xxs'
-	| 'xs'
-	| 'sm'
-	| 'md'
-	| 'lg'
-	| 'xl'
-	| '2xl'
-	| '4xl'
-	| '5xl'
-	| '6xl'
-	| '7xl'
-	| '8xl'
-	| '9xl';
 
 const props = defineProps({
 	size: {

@@ -23,10 +23,10 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-const buttonSizeOptions = ['sm', 'md'];
+import { type ButtonSize, buttonSizeOptions } from '~/components/atoms/button/Button';
 
 type State = {
-	size: 'md' | 'sm';
+	size: ButtonSize;
 	disabled: boolean;
 };
 

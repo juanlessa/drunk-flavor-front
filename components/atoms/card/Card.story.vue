@@ -7,15 +7,17 @@
 
 		<Variant title="default" :init-state="initState">
 			<template #default="{ state }: { state: State }">
-				<Card :rounded="state.rounded">{{ state.content }}</Card>
+				<Card :rounded="state.rounded" class="px-4 py-2">
+					<Text>
+						{{ state.content }}
+					</Text>
+				</Card>
 			</template>
 		</Variant>
 	</Story>
 </template>
 <script lang="ts" setup>
-const cardRoundedOptions = ['px', 'xs', 'sm', 'md', 'lg', 'full'];
-
-type CardRounded = 'px' | 'xs' | 'sm' | 'md' | 'lg' | 'full';
+import { type CardRounded, cardRoundedOptions } from './Card';
 
 type State = {
 	content: string;

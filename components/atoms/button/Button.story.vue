@@ -31,10 +31,10 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-const buttonSizeOptions = ['sm', 'md'];
+import { buttonSizeOptions, type ButtonSize } from './Button';
 
 type State = {
-	size: 'md' | 'sm';
+	size: ButtonSize;
 	disabled: boolean;
 };
 function initState(): State {

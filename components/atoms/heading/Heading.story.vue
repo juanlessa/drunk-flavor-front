@@ -16,11 +16,8 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-const headingSizeOptions = ['sm', 'md', 'lg', '2xl', '3xl', '4xl', '5xl', '6xl'];
-const headingTypeOptions = ['h1', 'h2', 'h3', 'h4'];
-
-type HeadingType = 'h1' | 'h2' | 'h3' | 'h4';
-type HeadingSize = 'sm' | 'md' | 'lg' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl';
+import type { HeadingSize, HeadingType } from './Heading';
+import { headingSizeOptions, headingTypeOptions } from './Heading';
 
 type State = {
 	value: string;

@@ -17,16 +17,16 @@
 						:placeholder="state.placeholder"
 						:has-error="state.hasError"
 						:border="state.border"
-						:options="selectInputOptions" />
+						:options="selectInputSampleOptions" />
 				</div>
 			</template>
 		</Variant>
 	</Story>
 </template>
 <script lang="ts" setup>
-import type { SelectInputOption } from '~/types/SelectInput';
+import type { SelectInputOption } from './SelectInput';
 
-const selectInputOptions: SelectInputOption[] = [
+const selectInputSampleOptions: SelectInputOption[] = [
 	{ label: 'Juice', value: '1' },
 	{ label: 'Soft drink', value: '2' },
 	{ label: 'Syrup', value: '3' }
