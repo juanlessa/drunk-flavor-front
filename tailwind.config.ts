@@ -21,7 +21,7 @@ module.exports = {
 		borderRadius: radii,
 		extend: {
 			screens: {
-				tablet: '768px',
+				tablet: '767px',
 				desktop: '1190px'
 			},
 			boxShadow: {
