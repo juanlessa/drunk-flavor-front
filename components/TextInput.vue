@@ -29,7 +29,7 @@ import { type PropType } from 'vue';
 import { tv } from 'tailwind-variants';
 
 const textInputContainerStyle = tv({
-	base: 'flex-1 flex items-center gap-2 bg-white  px-3 rounded-lg box-border border-2 border-white input-container-focus-border',
+	base: 'flex-1 flex items-center gap-2 bg-white  px-3 rounded-md box-border border-2 border-white input-container-focus-border',
 	variants: {
 		border: {
 			true: 'border-gray-600'

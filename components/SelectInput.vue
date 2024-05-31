@@ -15,7 +15,7 @@
 
 		<SelectPortal>
 			<SelectContent
-				class="w-full bg-white rounded-lg shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade z-[100]"
+				class="w-full bg-white rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade z-[100]"
 				:style="{ width: 'var(--radix-select-trigger-width)' }"
 				side="bottom"
 				:side-offset="3"
@@ -25,7 +25,7 @@
 						<SelectItem
 							v-for="(option, index) in props.options"
 							:key="index"
-							class="text-md text-black rounded-lg flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-gray-600 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-black data-[highlighted]:text-white"
+							class="text-md text-black rounded-md flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-gray-600 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-black data-[highlighted]:text-white"
 							:value="option.value">
 							<SelectItemIndicator
 								class="absolute left-0 w-[25px] inline-flex items-center justify-center">
@@ -58,7 +58,7 @@ import { tv } from 'tailwind-variants';
 import type { SelectInputOption } from '~/types/SelectInput';
 
 const selectInputContainerStyle = tv({
-	base: 'w-full inline-flex items-center justify-between gap-2 rounded-lg px-3 py-2 bg-white text-md leading-base text-black box-border border-2 border-white focus:border-black data-[placeholder]:text-gray-600 outline-none',
+	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3 py-2 bg-white text-md leading-base text-black box-border border-2 border-white focus:border-black data-[placeholder]:text-gray-600 outline-none',
 	variants: {
 		border: {
 			true: 'border-gray-600'
