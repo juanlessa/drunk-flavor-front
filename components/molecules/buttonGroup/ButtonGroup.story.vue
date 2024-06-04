@@ -23,7 +23,7 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import { type ButtonSize, buttonSizeOptions } from '~/components/atoms/button/Button';
+import { type ButtonSize, buttonSizeOptions } from '~/components/atoms/button/Button.types';
 
 type State = {
 	size: ButtonSize;

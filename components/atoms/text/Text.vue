@@ -4,9 +4,8 @@
 	</component>
 </template>
 <script setup lang="ts">
-import { type PropType } from 'vue';
 import { tv } from 'tailwind-variants';
-import type { TextSize, TextType, TextWeight } from './Text';
+import type { TextSize, TextType, TextWeight } from './Text.types';
 
 const textStyle = tv({
 	base: 'text-black dark:text-white',

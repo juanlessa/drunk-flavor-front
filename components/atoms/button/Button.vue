@@ -9,9 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import { type PropType } from 'vue';
 import { tv } from 'tailwind-variants';
-import type { ButtonSize, ButtonVariant } from './Button';
+import type { ButtonSize, ButtonVariant } from './Button.types';
 
 const buttonStyles = tv({
 	base: 'w-full max-w-80 tablet:max-w-64 rounded-full font-normal text-center px-4 disabled:cursor-not-allowed',

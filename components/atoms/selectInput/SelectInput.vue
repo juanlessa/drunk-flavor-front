@@ -41,7 +41,6 @@
 	</SelectRoot>
 </template>
 <script setup lang="ts">
-import { ref, type PropType } from 'vue';
 import {
 	SelectContent,
 	SelectGroup,
@@ -55,7 +54,7 @@ import {
 	SelectViewport
 } from 'radix-vue';
 import { tv } from 'tailwind-variants';
-import type { SelectInputOption } from './SelectInput';
+import type { SelectInputOption } from './SelectInput.types';
 
 const selectInputContainerStyle = tv({
 	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3 py-2 bg-white text-md leading-base text-black box-border border-2 border-white focus:border-black data-[placeholder]:text-gray-600 outline-none',

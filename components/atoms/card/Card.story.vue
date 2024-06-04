@@ -17,7 +17,7 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import { type CardRounded, cardRoundedOptions } from './Card';
+import { type CardRounded, cardRoundedOptions } from './Card.types';
 
 type State = {
 	content: string;

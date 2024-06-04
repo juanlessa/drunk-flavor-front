@@ -35,7 +35,10 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import { type TextInputType, textInputTypeOptions } from '~/components/atoms/textInput/TextInput';
+import {
+	type TextInputType,
+	textInputTypeOptions
+} from '~/components/atoms/textInput/TextInput.types';
 
 type State = {
 	modelValue: string;

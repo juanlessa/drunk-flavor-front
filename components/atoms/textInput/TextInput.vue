@@ -25,9 +25,8 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { type PropType } from 'vue';
 import { tv } from 'tailwind-variants';
-import type { TextInputType } from './TextInput';
+import type { TextInputType } from './TextInput.types';
 
 const textInputContainerStyle = tv({
 	base: 'flex-1 flex items-center gap-2 bg-white  px-3 rounded-md box-border border-2 border-white input-container-focus-border',

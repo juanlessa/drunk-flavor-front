@@ -4,9 +4,8 @@
 	</component>
 </template>
 <script setup lang="ts">
-import { type PropType } from 'vue';
 import { tv } from 'tailwind-variants';
-import type { HeadingSize, HeadingType } from './Heading';
+import type { HeadingSize, HeadingType } from './Heading.types';
 
 const HeadingStyle = tv({
 	base: 'text-black dark:text-white leading-shorter',

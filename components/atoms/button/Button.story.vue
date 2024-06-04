@@ -31,7 +31,7 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import { buttonSizeOptions, type ButtonSize } from './Button';
+import { type ButtonSize, buttonSizeOptions } from './Button.types';
 
 type State = {
 	size: ButtonSize;

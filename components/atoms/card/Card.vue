@@ -4,9 +4,8 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { type PropType } from 'vue';
 import { tv } from 'tailwind-variants';
-import type { CardRounded } from './Card';
+import type { CardRounded } from './Card.types';
 
 const cardStyle = tv({
 	base: 'relative bg-white dark:bg-black',
