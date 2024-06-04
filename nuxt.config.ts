@@ -29,5 +29,12 @@ export default defineNuxtConfig({
 			autoprefixer: {}
 		}
 	},
+
+	typescript: {
+		tsConfig: {
+			include: ['./env.d.ts']
+		}
+	},
+
 	modules: ['@nuxt/test-utils/module', '@nuxt/eslint']
 });

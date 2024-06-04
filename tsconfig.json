@@ -1,15 +1,4 @@
 {
 	// https://nuxt.com/docs/guide/concepts/typescript
-	"extends": "./.nuxt/tsconfig.json",
-	"include": [
-		"./env.d.ts",
-		"./.nuxt/nuxt.d.ts",
-		"./.config/nuxt.*",
-		"./**/*",
-		"./../hi/runtime",
-		"./node_modules/@nuxt/eslint/runtime",
-		"./node_modules/@nuxt/devtools/runtime",
-		"./node_modules/@nuxt/telemetry/runtime",
-		"."
-	]
+	"extends": "./.nuxt/tsconfig.json"
 }
