@@ -1,15 +1,15 @@
-import { colors, fontSizes, fontWeights, fonts, lineHeights, radii, space } from './tokens';
+import { colors, fontSizes, fontWeights, fonts, lineHeights, radii, space } from './src/tokens';
 import type { Config } from 'tailwindcss';
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	darkMode: 'class',
 	content: [
-		'./components/**/*.{js,vue,ts}',
-		'./layouts/**/*.vue',
-		'./pages/**/*.vue',
-		'./nuxt.config.{js,ts}',
-		'./app.vue'
+		'./src/components/**/*.{js,vue,ts}',
+		'./src/layouts/**/*.vue',
+		'./src/pages/**/*.vue',
+		'./src/nuxt.config.{js,ts}',
+		'./src/app.vue'
 	],
 	theme: {
 		colors: colors,

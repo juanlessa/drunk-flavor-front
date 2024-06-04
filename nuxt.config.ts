@@ -1,13 +1,26 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	css: ['~/styles/global.css'],
 
 	runtimeConfig: {
 		public: {
 			apiBase: ''
 		}
 	},
+
+	postcss: {
+		plugins: {
+			tailwindcss: {},
+			autoprefixer: {}
+		}
+	},
+
+	srcDir: 'src/',
+	dir: {
+		public: '../public'
+	},
+
+	css: ['~/styles/global.css'],
 
 	components: [
 		{
@@ -21,13 +34,6 @@ export default defineNuxtConfig({
 			'composables', // top-level modules
 			'composables/**' // scan all modules within given directory
 		]
-	},
-
-	postcss: {
-		plugins: {
-			tailwindcss: {},
-			autoprefixer: {}
-		}
 	},
 
 	typescript: {
