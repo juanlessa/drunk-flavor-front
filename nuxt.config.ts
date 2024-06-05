@@ -42,5 +42,11 @@ export default defineNuxtConfig({
 		}
 	},
 
-	modules: ['@nuxt/test-utils/module', '@nuxt/eslint']
+	i18n: {
+		strategy: 'prefix_except_default',
+		defaultLocale: 'en',
+		locales: ['en', 'pt']
+	},
+
+	modules: ['@nuxt/test-utils/module', '@nuxt/eslint', '@nuxtjs/i18n']
 });
