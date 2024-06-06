@@ -1,7 +1,8 @@
 <template>
 	<button
 		:class="buttonStyles({ variant: props.variant, size: props.size })"
-		:disabled="props.disabled">
+		:disabled="props.disabled"
+		:type="props.type">
 		<slot>
 			{{ props.value }}
 		</slot>
@@ -10,7 +11,7 @@
 
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { ButtonSize, ButtonVariant } from './Button.types';
+import type { ButtonSize, ButtonType, ButtonVariant } from './Button.types';
 
 const buttonStyles = tv({
 	base: 'w-full max-w-80 tablet:max-w-64 rounded-full font-normal text-center px-4 disabled:cursor-not-allowed',
@@ -39,6 +40,10 @@ const props = defineProps({
 	size: {
 		type: String as PropType<ButtonSize>,
 		default: 'md'
+	},
+	type: {
+		type: String as PropType<ButtonType>,
+		default: 'button'
 	},
 	disabled: {
 		type: Boolean,
