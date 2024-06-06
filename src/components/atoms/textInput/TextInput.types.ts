@@ -1,3 +1,8 @@
-export type TextInputType = 'text' | 'number';
+enum TextInputTypeEnum {
+	text = 'text',
+	number = 'number'
+}
 
-export const textInputTypeOptions = ['text', 'number'];
+export type TextInputType = keyof typeof TextInputTypeEnum;
+
+export const textInputTypeOptions = Object.keys(TextInputTypeEnum) as TextInputType[];

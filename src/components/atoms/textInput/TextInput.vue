@@ -41,61 +41,33 @@ const textInputContainerStyle = tv({
 });
 
 const props = defineProps({
-	modelValue: {
-		type: [String, Number],
-		required: true
-	},
-	type: {
-		type: String as PropType<TextInputType>,
-		default: 'text'
-	},
-	name: {
-		type: String,
-		default: ''
-	},
-	id: {
-		type: String,
-		default: ''
-	},
-	placeholder: {
-		type: String,
-		default: ''
-	},
-	pattern: {
-		type: String,
-		default: ''
-	},
-	suffix: {
-		type: String,
-		default: ''
-	},
-	suffixOutside: {
-		type: Boolean,
-		default: false
-	},
-	border: {
-		type: Boolean,
-		default: false
-	},
-	hasError: {
-		type: Boolean,
-		default: false
-	}
+	modelValue: { type: [String, Number], default: '' },
+	type: { type: String as PropType<TextInputType>, default: 'text' },
+	name: { type: String, default: '' },
+	id: { type: String, default: '' },
+	placeholder: { type: String, default: '' },
+	pattern: { type: String, default: '' },
+	suffix: { type: String, default: '' },
+	suffixOutside: { type: Boolean, default: false },
+	border: { type: Boolean, default: false },
+	hasError: { type: Boolean, default: false }
 });
 
 const emit = defineEmits<{
-	(e: 'update:modelValue', value: string): void;
+	(e: 'update:modelValue', value: string | number): void;
 	(e: 'blur'): void;
 }>();
 
 const handleUpdateInput = (event: Event) => {
-	const inputElement = event.target as HTMLInputElement;
-	emit('update:modelValue', inputElement.value);
+	const target = event?.target as HTMLInputElement;
+	const value = props.type === 'number' ? Number(target.value) : target.value;
+	emit('update:modelValue', value);
 };
 
 const handleBlurInput = (event: Event) => {
-	const inputElement = event.target as HTMLInputElement;
-	emit('update:modelValue', inputElement.value);
+	const target = event?.target as HTMLInputElement;
+	const value = props.type === 'number' ? Number(target.value) : target.value;
+	emit('update:modelValue', value);
 	emit('blur');
 };
 </script>
