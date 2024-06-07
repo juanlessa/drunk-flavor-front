@@ -14,7 +14,7 @@
 import { tv } from 'tailwind-variants';
 
 const textAreaStyle = tv({
-	base: 'w-full bg-white py-2 px-3 rounded-md box-border border-2 border-white input-container-focus-border',
+	base: 'w-full bg-white py-1 px-3 rounded-md box-border border-2 border-white input-container-focus-border',
 	variants: {
 		border: {
 			true: 'border-gray-600'

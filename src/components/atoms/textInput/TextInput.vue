@@ -4,7 +4,7 @@
 			<input
 				:id="props.id"
 				:value="props.modelValue"
-				class="flex-1 py-2 text-lg leading-6 font-normal outline-none border-none text-black bg-transparent placeholder-gray-600"
+				class="flex-1 py-1 text-lg leading-6 font-normal outline-none border-none text-black bg-transparent placeholder-gray-600"
 				:type="props.type"
 				:name="props.name"
 				:placeholder="props.placeholder"
