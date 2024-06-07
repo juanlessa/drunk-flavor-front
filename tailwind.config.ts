@@ -3,7 +3,7 @@ import type { Config } from 'tailwindcss';
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	darkMode: 'class',
+	darkMode: 'selector',
 	content: [
 		'./src/components/**/*.{js,vue,ts}',
 		'./src/layouts/**/*.vue',
