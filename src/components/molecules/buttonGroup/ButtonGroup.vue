@@ -1,13 +1,16 @@
 <template>
 	<div class="flex flex-col-reverse items-center gap-4 tablet:flex-row tablet:justify-center">
 		<slot>
-			<Button v-bind="props.actionButtonProps" @click="emit('action')">enviars</Button>
 			<Button
 				v-if="props.hasCancelButton"
+				:value="$t('molecules.buttonGroup.cancelButton.value')"
 				v-bind="props.cancelButtonProps"
 				@click="emit('cancel')">
-				cancel
 			</Button>
+			<Button
+				:value="$t('molecules.buttonGroup.actionButton.value')"
+				v-bind="props.actionButtonProps"
+				@click="emit('action')"></Button>
 		</slot>
 	</div>
 </template>

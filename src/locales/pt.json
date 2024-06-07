@@ -1,4 +1,8 @@
 {
+	"molecules.buttonGroup.cancelButton.value": "cancelar",
+	"molecules.buttonGroup.actionButton.value": "concluído",
+	"organisms.categoryForm.title": "Categoria",
+
 	"categoryForm.cancelButton.message": "cancelar",
 	"categoryForm.nameInput.errorInvalidFormat": "nome deve ter no mínimo 1 caractere",
 	"categoryForm.nameInput.label": "nome",
