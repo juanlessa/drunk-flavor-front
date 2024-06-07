@@ -14,13 +14,13 @@
 import { tv } from 'tailwind-variants';
 
 const textAreaStyle = tv({
-	base: 'w-full bg-white py-1 px-3 rounded-md box-border border-2 border-white input-container-focus-border',
+	base: 'w-full py-1 px-3 rounded-md box-border border-2  bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 text-black dark:text-white placeholder-gray-500',
 	variants: {
 		border: {
-			true: 'border-gray-600'
+			true: 'border-gray-300 dark:border-gray-700'
 		},
 		hasError: {
-			true: 'border-red-500'
+			true: 'border-red-400 dark:border-red-600'
 		}
 	}
 });
@@ -28,7 +28,7 @@ const textAreaStyle = tv({
 const props = defineProps({
 	modelValue: {
 		type: String,
-		required: true
+		default: ''
 	},
 	name: {
 		type: String,

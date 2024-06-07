@@ -4,7 +4,7 @@
 			<input
 				:id="props.id"
 				:value="props.modelValue"
-				class="flex-1 py-1 text-lg leading-6 font-normal outline-none border-none text-black bg-transparent placeholder-gray-600"
+				class="flex-1 py-1 text-lg leading-6 font-normal outline-none border-none text-black dark:text-white bg-transparent placeholder-gray-500"
 				:type="props.type"
 				:name="props.name"
 				:placeholder="props.placeholder"
@@ -29,13 +29,13 @@ import { tv } from 'tailwind-variants';
 import type { TextInputType } from './TextInput.types';
 
 const textInputContainerStyle = tv({
-	base: 'flex-1 flex items-center gap-2 bg-white  px-3 rounded-md box-border border-2 border-white input-container-focus-border',
+	base: 'flex-1 flex items-center gap-2 px-3 rounded-md box-border border-2 bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 input-container-focus-border',
 	variants: {
 		border: {
-			true: 'border-gray-600'
+			true: 'border-gray-300 dark:border-gray-700'
 		},
 		hasError: {
-			true: 'border-red-500'
+			true: 'border-red-400 dark:border-red-600'
 		}
 	}
 });
@@ -73,7 +73,7 @@ const handleBlurInput = (event: Event) => {
 </script>
 <style scoped>
 .input-container-focus-border:has(> input:focus) {
-	border-color: black;
+	@apply border-black dark:border-white;
 }
 
 /* remove arrows or spinners */
