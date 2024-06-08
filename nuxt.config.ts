@@ -48,5 +48,5 @@ export default defineNuxtConfig({
 		locales: ['en', 'pt']
 	},
 
-	modules: ['@nuxt/test-utils/module', '@nuxt/eslint', '@nuxtjs/i18n']
+	modules: ['@vueuse/nuxt', '@nuxt/test-utils/module', '@nuxt/eslint', '@nuxtjs/i18n']
 });
