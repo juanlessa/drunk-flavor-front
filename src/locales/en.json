@@ -1,13 +1,14 @@
 {
-	"language.en": "English",
-	"language.pt": "Portuguese",
+	"languages.en": "English",
+	"languages.pt": "Portuguese",
 
 	"molecules.buttonGroup.cancelButton.value": "cancel",
 	"molecules.buttonGroup.actionButton.value": "done",
 
 	"organisms.categoryForm.title": "Category",
-	"organisms.categoryForm.nameInput.errorInvalidFormat": "name must have a minimum of 1 character",
+	"organisms.categoryForm.nameInput.error": "name must have a minimum of 1 character",
 	"organisms.categoryForm.nameInput.label": "name",
+	"organisms.categoryForm.nameInput.placeholder": "",
 	"organisms.footer.author": "Juan Lessa",
 	"organisms.footer.githubProject": "github project",
 	"organisms.topBar.categories": "categories",
