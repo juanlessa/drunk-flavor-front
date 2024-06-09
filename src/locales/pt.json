@@ -1,7 +1,13 @@
 {
+	"language.en": "Inglês",
+	"language.pt": "Português",
+
 	"molecules.buttonGroup.cancelButton.value": "cancelar",
 	"molecules.buttonGroup.actionButton.value": "concluído",
+
 	"organisms.categoryForm.title": "Categoria",
+	"organisms.categoryForm.nameInput.errorInvalidFormat": "nome deve ter no mínimo 1 caractere",
+	"organisms.categoryForm.nameInput.label": "nome",
 	"organisms.footer.author": "Juan Lessa",
 	"organisms.footer.githubProject": "projeto no github",
 	"organisms.topBar.categories": "categorias",
@@ -10,11 +16,6 @@
 	"organisms.topBar.login": "entrar",
 	"organisms.topBar.logout": "sair",
 
-	"categoryForm.cancelButton.message": "cancelar",
-	"categoryForm.nameInput.errorInvalidFormat": "nome deve ter no mínimo 1 caractere",
-	"categoryForm.nameInput.label": "nome",
-	"categoryForm.submitButton.message": "concluído",
-	"categoryForm.title.message": "Categoria",
 	"categoriesPage.loadCategories.errorMessage": "Erro ao carregar as categorias",
 	"categoriesPage.newCategoryButton.message": "nova categoria",
 	"deleteModal.cancelButton.message": "cancelar",
@@ -55,8 +56,6 @@
 	"ingredientForm.unitPluralInput.label": "unidade plural",
 	"ingredientsPage.loadIngredients.errorMessage": "Erro ao carregar os ingredients",
 	"ingredientsPage.newIngredientButton.message": "novo ingrediente",
-	"language.en": "Inglês",
-	"language.pt": "Português",
 	"loginPage.back.label": "voltar",
 	"loginPage.email.errorMessage": "email invalido",
 	"loginPage.email.label": "email",
