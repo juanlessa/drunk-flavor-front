@@ -10,15 +10,15 @@ export const useTopBar = () => {
 	const loadRoutes = () => {
 		topBarState.value.links = [
 			{
-				i18nKey: 'navbar.categories',
+				i18nKey: 'organisms.topBar.categories',
 				path: '/categories'
 			},
 			{
-				i18nKey: 'navbar.ingredients',
+				i18nKey: 'organisms.topBar.ingredients',
 				path: '/ingredients'
 			},
 			{
-				i18nKey: 'navbar.drinks',
+				i18nKey: 'organisms.topBar.drinks',
 				path: '/drinks'
 			}
 		];
