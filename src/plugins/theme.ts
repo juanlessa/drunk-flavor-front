@@ -9,7 +9,8 @@ export default defineNuxtPlugin(() => {
 		provide: {
 			theme: {
 				toggle,
-				get
+				get,
+				isDark
 			}
 		}
 	};
