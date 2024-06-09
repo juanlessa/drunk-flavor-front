@@ -1,10 +1,12 @@
-export enum LANGUAGES {
-	english = 'en',
-	portuguese = 'pt'
+export enum LanguagesEnum {
+	en = 'en',
+	pt = 'pt'
 }
 
+export type Language = keyof typeof LanguagesEnum;
+
 export type ITranslations<T> = {
-	[value in LANGUAGES]: T;
+	[key in LanguagesEnum]: T;
 };
 
 export type ITranslationName = {
