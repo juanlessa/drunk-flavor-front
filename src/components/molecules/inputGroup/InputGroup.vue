@@ -11,7 +11,7 @@
 		<slot>
 			<TextInput
 				:id="props.id"
-				:value="props.modelValue"
+				:model-value="props.modelValue"
 				:type="props.type"
 				:name="props.name"
 				:placeholder="props.placeholder"
@@ -20,12 +20,12 @@
 				:suffix="props.suffix"
 				:suffix-outside="props.suffixOutside"
 				:has-error="props.hasError"
-				@input="(value: string | number) => emit('update:modelValue', value)"
+				@update:model-value="(value: string | number) => emit('update:modelValue', value)"
 				@blur="emit('blur')" />
 		</slot>
 		<div v-show="hasError" class="pl-2">
 			<slot name="error">
-				<ErrorMessage v-show="props.errorMesssage" :value="props.errorMesssage" />
+				<ErrorMessage v-show="props.errorMessage" :value="props.errorMessage" />
 			</slot>
 		</div>
 	</div>
@@ -36,14 +36,14 @@ import type { TextInputType } from '~/components/atoms/textInput/TextInput.types
 const props = defineProps({
 	modelValue: { type: [String, Number], default: '' },
 	type: { type: String as PropType<TextInputType>, default: 'text' },
-	id: { type: String, default: '' },
-	name: { type: String, default: '' },
-	placeholder: { type: String, default: '' },
-	pattern: { type: String, default: '' },
+	id: { type: String, default: undefined },
+	name: { type: String, default: undefined },
+	placeholder: { type: String, default: undefined },
+	pattern: { type: String, default: undefined },
 	label: { type: String, default: '' },
 	labelFor: { type: String, default: '' },
 	hasError: { type: Boolean, default: false },
-	errorMesssage: { type: String, default: '' },
+	errorMessage: { type: String, default: '' },
 	suffix: { type: String, default: '' },
 	suffixOutside: { type: Boolean, default: false },
 	border: { type: Boolean, default: false }
