@@ -54,7 +54,7 @@ import {
 	SelectViewport
 } from 'radix-vue';
 import { tv } from 'tailwind-variants';
-import type { SelectInputOption } from './SelectInput.types';
+import type { SelectInputOption } from '~/types/SelectInput';
 
 const selectInputContainerStyle = tv({
 	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3 py-1 text-md leading-base box-border border-2 outline-none  text-black dark:text-white bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:border-black focus:dark:border-white data-[placeholder]:text-gray-500 ',
