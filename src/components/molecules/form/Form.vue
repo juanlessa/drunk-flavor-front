@@ -1,5 +1,5 @@
 <template>
-	<form class="flex flex-col gap-10" @submit.prevent="emit('submit')">
+	<form class="flex flex-col gap-10" novalidate @submit.prevent="emit('submit')">
 		<div v-if="$slots.title || props.title">
 			<slot name="title">
 				<Heading class="text-center" type="h1" size="lg">{{ props.title }}</Heading>
