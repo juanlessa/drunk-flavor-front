@@ -10,7 +10,7 @@
 			:class="selectInputContainerStyle({ hasError: props.hasError, border: props.border })"
 			aria-label="Customise options">
 			<SelectValue :placeholder="props.placeholder" />
-			<IconsDownArrow class="w-5 h-5" />
+			<ChevronDownIcon />
 		</SelectTrigger>
 
 		<SelectPortal>
@@ -69,34 +69,13 @@ const selectInputContainerStyle = tv({
 });
 
 const props = defineProps({
-	modelValue: {
-		type: String,
-		default: ''
-	},
-	options: {
-		type: Array as PropType<SelectInputOption[]>,
-		required: true
-	},
-	placeholder: {
-		type: String,
-		default: ''
-	},
-	id: {
-		type: String,
-		default: ''
-	},
-	name: {
-		type: String,
-		default: ''
-	},
-	border: {
-		type: Boolean,
-		default: false
-	},
-	hasError: {
-		type: Boolean,
-		default: false
-	}
+	modelValue: { type: String, default: '' },
+	options: { type: Array as PropType<SelectInputOption[]>, required: true },
+	placeholder: { type: String, default: '' },
+	id: { type: String, default: '' },
+	name: { type: String, default: '' },
+	border: { type: Boolean, default: false },
+	hasError: { type: Boolean, default: false }
 });
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: string): void;
