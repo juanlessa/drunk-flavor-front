@@ -1,5 +1,8 @@
 <template>
-	<Form :title="$t('organisms.categoryForm.title')" @submit="handleSubmitButton">
+	<Form
+		:title="$t('organisms.categoryForm.title')"
+		@cancel="handleCancelButton"
+		@submit="handleSubmitButton">
 		<div class="flex flex-col tablet:flex-row gap-4">
 			<GroupWrapper
 				v-for="lang in languages"
@@ -14,8 +17,8 @@
 					pattern=".{1,}"
 					:label="$t('organisms.categoryForm.nameInput.label')"
 					:placeholder="$t('organisms.categoryForm.nameInput.placeholder')"
-					:has-error="!!checkFieldError(formState.errors, `translations.${lang}.name`)"
-					:error-message="checkFieldError(formState.errors, `translations.${lang}.name`)"
+					:has-error="!!checkError(`translations.${lang}.name`)"
+					:error-message="checkError(`translations.${lang}.name`)"
 					@blur="validateForm" />
 			</GroupWrapper>
 		</div>
@@ -23,26 +26,35 @@
 </template>
 <script setup lang="ts">
 import { languages } from '~/constants/translations';
-import { checkFieldError } from '~/helpers/checkFieldError';
+import type { ICategoryForm } from '~/types/category';
 
-const { getCategoryFormState, validateForm } = useCategoryForm();
-
-const formState = getCategoryFormState();
-
+const props = defineProps({
+	categoryForm: { type: Object as PropType<ICategoryForm>, default: undefined }
+});
 const emit = defineEmits<{
-	(e: 'submit'): void;
+	(e: 'submit', value: ICategoryForm): void;
+	(e: 'cancel'): void;
 }>();
 
+const { formState, checkError, validateForm } = useCategoryForm();
+
+watch(
+	() => props.categoryForm,
+	(newValue) => {
+		if (newValue) formState.value.form = newValue;
+	}
+);
+
+const handleCancelButton = () => {
+	emit('cancel');
+};
 const handleSubmitButton = async () => {
 	formState.value.displayErrors = true;
-	console.log(formState.value.form);
-
 	validateForm();
-
 	if (formState.value.errors.length !== 0) {
 		return;
 	}
 
-	emit('submit');
+	emit('submit', formState.value.form);
 };
 </script>
