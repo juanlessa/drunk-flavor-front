@@ -16,7 +16,7 @@ export class CategoriesRepository {
 		});
 	}
 
-	async updateteCategory(body: IUpdateCategory) {
+	async updateCategory(body: IUpdateCategory) {
 		return this.$fetch(this.path, {
 			method: 'PATCH',
 			body
