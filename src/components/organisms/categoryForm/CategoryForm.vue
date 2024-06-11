@@ -36,14 +36,11 @@ const emit = defineEmits<{
 	(e: 'cancel'): void;
 }>();
 
-const { formState, checkError, validateForm } = useCategoryForm();
+const { formState, updateFormState, checkError, validateForm } = useCategoryForm();
 
-watch(
-	() => props.categoryForm,
-	(newValue) => {
-		if (newValue) formState.value.form = newValue;
-	}
-);
+if (props.categoryForm) {
+	updateFormState(props.categoryForm);
+}
 
 const handleCancelButton = () => {
 	emit('cancel');
