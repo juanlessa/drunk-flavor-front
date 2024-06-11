@@ -1,27 +1,5 @@
-type ICreateToast = {
-	title: string;
-	message: string;
-	type: 'error' | 'info' | 'success';
-};
-type Toast = {
-	id: string;
-	type: 'error' | 'info' | 'success';
-	title: string;
-	message: string;
-	created_at: Date;
-	displayed_at?: Date;
-};
-
-type ToastState = {
-	maxToastsOnScreen: number;
-	displayingToasts: Toast[];
-	awaitingToasts: Toast[];
-	displayedToasts: Toast[];
-};
-
-function generateId() {
-	return `alert-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-}
+import { generateId } from '~/helpers/toastNotification';
+import type { ICreateToast, Toast, ToastState } from '~/types/ToastNotification';
 
 const initState = (): ToastState => ({
 	maxToastsOnScreen: 7,

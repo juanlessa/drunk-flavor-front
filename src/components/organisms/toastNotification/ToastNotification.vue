@@ -1,18 +1,20 @@
 <template>
-	<ToastProvider>
+	<ToastProvider
+		:duration="toastConfig.duration"
+		:label="$t(toastConfig.labelI18nKey)"
+		:swipe-threshold="toastConfig.swipeThreshold">
 		<ToastRoot
 			v-for="toast in state.displayingToasts"
 			:key="toast.id"
-			class="relative px-4 py-2 rounded-md shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out]"
+			:duration="toast.duration"
+			class="relative px-4 py-2 rounded-md flex flex-col shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out]"
 			:class="toastColorsStyle({ type: toast.type })"
 			@update:open="(_value) => removeToast(toast)">
-			<ToastTitle class="mb-1 font-medium text-black dark:text-white text-lg">
-				{{ toast.title }}
+			<ToastTitle as-child>
+				<Text size="lg" weight="medium">{{ toast.title }}</Text>
 			</ToastTitle>
 			<ToastDescription as-child>
-				<Text class="[grid-area:_description] m-0 text-md leading-base">
-					{{ toast.message }}
-				</Text>
+				<Text size="sm">{{ toast.message }}</Text>
 			</ToastDescription>
 			<ToastClose class="absolute top-1 right-2 p-1 cursor-pointer">
 				<CloseIcon class="fill-gray-700 dark:fill-gray-200" />
@@ -20,6 +22,7 @@
 		</ToastRoot>
 
 		<ToastViewport
+			:hotkey="toastConfig.hotkey"
 			class="fixed top-0 right-0 flex flex-col p-4 gap-2 w-[390px] max-w-[100vw] m-0 list-none z-[10000] outline-none" />
 	</ToastProvider>
 </template>
@@ -33,6 +36,7 @@ import {
 	ToastClose,
 	ToastRoot
 } from 'radix-vue';
+import { toastConfig } from '~/constants/toastNotification';
 
 const { state, removeToast } = useToast();
 

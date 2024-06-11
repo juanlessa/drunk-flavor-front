@@ -16,6 +16,7 @@
 	"organisms.topBar.ingredients": "ingredientes",
 	"organisms.topBar.login": "entrar",
 	"organisms.topBar.logout": "sair",
+	"organisms.toastNotification.label": "Notificação",
 
 	"categoriesPage.loadCategories.errorMessage": "Erro ao carregar as categorias",
 	"categoriesPage.newCategoryButton.message": "nova categoria",

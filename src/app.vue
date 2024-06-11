@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<NuxtPage />
-		<Toast />
+		<ToastNotification />
 	</div>
 </template>
 <script setup lang="ts"></script>
