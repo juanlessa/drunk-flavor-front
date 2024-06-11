@@ -43,10 +43,16 @@ export default defineNuxtConfig({
 	},
 
 	i18n: {
-		strategy: 'prefix',
+		strategy: 'prefix_except_default',
 		defaultLocale: 'en',
 		locales: ['en', 'pt']
 	},
 
-	modules: ['@vueuse/nuxt', '@nuxt/test-utils/module', '@nuxt/eslint', '@nuxtjs/i18n']
+	modules: [
+		'nuxt-typed-router',
+		'@vueuse/nuxt',
+		'@nuxt/test-utils/module',
+		'@nuxt/eslint',
+		'@nuxtjs/i18n'
+	]
 });
