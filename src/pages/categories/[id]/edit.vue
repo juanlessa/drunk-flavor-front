@@ -15,10 +15,10 @@ import type { ICategoryForm } from '~/types/category';
 const categoryForm = ref<ICategoryForm | undefined>(undefined);
 
 const { $api, $router } = useNuxtApp();
-const route = useRoute();
+const route = useRoute('categories-id-edit');
 const { resetFormState } = useCategoryForm();
 
-const categoryId = route.params.id as string;
+const categoryId = route.params.id;
 
 const { data, error } = await useAsyncData(() => $api.categories.getCategory(categoryId));
 
