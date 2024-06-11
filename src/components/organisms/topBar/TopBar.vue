@@ -56,7 +56,5 @@ const localePath = useLocalePath();
 const { loadRoutes, getTopBarState } = useTopBar();
 const topBarState = getTopBarState();
 
-onMounted(() => {
-	loadRoutes();
-});
+loadRoutes();
 </script>
