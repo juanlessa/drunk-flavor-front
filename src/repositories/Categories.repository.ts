@@ -23,7 +23,7 @@ export class CategoriesRepository {
 		});
 	}
 
-	async deleteteCategory(id: string) {
+	async deleteCategory(id: string) {
 		return this.$fetch(this.path, {
 			method: 'DELETE',
 			body: { id }
