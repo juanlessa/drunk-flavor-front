@@ -26,13 +26,13 @@
 </template>
 <script setup lang="ts">
 import { languages } from '~/constants/translations';
-import type { ICategoryForm } from '~/types/category';
+import type { CategoryForm } from '~/types/category';
 
 const props = defineProps({
-	categoryForm: { type: Object as PropType<ICategoryForm>, default: undefined }
+	categoryForm: { type: Object as PropType<CategoryForm>, default: undefined }
 });
 const emit = defineEmits<{
-	(e: 'submit', value: ICategoryForm): void;
+	(e: 'submit', value: CategoryForm): void;
 	(e: 'cancel'): void;
 }>();
 
