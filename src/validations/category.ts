@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { getZodTranslationsSchema } from '~/helpers/getZodTranslationsSchema';
 import { validateSchema } from '~/helpers/validateSchema';
-import type { ICategoryForm } from '@/types/category';
+import type { CategoryForm } from '@/types/category';
 
 // fields validation
 export const categoryNameValidation = z
@@ -19,4 +19,4 @@ export const categoryFormSchema = z.object({
 });
 
 //validators
-export const categoryFormValidator = validateSchema<ICategoryForm>(categoryFormSchema);
+export const categoryFormValidator = validateSchema<CategoryForm>(categoryFormSchema);

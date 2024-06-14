@@ -19,16 +19,16 @@ export type IUpdateCategory = {
 	translations: ITranslations<ICategoryTranslation>;
 };
 
-export type CategoryState = {
+export type CategoriesOverviewState = {
 	categories: ICategory[];
 };
 
-export type ICategoryForm = {
+export type CategoryForm = {
 	translations: ITranslations<ICategoryTranslation>;
 };
 
 export type CategoryFormState = {
-	form: ICategoryForm;
+	form: CategoryForm;
 	errors: FieldError[];
 	displayErrors: boolean;
 };

@@ -6,7 +6,7 @@ export enum LanguagesEnum {
 export type Language = keyof typeof LanguagesEnum;
 
 export type ITranslations<T> = {
-	[key in LanguagesEnum]: T;
+	[key in Language]: T;
 };
 
 export type ITranslationName = {
