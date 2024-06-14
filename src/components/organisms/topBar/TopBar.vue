@@ -13,7 +13,7 @@
 					</div>
 					<nav class="inline-flex gap-2 items-center">
 						<Anchor
-							v-for="link in topBarState.links"
+							v-for="link in links"
 							:key="link.path"
 							:to="localePath(link.path)"
 							class="px-2 inline-flex justify-between items-center">
@@ -31,7 +31,7 @@
 						</div>
 						<nav class="flex flex-col gap-2">
 							<Anchor
-								v-for="link in topBarState.links"
+								v-for="link in links"
 								:key="link.path"
 								:to="localePath(link.path)"
 								class="px-2 inline-flex justify-between items-center">
@@ -50,11 +50,23 @@
 <script setup lang="ts">
 import ArrowRightIcon from '~/components/icons/ArrowRightIcon.vue';
 import LoginIcon from '~/components/icons/LoginIcon.vue';
+import type { ILink } from '~/types/TopBar';
 
+const { $auth } = useNuxtApp();
 const localePath = useLocalePath();
 
-const { loadRoutes, getTopBarState } = useTopBar();
-const topBarState = getTopBarState();
+const links = computed<ILink[]>(() =>
+	getLinksBasedOnPermissions($auth.state.value.isAuthenticated)
+);
 
-loadRoutes();
+function getLinksBasedOnPermissions(isAuthenticated: boolean) {
+	if (isAuthenticated) {
+		return [
+			{ i18nKey: 'organisms.topBar.categories', path: '/categories' },
+			{ i18nKey: 'organisms.topBar.ingredients', path: '/ingredients' },
+			{ i18nKey: 'organisms.topBar.drinks', path: '/drinks' }
+		];
+	}
+	return [{ i18nKey: 'organisms.topBar.login', path: '/login' }];
+}
 </script>
