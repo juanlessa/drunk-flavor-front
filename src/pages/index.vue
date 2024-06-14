@@ -8,6 +8,10 @@
 	>
 </template>
 <script setup lang="ts">
+definePageMeta({
+	middleware: 'guest'
+});
+
 const { addToast } = useToast();
 
 const choices = ['info', 'success', 'error'] as ('info' | 'success' | 'error')[];
