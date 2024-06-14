@@ -1,40 +1,35 @@
 import type { $Fetch } from 'nitropack';
 import type { ICategory, ICreateCategory, IUpdateCategory } from '~/types/category';
 
-export class CategoriesRepository {
-	private path = '/categories';
-	private $fetch: $Fetch;
+const path = '/categories';
 
-	constructor(fetcher: $Fetch) {
-		this.$fetch = fetcher;
-	}
-
+export const categoriesRepository = ($fetch: $Fetch) => ({
 	async createCategory(body: ICreateCategory) {
-		return this.$fetch(this.path, {
+		return $fetch(path, {
 			method: 'POST',
 			body
 		});
-	}
+	},
 
 	async updateCategory(body: IUpdateCategory) {
-		return this.$fetch(this.path, {
+		return $fetch(path, {
 			method: 'PATCH',
 			body
 		});
-	}
+	},
 
 	async deleteCategory(id: string) {
-		return this.$fetch(this.path, {
+		return $fetch(path, {
 			method: 'DELETE',
 			body: { id }
 		});
-	}
+	},
 
 	async getCategories() {
-		return this.$fetch<ICategory[]>(this.path);
-	}
+		return $fetch<ICategory[]>(path);
+	},
 
 	async getCategory(id: string) {
-		return this.$fetch<ICategory>(`${this.path}/${id}`);
+		return $fetch<ICategory>(`${path}/${id}`);
 	}
-}
+});
