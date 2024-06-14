@@ -1,4 +1,4 @@
-import type { CategoryFormState, ICategoryForm } from '@/types/category';
+import type { CategoryForm, CategoryFormState } from '@/types/category';
 import { categoryFormValidator } from '@/validations/category';
 import { initEmptyCategoryForm } from '@/constants/category';
 import { checkFieldError } from '~/helpers/checkFieldError';
@@ -18,7 +18,7 @@ export const useCategoryForm = () => {
 		state.value = initState();
 	};
 
-	const updateFormState = (newFormValue: ICategoryForm) => {
+	const updateFormState = (newFormValue: CategoryForm) => {
 		state.value.form = newFormValue;
 	};
 

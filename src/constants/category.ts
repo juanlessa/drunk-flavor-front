@@ -1,4 +1,4 @@
-import type { ICategory, ICategoryForm } from '@/types/category';
+import type { ICategory, CategoryForm } from '@/types/category';
 
 export const initEmptyCategory = (): ICategory => ({
 	_id: '',
@@ -10,7 +10,7 @@ export const initEmptyCategory = (): ICategory => ({
 	updated_at: new Date()
 });
 
-export const initEmptyCategoryForm = (): ICategoryForm => ({
+export const initEmptyCategoryForm = (): CategoryForm => ({
 	translations: {
 		en: { name: '' },
 		pt: { name: '' }
