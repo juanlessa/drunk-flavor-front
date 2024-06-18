@@ -21,6 +21,7 @@ export type IUpdateCategory = {
 
 export type CategoriesOverviewState = {
 	categories: ICategory[];
+	loading: boolean;
 };
 
 export type CategoryForm = {
