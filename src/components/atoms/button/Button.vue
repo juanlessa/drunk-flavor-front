@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { ButtonSize, ButtonType, ButtonVariant } from './Button.types';
+import type { ButtonSize, ButtonType, ButtonVariant } from '~/types/Button';
 
 const buttonStyles = tv({
 	base: 'w-full max-w-80 tablet:max-w-64 rounded-full font-normal text-center px-4 disabled:cursor-not-allowed',

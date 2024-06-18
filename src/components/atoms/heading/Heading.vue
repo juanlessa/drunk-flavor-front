@@ -5,7 +5,7 @@
 </template>
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { HeadingSize, HeadingType } from './Heading.types';
+import type { HeadingSize, HeadingType } from '~/types/Heading';
 
 const HeadingStyle = tv({
 	base: 'text-black dark:text-white leading-shorter',

@@ -3,7 +3,6 @@ export enum AnchorWeightEnum {
 	medium = 'medium',
 	bold = 'bold'
 }
-
 export enum AnchorSizeEnum {
 	xxs = 'xxs',
 	xs = 'xs',

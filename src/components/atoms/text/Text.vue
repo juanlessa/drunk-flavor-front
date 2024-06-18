@@ -5,7 +5,7 @@
 </template>
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { TextSize, TextType, TextWeight } from './Text.types';
+import type { TextSize, TextType, TextWeight } from '~/types/Text';
 
 const textStyle = tv({
 	base: 'text-black dark:text-white',

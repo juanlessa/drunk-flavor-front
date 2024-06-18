@@ -17,8 +17,8 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import type { TextSize, TextType, TextWeight } from './Text.types';
-import { textSizeOptions, textTypeOptions, textWeightOptions } from './Text.types';
+import type { TextSize, TextType, TextWeight } from '~/types/Text';
+import { textSizeOptions, textTypeOptions, textWeightOptions } from '~/constants/Text';
 
 type State = {
 	value: string;

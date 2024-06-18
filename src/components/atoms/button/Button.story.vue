@@ -46,12 +46,8 @@
 </template>
 
 <script lang="ts" setup>
-import {
-	type ButtonSize,
-	type ButtonType,
-	buttonSizeOptions,
-	buttonTypeOptions
-} from './Button.types';
+import type { ButtonSize, ButtonType } from '~/types/Button';
+import { buttonSizeOptions, buttonTypeOptions } from '~/constants/Button';
 
 type State = {
 	size: ButtonSize;

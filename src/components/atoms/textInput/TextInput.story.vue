@@ -53,7 +53,8 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import { type TextInputType, textInputTypeOptions } from './TextInput.types';
+import type { TextInputType } from '~/types/TextInput';
+import { textInputTypeOptions } from '~/constants/TextInput';
 
 type State = {
 	modelValue: string;

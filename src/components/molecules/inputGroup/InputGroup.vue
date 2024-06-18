@@ -31,7 +31,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import type { TextInputType } from '~/components/atoms/textInput/TextInput.types';
+import type { TextInputType } from '~/types/TextInput';
 
 const props = defineProps({
 	modelValue: { type: [String, Number], default: '' },
