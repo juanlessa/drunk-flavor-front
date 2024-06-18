@@ -24,6 +24,12 @@ module.exports = {
 				tablet: '767px',
 				desktop: '1190px'
 			},
+			backgroundImage: {
+				'loading-gradient':
+					'linear-gradient(to right, #d1d5db 0%, #e5e7eb 10%, #d1d5db 20%, #d1d5db 100%)',
+				'loading-dark-gradient':
+					'linear-gradient(to right, #374151 0%, #4b5563 10%, #374151 20%, #374151 100%)'
+			},
 			boxShadow: {
 				'dark-card': '0 0.25rem 0.25rem rgba(0,0,0,0.85)',
 				'light-card': '0 0.25rem 0.25rem rgba(0,0,0,0.25)',
@@ -35,6 +41,15 @@ module.exports = {
 				'2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
 				inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
 				none: 'none'
+			},
+			keyframes: {
+				loadingAnimate: {
+					'0%': { backgroundPosition: '50% 0' },
+					'100%': { backgroundPosition: '-150% 0' }
+				}
+			},
+			animation: {
+				loading: 'loadingAnimate 1.2s linear infinite'
 			}
 		}
 	},
