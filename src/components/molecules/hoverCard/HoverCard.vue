@@ -1,17 +1,17 @@
 <template>
-	<HoverCardRoot :open="_open" @update:open="handleUpdateOpen">
-		<HoverCardTrigger class="inline-flex">
+	<HoverCard.Root :open="_open" @update:open="handleUpdateOpen">
+		<HoverCard.Trigger class="inline-flex">
 			<slot name="trigger"></slot>
-		</HoverCardTrigger>
-		<HoverCardPortal>
-			<HoverCardContent class="data-[state=open]:transition-all" :side-offset="5">
+		</HoverCard.Trigger>
+		<HoverCard.Portal>
+			<HoverCard.Content class="data-[state=open]:transition-all" :side-offset="5">
 				<slot></slot>
-			</HoverCardContent>
-		</HoverCardPortal>
-	</HoverCardRoot>
+			</HoverCard.Content>
+		</HoverCard.Portal>
+	</HoverCard.Root>
 </template>
 <script setup lang="ts">
-import { HoverCardContent, HoverCardPortal, HoverCardRoot, HoverCardTrigger } from 'radix-vue';
+import { HoverCard } from 'radix-vue/namespaced';
 
 const props = defineProps({
 	open: {

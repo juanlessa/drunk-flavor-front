@@ -1,58 +1,47 @@
 <template>
-	<SelectRoot
+	<Select.Root
 		:id="props.id"
 		v-model:open="openDropdown"
 		:model-value="_modelValue"
 		@update:model-value="handleUpdate">
-		<SelectTrigger
+		<Select.Trigger
 			:id="props.id"
 			:name="props.name"
 			:class="selectInputContainerStyle({ hasError: props.hasError, border: props.border })"
 			aria-label="Customise options">
 			<SelectValue :placeholder="props.placeholder" />
 			<ChevronDownIcon />
-		</SelectTrigger>
+		</Select.Trigger>
 
-		<SelectPortal>
-			<SelectContent
+		<Select.Portal>
+			<Select.Content
 				class="w-full dark:bg-gray-800 bg-gray-200 border-gray-200 dark:border-gray-800 rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade z-[100]"
 				:style="{ width: 'var(--radix-select-trigger-width)' }"
 				side="bottom"
 				:side-offset="3"
 				position="popper">
-				<SelectViewport class="p-1">
-					<SelectGroup>
-						<SelectItem
+				<Select.Viewport class="p-1">
+					<Select.Group>
+						<Select.Item
 							v-for="(option, index) in props.options"
 							:key="index"
 							class="text-md text-black dark:text-white rounded-md flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-gray-500 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-blue-700 data-[highlighted]:text-white"
 							:value="option.value">
-							<SelectItemIndicator
+							<Select.ItemIndicator
 								class="absolute left-0 w-[25px] inline-flex items-center justify-center">
-							</SelectItemIndicator>
-							<SelectItemText>
+							</Select.ItemIndicator>
+							<Select.ItemText>
 								{{ option.label }}
-							</SelectItemText>
-						</SelectItem>
-					</SelectGroup>
-				</SelectViewport>
-			</SelectContent>
-		</SelectPortal>
-	</SelectRoot>
+							</Select.ItemText>
+						</Select.Item>
+					</Select.Group>
+				</Select.Viewport>
+			</Select.Content>
+		</Select.Portal>
+	</Select.Root>
 </template>
 <script setup lang="ts">
-import {
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectItemIndicator,
-	SelectItemText,
-	SelectPortal,
-	SelectRoot,
-	SelectTrigger,
-	SelectValue,
-	SelectViewport
-} from 'radix-vue';
+import { Select } from 'radix-vue/namespaced';
 import { tv } from 'tailwind-variants';
 import type { SelectInputOption } from '~/types/SelectInput';
 
