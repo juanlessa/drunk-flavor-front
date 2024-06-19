@@ -29,13 +29,14 @@ if (data.value) {
 
 const handleCancel = () => {
 	resetFormState();
-	return $router.back();
+	$router.back();
 };
 const handleSubmit = async (categoryForm: CategoryForm) => {
 	const updateCategory = mapFormToUpdateCategory(props.categoryId, categoryForm);
 	try {
 		await $api.categories.updateCategory(updateCategory);
 		addToast({ type: 'success', title: 'Success', message: 'category has been updated' });
+		$router.back();
 	} catch (error) {
 		addToast({ type: 'error', title: 'Error', message: 'category has been updated' });
 	}

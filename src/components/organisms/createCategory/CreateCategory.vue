@@ -13,13 +13,14 @@ const { addToast } = useToast();
 
 const handleCancel = () => {
 	resetFormState();
-	return $router.back();
+	$router.back();
 };
 const handleSubmit = async (categoryForm: CategoryForm) => {
 	const createCategory = mapFormToCreateCategory(categoryForm);
 	try {
 		await $api.categories.createCategory(createCategory);
 		addToast({ type: 'success', title: 'Success', message: 'category has been created' });
+		$router.back();
 	} catch (error) {
 		addToast({ type: 'error', title: 'Error', message: 'category has not been created' });
 	}
