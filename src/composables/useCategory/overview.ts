@@ -32,9 +32,15 @@ export const useCategoriesOverview = () => {
 		}
 	};
 
+	const deleteCategory = async (categoryId: string) => {
+		await $api.categories.deleteCategory(categoryId);
+	};
+
 	return {
 		overviewState: state,
 		resetOverviewState,
-		fetchListingData
+		fetchListingData,
+		getCategories,
+		deleteCategory
 	};
 };
