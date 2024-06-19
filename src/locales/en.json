@@ -4,7 +4,12 @@
 
 	"molecules.buttonGroup.cancelButton.value": "cancel",
 	"molecules.buttonGroup.actionButton.value": "done",
+	"molecules.deleteModal.cancelButton.value": "cancel",
+	"molecules.deleteModal.deleteButton.value": "delete",
 
+	"organisms.categoriesControlOverview.createButton.value": "Create Category",
+	"organisms.categoriesControlOverview.deleteModal.title": "Are you sure you want to delete the item",
+	"organisms.categoriesControlOverview.deleteModal.description": "This action cannot be undo",
 	"organisms.categoryForm.title": "Category",
 	"organisms.categoryForm.nameInput.error": "name must have a minimum of 1 character",
 	"organisms.categoryForm.nameInput.label": "name",
