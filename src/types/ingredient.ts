@@ -28,18 +28,19 @@ export type IUpdateIngredient = {
 	is_alcoholic: boolean;
 };
 
-export type IngredientState = {
+export type IngredientsOverviewState = {
 	ingredients: IIngredient[];
+	loading: boolean;
 };
 
-export type IIngredientForm = {
+export type IngredientForm = {
 	translations: ITranslations<IIngredientTranslation>;
 	category_id: string;
 	is_alcoholic: boolean;
 };
 
 export type IngredientFormState = {
-	form: IIngredientForm;
+	form: IngredientForm;
 	errors: FieldError[];
 	displayErrors: boolean;
 	defaultCategory: string;
