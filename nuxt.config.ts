@@ -1,6 +1,14 @@
+import { colors } from './src/tokens';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
+
+	app: {
+		head: {
+			meta: [{ name: 'theme-color', content: colors.blue[700] }]
+		}
+	},
 
 	runtimeConfig: {
 		public: {
