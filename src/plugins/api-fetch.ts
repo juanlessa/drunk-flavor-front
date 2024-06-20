@@ -1,6 +1,7 @@
 import { AUTH_TOKEN_NAME, SESSION_TOKEN_NAME } from '~/constants/authentication';
 import { authRepository } from '~/repositories/auth.repository';
 import { categoriesRepository } from '~/repositories/categories.repository';
+import { ingredientsRepository } from '~/repositories/ingredients.repository';
 import { usersRepository } from '~/repositories/users.repository';
 
 export default defineNuxtPlugin({
@@ -31,6 +32,7 @@ export default defineNuxtPlugin({
 
 		const modules = {
 			categories: categoriesRepository(apiFetcher),
+			ingredients: ingredientsRepository(apiFetcher),
 			users: usersRepository(apiFetcher),
 			auth: authRepository(apiFetcher)
 		};
