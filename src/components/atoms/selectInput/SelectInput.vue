@@ -1,16 +1,17 @@
 <template>
 	<Select.Root
-		:id="props.id"
 		v-model:open="openDropdown"
 		:model-value="_modelValue"
+		:name="props.name"
 		@update:model-value="handleUpdate">
 		<Select.Trigger
 			:id="props.id"
-			:name="props.name"
 			:class="selectInputContainerStyle({ hasError: props.hasError, border: props.border })"
 			aria-label="Customise options">
-			<SelectValue :placeholder="props.placeholder" />
-			<ChevronDownIcon />
+			<Select.Value :placeholder="props.placeholder" />
+			<Select.Icon as-child>
+				<ChevronDownIcon />
+			</Select.Icon>
 		</Select.Trigger>
 
 		<Select.Portal>
@@ -45,18 +46,6 @@ import { Select } from 'radix-vue/namespaced';
 import { tv } from 'tailwind-variants';
 import type { SelectInputOption } from '~/types/SelectInput';
 
-const selectInputContainerStyle = tv({
-	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3 py-1 text-md leading-base box-border border-2 outline-none  text-black dark:text-white bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:border-black focus:dark:border-white data-[placeholder]:text-gray-500 ',
-	variants: {
-		border: {
-			true: 'border-gray-300 dark:border-gray-700'
-		},
-		hasError: {
-			true: 'border-red-400 dark:border-red-600'
-		}
-	}
-});
-
 const props = defineProps({
 	modelValue: { type: String, default: '' },
 	options: { type: Array as PropType<SelectInputOption[]>, required: true },
@@ -74,14 +63,26 @@ const emit = defineEmits<{
 const openDropdown = ref();
 const _modelValue = ref<string>(props.modelValue);
 
+watch(
+	() => props.modelValue,
+	(newValue) => (_modelValue.value = newValue)
+);
+
 const handleUpdate = (value: string) => {
 	_modelValue.value = value;
 	emit('update:modelValue', value);
 	emit('blur');
 };
 
-watch(
-	() => props.modelValue,
-	(newValue) => (_modelValue.value = newValue)
-);
+const selectInputContainerStyle = tv({
+	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3 py-1 text-md leading-base box-border border-2 outline-none  text-black dark:text-white bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:border-black focus:dark:border-white data-[placeholder]:text-gray-500 ',
+	variants: {
+		border: {
+			true: 'border-gray-300 dark:border-gray-700'
+		},
+		hasError: {
+			true: 'border-red-400 dark:border-red-600'
+		}
+	}
+});
 </script>
