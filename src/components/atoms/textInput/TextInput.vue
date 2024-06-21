@@ -4,7 +4,7 @@
 			<input
 				:id="props.id"
 				:value="props.modelValue"
-				class="flex-1 py-1 text-lg leading-6 font-normal outline-none border-none text-black dark:text-white bg-transparent placeholder-gray-500"
+				class="flex-1 py-1 text-md leading-base font-normal outline-none border-none text-black dark:text-white bg-transparent placeholder-gray-500"
 				:type="props.type"
 				:name="props.name"
 				:placeholder="props.placeholder"
@@ -27,18 +27,6 @@
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
 import type { TextInputType } from '~/types/TextInput';
-
-const textInputContainerStyle = tv({
-	base: 'flex-1 flex items-center gap-2 px-3 rounded-md box-border border-2 bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 input-container-focus-border',
-	variants: {
-		border: {
-			true: 'border-gray-300 dark:border-gray-700'
-		},
-		hasError: {
-			true: 'border-red-400 dark:border-red-600'
-		}
-	}
-});
 
 const props = defineProps({
 	modelValue: { type: [String, Number], default: '' },
@@ -70,6 +58,18 @@ const handleBlurInput = (event: Event) => {
 	emit('update:modelValue', value);
 	emit('blur');
 };
+
+const textInputContainerStyle = tv({
+	base: 'flex-1 flex items-center gap-2 px-3 rounded-md box-border border-2 bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 input-container-focus-border',
+	variants: {
+		border: {
+			true: 'border-gray-300 dark:border-gray-700'
+		},
+		hasError: {
+			true: 'border-red-400 dark:border-red-600'
+		}
+	}
+});
 </script>
 <style scoped>
 .input-container-focus-border:has(> input:focus) {
