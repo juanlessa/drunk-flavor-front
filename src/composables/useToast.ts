@@ -1,4 +1,4 @@
-import { generateId } from '~/helpers/toastNotification';
+import { nanoid } from 'nanoid';
 import type { ICreateToast, Toast, ToastState } from '~/types/ToastNotification';
 
 const initState = (): ToastState => ({
@@ -13,8 +13,7 @@ export const useToast = () => {
 
 	const addToast = (toast: ICreateToast) => {
 		const currentTimestamp = new Date();
-
-		const id = generateId();
+		const id = nanoid();
 
 		const maxToastsOnScreen = state.value.maxToastsOnScreen;
 		const displayingToastsLength = state.value.displayingToasts.length;
