@@ -1,5 +1,5 @@
 <template>
-	<NuxtLayout :bg-primary="true">
+	<NuxtLayout name="primary">
 		<UpdateIngredient :ingredient-id="ingredientId" />
 	</NuxtLayout>
 </template>
