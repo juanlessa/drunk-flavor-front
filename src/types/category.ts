@@ -1,6 +1,7 @@
 import type { DatabaseCommonInfo } from './database';
 import type { ITranslations } from './translations';
 import type { FieldError } from './form';
+import type { Filter } from './filters';
 
 export type ICategoryTranslation = {
 	name: string;
@@ -21,6 +22,7 @@ export type IUpdateCategory = {
 
 export type CategoriesOverviewState = {
 	categories: ICategory[];
+	filter: Filter;
 	loading: boolean;
 };
 
