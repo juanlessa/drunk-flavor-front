@@ -22,13 +22,26 @@
 					@blur="validateForm" />
 			</GroupWrapper>
 		</div>
-		<GroupWrapper :title="$t('organisms.ingredientForm.generalSection.title')">
+		<GroupWrapper
+			:title="$t('organisms.ingredientForm.generalSection.title')"
+			class="flex flex-row gap-2">
 			<SwitchInput />
+			<div class="flex-1">
+				<Label for="categories">label</Label>
+				<SearchableSelectInput
+					id="categories"
+					v-model="selectedCategoryComputed"
+					:options="[
+						{ label: 'gin', value: '1111' },
+						{ label: 'vodka', value: '2222' }
+					]" />
+			</div>
 		</GroupWrapper>
 	</Form>
 </template>
 <script setup lang="ts">
 import { languages } from '~/constants/translations';
+import type { SelectInputOption } from '~/types/SelectInput';
 import type { IngredientForm } from '~/types/ingredient';
 
 const props = defineProps({
@@ -44,6 +57,17 @@ const { formState, updateFormState, checkError, validateForm } = useIngredientFo
 if (props.ingredientForm) {
 	updateFormState(props.ingredientForm);
 }
+
+const selectedCategoryComputed = computed<SelectInputOption>({
+	get: () => {
+		const value = formState.value.form.category_id;
+		const label = '';
+		return { label, value };
+	},
+	set: (newOption) => {
+		formState.value.form.category_id = newOption.value;
+	}
+});
 
 const handleCancelButton = () => {
 	emit('cancel');

@@ -7,7 +7,7 @@ const initState = (): IngredientFormState => ({
 	form: initEmptyIngredientForm(),
 	errors: [],
 	displayErrors: false,
-	defaultCategory: ''
+	categoryOptions: []
 });
 
 export const useIngredientForm = () => {
