@@ -5,20 +5,38 @@
 		</Button>
 	</ButtonGroup>
 
-	<div class="flex justify-center gap-4 flex-wrap">
-		<ItemControlCard
-			v-for="category in overviewState.categories"
-			:key="category._id"
-			:content="category.translations[$i18n.locale as Language].name"
-			@click="() => handleEditCategory(category._id)"
-			@action="() => handleDeleteCategory(category)" />
-
-		<template v-if="overviewState.loading">
-			<ItemControlCardSkeleton
-				v-for="idx in Array.from({ length: 40 }, (_, i) => i)"
-				:key="idx" />
-		</template>
+	<div ref="infinityScrollContainer" class="flex-1">
+		<ClientOnly>
+			<InfinityScroll
+				:items="overviewState.categories"
+				:height="infinityScrollHeight"
+				:item-height="remToPixels(2.5)"
+				:items-gap="remToPixels(1)"
+				:item-columns="screenType === 'mobile' ? 1 : 2"
+				@load-more="() => nextPage()">
+				<template #default="{ list }">
+					<div
+						v-for="{ data: categoryRow, index } in list"
+						:key="index"
+						class="flex gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						<ItemControlCard
+							v-for="category in categoryRow"
+							:key="category._id"
+							ref="itemControlCard"
+							:content="category.translations[$i18n.locale as Language].name"
+							@click="() => handleEditCategory(category._id)"
+							@action="() => handleDeleteCategory(category)" />
+					</div>
+				</template>
+			</InfinityScroll>
+		</ClientOnly>
 	</div>
+
+	<template v-if="overviewState.loading">
+		<ItemControlCardSkeleton
+			v-for="idx in Array.from({ length: overviewState.filter.limit }, (_, i) => i)"
+			:key="idx" />
+	</template>
 	<DeleteModal
 		v-model:open="isDeleteModalOpen"
 		@cancel="handleCancelDeleteCategory"
@@ -35,24 +53,42 @@
 </template>
 <script setup lang="ts">
 import { initEmptyCategory } from '~/constants/category';
+import { remToPixels } from '~/helpers/sizes';
 import type { ICategory } from '~/types/category';
 import type { Language } from '~/types/translations';
 
 const { $router } = useNuxtApp();
 const localePath = useLocalePath();
 const { addToast } = useToast();
-const { overviewState, fetchListingData, deleteCategory } = useCategoriesOverview();
+const { overviewState, deleteCategory, nextPage } = useCategoriesOverview();
+const { screenType } = useScreenType();
 
-onMounted(async () => {
-	try {
-		await fetchListingData();
-	} catch (error) {
-		addToast({ type: 'error', title: 'ERROR!', message: 'unable to fetch data' });
-	}
-});
-
+const infinityScrollContainer = ref<HTMLDivElement | null>(null);
+const infinityScrollHeight = ref(0);
 const isDeleteModalOpen = ref(false);
 const categoryToDelete = ref(initEmptyCategory());
+
+let resizeObserver: ResizeObserver | null = null;
+
+onMounted(() => {
+	if (infinityScrollContainer.value) {
+		resizeObserver = new ResizeObserver(() => {
+			if (infinityScrollContainer.value) {
+				infinityScrollHeight.value = infinityScrollContainer.value.offsetHeight;
+			}
+		});
+
+		resizeObserver.observe(infinityScrollContainer.value);
+	}
+});
+onBeforeUnmount(() => {
+	if (resizeObserver) {
+		if (infinityScrollContainer.value) {
+			resizeObserver.unobserve(infinityScrollContainer.value);
+		}
+		resizeObserver.disconnect();
+	}
+});
 
 const handleCreateCategory = () => {
 	$router.push(localePath('/categories/new'));
@@ -71,7 +107,6 @@ const handleCancelDeleteCategory = () => {
 const handleConfirmDeleteCategory = async () => {
 	try {
 		await deleteCategory(categoryToDelete.value._id);
-		await fetchListingData();
 		addToast({ type: 'success', title: 'SUCCESS!', message: 'category deleted' });
 	} catch (error) {
 		addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete category' });
