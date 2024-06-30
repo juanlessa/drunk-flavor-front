@@ -5,14 +5,14 @@
 		</Button>
 	</ButtonGroup>
 
-	<div ref="infinityScrollContainer" class="flex-1">
+	<div ref="containerRef" class="flex-1">
 		<ClientOnly>
-			<InfinityScroll
+			<VirtualInfiniteGrid
 				:items="overviewState.categories"
-				:height="infinityScrollHeight"
+				:height="containerHeight"
 				:item-height="remToPixels(2.5)"
 				:items-gap="remToPixels(1)"
-				:item-columns="screenType === 'mobile' ? 1 : 2"
+				:grid-columns="gridColumns"
 				@load-more="() => nextPage()">
 				<template #default="{ list }">
 					<div
@@ -25,30 +25,24 @@
 							ref="itemControlCard"
 							:content="category.translations[$i18n.locale as Language].name"
 							@click="() => handleEditCategory(category._id)"
-							@action="() => handleDeleteCategory(category)" />
+							@action="() => triggerDeleteModal(category)" />
 					</div>
 				</template>
-			</InfinityScroll>
+				<template v-if="overviewState.loading" #loading>
+					<div
+						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
+						:key="idx"
+						class="flex gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
+					</div>
+				</template>
+			</VirtualInfiniteGrid>
 		</ClientOnly>
 	</div>
 
-	<template v-if="overviewState.loading">
-		<ItemControlCardSkeleton
-			v-for="idx in Array.from({ length: overviewState.filter.limit }, (_, i) => i)"
-			:key="idx" />
-	</template>
-	<DeleteModal
-		v-model:open="isDeleteModalOpen"
-		@cancel="handleCancelDeleteCategory"
-		@delete="handleConfirmDeleteCategory">
-		<template #title>
-			{{
-				`${$t('organisms.categoriesControlOverview.deleteModal.title')} ${categoryToDelete.translations[$i18n.locale as Language].name}`
-			}}
-		</template>
-		<template #description>
-			{{ `${$t('organisms.categoriesControlOverview.deleteModal.description')}` }}
-		</template>
+	<DeleteModal v-model:open="isOpen" @cancel="handleCancel" @delete="handleDelete">
+		<template #title>{{ modalContent.title }}</template>
+		<template #description>{{ modalContent.description }}</template>
 	</DeleteModal>
 </template>
 <script setup lang="ts">
@@ -58,37 +52,15 @@ import type { ICategory } from '~/types/category';
 import type { Language } from '~/types/translations';
 
 const { $router } = useNuxtApp();
+const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const { addToast } = useToast();
 const { overviewState, deleteCategory, nextPage } = useCategoriesOverview();
 const { screenType } = useScreenType();
 
-const infinityScrollContainer = ref<HTMLDivElement | null>(null);
-const infinityScrollHeight = ref(0);
-const isDeleteModalOpen = ref(false);
-const categoryToDelete = ref(initEmptyCategory());
-
-let resizeObserver: ResizeObserver | null = null;
-
-onMounted(() => {
-	if (infinityScrollContainer.value) {
-		resizeObserver = new ResizeObserver(() => {
-			if (infinityScrollContainer.value) {
-				infinityScrollHeight.value = infinityScrollContainer.value.offsetHeight;
-			}
-		});
-
-		resizeObserver.observe(infinityScrollContainer.value);
-	}
-});
-onBeforeUnmount(() => {
-	if (resizeObserver) {
-		if (infinityScrollContainer.value) {
-			resizeObserver.unobserve(infinityScrollContainer.value);
-		}
-		resizeObserver.disconnect();
-	}
-});
+const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
+const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } =
+	useCategoryDeleteModal();
 
 const handleCreateCategory = () => {
 	$router.push(localePath('/categories/new'));
@@ -96,22 +68,64 @@ const handleCreateCategory = () => {
 const handleEditCategory = (id: string) => {
 	$router.push(localePath(`/categories/${id}/edit`));
 };
-const handleDeleteCategory = (category: ICategory) => {
-	categoryToDelete.value = { ...category };
-	isDeleteModalOpen.value = true;
-};
 
-const handleCancelDeleteCategory = () => {
-	categoryToDelete.value = initEmptyCategory();
-};
-const handleConfirmDeleteCategory = async () => {
-	try {
-		await deleteCategory(categoryToDelete.value._id);
-		addToast({ type: 'success', title: 'SUCCESS!', message: 'category deleted' });
-	} catch (error) {
-		addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete category' });
-	} finally {
+function useVirtualInfiniteGrid() {
+	const containerRef = ref<HTMLDivElement | null>(null);
+	const containerHeight = ref(0);
+	const gridColumns = computed(() => (screenType.value === 'mobile' ? 1 : 2));
+
+	const updateContainerHeight = () => {
+		if (containerRef.value) {
+			containerHeight.value = containerRef.value.offsetHeight;
+		}
+	};
+
+	let resizeObserver: ResizeObserver;
+	onMounted(() => {
+		resizeObserver = new ResizeObserver(updateContainerHeight);
+		if (containerRef.value) {
+			resizeObserver.observe(containerRef.value);
+		}
+	});
+	onBeforeUnmount(() => {
+		if (containerRef.value) {
+			resizeObserver.unobserve(containerRef.value);
+		}
+		resizeObserver.disconnect();
+	});
+
+	return { containerRef, containerHeight, gridColumns };
+}
+
+function useCategoryDeleteModal() {
+	const isOpen = ref(false);
+	const categoryToDelete = ref(initEmptyCategory());
+
+	const modalContent = computed(() => ({
+		title: `${t('organisms.categoriesControlOverview.deleteModal.title')} ${categoryToDelete.value.translations[locale.value as Language].name}`,
+		description: `${t('organisms.categoriesControlOverview.deleteModal.description')}`
+	}));
+
+	const triggerDeleteModal = (category: ICategory) => {
+		categoryToDelete.value = { ...category };
+		isOpen.value = true;
+	};
+
+	const handleCancel = () => {
 		categoryToDelete.value = initEmptyCategory();
-	}
-};
+	};
+
+	const handleDelete = async () => {
+		try {
+			await deleteCategory(categoryToDelete.value._id);
+			addToast({ type: 'success', title: 'SUCCESS!', message: 'category deleted' });
+		} catch (error) {
+			addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete category' });
+		} finally {
+			categoryToDelete.value = initEmptyCategory();
+		}
+	};
+
+	return { isOpen, handleCancel, handleDelete, triggerDeleteModal, modalContent };
+}
 </script>
