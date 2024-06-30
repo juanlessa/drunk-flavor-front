@@ -47,15 +47,15 @@
 <script setup lang="ts">
 import { Combobox } from 'radix-vue/namespaced';
 import { tv } from 'tailwind-variants';
-import type { SelectInputOption } from '~/types/SelectInput';
+import type { InputSelectOption } from '~/types/InputSelect';
 
 const props = defineProps({
 	modelValue: {
-		type: Object as PropType<SelectInputOption>,
+		type: Object as PropType<InputSelectOption>,
 		default: () => ({ label: '', value: '' })
 	},
 	searchTerm: { type: String, default: '' },
-	options: { type: Array as PropType<SelectInputOption[]>, required: true },
+	options: { type: Array as PropType<InputSelectOption[]>, required: true },
 	placeholder: { type: String, default: '' },
 	id: { type: String, default: undefined },
 	name: { type: String, default: undefined },
@@ -65,7 +65,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-	(e: 'update:modelValue', value: SelectInputOption): void;
+	(e: 'update:modelValue', value: InputSelectOption): void;
 	(e: 'update:searchTerm', value: string): void;
 	(e: 'blur'): void;
 }>();
@@ -88,7 +88,7 @@ const handleUpdateSearchTerm = (value: string) => {
 	emit('update:searchTerm', value);
 };
 
-const handleUpdateModelValue = (option: SelectInputOption) => {
+const handleUpdateModelValue = (option: InputSelectOption) => {
 	_modelValue.value = option;
 	emit('update:modelValue', option);
 	emit('blur');
@@ -107,9 +107,9 @@ const selectInputContainerStyle = tv({
 });
 
 const filterOptionsBySearchTerm = (
-	options: SelectInputOption[],
+	options: InputSelectOption[],
 	searchTerm: string
-): SelectInputOption[] => {
+): InputSelectOption[] => {
 	return options.filter(({ label }) => label.toLowerCase().includes(searchTerm.toLowerCase()));
 };
 </script>

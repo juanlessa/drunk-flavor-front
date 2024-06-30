@@ -4,7 +4,7 @@
 			id="email"
 			v-model="formState.form.email"
 			name="email"
-			type="text"
+			type="email"
 			label="email"
 			placeholder=""
 			:has-error="!!checkError('email')"

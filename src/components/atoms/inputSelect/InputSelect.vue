@@ -44,11 +44,11 @@
 <script setup lang="ts">
 import { Select } from 'radix-vue/namespaced';
 import { tv } from 'tailwind-variants';
-import type { SelectInputOption } from '~/types/SelectInput';
+import type { InputSelectOption } from '~/types/InputSelect';
 
 const props = defineProps({
 	modelValue: { type: String, default: '' },
-	options: { type: Array as PropType<SelectInputOption[]>, required: true },
+	options: { type: Array as PropType<InputSelectOption[]>, required: true },
 	placeholder: { type: String, default: '' },
 	id: { type: String, default: '' },
 	name: { type: String, default: '' },

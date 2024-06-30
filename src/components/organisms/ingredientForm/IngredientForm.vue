@@ -25,10 +25,10 @@
 		<GroupWrapper
 			:title="$t('organisms.ingredientForm.generalSection.title')"
 			class="flex flex-row gap-2">
-			<SwitchInput />
+			<InputSwitch />
 			<div class="flex-1">
 				<Label for="categories">label</Label>
-				<SearchableSelectInput
+				<InputSearchableSelect
 					id="categories"
 					v-model="selectedCategoryComputed"
 					:options="[
@@ -41,7 +41,7 @@
 </template>
 <script setup lang="ts">
 import { languages } from '~/constants/translations';
-import type { SelectInputOption } from '~/types/SelectInput';
+import type { InputSelectOption } from '~/types/InputSelect';
 import type { IngredientForm } from '~/types/ingredient';
 
 const props = defineProps({
@@ -58,7 +58,7 @@ if (props.ingredientForm) {
 	updateFormState(props.ingredientForm);
 }
 
-const selectedCategoryComputed = computed<SelectInputOption>({
+const selectedCategoryComputed = computed<InputSelectOption>({
 	get: () => {
 		const value = formState.value.form.category_id;
 		const label = '';

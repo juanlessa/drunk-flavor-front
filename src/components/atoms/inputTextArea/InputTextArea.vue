@@ -9,21 +9,8 @@
 		@input="handleUpdateInput"
 		@blur="handleBlurInput"></Textarea>
 </template>
-
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-
-const textAreaStyle = tv({
-	base: 'w-full py-1 px-3 rounded-md box-border border-2  bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 text-black dark:text-white placeholder-gray-500',
-	variants: {
-		border: {
-			true: 'border-gray-300 dark:border-gray-700'
-		},
-		hasError: {
-			true: 'border-red-400 dark:border-red-600'
-		}
-	}
-});
 
 const props = defineProps({
 	modelValue: {
@@ -71,5 +58,16 @@ const handleBlurInput = (event: Event) => {
 	emit('update:modelValue', inputElement.value);
 	emit('blur');
 };
+
+const textAreaStyle = tv({
+	base: 'w-full py-1 px-3 rounded-md box-border border-2  bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 text-black dark:text-white placeholder-gray-500',
+	variants: {
+		border: {
+			true: 'border-gray-300 dark:border-gray-700'
+		},
+		hasError: {
+			true: 'border-red-400 dark:border-red-600'
+		}
+	}
+});
 </script>
-<style scoped></style>

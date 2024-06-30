@@ -1,5 +1,5 @@
 <template>
-	<Story title="Atoms/SelectInput">
+	<Story title="Atoms/InputSelect">
 		<template #controls="{ state }: { state: State }">
 			<HstCheckbox v-model="state.hasError" title="has error" />
 			<HstCheckbox v-model="state.border" title="border" />
@@ -10,7 +10,7 @@
 		<Variant title="default" :init-state="initState">
 			<template #default="{ state }: { state: State }">
 				<div class="p-3">
-					<SelectInput
+					<InputSelect
 						:id="state.id"
 						v-model="state.modelValue"
 						:name="state.name"
@@ -24,9 +24,9 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import type { SelectInputOption } from '~/types/SelectInput';
+import type { InputSelectOption } from '~/types/InputSelect';
 
-const selectInputSampleOptions: SelectInputOption[] = [
+const selectInputSampleOptions: InputSelectOption[] = [
 	{ label: 'Juice', value: '1' },
 	{ label: 'Soft drink', value: '2' },
 	{ label: 'Syrup', value: '3' }

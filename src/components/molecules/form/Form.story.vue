@@ -5,7 +5,7 @@
 				<Form>
 					<Heading>Form</Heading>
 					<Text>this is a form</Text>
-					<TextInput v-model="state.inputModelValue" />
+					<InputText v-model="state.inputModelValue" />
 				</Form>
 			</template>
 		</Variant>

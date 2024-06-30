@@ -1,17 +1,17 @@
 <template>
-	<Story title="Atoms/TextInput">
+	<Story title="Atoms/InputText">
 		<template #controls="{ state }: { state: State }">
 			<HstText v-model="state.placeholder" title="placeholder" />
 			<HstCheckbox v-model="state.hasError" title="has error" />
 			<HstCheckbox v-model="state.border" title="border" />
-			<HstSelect v-model="state.type" title="type" :options="textInputTypeOptions" />
+			<HstSelect v-model="state.type" title="type" :options="inputTextTypeOptions" />
 			<HstText v-model="state.id" title="id" />
 			<HstText v-model="state.name" title="name" />
 		</template>
 
 		<Variant title="default" :init-state="initState">
 			<template #default="{ state }: { state: State }">
-				<TextInput
+				<InputText
 					:id="state.id"
 					v-model="state.modelValue"
 					:type="state.type"
@@ -24,7 +24,7 @@
 
 		<Variant title="sufix" :init-state="initState">
 			<template #default="{ state }: { state: State }">
-				<TextInput
+				<InputText
 					:id="state.id"
 					v-model="state.modelValue"
 					:type="state.type"
@@ -38,7 +38,7 @@
 
 		<Variant title="sufix-outside" :init-state="initState">
 			<template #default="{ state }: { state: State }">
-				<TextInput
+				<InputText
 					:id="state.id"
 					v-model="state.modelValue"
 					:type="state.type"
@@ -53,14 +53,14 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import type { TextInputType } from '~/types/TextInput';
-import { textInputTypeOptions } from '~/constants/TextInput';
+import type { InputTextType } from '~/types/InputText';
+import { inputTextTypeOptions } from '~/constants/InputText';
 
 type State = {
 	modelValue: string;
 	id: string;
 	name: string;
-	type: TextInputType;
+	type: InputTextType;
 	hasError: boolean;
 	border: boolean;
 	placeholder: string;

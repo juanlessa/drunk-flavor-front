@@ -1,11 +1,11 @@
 <template>
 	<div class="w-full flex items-center gap-3">
-		<div :class="textInputContainerStyle({ hasError: props.hasError, border: props.border })">
+		<div :class="inputNumberContainerStyle({ hasError: props.hasError, border: props.border })">
 			<input
 				:id="props.id"
 				:value="props.modelValue"
 				class="flex-1 py-1 text-md leading-base font-normal outline-none border-none text-black dark:text-white bg-transparent placeholder-gray-500"
-				:type="props.type"
+				type="number"
 				:name="props.name"
 				:placeholder="props.placeholder"
 				:pattern="`${props.pattern}`"
@@ -26,11 +26,9 @@
 </template>
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { TextInputType } from '~/types/TextInput';
 
 const props = defineProps({
 	modelValue: { type: [String, Number], default: '' },
-	type: { type: String as PropType<TextInputType>, default: 'text' },
 	name: { type: String, default: undefined },
 	id: { type: String, default: undefined },
 	placeholder: { type: String, default: undefined },
@@ -42,24 +40,24 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-	(e: 'update:modelValue', value: string | number): void;
+	(e: 'update:modelValue', value: number): void;
 	(e: 'blur'): void;
 }>();
 
 const handleUpdateInput = (event: Event) => {
 	const target = event?.target as HTMLInputElement;
-	const value = props.type === 'number' ? Number(target.value) : target.value;
+	const value = Number(target.value);
 	emit('update:modelValue', value);
 };
 
 const handleBlurInput = (event: Event) => {
 	const target = event?.target as HTMLInputElement;
-	const value = props.type === 'number' ? Number(target.value) : target.value;
+	const value = Number(target.value);
 	emit('update:modelValue', value);
 	emit('blur');
 };
 
-const textInputContainerStyle = tv({
+const inputNumberContainerStyle = tv({
 	base: 'flex-1 flex items-center gap-2 px-3 rounded-md box-border border-2 bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 input-container-focus-border',
 	variants: {
 		border: {
