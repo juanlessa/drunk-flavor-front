@@ -1,9 +1,11 @@
 import type { CategoriesOverviewState } from '@/types/category';
-import { initFilter } from '~/constants/filter';
 
 const initState = (): CategoriesOverviewState => ({
 	categories: [],
-	filter: initFilter(),
+	filter: {
+		page: 1,
+		limit: 22
+	},
 	loading: false
 });
 
