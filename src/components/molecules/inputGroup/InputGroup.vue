@@ -9,7 +9,7 @@
 		</div>
 
 		<slot>
-			<TextInput
+			<InputText
 				:id="props.id"
 				:model-value="props.modelValue"
 				:type="props.type"
@@ -31,11 +31,11 @@
 	</div>
 </template>
 <script setup lang="ts">
-import type { TextInputType } from '~/types/InputText';
+import type { InputTextType } from '~/types/InputText';
 
 const props = defineProps({
 	modelValue: { type: [String, Number], default: '' },
-	type: { type: String as PropType<TextInputType>, default: 'text' },
+	type: { type: String as PropType<InputTextType>, default: 'text' },
 	id: { type: String, default: undefined },
 	name: { type: String, default: undefined },
 	placeholder: { type: String, default: undefined },
