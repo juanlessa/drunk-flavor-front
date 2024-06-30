@@ -5,7 +5,7 @@
 				<Heading type="h2" class="text-center">{{ props.title }}</Heading>
 			</slot>
 		</div>
-		<div>
+		<div v-bind="$attrs">
 			<slot></slot>
 		</div>
 	</div>
