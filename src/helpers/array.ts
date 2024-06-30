@@ -1,3 +1,10 @@
+/**
+ * Splits an array into chunks of a specified size.
+ *
+ * @param array - The array to chunk.
+ * @param chunkSize - The size of each chunk.
+ * @returns A new array containing chunks.
+ */
 export const chunkArray = <T = unknown>(array: T[], chunkSize: number) => {
 	if (chunkSize <= 0) {
 		throw new Error('Chunk size must be greater than 0');
