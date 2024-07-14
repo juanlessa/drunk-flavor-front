@@ -45,6 +45,7 @@ const handleSubmitButton = async () => {
 		await $api.auth.login(formState.value.form);
 		$router.push(localePath('/'));
 	} catch (error) {
+		console.error(error);
 		addToast({ type: 'error', title: 'ERROR', message: 'error to login' });
 	}
 };
