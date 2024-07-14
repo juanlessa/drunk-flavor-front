@@ -13,7 +13,8 @@
 				:item-height="remToPixels(2.5)"
 				:items-gap="remToPixels(1)"
 				:grid-columns="gridColumns"
-				@load-more="() => nextPage()">
+				:loading="overviewState.loading"
+				@load-more="loadNextPage">
 				<template #default="{ list }">
 					<div
 						v-for="{ data: categoryRow, index } in list"
@@ -28,7 +29,7 @@
 							@action="() => triggerDeleteModal(category)" />
 					</div>
 				</template>
-				<template v-if="overviewState.loading" #loading>
+				<template #loading>
 					<div
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
@@ -55,7 +56,7 @@ const { $router } = useNuxtApp();
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const { addToast } = useToast();
-const { overviewState, deleteCategory, nextPage } = useCategoriesOverview();
+const { overviewState, deleteCategory, loadNextPage } = useCategoriesOverview();
 const { screenType } = useScreenType();
 
 const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();

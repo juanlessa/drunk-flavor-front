@@ -4,7 +4,8 @@ const initState = (): CategoriesOverviewState => ({
 	categories: [],
 	filter: {
 		page: 1,
-		limit: 22
+		limit: 30,
+		isLastPage: false
 	},
 	loading: false
 });
@@ -15,12 +16,9 @@ export const useCategoriesOverview = () => {
 
 	const state = useState<CategoriesOverviewState>('categoriesOverview', initState);
 
-	const { data, status } = useAsyncData(
+	const { data, error, status } = useAsyncData(
 		'categoriesOverview',
-		() => {
-			console.log('useAsyncData');
-			return $api.categories.getCategories();
-		},
+		() => $api.categories.getCategories(state.value.filter),
 		{
 			server: false,
 			lazy: true,
@@ -28,39 +26,42 @@ export const useCategoriesOverview = () => {
 		}
 	);
 
-	watch(status, (newStatus) => {
-		if (newStatus === 'pending') {
-			state.value.loading = true;
-		} else if (newStatus === 'success' && data.value) {
-			state.value.categories = [...state.value.categories, ...data.value];
-			state.value.loading = false;
-		} else {
-			console.log('error');
-			addToast({ type: 'error', title: 'ERROR!', message: 'unable to fetch data' });
-			state.value.loading = false;
+	watch(data, (newData) => {
+		if (!newData) return;
+		if (newData.length === 0) {
+			state.value.filter.isLastPage = true;
+			return;
 		}
+		state.value.categories = [...state.value.categories, ...newData];
 	});
-
-	onBeforeUnmount(() => resetOverviewState());
+	watch(error, (newError) => {
+		if (!newError) return;
+		console.error(newError);
+		addToast({ type: 'error', title: 'ERROR!', message: 'unable to fetch data' });
+	});
+	watch(status, (newStatus) => {
+		state.value.loading = newStatus === 'pending';
+	});
 
 	const resetOverviewState = () => {
 		state.value = initState();
 	};
 
+	onBeforeUnmount(() => resetOverviewState());
+
 	const deleteCategory = async (categoryId: string) => {
 		await $api.categories.deleteCategory(categoryId);
 	};
 
-	const nextPage = () => {
-		if (state.value.filter.page <= 10) {
-			state.value.filter = { ...state.value.filter, page: state.value.filter.page + 1 };
-		}
+	const loadNextPage = () => {
+		if (state.value.loading || state.value.filter.isLastPage) return;
+		state.value.filter = { ...state.value.filter, page: state.value.filter.page + 1 };
 	};
 
 	return {
 		overviewState: state,
 		resetOverviewState,
 		deleteCategory,
-		nextPage
+		loadNextPage
 	};
 };
