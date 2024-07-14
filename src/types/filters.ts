@@ -1,9 +1,5 @@
-export type SortOrder = -1 | 1 | 'asc' | 'ascending' | 'desc' | 'descending';
+import type { QueryParams } from './query';
 
-export type Filter = {
-	page: number;
-	limit: number;
+export type Filter = QueryParams & {
 	isLastPage: boolean;
-	search?: { [k: string]: string | undefined };
-	sort?: { [k: string]: SortOrder | undefined };
 };

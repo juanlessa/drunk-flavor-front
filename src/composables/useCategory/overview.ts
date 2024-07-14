@@ -18,7 +18,13 @@ export const useCategoriesOverview = () => {
 
 	const { data, error, status } = useAsyncData(
 		'categoriesOverview',
-		() => $api.categories.getCategories(state.value.filter),
+		() =>
+			$api.categories.getCategories({
+				limit: state.value.filter.limit,
+				page: state.value.filter.page,
+				search: state.value.filter.search,
+				sort: state.value.filter.sort
+			}),
 		{
 			server: false,
 			lazy: true,
