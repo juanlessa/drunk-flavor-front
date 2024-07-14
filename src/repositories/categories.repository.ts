@@ -1,5 +1,6 @@
 import type { $Fetch } from 'nitropack';
 import type { ICategory, ICreateCategory, IUpdateCategory } from '~/types/category';
+import type { Filter } from '~/types/filters';
 
 const path = '/categories';
 
@@ -25,8 +26,8 @@ export const categoriesRepository = ($fetch: $Fetch) => ({
 		});
 	},
 
-	async getCategories() {
-		return $fetch<ICategory[]>(path);
+	async getCategories(query: Filter) {
+		return $fetch<ICategory[]>(path, { query });
 	},
 
 	async getCategory(id: string) {
