@@ -37,6 +37,6 @@ export const usersRepository = ($fetch: $Fetch) => ({
 	},
 
 	async me() {
-		return $fetch<IUserProfile>(`${path}/profile`);
+		return $fetch<IUserProfile>(`${path}/me`);
 	}
 });
