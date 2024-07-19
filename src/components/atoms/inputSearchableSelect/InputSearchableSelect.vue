@@ -20,13 +20,13 @@
 		</Combobox.Anchor>
 
 		<Combobox.Content
-			class="w-full z-10 absolute mt-1 overflow-hidden dark:bg-gray-800 bg-gray-200 border-gray-200 dark:border-gray-800 rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade">
+			class="w-full z-10 absolute mt-1 overflow-hidden dark:bg-gray-800 bg-gray-200 border-gray-200 dark:border-gray-800 rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform]">
 			<Combobox.Viewport class="py-1">
 				<Combobox.Empty as-child>
 					<Text :value="props.noResult" class="text-center py-2" />
 				</Combobox.Empty>
 
-				<Combobox.Group>
+				<Combobox.Group ref="infiniteScrollContainer" class="max-h-28 overflow-y-auto">
 					<Combobox.Item
 						v-for="option in props.options"
 						:key="option.value"
@@ -61,18 +61,33 @@ const props = defineProps({
 	name: { type: String, default: undefined },
 	noResult: { type: String, default: '' },
 	border: { type: Boolean, default: false },
-	hasError: { type: Boolean, default: false }
+	hasError: { type: Boolean, default: false },
+	infiniteScroll: { type: Boolean, default: false },
+	loading: { type: Boolean, default: false }
 });
 
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: InputSelectOption): void;
 	(e: 'update:searchTerm', value: string): void;
-	(e: 'blur'): void;
+	(e: 'blur' | 'loadMore'): void;
 }>();
+
+const infiniteScrollContainer = ref<HTMLElement | null>(null);
 
 const _open = ref(false);
 const _modelValue = ref(props.modelValue);
 const _searchTerm = ref<string>(props.searchTerm);
+
+if (props.infiniteScroll) {
+	useInfiniteScroll(
+		infiniteScrollContainer,
+		() => {
+			if (props.loading) return;
+			emit('loadMore');
+		},
+		{ distance: 10 }
+	);
+}
 
 watch(
 	() => props.modelValue,

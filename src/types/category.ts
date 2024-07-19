@@ -2,6 +2,8 @@ import type { DatabaseCommonInfo } from './database';
 import type { ITranslations } from './translations';
 import type { FieldError } from './form';
 import type { Filter } from './filters';
+import type { QueryParams } from './query';
+import type { InputSelectOption } from './InputSelect';
 
 export type ICategoryTranslation = {
 	name: string;
@@ -34,4 +36,15 @@ export type CategoryFormState = {
 	form: CategoryForm;
 	errors: FieldError[];
 	displayErrors: boolean;
+};
+
+export type CategorySearchSelectState = {
+	options: ICategory[];
+	selected: InputSelectOption;
+	filter: {
+		query: QueryParams;
+		isLastPage: boolean;
+		searchTerm: string;
+	};
+	loading: boolean;
 };

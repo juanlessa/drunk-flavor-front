@@ -6,8 +6,7 @@ import { ingredientFormValidator } from '~/validations/ingredient';
 const initState = (): IngredientFormState => ({
 	form: initEmptyIngredientForm(),
 	errors: [],
-	displayErrors: false,
-	categoryOptions: []
+	displayErrors: false
 });
 
 export const useIngredientForm = () => {
