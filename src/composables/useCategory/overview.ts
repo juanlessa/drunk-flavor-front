@@ -19,7 +19,7 @@ export const useCategoriesOverview = () => {
 	const { data, error, status } = useAsyncData(
 		'categoriesOverview',
 		() =>
-			$api.categories.getCategories({
+			$api.categories.list({
 				limit: state.value.filter.limit,
 				page: state.value.filter.page,
 				search: state.value.filter.search,
@@ -56,7 +56,7 @@ export const useCategoriesOverview = () => {
 	onBeforeUnmount(() => resetOverviewState());
 
 	const deleteCategory = async (categoryId: string) => {
-		await $api.categories.deleteCategory(categoryId);
+		await $api.categories.delete(categoryId);
 	};
 
 	const loadNextPage = () => {

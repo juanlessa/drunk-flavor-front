@@ -44,7 +44,7 @@ export const useCategorySearchableSelect = () => {
 
 	const { data, error, status } = useAsyncData(
 		'categoriesOverview',
-		() => $api.categories.getCategories(state.value.filter.query),
+		() => $api.categories.list(state.value.filter.query),
 		{
 			server: false,
 			lazy: true,

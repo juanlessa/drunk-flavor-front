@@ -1,35 +1,35 @@
 import type { DatabaseCommonInfo } from './database';
-import type { ITranslations } from './translations';
+import type { Translations } from './translations';
 import type { FieldError } from './form';
 import type { Filter } from './filters';
 import type { QueryParams } from './query';
 import type { InputSelectOption } from './InputSelect';
 
-export type ICategoryTranslation = {
+export type CategoryTranslation = {
 	name: string;
 };
 
-export type ICategory = DatabaseCommonInfo & {
-	translations: ITranslations<ICategoryTranslation>;
+export type Category = DatabaseCommonInfo & {
+	translations: Translations<CategoryTranslation>;
 };
 
-export type ICreateCategory = {
-	translations: ITranslations<ICategoryTranslation>;
+export type CreateCategory = {
+	translations: Translations<CategoryTranslation>;
 };
 
-export type IUpdateCategory = {
+export type UpdateCategory = {
 	id: string;
-	translations: ITranslations<ICategoryTranslation>;
+	translations: Translations<CategoryTranslation>;
 };
 
 export type CategoriesOverviewState = {
-	categories: ICategory[];
+	categories: Category[];
 	filter: Filter;
 	loading: boolean;
 };
 
 export type CategoryForm = {
-	translations: ITranslations<ICategoryTranslation>;
+	translations: Translations<CategoryTranslation>;
 };
 
 export type CategoryFormState = {
@@ -39,7 +39,7 @@ export type CategoryFormState = {
 };
 
 export type CategorySearchSelectState = {
-	options: ICategory[];
+	options: Category[];
 	selected: InputSelectOption;
 	filter: {
 		query: QueryParams;

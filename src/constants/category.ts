@@ -1,6 +1,6 @@
-import type { ICategory, CategoryForm } from '@/types/category';
+import type { Category, CategoryForm } from '@/types/category';
 
-export const initEmptyCategory = (): ICategory => ({
+export const initEmptyCategory = (): Category => ({
 	_id: '',
 	translations: {
 		en: { name: '' },

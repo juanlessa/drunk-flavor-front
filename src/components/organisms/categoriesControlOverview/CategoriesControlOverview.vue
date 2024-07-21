@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import { initEmptyCategory } from '~/constants/category';
 import { remToPixels } from '~/helpers/sizes';
-import type { ICategory } from '~/types/category';
+import type { Category } from '~/types/category';
 import type { Language } from '~/types/translations';
 
 const { $router } = useNuxtApp();
@@ -107,7 +107,7 @@ function useCategoryDeleteModal() {
 		description: `${t('organisms.categoriesControlOverview.deleteModal.description')}`
 	}));
 
-	const triggerDeleteModal = (category: ICategory) => {
+	const triggerDeleteModal = (category: Category) => {
 		categoryToDelete.value = { ...category };
 		isOpen.value = true;
 	};
