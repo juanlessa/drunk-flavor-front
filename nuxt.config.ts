@@ -46,11 +46,15 @@ export default defineNuxtConfig({
 
 	typescript: {
 		tsConfig: {
+			compilerOptions: {
+				types: ['@nuxtjs/i18n']
+			},
 			include: ['./env.d.ts']
 		}
 	},
 
 	i18n: {
+		vueI18n: './i18n.config.ts',
 		strategy: 'no_prefix',
 		defaultLocale: 'en',
 		locales: ['en', 'pt']
