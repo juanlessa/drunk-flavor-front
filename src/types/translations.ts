@@ -5,15 +5,15 @@ export enum LanguagesEnum {
 
 export type Language = keyof typeof LanguagesEnum;
 
-export type ITranslations<T> = {
+export type Translations<T> = {
 	[key in Language]: T;
 };
 
-export type ITranslationName = {
+export type TranslationName = {
 	name: string;
 };
 
-export type ITranslationAnyWithNameKey = {
+export type TranslationAnyWithNameKey = {
 	[key: string]: unknown;
 	name: string;
 };
