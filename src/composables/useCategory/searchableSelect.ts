@@ -1,4 +1,5 @@
 import type { CategorySearchSelectState } from '~/types/category';
+import type { QueryParams } from '~/types/query';
 import type { Language } from '~/types/translations';
 
 const initState = (): CategorySearchSelectState => ({
@@ -12,12 +13,34 @@ const initState = (): CategorySearchSelectState => ({
 	loading: false
 });
 
+type UpdateStateFilter = {
+	query?: Partial<QueryParams>;
+	isLastPage?: boolean;
+	searchTerm?: string;
+};
+
 export const useCategorySearchableSelect = () => {
 	const { $api } = useNuxtApp();
 	const { addToast } = useToast();
 	const { locale } = useI18n();
-
 	const state = useState<CategorySearchSelectState>('categorySearchSelect', initState);
+
+	const updateStateFilterQuery = (query?: Partial<QueryParams>) => {
+		return {
+			limit: query?.limit || state.value.filter.query.limit,
+			page: query?.page || state.value.filter.query.page,
+			search: query?.search || state.value.filter.query.search,
+			sort: query?.sort || state.value.filter.query.sort
+		};
+	};
+
+	const updateStateFilter = ({ query, isLastPage, searchTerm }: UpdateStateFilter) => {
+		return {
+			query: updateStateFilterQuery(query),
+			isLastPage: isLastPage || state.value.filter.isLastPage,
+			searchTerm: searchTerm || state.value.filter.searchTerm
+		};
+	};
 
 	const { data, error, status } = useAsyncData(
 		'categoriesOverview',
@@ -35,10 +58,6 @@ export const useCategorySearchableSelect = () => {
 			state.value.filter.isLastPage = true;
 			return;
 		}
-		console.log('new data');
-		console.log(newData);
-		console.log(state.value.options);
-
 		state.value.options = [...state.value.options, ...newData];
 	});
 	watch(error, (newError) => {
@@ -57,30 +76,19 @@ export const useCategorySearchableSelect = () => {
 	onBeforeUnmount(() => resetState());
 
 	watch(locale, (newLocale) => {
-		console.log('changed locale');
-		let localeName = '';
-		if (state.value.selected.value) {
-			const selected = state.value.options.find(
-				(opt) => opt._id === state.value.selected.value
-			);
-			if (selected) {
-				localeName = selected.translations[newLocale as Language].name;
-			}
-		}
+		const selectedCategory = state.value.options.find(
+			(opt) => opt._id === state.value.selected.value
+		);
+		const name = selectedCategory?.translations[newLocale as Language]?.name || '';
+		const id = state.value.selected.value;
 
-		state.value.selected = { label: localeName, value: state.value.selected.value };
+		state.value.selected = { label: name, value: id };
 		state.value.options = [];
-		state.value.filter = {
-			query: {
-				limit: state.value.filter.query.limit,
-				page: 1,
-				search: {
-					[`translations.${newLocale}.name`]: localeName
-				}
-			},
+		state.value.filter = updateStateFilter({
+			query: { page: 1, search: { [`translations.${newLocale}.name`]: name } },
 			isLastPage: false,
-			searchTerm: localeName
-		};
+			searchTerm: name
+		});
 	});
 
 	const shouldResetFilters = (newTerm: string, currentTerm: string) =>
@@ -90,45 +98,30 @@ export const useCategorySearchableSelect = () => {
 	const searchTerm = computed({
 		get: () => state.value.filter.searchTerm,
 		set: (newTerm) => {
-			console.log('set search term');
-
 			const currentTerm = state.value.filter.searchTerm;
 			if (shouldResetFilters(newTerm, currentTerm)) {
-				console.log('update filters');
 				state.value.options = [];
-				state.value.filter = {
-					query: {
-						limit: state.value.filter.query.limit,
-						page: 1,
-						search: {
-							[`translations.${locale.value}.name`]: newTerm
-						}
-					},
+				state.value.filter = updateStateFilter({
+					query: { page: 1, search: { [`translations.${locale.value}.name`]: newTerm } },
 					isLastPage: false,
 					searchTerm: newTerm
-				};
-				console.log(state.value);
+				});
 				return;
 			}
 			state.value.filter.searchTerm = newTerm;
-			console.log(state.value);
 		}
 	});
-
 	const selected = computed({
 		get: () => state.value.selected,
 		set: (newSelected) => (state.value.selected = newSelected)
 	});
-
 	const options = computed(() => state.value.options);
 	const loading = computed(() => state.value.loading);
 
 	const loadNextPage = () => {
 		if (state.value.loading || state.value.filter.isLastPage) return;
-		state.value.filter.query = {
-			...state.value.filter.query,
-			page: state.value.filter.query.page + 1
-		};
+		const { page } = state.value.filter.query;
+		state.value.filter.query = updateStateFilterQuery({ page: page + 1 });
 	};
 
 	return {
