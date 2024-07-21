@@ -17,7 +17,7 @@
 	</form>
 </template>
 <script setup lang="ts">
-import type { ButtonProps } from '~/components/atoms/button/Button.types';
+import type { ButtonProps } from '~/types/Button';
 
 const props = defineProps({
 	title: {
