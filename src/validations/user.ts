@@ -1,28 +1,15 @@
 import { z } from 'zod';
 
 // fields validation
-export const userNameValidation = z
-	.string()
-	.trim()
-	.min(1, { message: 'USER_ERRORS.invalid_name_format' });
+export const userNameValidation = z.string().trim().min(1, { message: 'errors.users.name' });
 
-export const userSurnameValidation = z
-	.string()
-	.trim()
-	.min(1, { message: 'USER_ERRORS.required_surname' });
+export const userSurnameValidation = z.string().trim().min(1, { message: 'errors.users.surname' });
 
-export const userEmailValidation = z
-	.string()
-	.email({ message: 'USER_ERRORS.invalid_email_format' });
+export const userEmailValidation = z.string().email({ message: 'errors.users.email' });
 
-export const userPasswordValidation = z
-	.string()
-	.min(8, { message: 'USER_ERRORS.invalid_password_format' });
+export const userPasswordValidation = z.string().min(8, { message: 'errors.users.password' });
 
-export const userRoleValidation = z
-	.string()
-	.trim()
-	.min(1, { message: 'USER_ERRORS.invalid_role_format' });
+export const userRoleValidation = z.string().trim().min(1, { message: 'errors.users.role' });
 
 // schemas
 
