@@ -10,5 +10,5 @@
 	// Typescript use workspace version
 	"typescript.tsdk": "node_modules/typescript/lib",
 
-	"cSpell.words": ["Nuxt", "vueuse"]
+	"cSpell.words": ["nitropack", "Nuxt", "vueuse"]
 }
