@@ -1,25 +1,24 @@
 <template>
 	<div class="p-6">
 		<IngredientForm
-			:ingredient-form="ingredientForm"
+			:ingredient-form="ingredient"
 			@cancel="handleCancel"
 			@submit="handleSubmit" />
 	</div>
 </template>
 <script setup lang="ts">
-import { mapFormToUpdateIngredient, mapIngredientToForm } from '~/helpers/ingredientMappers';
-import type { IngredientForm } from '~/types/ingredient';
+import { mapFormToUpdateIngredient } from '~/helpers/ingredientMappers';
+import type { IIngredient, IngredientForm } from '~/types/ingredient';
 
 const props = defineProps({
 	ingredientId: { type: String, required: true }
 });
 
 const { $api, $router } = useNuxtApp();
-
 const { resetFormState } = useIngredientForm();
 const { addToast } = useToast();
 
-const ingredientForm = ref<IngredientForm | undefined>(undefined);
+const ingredient = ref<IIngredient | undefined>(undefined);
 
 const { data, error } = await useAsyncData(() => $api.ingredients.get(props.ingredientId));
 
@@ -27,7 +26,7 @@ if (error.value) {
 	console.error('Failed to fetch category:', error.value);
 }
 if (data.value) {
-	ingredientForm.value = mapIngredientToForm(data.value);
+	ingredient.value = data.value;
 }
 
 const handleCancel = () => {
@@ -37,7 +36,7 @@ const handleCancel = () => {
 const handleSubmit = async (ingredientForm: IngredientForm) => {
 	const updateIngredient = mapFormToUpdateIngredient(props.ingredientId, ingredientForm);
 	try {
-		await $api.categories.updateCategory(updateIngredient);
+		await $api.ingredients.update(updateIngredient);
 		addToast({ type: 'success', title: 'Success', message: 'ingredient has been updated' });
 		$router.back();
 	} catch (error) {

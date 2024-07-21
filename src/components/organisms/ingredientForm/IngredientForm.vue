@@ -3,83 +3,126 @@
 		:title="$t('organisms.ingredientForm.title')"
 		@cancel="handleCancelButton"
 		@submit="handleSubmitButton">
-		<div class="flex flex-col tablet:flex-row gap-4">
+		<div class="flex flex-col gap-4">
+			<div class="flex flex-col tablet:flex-row gap-4">
+				<GroupWrapper
+					v-for="lang in languages"
+					:key="lang"
+					class="flex-1"
+					:title="$t(`languages.${lang}`)">
+					<InputWrapper>
+						<template #label>
+							<Label :for="`${lang}-name`">
+								{{ $t('organisms.ingredientForm.nameInput.label') }}
+							</Label>
+						</template>
+						<InputText
+							:id="`${lang}-name`"
+							v-model="formState.form.translations[lang].name"
+							:name="`${lang}_name`"
+							type="text"
+							pattern=".{1,}"
+							:placeholder="$t('organisms.ingredientForm.nameInput.placeholder')"
+							:has-error="!!checkError(`translations.${lang}.name`)"
+							@blur="validateForm" />
+						<template #error>
+							<ErrorMessage :value="checkError(`translations.${lang}.name`)" />
+						</template>
+					</InputWrapper>
+					<InputWrapper>
+						<template #label>
+							<Label :for="`${lang}-unit`">
+								{{ $t('organisms.ingredientForm.unitInput.label') }}
+							</Label>
+						</template>
+						<InputText
+							:id="`${lang}-unit`"
+							v-model="formState.form.translations[lang].unit"
+							:name="`${lang}_unit`"
+							type="text"
+							pattern=".{1,}"
+							:placeholder="$t('organisms.ingredientForm.unitInput.placeholder')"
+							:has-error="!!checkError(`translations.${lang}.unit`)"
+							@blur="validateForm" />
+						<template #error>
+							<ErrorMessage :value="checkError(`translations.${lang}.unit`)" />
+						</template>
+					</InputWrapper>
+					<InputWrapper>
+						<template #label>
+							<Label :for="`${lang}-unit-plural`">
+								{{ $t('organisms.ingredientForm.unitPluralInput.label') }}
+							</Label>
+						</template>
+						<InputText
+							:id="`${lang}-unit-plural`"
+							v-model="formState.form.translations[lang].unit_plural"
+							:name="`${lang}_unit_plural`"
+							type="text"
+							pattern=".{1,}"
+							:placeholder="
+								$t('organisms.ingredientForm.unitPluralInput.placeholder')
+							"
+							:has-error="!!checkError(`translations.${lang}.unit_plural`)"
+							@blur="validateForm" />
+						<template #error>
+							<ErrorMessage :value="checkError(`translations.${lang}.unit_plural`)" />
+						</template>
+					</InputWrapper>
+				</GroupWrapper>
+			</div>
 			<GroupWrapper
-				v-for="lang in languages"
-				:key="lang"
-				class="flex-1"
-				:title="$t(`languages.${lang}`)">
-				<InputGroup
-					:id="`${lang}-name`"
-					v-model="formState.form.translations[lang].name"
-					:name="`${lang}_name`"
-					type="text"
-					pattern=".{1,}"
-					:label="$t('organisms.ingredientForm.nameInput.label')"
-					:placeholder="$t('organisms.ingredientForm.nameInput.placeholder')"
-					:has-error="!!checkError(`translations.${lang}.name`)"
-					:error-message="checkError(`translations.${lang}.name`)"
-					@blur="validateForm" />
-				<InputGroup
-					:id="`${lang}-unit`"
-					v-model="formState.form.translations[lang].unit"
-					:name="`${lang}_unit`"
-					type="text"
-					pattern=".{1,}"
-					:label="$t('organisms.ingredientForm.unitInput.label')"
-					:placeholder="$t('organisms.ingredientForm.unitInput.placeholder')"
-					:has-error="!!checkError(`translations.${lang}.unit`)"
-					:error-message="checkError(`translations.${lang}.unit`)"
-					@blur="validateForm" />
-				<InputGroup
-					:id="`${lang}-unit-plural`"
-					v-model="formState.form.translations[lang].unit_plural"
-					:name="`${lang}_unit_plural`"
-					type="text"
-					pattern=".{1,}"
-					:label="$t('organisms.ingredientForm.unitPluralInput.label')"
-					:placeholder="$t('organisms.ingredientForm.unitPluralInput.placeholder')"
-					:has-error="!!checkError(`translations.${lang}.unit_plural`)"
-					:error-message="checkError(`translations.${lang}.unit_plural`)"
-					@blur="validateForm" />
+				:title="$t('organisms.ingredientForm.generalSection.title')"
+				class="flex flex-row gap-4">
+				<InputWrapper>
+					<template #label>
+						<Label for="category">
+							{{ $t('organisms.ingredientForm.categoryInput.label') }}
+						</Label>
+					</template>
+					<InputSearchableSelect
+						id="category"
+						v-model="categorySelected"
+						v-model:search-term="categorySearchTerm"
+						:options="mapToSelectOptions(categoryOptions, $i18n.locale as Language)"
+						infinite-scroll
+						:loading="categoryLoading"
+						:has-error="!!checkError(`category_id`)"
+						@update:model-value="(opt) => (formState.form.category_id = opt.value)"
+						@load-more="categoryLoadNextPage"
+						@blur="validateForm" />
+					<template #error>
+						<ErrorMessage :value="checkError(`category_id`)" />
+					</template>
+				</InputWrapper>
+				<InputWrapper direction="row">
+					<template #label>
+						<Label for="is-alcoholic">
+							{{ $t('organisms.ingredientForm.isAlcoholicInput.label') }}
+						</Label>
+					</template>
+					<InputSwitch v-model:checked="formState.form.is_alcoholic" />
+				</InputWrapper>
 			</GroupWrapper>
 		</div>
-		<GroupWrapper
-			:title="$t('organisms.ingredientForm.generalSection.title')"
-			class="flex flex-row gap-4">
-			<div class="flex-1">
-				<Label for="categories">is alcoholic</Label>
-				<InputSearchableSelect
-					id="categories"
-					v-model:search-term="categorySearchTerm"
-					v-model="categorySelected"
-					:options="mapToSelectOptions(categoryOptions, $i18n.locale as Language)"
-					infinite-scroll
-					:loading="categoryLoading"
-					@update:model-value="(opt) => (formState.form.category_id = opt.value)"
-					@load-more="categoryLoadNextPage" />
-			</div>
-			<div class="flex-1 flex gap-4 items-center">
-				<Label for="categories">is alcoholic</Label>
-				<InputSwitch v-model:checked="formState.form.is_alcoholic" />
-			</div>
-		</GroupWrapper>
 	</Form>
 </template>
 <script setup lang="ts">
 import { languages } from '~/constants/translations';
-import type { IngredientForm } from '~/types/ingredient';
+import type { IIngredient, IngredientForm } from '~/types/ingredient';
 import { mapToSelectOptions } from '~/helpers/inputSelect.helpers';
 import type { Language } from '~/types/translations';
+import { mapIngredientToForm } from '~/helpers/ingredientMappers';
 
 const props = defineProps({
-	ingredientForm: { type: Object as PropType<IngredientForm>, default: undefined }
+	ingredientForm: { type: Object as PropType<IIngredient>, default: undefined }
 });
 const emit = defineEmits<{
 	(e: 'submit', value: IngredientForm): void;
 	(e: 'cancel'): void;
 }>();
 
+const { locale } = useI18n();
 const { formState, updateFormState, checkError, validateForm } = useIngredientForm();
 const {
 	options: categoryOptions,
@@ -90,7 +133,11 @@ const {
 } = useCategorySearchableSelect();
 
 if (props.ingredientForm) {
-	updateFormState(props.ingredientForm);
+	updateFormState(mapIngredientToForm(props.ingredientForm));
+	categorySelected.value = {
+		value: props.ingredientForm.category._id,
+		label: props.ingredientForm.category.translations[locale.value as Language].name
+	};
 }
 
 const handleCancelButton = () => {
