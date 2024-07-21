@@ -1,59 +1,58 @@
 import type { DatabaseCommonInfo } from './database';
+import type { Filter } from './filters';
 import type { FieldError } from './form';
-import type { IIngredient } from './ingredient';
-import type { ITranslations } from './translations';
+import type { Ingredient } from './ingredient';
+import type { Translations } from './translations';
 
-export type IDrinkTranslation = {
+export type DrinkTranslation = {
 	name: string;
 	method: string;
 };
 
-export type IDrinkIngredient = {
+export type DrinkIngredient = {
 	quantity: number;
-	ingredient: IIngredient;
+	ingredient: Ingredient;
 };
 
-export type IDrink = DatabaseCommonInfo & {
-	translations: ITranslations<IDrinkTranslation>;
+export type Drink = DatabaseCommonInfo & {
+	translations: Translations<DrinkTranslation>;
 	cover: string;
 	thumbnail: string;
-	ingredients: IDrinkIngredient[];
+	ingredients: DrinkIngredient[];
 };
 
-export type DrinkState = {
-	drinks: IDrink[];
-};
-
-export type IDrinkIngredientRequest = {
+export type DrinkIngredientRequest = {
 	quantity: number;
 	ingredient_id: string;
 };
 
-export type ICreateDrink = {
-	translations: ITranslations<IDrinkTranslation>;
-	ingredients: IDrinkIngredientRequest[];
+export type CreateDrink = {
+	translations: Translations<DrinkTranslation>;
+	ingredients: DrinkIngredientRequest[];
 };
 
-export type ICreateDrinkResponse = {
+export type UpdateDrink = {
 	id: string;
+	translations: Translations<DrinkTranslation>;
+	ingredients: DrinkIngredientRequest[];
 };
 
-export type IUpdateDrink = {
-	id: string;
-	translations: ITranslations<IDrinkTranslation>;
-	ingredients: IDrinkIngredientRequest[];
+export type DrinksOverviewState = {
+	drinks: Drink[];
+	filter: Filter;
+	loading: boolean;
 };
 
-export type IDrinkForm = {
-	translations: ITranslations<IDrinkTranslation>;
-	ingredients: IDrinkIngredientRequest[];
+export type DrinkForm = {
+	translations: Translations<DrinkTranslation>;
+	ingredients: DrinkIngredientRequest[];
 };
 
 export type DrinkFormState = {
-	form: IDrinkForm;
+	form: DrinkForm;
 	cover: File | undefined;
 	thumbnail: File | undefined;
 	errors: FieldError[];
 	displayErrors: boolean;
-	defaultIngredients: IDrinkIngredientRequest[];
+	defaultIngredients: DrinkIngredientRequest[];
 };
