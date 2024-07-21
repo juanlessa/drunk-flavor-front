@@ -7,21 +7,21 @@ import type { IngredientForm } from '~/types/ingredient';
 export const ingredientNameValidation = z
 	.string()
 	.trim()
-	.min(1, { message: 'ingredientForm.nameInput.errorInvalidFormat' });
+	.min(1, { message: 'errors.ingredients.name' });
 
 export const ingredientUnitValidation = z
 	.string()
 	.trim()
-	.min(1, { message: 'ingredientForm.unitInput.errorInvalidFormat' });
+	.min(1, { message: 'errors.ingredients.unit' });
 
 export const ingredientUnitPluralValidation = z
 	.string()
 	.trim()
-	.min(1, { message: 'ingredientForm.unitPluralInput.errorInvalidFormat' });
+	.min(1, { message: 'errors.ingredients.unitPlural' });
 
 export const ingredientCategoryIdValidation = z
 	.string()
-	.min(1, { message: 'INGREDIENT_ERRORS.invalid_category_format' });
+	.min(1, { message: 'errors.ingredient.category' });
 
 export const ingredientIsAlcoholicValidation = z.boolean();
 
