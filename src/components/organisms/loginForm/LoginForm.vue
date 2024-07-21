@@ -1,5 +1,5 @@
 <template>
-	<Form @cancel="handleCancelButton" @submit="handleSubmitButton">
+	<Form @submit="handleSubmitButton">
 		<InputWrapper>
 			<template #label>
 				<Label for="email">
@@ -38,6 +38,13 @@
 				<ErrorMessage :value="checkError('password')" />
 			</template>
 		</InputWrapper>
+		<template #buttons>
+			<ButtonGroup
+				direction="column"
+				:cancel-button-props="{ variant: 'secondary' }"
+				:action-button-props="{ variant: 'primary', type: 'submit' }"
+				@cancel="handleCancelButton" />
+		</template>
 	</Form>
 </template>
 
