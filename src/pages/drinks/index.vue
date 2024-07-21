@@ -1,3 +1,10 @@
 <template>
-	<NuxtLayout name="primary"></NuxtLayout>
+	<NuxtLayout>
+		<DrinksControlOverview />
+	</NuxtLayout>
 </template>
+<script setup lang="ts">
+definePageMeta({
+	middleware: 'auth'
+});
+</script>
