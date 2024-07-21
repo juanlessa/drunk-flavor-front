@@ -1,43 +1,40 @@
 import { languages } from '~/constants/translations';
 import type {
-	ICategory,
+	Category,
 	CategoryForm,
-	ICategoryTranslation,
-	ICreateCategory,
-	IUpdateCategory
+	CategoryTranslation,
+	CreateCategory,
+	UpdateCategory
 } from '~/types/category';
-import type { ITranslations } from '~/types/translations';
+import type { Translations } from '~/types/translations';
 
-export const mapCategoryToForm = (category: ICategory): CategoryForm => {
+export const mapCategoryToForm = (category: Category): CategoryForm => {
 	const translations = languages.reduce((acc, lang) => {
 		acc[lang] = { ...category.translations[lang] };
 		return acc;
-	}, {} as ITranslations<ICategoryTranslation>);
+	}, {} as Translations<CategoryTranslation>);
 
 	return {
 		translations
 	};
 };
 
-export const mapFormToCreateCategory = (categoryForm: CategoryForm): ICreateCategory => {
+export const mapFormToCreateCategory = (categoryForm: CategoryForm): CreateCategory => {
 	const translations = languages.reduce((acc, lang) => {
 		acc[lang] = { ...categoryForm.translations[lang] };
 		return acc;
-	}, {} as ITranslations<ICategoryTranslation>);
+	}, {} as Translations<CategoryTranslation>);
 
 	return {
 		translations
 	};
 };
 
-export const mapFormToUpdateCategory = (
-	id: string,
-	categoryForm: CategoryForm
-): IUpdateCategory => {
+export const mapFormToUpdateCategory = (id: string, categoryForm: CategoryForm): UpdateCategory => {
 	const translations = languages.reduce((acc, lang) => {
 		acc[lang] = { ...categoryForm.translations[lang] };
 		return acc;
-	}, {} as ITranslations<ICategoryTranslation>);
+	}, {} as Translations<CategoryTranslation>);
 
 	return {
 		id,
