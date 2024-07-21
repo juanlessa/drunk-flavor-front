@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col-reverse items-center gap-4 tablet:flex-row tablet:justify-center">
+	<div :class="containerStyle({ direction: props.direction })">
 		<slot>
 			<Button
 				v-if="props.hasCancelButton"
@@ -15,6 +15,7 @@
 	</div>
 </template>
 <script setup lang="ts">
+import { tv } from 'tailwind-variants';
 import type { ButtonProps } from '~/types/Button';
 
 const props = defineProps({
@@ -29,9 +30,23 @@ const props = defineProps({
 	cancelButtonProps: {
 		type: Object as PropType<ButtonProps>,
 		default: () => ({ variant: 'secondary' }) satisfies ButtonProps
+	},
+	direction: {
+		type: String as PropType<'row' | 'column' | 'responsive'>,
+		default: 'responsive'
 	}
 });
 const emit = defineEmits<{
 	(e: 'action' | 'cancel'): void;
 }>();
+const containerStyle = tv({
+	base: 'flex gap-4 items-center justify-center',
+	variants: {
+		direction: {
+			row: 'flex-row ',
+			column: 'flex-col-reverse',
+			responsive: 'flex-col-reverse tablet:flex-row'
+		}
+	}
+});
 </script>
