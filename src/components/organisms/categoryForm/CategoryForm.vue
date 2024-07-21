@@ -9,17 +9,25 @@
 				:key="lang"
 				class="flex-1"
 				:title="$t(`languages.${lang}`)">
-				<InputGroup
-					:id="`${lang}-name`"
-					v-model="formState.form.translations[lang].name"
-					:name="`${lang}_name`"
-					type="text"
-					pattern=".{1,}"
-					:label="$t('organisms.categoryForm.nameInput.label')"
-					:placeholder="$t('organisms.categoryForm.nameInput.placeholder')"
-					:has-error="!!checkError(`translations.${lang}.name`)"
-					:error-message="checkError(`translations.${lang}.name`)"
-					@blur="validateForm" />
+				<InputWrapper>
+					<template #label>
+						<Label :for="`${lang}-name`">
+							{{ $t('organisms.categoryForm.nameInput.label') }}
+						</Label>
+					</template>
+					<InputText
+						:id="`${lang}-name`"
+						v-model="formState.form.translations[lang].name"
+						:name="`${lang}_name`"
+						type="text"
+						pattern=".{1,}"
+						:placeholder="$t('organisms.categoryForm.nameInput.placeholder')"
+						:has-error="!!checkError(`translations.${lang}.name`)"
+						@blur="validateForm" />
+					<template #error>
+						<ErrorMessage :value="checkError(`translations.${lang}.name`)" />
+					</template>
+				</InputWrapper>
 			</GroupWrapper>
 		</div>
 	</Form>

@@ -1,26 +1,43 @@
 <template>
 	<Form @cancel="handleCancelButton" @submit="handleSubmitButton">
-		<InputGroup
-			id="email"
-			v-model="formState.form.email"
-			name="email"
-			type="email"
-			label="email"
-			placeholder=""
-			:has-error="!!checkError('email')"
-			:error-message="checkError('email')"
-			@blur="validateForm" />
-
-		<InputGroup
-			id="password"
-			v-model="formState.form.password"
-			name="password"
-			type="text"
-			label="password"
-			placeholder=""
-			:has-error="!!checkError('password')"
-			:error-message="checkError('password')"
-			@blur="validateForm" />
+		<InputWrapper>
+			<template #label>
+				<Label for="email">
+					{{ $t('organisms.loginForm.emailInput.label') }}
+				</Label>
+			</template>
+			<InputText
+				id="email"
+				v-model="formState.form.email"
+				name="email"
+				type="email"
+				placeholder=""
+				:has-error="!!checkError('email')"
+				:error-message="checkError('email')"
+				@blur="validateForm" />
+			<template #error>
+				<ErrorMessage :value="checkError('email')" />
+			</template>
+		</InputWrapper>
+		<InputWrapper>
+			<template #label>
+				<Label for="email">
+					{{ $t('organisms.loginForm.passwordInput.label') }}
+				</Label>
+			</template>
+			<InputText
+				id="password"
+				v-model="formState.form.password"
+				name="password"
+				type="text"
+				placeholder=""
+				:has-error="!!checkError('password')"
+				:error-message="checkError('password')"
+				@blur="validateForm" />
+			<template #error>
+				<ErrorMessage :value="checkError('password')" />
+			</template>
+		</InputWrapper>
 	</Form>
 </template>
 
