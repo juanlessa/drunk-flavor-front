@@ -1,18 +1,18 @@
 import { languages } from '~/constants/translations';
 import type {
-	IIngredient,
+	Ingredient,
 	IngredientForm,
-	IIngredientTranslation,
-	ICreateIngredient,
-	IUpdateIngredient
+	IngredientTranslation,
+	CreateIngredient,
+	UpdateIngredient
 } from '~/types/ingredient';
-import type { ITranslations } from '~/types/translations';
+import type { Translations } from '~/types/translations';
 
-export const mapIngredientToForm = (ingredient: IIngredient): IngredientForm => {
+export const mapIngredientToForm = (ingredient: Ingredient): IngredientForm => {
 	const translations = languages.reduce((acc, lang) => {
 		acc[lang] = { ...ingredient.translations[lang] };
 		return acc;
-	}, {} as ITranslations<IIngredientTranslation>);
+	}, {} as Translations<IngredientTranslation>);
 
 	return {
 		translations,
@@ -21,11 +21,11 @@ export const mapIngredientToForm = (ingredient: IIngredient): IngredientForm => 
 	};
 };
 
-export const mapFormToCreateIngredient = (ingredientForm: IngredientForm): ICreateIngredient => {
+export const mapFormToCreateIngredient = (ingredientForm: IngredientForm): CreateIngredient => {
 	const translations = languages.reduce((acc, lang) => {
 		acc[lang] = { ...ingredientForm.translations[lang] };
 		return acc;
-	}, {} as ITranslations<IIngredientTranslation>);
+	}, {} as Translations<IngredientTranslation>);
 
 	return {
 		translations,
@@ -37,11 +37,11 @@ export const mapFormToCreateIngredient = (ingredientForm: IngredientForm): ICrea
 export const mapFormToUpdateIngredient = (
 	id: string,
 	ingredientForm: IngredientForm
-): IUpdateIngredient => {
+): UpdateIngredient => {
 	const translations = languages.reduce((acc, lang) => {
 		acc[lang] = { ...ingredientForm.translations[lang] };
 		return acc;
-	}, {} as ITranslations<IIngredientTranslation>);
+	}, {} as Translations<IngredientTranslation>);
 
 	return {
 		id,

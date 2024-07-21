@@ -109,13 +109,13 @@
 </template>
 <script setup lang="ts">
 import { languages } from '~/constants/translations';
-import type { IIngredient, IngredientForm } from '~/types/ingredient';
+import type { Ingredient, IngredientForm } from '~/types/ingredient';
 import { mapToSelectOptions } from '~/helpers/inputSelect.helpers';
 import type { Language } from '~/types/translations';
 import { mapIngredientToForm } from '~/helpers/ingredientMappers';
 
 const props = defineProps({
-	ingredientForm: { type: Object as PropType<IIngredient>, default: undefined }
+	ingredientForm: { type: Object as PropType<Ingredient>, default: undefined }
 });
 const emit = defineEmits<{
 	(e: 'submit', value: IngredientForm): void;

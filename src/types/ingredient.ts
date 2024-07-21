@@ -1,40 +1,42 @@
-import type { ICategory } from './category';
+import type { Category } from './category';
 import type { DatabaseCommonInfo } from './database';
+import type { Filter } from './filters';
 import type { FieldError } from './form';
-import type { ITranslations } from './translations';
+import type { Translations } from './translations';
 
-export type IIngredientTranslation = {
+export type IngredientTranslation = {
 	name: string;
 	unit: string;
 	unit_plural: string;
 };
 
-export type IIngredient = DatabaseCommonInfo & {
-	translations: ITranslations<IIngredientTranslation>;
-	category: ICategory;
+export type Ingredient = DatabaseCommonInfo & {
+	translations: Translations<IngredientTranslation>;
+	category: Category;
 	is_alcoholic: boolean;
 };
 
-export type ICreateIngredient = {
-	translations: ITranslations<IIngredientTranslation>;
+export type CreateIngredient = {
+	translations: Translations<IngredientTranslation>;
 	category_id: string;
 	is_alcoholic: boolean;
 };
 
-export type IUpdateIngredient = {
+export type UpdateIngredient = {
 	id: string;
-	translations: ITranslations<IIngredientTranslation>;
+	translations: Translations<IngredientTranslation>;
 	category_id: string;
 	is_alcoholic: boolean;
 };
 
 export type IngredientsOverviewState = {
-	ingredients: IIngredient[];
+	ingredients: Ingredient[];
+	filter: Filter;
 	loading: boolean;
 };
 
 export type IngredientForm = {
-	translations: ITranslations<IIngredientTranslation>;
+	translations: Translations<IngredientTranslation>;
 	category_id: string;
 	is_alcoholic: boolean;
 };

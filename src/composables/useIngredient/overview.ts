@@ -1,46 +1,73 @@
-import type { IngredientsOverviewState } from '@/types/ingredient';
+import type { IngredientsOverviewState } from '~/types/ingredient';
 
 const initState = (): IngredientsOverviewState => ({
 	ingredients: [],
+	filter: {
+		page: 1,
+		limit: 30,
+		isLastPage: false
+	},
 	loading: false
 });
 
 export const useIngredientsOverview = () => {
 	const { $api } = useNuxtApp();
+	const { addToast } = useToast();
 
 	const state = useState<IngredientsOverviewState>('ingredientsOverview', initState);
+
+	const { data, error, status } = useAsyncData(
+		'ingredientsOverview',
+		() =>
+			$api.ingredients.list({
+				limit: state.value.filter.limit,
+				page: state.value.filter.page,
+				search: state.value.filter.search,
+				sort: state.value.filter.sort
+			}),
+		{
+			server: false,
+			lazy: true,
+			watch: [() => state.value.filter]
+		}
+	);
+
+	watch(data, (newData) => {
+		if (!newData) return;
+		if (newData.length === 0) {
+			state.value.filter.isLastPage = true;
+			return;
+		}
+		state.value.ingredients = [...state.value.ingredients, ...newData];
+	});
+	watch(error, (newError) => {
+		if (!newError) return;
+		console.error(newError);
+		addToast({ type: 'error', title: 'ERROR!', message: 'unable to fetch data' });
+	});
+	watch(status, (newStatus) => {
+		state.value.loading = newStatus === 'pending';
+	});
 
 	const resetOverviewState = () => {
 		state.value = initState();
 	};
 
-	const fetchListingData = async () => {
-		await Promise.all([listIngredients()]);
+	onBeforeUnmount(() => resetOverviewState());
+
+	const deleteIngredient = async (ingredientId: string) => {
+		await $api.ingredients.delete(ingredientId);
 	};
 
-	const listIngredients = async () => {
-		try {
-			state.value.loading = true;
-
-			const response = await $api.ingredients.list();
-			state.value.ingredients = response;
-		} catch (error) {
-			console.error(error);
-			throw error;
-		} finally {
-			state.value.loading = false;
-		}
-	};
-
-	const deleteIngredient = async (id: string) => {
-		await $api.ingredients.delete(id);
+	const loadNextPage = () => {
+		if (state.value.loading || state.value.filter.isLastPage) return;
+		state.value.filter = { ...state.value.filter, page: state.value.filter.page + 1 };
 	};
 
 	return {
 		overviewState: state,
 		resetOverviewState,
-		fetchListingData,
-		listIngredients,
-		deleteIngredient
+		deleteIngredient,
+		loadNextPage
 	};
 };

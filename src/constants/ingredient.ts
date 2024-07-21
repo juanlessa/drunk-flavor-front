@@ -1,7 +1,7 @@
-import type { IIngredient, IngredientForm } from '~/types/ingredient';
+import type { Ingredient, IngredientForm } from '~/types/ingredient';
 import { initEmptyCategory } from '~/constants/category';
 
-export const initEmptyIngredient = (): IIngredient => ({
+export const initEmptyIngredient = (): Ingredient => ({
 	_id: '',
 	translations: {
 		en: { name: '', unit: '', unit_plural: '' },

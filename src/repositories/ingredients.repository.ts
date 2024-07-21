@@ -1,17 +1,18 @@
 import type { $Fetch } from 'nitropack';
-import type { IIngredient, ICreateIngredient, IUpdateIngredient } from '~/types/ingredient';
+import type { Ingredient, CreateIngredient, UpdateIngredient } from '~/types/ingredient';
+import type { QueryParams } from '~/types/query';
 
 const path = '/ingredients';
 
 export const ingredientsRepository = ($fetch: $Fetch) => ({
-	async create(body: ICreateIngredient) {
+	async create(body: CreateIngredient) {
 		return $fetch(path, {
 			method: 'POST',
 			body
 		});
 	},
 
-	async update(body: IUpdateIngredient) {
+	async update(body: UpdateIngredient) {
 		return $fetch(path, {
 			method: 'PATCH',
 			body
@@ -25,11 +26,11 @@ export const ingredientsRepository = ($fetch: $Fetch) => ({
 		});
 	},
 
-	async list() {
-		return $fetch<IIngredient[]>(path);
+	async list(query: QueryParams) {
+		return $fetch<Ingredient[]>(path, { query });
 	},
 
 	async get(id: string) {
-		return $fetch<IIngredient>(`${path}/${id}`);
+		return $fetch<Ingredient>(`${path}/${id}`);
 	}
 });
