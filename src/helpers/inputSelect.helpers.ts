@@ -1,8 +1,8 @@
 import type { InputSelectOption } from '~/types/InputSelect';
-import type { ITranslationAnyWithNameKey, ITranslations, Language } from '~/types/translations';
+import type { TranslationAnyWithNameKey, Translations, Language } from '~/types/translations';
 
 export const mapToSelectOptions = <
-	Entity extends { _id: string; translations: ITranslations<ITranslationAnyWithNameKey> }
+	Entity extends { _id: string; translations: Translations<TranslationAnyWithNameKey> }
 >(
 	options: Entity[],
 	lang: Language
