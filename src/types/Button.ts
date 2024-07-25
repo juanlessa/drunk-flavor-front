@@ -1,7 +1,8 @@
 export enum ButtonVariantEnum {
 	primary = 'primary',
 	secondary = 'secondary',
-	delete = 'delete'
+	delete = 'delete',
+	outline = 'outline'
 }
 
 export enum ButtonSizeEnum {

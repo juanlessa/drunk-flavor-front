@@ -13,21 +13,6 @@
 import { tv } from 'tailwind-variants';
 import type { ButtonSize, ButtonType, ButtonVariant } from '~/types/Button';
 
-const buttonStyles = tv({
-	base: 'w-full max-w-80 tablet:max-w-64 rounded-full font-normal text-center px-4 disabled:cursor-not-allowed',
-	variants: {
-		variant: {
-			primary: 'bg-blue-700 hover:bg-blue-500 disabled:bg-blue-400 text-white',
-			secondary: 'bg-gray-300  hover:bg-gray-100 disabled:bg-gray-100 text-black',
-			delete: 'bg-red-600 hover:bg-red-400 disabled:bg-red-300  text-white'
-		},
-		size: {
-			sm: 'py-1 text-sm',
-			md: 'py-2 text-md'
-		}
-	}
-});
-
 const props = defineProps({
 	value: {
 		type: String,
@@ -50,5 +35,21 @@ const props = defineProps({
 		default: false
 	}
 });
+
+const buttonStyles = tv({
+	base: 'w-full max-w-80 tablet:max-w-64 rounded-full font-normal text-center px-4 disabled:cursor-not-allowed',
+	variants: {
+		variant: {
+			primary: 'bg-blue-500 hover:bg-blue-400 dark:hover:bg-blue-600 text-white',
+			secondary: 'bg-gray-300  hover:bg-gray-100 disabled:bg-gray-100 text-black',
+			delete: 'bg-red-600 hover:bg-red-400 disabled:bg-red-300  text-white',
+			outline:
+				'bg-transparent border-2 border-gray-900 dark:border-gray-50 text-black dark:text-white'
+		},
+		size: {
+			sm: 'py-1 text-sm',
+			md: 'py-2 text-md'
+		}
+	}
+});
 </script>
-<style></style>
