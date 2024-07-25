@@ -38,6 +38,13 @@
 	"organisms.drinksControlOverview.deleteModal.title": "Tem certeza que deseja excluir o item",
 	"organisms.drinksControlOverview.deleteModal.description": "Essa ação não pode ser desfeita",
 
+	"organisms.drinkForm.title": "Drink",
+	"organisms.drinkForm.nameInput.label": "nome",
+	"organisms.drinkForm.nameInput.placeholder": "",
+	"organisms.drinkForm.methodInput.label": "preparo",
+	"organisms.drinkForm.methodInput.placeholder": "",
+	"organisms.drinkForm.generalSection.title": "Geral",
+
 	"organisms.topBar.categories": "categorias",
 	"organisms.topBar.drinks": "drinks",
 	"organisms.topBar.ingredients": "ingredientes",

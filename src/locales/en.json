@@ -36,6 +36,13 @@
 	"organisms.drinksControlOverview.deleteModal.title": "Are you sure you want to delete the item",
 	"organisms.drinksControlOverview.deleteModal.description": "This action cannot be undo",
 
+	"organisms.drinkForm.title": "Drink",
+	"organisms.drinkForm.nameInput.label": "name",
+	"organisms.drinkForm.nameInput.placeholder": "",
+	"organisms.drinkForm.methodInput.label": "method",
+	"organisms.drinkForm.methodInput.placeholder": "",
+	"organisms.drinkForm.generalSection.title": "General",
+
 	"organisms.topBar.categories": "categories",
 	"organisms.topBar.drinks": "drinks",
 	"organisms.topBar.ingredients": "ingredients",
@@ -61,7 +68,6 @@
 	"drinkDetailPage.ingredients": "Ingredients",
 	"drinkDetailPage.ingredients.ofPreposition": "of",
 	"drinkDetailPage.instructions": "Preparation Instructions",
-	"drinkForm.cancelButton.message": "cancel",
 	"drinkForm.generalSection.label": "General",
 	"drinkForm.ingredients.errorInvalidFormat": "drink must have a minimum of 1 ingredient",
 	"drinkForm.ingredients.label": "ingredients",
