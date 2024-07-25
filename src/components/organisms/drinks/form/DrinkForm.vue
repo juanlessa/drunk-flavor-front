@@ -50,11 +50,26 @@
 					</InputWrapper>
 				</GroupWrapper>
 			</Box>
-			<GroupWrapper
-				:title="$t('organisms.drinkForm.generalSection.title')"
-				class="flex flex-row gap-4">
-				<DropZone />
-				<DropZone />
+			<GroupWrapper :title="$t('organisms.drinkForm.generalSection.title')">
+				<Box direction="col" class="gap-4">
+					<InputWrapper>
+						<template #label>
+							<Label>
+								{{ $t('organisms.drinkForm.thumbnailInput.label') }}
+							</Label>
+						</template>
+						<DropZone id="thumbnail" v-model="formState.thumbnail" />
+					</InputWrapper>
+					<InputWrapper>
+						<template #label>
+							<Label>
+								{{ $t('organisms.drinkForm.coverInput.label') }}
+							</Label>
+						</template>
+						<DropZone id="cover" v-model="formState.cover" />
+					</InputWrapper>
+				</Box>
+				<Box class="gap-4"> </Box>
 			</GroupWrapper>
 		</Box>
 	</Form>
