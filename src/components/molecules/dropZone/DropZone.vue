@@ -1,23 +1,20 @@
 <template>
-	<div class="relative w-full flex-1">
+	<div class="w-full flex-1 flex flex-col">
 		<div
 			v-bind="getRootProps()"
-			class="w-full p-6 pb-16 pt-6 flex flex-col items-center gap-2 bg-gray-200 dark:bg-gray-700 rounded-md">
-			<input v-bind="getInputProps()" />
-			<Text v-if="isDragActive" size="sm">{{ $t('dropZone.drop.message') }}</Text>
-			<Text v-else size="sm">{{ $t('dropZone.drag.message') }}</Text>
-			<Text size="sm">{{ $t('dropZone.or.message') }}</Text>
+			class="flex-1 w-full px-6 pt-4 pb-8 flex flex-col items-center gap-2 bg-gray-200 dark:bg-gray-700 rounded-md">
+			<input v-bind="getInputProps()" :id="props.id" />
+			<Text v-if="isDragActive" size="sm">{{ $t('molecules.dropZone.drop.message') }}</Text>
+			<Text v-else size="sm">{{ $t('molecules.dropZone.drag.message') }}</Text>
+			<Text size="sm">{{ $t('molecules.dropZone.or.message') }}</Text>
+			<Button variant="outline" size="sm">
+				{{ $t('molecules.dropZone.selectFile.message') }}
+			</Button>
 		</div>
-		<Button
-			class="absolute bottom-6 left-1/2 transform -translate-x-1/2"
-			variant="outline"
-			size="sm"
-			@click="open">
-			{{ $t('dropZone.selectFile.message') }}
-		</Button>
+
 		<div class="drag-drop-label">
-			<p v-if="file">{{ file.name }}</p>
-			<CloseIcon v-if="file" class="cursor-pointer" @click="handleClear" />
+			<p v-if="_modelValue">{{ _modelValue.name }}</p>
+			<CloseIcon v-if="_modelValue" class="cursor-pointer" @click="handleClear" />
 		</div>
 	</div>
 </template>
@@ -26,22 +23,39 @@
 import { reactive } from 'vue';
 import { useDropzone, type FileRejectReason } from 'vue3-dropzone';
 
+const props = defineProps({
+	modelValue: {
+		type: Object as PropType<File | undefined>,
+		default: undefined
+	},
+	id: {
+		type: String,
+		default: undefined
+	}
+});
 const emit = defineEmits<{
-	(e: 'file', value: File | undefined): void;
+	(e: 'update:modelValue', value: File | undefined): void;
 }>();
 
-const file = ref<File>();
+const _modelValue = ref<File | undefined>(props.modelValue);
+
+watch(
+	() => props.modelValue,
+	(newValue) => {
+		_modelValue.value = newValue;
+	}
+);
 
 const onDrop = (acceptedFiles: File[], _rejectReasons: FileRejectReason[]) => {
 	if (acceptedFiles.length === 1) {
-		file.value = acceptedFiles[0];
-		emit('file', file.value);
+		_modelValue.value = acceptedFiles[0];
+		emit('update:modelValue', _modelValue.value);
 	}
 };
 
 const handleClear = () => {
-	file.value = undefined;
-	emit('file', file.value);
+	_modelValue.value = undefined;
+	emit('update:modelValue', _modelValue.value);
 };
 
 const options = reactive({
@@ -50,5 +64,5 @@ const options = reactive({
 	accept: 'image/*'
 });
 
-const { getRootProps, getInputProps, isDragActive, open } = useDropzone(options);
+const { getRootProps, getInputProps, isDragActive } = useDropzone(options);
 </script>
