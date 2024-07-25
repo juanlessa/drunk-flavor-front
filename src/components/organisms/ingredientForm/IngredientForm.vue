@@ -115,7 +115,7 @@ import type { Language } from '~/types/translations';
 import { mapIngredientToForm } from '~/helpers/ingredientMappers';
 
 const props = defineProps({
-	ingredientForm: { type: Object as PropType<Ingredient>, default: undefined }
+	ingredient: { type: Object as PropType<Ingredient>, default: undefined }
 });
 const emit = defineEmits<{
 	(e: 'submit', value: IngredientForm): void;
@@ -132,11 +132,11 @@ const {
 	loadNextPage: categoryLoadNextPage
 } = useCategorySearchableSelect();
 
-if (props.ingredientForm) {
-	updateFormState(mapIngredientToForm(props.ingredientForm));
+if (props.ingredient) {
+	updateFormState(mapIngredientToForm(props.ingredient));
 	categorySelected.value = {
-		value: props.ingredientForm.category._id,
-		label: props.ingredientForm.category.translations[locale.value as Language].name
+		value: props.ingredient.category._id,
+		label: props.ingredient.category.translations[locale.value as Language].name
 	};
 }
 

@@ -1,9 +1,6 @@
 <template>
 	<div class="p-6">
-		<IngredientForm
-			:ingredient-form="ingredient"
-			@cancel="handleCancel"
-			@submit="handleSubmit" />
+		<IngredientForm :ingredient="ingredient" @cancel="handleCancel" @submit="handleSubmit" />
 	</div>
 </template>
 <script setup lang="ts">
