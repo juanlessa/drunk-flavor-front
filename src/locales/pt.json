@@ -6,6 +6,10 @@
 	"molecules.buttonGroup.actionButton.value": "concluído",
 	"molecules.deleteModal.cancelButton.value": "cancelar",
 	"molecules.deleteModal.deleteButton.value": "excluir",
+	"molecules.dropZone.drag.message": "Arraste e solte o arquivo aqui",
+	"molecules.dropZone.drop.message": "Solte o arquivo aqui",
+	"molecules.dropZone.or.message": "OU",
+	"molecules.dropZone.selectFile.message": "selecione o arquivo",
 
 	"organisms.categoriesControlOverview.createButton.value": "Criar Categoria",
 	"organisms.categoriesControlOverview.deleteModal.title": "Tem certeza que deseja excluir o item",
@@ -44,6 +48,8 @@
 	"organisms.drinkForm.methodInput.label": "preparo",
 	"organisms.drinkForm.methodInput.placeholder": "",
 	"organisms.drinkForm.generalSection.title": "Geral",
+	"organisms.drinkForm.coverInput.label": "capa",
+	"organisms.drinkForm.thumbnailInput.label": "miniatura",
 
 	"organisms.topBar.categories": "categorias",
 	"organisms.topBar.drinks": "drinks",
@@ -75,8 +81,7 @@
 	"drinkForm.methodInput.label": "método",
 	"drinkForm.nameInput.errorInvalidFormat": "nome deve ter no mínimo 1 carácter",
 	"drinkForm.nameInput.label": "nome",
-	"drinkForm.coverInput.label": "capa",
-	"drinkForm.thumbnailInput.label": "miniatura",
+
 	"drinkForm.ingredientsInput.label": "ingredientes",
 	"drinkForm.ingredientsInput.name.label": "nome",
 	"drinkForm.ingredientsInput.quantity.label": "quantidade",
@@ -86,9 +91,5 @@
 	"drinksPage.newDrinkButton.message": "novo drink",
 
 	"searchSelect.noResult.message": "nenhum resultado",
-	"updateIngredientPage.loadIngredient.errorMessage": "Erro ao carregar o ingrediente",
-	"dropZone.drag.message": "Arraste e solte o arquivo aqui",
-	"dropZone.drop.message": "Solte o arquivo aqui",
-	"dropZone.or.message": "OU",
-	"dropZone.selectFile.message": "selecione o arquivo"
+	"updateIngredientPage.loadIngredient.errorMessage": "Erro ao carregar o ingrediente"
 }
