@@ -5,11 +5,15 @@
 		@submit="handleSubmitButton">
 		<Box direction="col" class="gap-4">
 			<Box class="gap-4">
-				<GroupWrapper
+				<Box
 					v-for="lang in languages"
 					:key="lang"
+					direction="col"
 					class="flex-1"
 					:title="$t(`languages.${lang}`)">
+					<Heading type="h2" class="text-center">
+						{{ $t(`languages.${lang}`) }}
+					</Heading>
 					<InputWrapper>
 						<template #label>
 							<Label :for="`${lang}-name`">
@@ -48,7 +52,7 @@
 							<ErrorMessage :value="checkError(`translations.${lang}.method`)" />
 						</template>
 					</InputWrapper>
-				</GroupWrapper>
+				</Box>
 			</Box>
 			<GroupWrapper :title="$t('organisms.drinkForm.generalSection.title')">
 				<Box direction="col" class="gap-4">
