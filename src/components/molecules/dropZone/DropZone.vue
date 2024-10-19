@@ -47,7 +47,8 @@ watch(
 );
 
 const onDrop = (acceptedFiles: File[], _rejectReasons: FileRejectReason[]) => {
-	if (acceptedFiles.length === 1) {
+	const maxFileSize = 5 * 1024 * 1024; // 5MB in byte
+	if (acceptedFiles.length === 1 && acceptedFiles[0].size < maxFileSize) {
 		_modelValue.value = acceptedFiles[0];
 		emit('update:modelValue', _modelValue.value);
 	}
