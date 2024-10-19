@@ -1,11 +1,31 @@
 import type { $Fetch } from 'nitropack';
-import type { ILogin } from '~/types/authentication';
+import type { ForgotPassword, Login, Signup } from '~/types/authentication';
 
 export const authRepository = ($fetch: $Fetch) => ({
-	async login(body: ILogin) {
-		return $fetch('/sessions', {
+	async signup(body: Signup) {
+		return $fetch('/signup', {
 			method: 'POST',
 			body
+		});
+	},
+
+	async login(body: Login) {
+		return $fetch('/login', {
+			method: 'POST',
+			body
+		});
+	},
+
+	async forgotPassword(body: ForgotPassword) {
+		return $fetch('/forgot-password', {
+			method: 'POST',
+			body
+		});
+	},
+
+	async refreshToken() {
+		return $fetch('/refresh-token', {
+			method: 'POST'
 		});
 	}
 });

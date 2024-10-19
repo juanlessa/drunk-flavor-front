@@ -7,14 +7,14 @@ export enum RolesEnum {
 
 export type Role = keyof typeof RolesEnum;
 
-export type IUser = DatabaseCommonInfo & {
+export type User = DatabaseCommonInfo & {
 	name: string;
 	surname: string;
 	email: string;
 	role: Role;
 };
 
-export type ICreateUser = {
+export type CreateUser = {
 	name: string;
 	surname: string;
 	email: string;
@@ -33,14 +33,7 @@ export type IDeleteUser = {
 	id: string;
 };
 
-export type IUpdateUserRole = {
+export type UpdateRole = {
 	user_id: string;
-	role: Role;
-};
-
-export type IUserProfile = DatabaseCommonInfo & {
-	name: string;
-	surname: string;
-	email: string;
 	role: Role;
 };

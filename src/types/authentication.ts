@@ -1,9 +1,20 @@
 import type { FieldError } from '~/types/form';
-import type { IUserProfile } from './user';
+import type { Profile } from './profile';
 
-export type ILogin = {
+export type Signup = {
+	name: string;
+	surname: string;
 	email: string;
 	password: string;
+};
+
+export type Login = {
+	email: string;
+	password: string;
+};
+
+export type ForgotPassword = {
+	email: string;
 };
 
 export type LoginForm = {
@@ -18,6 +29,6 @@ export type LoginFormState = {
 };
 
 export type AuthState = {
-	user: IUserProfile | undefined;
+	user: Profile | undefined;
 	isAuthenticated: boolean;
 };

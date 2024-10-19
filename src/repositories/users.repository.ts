@@ -1,42 +1,35 @@
 import type { $Fetch } from 'nitropack';
-import type { ICreateUser, IUpdateUser, IUpdateUserRole, IUser, IUserProfile } from '~/types/user';
+import type { CreateUser, UpdateRole, User } from '~/types/user';
 
 const path = '/users';
 
 export const usersRepository = ($fetch: $Fetch) => ({
-	async createUser(body: ICreateUser) {
+	async create(body: CreateUser) {
 		return $fetch(path, {
 			method: 'POST',
 			body
 		});
 	},
 
-	async updateUser(body: IUpdateUser) {
-		return $fetch(path, {
-			method: 'PATCH',
-			body
-		});
-	},
-
-	async updateUserRole(body: IUpdateUserRole) {
+	async updateRole(body: UpdateRole) {
 		return $fetch(`${path}/role`, {
 			method: 'PATCH',
 			body
 		});
 	},
 
-	async deleteUser(id: string) {
+	async delete(id: string) {
 		return $fetch(path, {
 			method: 'DELETE',
 			body: { id }
 		});
 	},
 
-	async getUsers() {
-		return $fetch<IUser[]>(path);
+	async list() {
+		return $fetch<User[]>(path);
 	},
 
-	async me() {
-		return $fetch<IUserProfile>(`${path}/me`);
+	async get(id: string) {
+		return $fetch<User>(`${path}/${id}`);
 	}
 });
