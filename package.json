@@ -20,7 +20,7 @@
 	},
 	"dependencies": {
 		"nanoid": "5.0.8",
-		"nuxt": "3.12.2",
+		"nuxt": "3.14.159",
 		"radix-vue": "1.8.4",
 		"tailwind-variants": "0.3.0",
 		"vue": "3.4.29",
