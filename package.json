@@ -49,7 +49,7 @@
 		"histoire": "0.17.17",
 		"nuxt-typed-router": "3.7.2",
 		"playwright-core": "1.49.1",
-		"postcss": "8.4.49",
+		"postcss": "8.5.1",
 		"prettier": "3.4.2",
 		"tailwindcss": "3.4.17",
 		"vite-tsconfig-paths": "5.1.4",
