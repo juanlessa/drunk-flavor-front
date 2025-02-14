@@ -19,7 +19,7 @@
 		"format": "prettier --write ."
 	},
 	"dependencies": {
-		"nanoid": "5.0.9",
+		"nanoid": "5.1.0",
 		"nuxt": "3.15.4",
 		"radix-vue": "1.9.14",
 		"tailwind-variants": "0.3.1",
