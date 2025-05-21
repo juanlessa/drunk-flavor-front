@@ -34,7 +34,7 @@
 		"@internationalized/date": "3.8.1",
 		"@internationalized/number": "3.6.2",
 		"@nuxt/eslint": "0.7.6",
-		"@nuxt/test-utils": "3.18.0",
+		"@nuxt/test-utils": "3.19.0",
 		"@nuxtjs/i18n": "9.5.4",
 		"@testing-library/vue": "8.1.0",
 		"@types/eslint-config-prettier": "6.11.3",
