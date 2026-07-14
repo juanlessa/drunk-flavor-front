@@ -14,9 +14,9 @@
 
 		<Box direction="col" class="gap-2">
 			<Box v-for="sel in selected" :key="sel._id" direction="row" class="gap-6 items-center">
-				<Box>
-					<Text>{{ sel.translations[$i18n.locale as Language].name }}</Text>
-				</Box>
+				<Text class="flex-1 text-left">{{
+					sel.translations[$i18n.locale as Language].name
+				}}</Text>
 
 				<InputNumber
 					:model-value="quantities[sel._id]"
@@ -24,7 +24,9 @@
 					:suffix="sel.translations[$i18n.locale as Language].unit"
 					@update:model-value="(val: number) => updateQuantity(sel._id, val)" />
 
-				<TrashIcon />
+				<button aria-label="remove ingredient" @click="handleRemove(sel._id)">
+					<TrashIcon />
+				</button>
 			</Box>
 		</Box>
 	</Box>
@@ -45,8 +47,16 @@ const emit = defineEmits<{
 	(e: 'update:modelValue', value: DrinkIngredientRequest[]): void;
 }>();
 
-const { options, searchTerm, loading, selected, handleSelect, initSelected, loadNextPage } =
-	useIngredientSearch();
+const {
+	options,
+	searchTerm,
+	loading,
+	selected,
+	handleSelect,
+	handleRemoveSelected,
+	initSelected,
+	loadNextPage
+} = useIngredientSearch();
 
 const quantities = ref<Record<string, number>>({});
 
@@ -62,6 +72,12 @@ const updateQuantity = (ingredientId: string, value: number) => {
 	emitIngredients();
 };
 
+const handleRemove = (ingredientId: string) => {
+	handleRemoveSelected({ label: '', value: ingredientId });
+	delete quantities.value[ingredientId];
+	emitIngredients();
+};
+
 const emitIngredients = () => {
 	const ingredients: DrinkIngredientRequest[] = selected.value.map((sel) => ({
 		ingredient_id: sel._id,
@@ -70,12 +86,16 @@ const emitIngredients = () => {
 	emit('update:modelValue', ingredients);
 };
 
-watch(selected, () => {
-	selected.value.forEach((sel) => {
-		if (!(sel._id in quantities.value)) {
-			quantities.value[sel._id] = 0;
-		}
-	});
-	emitIngredients();
-}, { deep: true });
+watch(
+	selected,
+	() => {
+		selected.value.forEach((sel) => {
+			if (!(sel._id in quantities.value)) {
+				quantities.value[sel._id] = 0;
+			}
+		});
+		emitIngredients();
+	},
+	{ deep: true }
+);
 </script>

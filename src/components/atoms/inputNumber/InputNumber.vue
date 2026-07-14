@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full flex items-center gap-3">
+	<div class="flex items-center gap-3">
 		<div :class="inputNumberContainerStyle({ hasError: props.hasError, border: props.border })">
 			<input
 				:id="props.id"
