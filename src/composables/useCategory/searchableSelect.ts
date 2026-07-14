@@ -43,7 +43,7 @@ export const useCategorySearchableSelect = () => {
 	};
 
 	const { data, error, status } = useAsyncData(
-		'categoriesOverview',
+		'categorySearchableSelect',
 		() => $api.categories.list(state.value.filter.query),
 		{
 			server: false,

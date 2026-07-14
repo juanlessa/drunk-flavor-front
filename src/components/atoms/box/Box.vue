@@ -11,10 +11,10 @@ const props = defineProps({
 });
 
 const containerStyle = tv({
-	base: 'flex flex-1 w-full',
+	base: 'flex',
 	variants: {
 		direction: {
-			row: 'flex-row items-center',
+			row: 'flex-row',
 			col: 'flex-col',
 			responsive: 'flex-col tablet:flex-row'
 		}

@@ -4,7 +4,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import type { DrinkForm } from '~/types/drink';
+import type { DrinkForm, DrinkFormAndMedia } from '~/types/drink';
 import { mapFormToCreateDrink } from '~/helpers/drinkMappers';
 
 const { $api, $router } = useNuxtApp();
@@ -15,14 +15,45 @@ const handleCancel = () => {
 	resetFormState();
 	$router.back();
 };
-const handleSubmit = async (drinkForm: DrinkForm) => {
-	const createDrink = mapFormToCreateDrink(drinkForm);
+
+const handleSubmit = async ({ form, cover, thumbnail }: DrinkFormAndMedia) => {
+	const createDrink = mapFormToCreateDrink(form);
+	let drinkId = '';
 	try {
-		await $api.drinks.create(createDrink);
+		const { id } = await $api.drinks.create(createDrink);
+		drinkId = id;
 		addToast({ type: 'success', title: 'Success', message: 'drink has been created' });
-		$router.back();
 	} catch (error) {
 		addToast({ type: 'error', title: 'Error', message: 'drink has not been created' });
+		console.error(error);
+		return;
 	}
+
+	if (cover && drinkId) {
+		try {
+			await $api.drinks.updateCover(drinkId, cover);
+		} catch (error) {
+			addToast({
+				type: 'error',
+				title: 'Error',
+				message: 'drink cover has not been updated'
+			});
+			console.error(error);
+		}
+	}
+
+	if (thumbnail && drinkId) {
+		try {
+			await $api.drinks.updateCover(drinkId, thumbnail);
+		} catch (error) {
+			addToast({
+				type: 'error',
+				title: 'Error',
+				message: 'drink thumbnail has not been updated'
+			});
+			console.error(error);
+		}
+	}
+	$router.back();
 };
 </script>

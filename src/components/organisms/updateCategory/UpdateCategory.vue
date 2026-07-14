@@ -18,7 +18,7 @@ const { addToast } = useToast();
 
 const categoryForm = ref<CategoryForm | undefined>(undefined);
 
-const { data, error } = await useAsyncData(() => $api.categories.getCategory(props.categoryId));
+const { data, error } = await useAsyncData(() => $api.categories.get(props.categoryId));
 
 if (error.value) {
 	console.error('Failed to fetch category:', error.value);
@@ -34,11 +34,12 @@ const handleCancel = () => {
 const handleSubmit = async (categoryForm: CategoryForm) => {
 	const updateCategory = mapFormToUpdateCategory(props.categoryId, categoryForm);
 	try {
-		await $api.categories.updateCategory(updateCategory);
+		await $api.categories.update(updateCategory);
 		addToast({ type: 'success', title: 'Success', message: 'category has been updated' });
 		$router.back();
 	} catch (error) {
 		addToast({ type: 'error', title: 'Error', message: 'category has been updated' });
+		console.error(error);
 	}
 };
 </script>

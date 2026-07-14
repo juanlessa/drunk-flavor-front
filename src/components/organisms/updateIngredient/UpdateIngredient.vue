@@ -38,6 +38,7 @@ const handleSubmit = async (ingredientForm: IngredientForm) => {
 		$router.back();
 	} catch (error) {
 		addToast({ type: 'error', title: 'Error', message: 'ingredient has been updated' });
+		console.error(error);
 	}
 };
 </script>

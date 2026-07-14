@@ -6,7 +6,7 @@ const path = '/drinks';
 
 export const drinksRepository = ($fetch: $Fetch) => ({
 	async create(body: CreateDrink) {
-		return $fetch(path, {
+		return $fetch<{ id: string }>(path, {
 			method: 'POST',
 			body
 		});
@@ -16,6 +16,32 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 		return $fetch(path, {
 			method: 'PATCH',
 			body
+		});
+	},
+
+	async updateCover(id: string, file: File) {
+		const formData = new FormData();
+		formData.append('cover', file);
+
+		return $fetch(`${path}/${id}/cover`, {
+			method: 'PATCH',
+			body: formData,
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			}
+		});
+	},
+
+	async updateThumbnail(id: string, file: File) {
+		const formData = new FormData();
+		formData.append('thumbnail', file);
+
+		return $fetch(`${path}/${id}/thumbnail`, {
+			method: 'PATCH',
+			body: formData,
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			}
 		});
 	},
 

@@ -25,11 +25,10 @@
 					{{ $t('organisms.loginForm.passwordInput.label') }}
 				</Label>
 			</template>
-			<InputText
+			<InputPassword
 				id="password"
 				v-model="formState.form.password"
 				name="password"
-				type="text"
 				placeholder=""
 				:has-error="!!checkError('password')"
 				:error-message="checkError('password')"

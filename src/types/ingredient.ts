@@ -2,6 +2,7 @@ import type { Category } from './category';
 import type { DatabaseCommonInfo } from './database';
 import type { Filter } from './filters';
 import type { FieldError } from './form';
+import type { QueryParams } from './query';
 import type { Translations } from './translations';
 
 export type IngredientTranslation = {
@@ -45,4 +46,15 @@ export type IngredientFormState = {
 	form: IngredientForm;
 	errors: FieldError[];
 	displayErrors: boolean;
+};
+
+export type IngredientSearchState = {
+	options: Ingredient[];
+	selected: Ingredient[];
+	filter: {
+		query: QueryParams;
+		isLastPage: boolean;
+		searchTerm: string;
+	};
+	loading: boolean;
 };

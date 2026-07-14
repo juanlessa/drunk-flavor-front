@@ -122,6 +122,7 @@ function useDrinkDeleteModal() {
 			addToast({ type: 'success', title: 'SUCCESS!', message: 'drink deleted' });
 		} catch (error) {
 			addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete drink' });
+			console.error(error);
 		} finally {
 			drinkToDelete.value = initEmptyDrink();
 		}

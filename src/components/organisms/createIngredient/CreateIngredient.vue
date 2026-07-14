@@ -23,6 +23,7 @@ const handleSubmit = async (ingredientForm: IngredientForm) => {
 		$router.back();
 	} catch (error) {
 		addToast({ type: 'error', title: 'Error', message: 'ingredient has not been created' });
+		console.error(error);
 	}
 };
 </script>

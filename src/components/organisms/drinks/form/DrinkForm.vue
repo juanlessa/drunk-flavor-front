@@ -5,12 +5,7 @@
 		@submit="handleSubmitButton">
 		<Box direction="col" class="gap-4">
 			<Box class="gap-4">
-				<Box
-					v-for="lang in languages"
-					:key="lang"
-					direction="col"
-					class="flex-1"
-					:title="$t(`languages.${lang}`)">
+				<Box v-for="lang in languages" :key="lang" direction="col" class="flex-1">
 					<Heading type="h2" class="text-center">
 						{{ $t(`languages.${lang}`) }}
 					</Heading>
@@ -54,40 +49,47 @@
 					</InputWrapper>
 				</Box>
 			</Box>
-			<GroupWrapper :title="$t('organisms.drinkForm.generalSection.title')">
-				<Box direction="col" class="gap-4">
-					<InputWrapper>
-						<template #label>
-							<Label>
-								{{ $t('organisms.drinkForm.thumbnailInput.label') }}
-							</Label>
-						</template>
-						<DropZone id="thumbnail" v-model="formState.thumbnail" />
-					</InputWrapper>
-					<InputWrapper>
-						<template #label>
-							<Label>
-								{{ $t('organisms.drinkForm.coverInput.label') }}
-							</Label>
-						</template>
-						<DropZone id="cover" v-model="formState.cover" />
-					</InputWrapper>
-				</Box>
-				<Box class="gap-4"> </Box>
-			</GroupWrapper>
+			<Box direction="col">
+				<Heading type="h2" class="text-center">
+					{{ $t('organisms.drinkForm.generalSection.title') }}
+				</Heading>
+				<Box class="gap-4">
+					<Box direction="col" class="gap-4 flex-1">
+						<InputWrapper>
+							<template #label>
+								<Label>
+									{{ $t('organisms.drinkForm.thumbnailInput.label') }}
+								</Label>
+							</template>
+							<DropZone id="thumbnail" v-model="formState.thumbnail" />
+						</InputWrapper>
+						<InputWrapper>
+							<template #label>
+								<Label>
+									{{ $t('organisms.drinkForm.coverInput.label') }}
+								</Label>
+							</template>
+							<DropZone id="cover" v-model="formState.cover" />
+						</InputWrapper>
+					</Box>
+					<Box class="gap-4 flex-1">
+						<IngredientsSelection />
+					</Box> </Box
+			></Box>
 		</Box>
 	</Form>
 </template>
 <script setup lang="ts">
 import { languages } from '~/constants/translations';
 import { mapDrinkToForm } from '~/helpers/drinkMappers';
-import type { Drink, DrinkForm } from '~/types/drink';
+import type { Drink, DrinkFormAndMedia } from '~/types/drink';
+import IngredientsSelection from '../ingredientsSelection/IngredientsSelection.vue';
 
 const props = defineProps({
 	drink: { type: Object as PropType<Drink>, default: undefined }
 });
 const emit = defineEmits<{
-	(e: 'submit', value: DrinkForm): void;
+	(e: 'submit', value: DrinkFormAndMedia): void;
 	(e: 'cancel'): void;
 }>();
 
@@ -106,6 +108,10 @@ const handleSubmitButton = async () => {
 	if (formState.value.errors.length !== 0) {
 		return;
 	}
-	emit('submit', formState.value.form);
+	emit('submit', {
+		form: formState.value.form,
+		cover: formState.value.cover,
+		thumbnail: formState.value.thumbnail
+	});
 };
 </script>

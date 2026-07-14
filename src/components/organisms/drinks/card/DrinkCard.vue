@@ -24,17 +24,8 @@
 </template>
 <script setup lang="ts">
 const props = defineProps({
-	title: {
-		type: String,
-		default: ''
-	},
-	categories: {
-		type: Array as PropType<string[]>,
-		default: () => []
-	},
-	ingredients: {
-		type: Array as PropType<string[]>,
-		default: () => []
-	}
+	title: { type: String, default: '' },
+	categories: { type: Array as PropType<string[]>, default: () => [] },
+	ingredients: { type: Array as PropType<string[]>, default: () => [] }
 });
 </script>

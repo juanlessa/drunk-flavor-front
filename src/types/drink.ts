@@ -56,3 +56,9 @@ export type DrinkFormState = {
 	displayErrors: boolean;
 	defaultIngredients: DrinkIngredientRequest[];
 };
+
+export type DrinkFormAndMedia = {
+	form: DrinkForm;
+	cover: File | undefined;
+	thumbnail: File | undefined;
+};
