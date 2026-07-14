@@ -9,7 +9,7 @@
 		</HoverCard.Trigger>
 		<HoverCard.Portal>
 			<HoverCard.Content
-				class="z-50 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0"
+				class="z-50 rounded-md border border-gray-200 shadow-lg dark:border-gray-750 dark:shadow-dark-card"
 				:side="props.side"
 				:side-offset="props.sideOffset"
 				:align="props.align"
