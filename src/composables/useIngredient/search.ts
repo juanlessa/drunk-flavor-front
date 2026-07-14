@@ -135,6 +135,10 @@ export const useIngredientSearch = () => {
 		state.value.selected = state.value.selected.filter((sel) => sel._id !== selected.value);
 	};
 
+	const initSelected = (ingredients: IngredientSearchState['selected']) => {
+		state.value.selected = [...ingredients];
+	};
+
 	return {
 		loading,
 		options,
@@ -142,6 +146,7 @@ export const useIngredientSearch = () => {
 		searchTerm,
 		handleSelect,
 		handleRemoveSelected,
+		initSelected,
 		loadNextPage
 	};
 };

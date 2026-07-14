@@ -73,7 +73,9 @@
 						</InputWrapper>
 					</Box>
 					<Box class="gap-4 flex-1">
-						<IngredientsSelection />
+						<IngredientsSelection
+							v-model="formState.form.ingredients"
+							:initial-ingredients="drinkIngredients" />
 					</Box> </Box
 			></Box>
 		</Box>
@@ -94,6 +96,10 @@ const emit = defineEmits<{
 }>();
 
 const { formState, updateFormState, checkError, validateForm } = useDrinkForm();
+
+const drinkIngredients = computed(() =>
+	props.drink ? props.drink.ingredients : []
+);
 
 if (props.drink) {
 	updateFormState(mapDrinkToForm(props.drink));

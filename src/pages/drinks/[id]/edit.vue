@@ -1,6 +1,6 @@
 <template>
 	<NuxtLayout name="primary">
-		<UpdateIngredient :ingredient-id="ingredientId" />
+		<UpdateDrink :drink-id="drinkId" />
 	</NuxtLayout>
 </template>
 <script setup lang="ts">
@@ -8,6 +8,6 @@ definePageMeta({
 	middleware: 'auth'
 });
 
-const route = useRoute('ingredients-id-edit');
-const ingredientId = route.params.id;
+const route = useRoute('drinks-id-edit');
+const drinkId = route.params.id;
 </script>
