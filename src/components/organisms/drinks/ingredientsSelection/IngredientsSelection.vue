@@ -75,7 +75,8 @@ const updateQuantity = (ingredientId: string, value: number) => {
 
 const handleRemove = (ingredientId: string) => {
 	handleRemoveSelected({ label: '', value: ingredientId });
-	delete quantities.value[ingredientId];
+	const { [ingredientId]: _, ...rest } = quantities.value;
+	quantities.value = rest;
 	emitIngredients();
 };
 

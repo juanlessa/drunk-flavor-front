@@ -41,6 +41,7 @@ const props = defineProps({
 	suffixOutside: { type: Boolean, default: false },
 	border: { type: Boolean, default: false },
 	hasError: { type: Boolean, default: false },
+	/** CSS width value (e.g. '5ch', '4rem', '60px') */
 	inputWidth: { type: String, default: undefined }
 });
 
