@@ -1,11 +1,11 @@
 <template>
-	<div class="flex flex-col w-full max-w-screen-desktop mx-auto">
+	<div class="flex flex-col flex-1 w-full max-w-screen-desktop mx-auto">
 		<div
 			v-if="drink.cover"
 			class="w-full h-[30vh] bg-center bg-no-repeat bg-cover rounded-md overflow-hidden"
 			:style="{ backgroundImage: `url(${drink.cover})` }" />
 
-		<div class="flex flex-col gap-6 p-4 bg-white dark:bg-black">
+		<div class="flex flex-col gap-6 p-4 bg-white dark:bg-black flex-1">
 			<Heading type="h1" size="lg" class="text-center">
 				{{ drink.translations[$i18n.locale as Language].name }}
 			</Heading>
