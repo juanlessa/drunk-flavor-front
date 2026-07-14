@@ -1,5 +1,5 @@
 <template>
-	<HoverCard>
+	<HoverCard side="right" :side-offset="8">
 		<template #trigger>
 			<Card rounded="md" class="p-2 flex gap-4">
 				<Thumbnail />
@@ -13,12 +13,8 @@
 				</div>
 			</Card>
 		</template>
-		<Card rounded="px">
-			<div class="flex flex-col">
-				<Text v-for="(ingredient, index) in props.ingredients" :key="index">
-					{{ ingredient }}
-				</Text>
-			</div>
+		<Card rounded="md" class="p-4">
+			<Heading>{{ props.title }}</Heading>
 		</Card>
 	</HoverCard>
 </template>
