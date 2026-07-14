@@ -44,7 +44,11 @@ const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
 function useVirtualInfiniteGrid() {
 	const containerRef = ref<HTMLDivElement | null>(null);
 	const containerHeight = ref(0);
-	const gridColumns = computed(() => (screenType.value === 'mobile' ? 1 : 2));
+	const gridColumns = computed(() => {
+		if (screenType.value === 'mobile') return 1;
+		if (screenType.value === 'tablet') return 2;
+		return 3;
+	});
 
 	const updateContainerHeight = () => {
 		if (containerRef.value) {
