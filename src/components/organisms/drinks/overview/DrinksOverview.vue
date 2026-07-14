@@ -18,7 +18,8 @@
 						<DrinkCard
 							v-for="drink in drinkRow"
 							:key="drink._id"
-							:drink="drink" />
+							:drink="drink"
+							@click="() => handleDrinkClick(drink._id)" />
 					</div>
 				</template>
 				<template #loading>
@@ -36,10 +37,16 @@
 <script setup lang="ts">
 import { remToPixels } from '~/helpers/sizes';
 
+const { $router } = useNuxtApp();
+const localePath = useLocalePath();
 const { overviewState, loadNextPage } = useDrinksOverview();
 const { screenType } = useScreenType();
 
 const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
+
+const handleDrinkClick = (id: string) => {
+	$router.push(localePath(`/drinks/${id}`));
+};
 
 function useVirtualInfiniteGrid() {
 	const containerRef = ref<HTMLDivElement | null>(null);

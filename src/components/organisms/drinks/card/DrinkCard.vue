@@ -1,7 +1,7 @@
 <template>
 	<HoverCard side="right" :side-offset="8">
 		<template #trigger>
-			<Card rounded="md" class="w-full h-full p-2 flex gap-4">
+			<Card rounded="md" class="w-full h-full p-2 flex gap-4 cursor-pointer" @click="emit('click')">
 				<Thumbnail />
 				<div>
 					<Heading>{{ drink.translations[$i18n.locale as Language].name }}</Heading>
@@ -31,4 +31,8 @@ defineProps({
 		default: () => initEmptyDrink()
 	}
 });
+
+const emit = defineEmits<{
+	(e: 'click'): void;
+}>();
 </script>
