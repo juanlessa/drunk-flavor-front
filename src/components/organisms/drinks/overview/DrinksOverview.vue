@@ -4,7 +4,7 @@
 			<VirtualInfiniteGrid
 				:items="overviewState.drinks"
 				:height="containerHeight"
-				:item-height="remToPixels(2.5)"
+				:item-height="remToPixels(9.5)"
 				:items-gap="remToPixels(1)"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
@@ -13,7 +13,8 @@
 					<div
 						v-for="{ data: drinkRow, index } in list"
 						:key="index"
-						class="flex gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						class="flex gap-4 justify-center w-full max-w-screen-desktop mx-auto"
+						:style="{ height: `${remToPixels(9.5)}px` }">
 						<DrinkCard
 							v-for="drink in drinkRow"
 							:key="drink._id"

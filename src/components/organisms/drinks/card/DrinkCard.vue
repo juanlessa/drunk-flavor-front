@@ -1,7 +1,7 @@
 <template>
 	<HoverCard side="right" :side-offset="8">
 		<template #trigger>
-			<Card rounded="md" class="p-2 flex gap-4">
+			<Card rounded="md" class="h-full p-2 flex gap-4">
 				<Thumbnail />
 				<div>
 					<Heading>{{ drink.translations[$i18n.locale as Language].name }}</Heading>
