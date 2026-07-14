@@ -17,7 +17,7 @@
 						<DrinkCard
 							v-for="drink in drinkRow"
 							:key="drink._id"
-							:title="drink.translations[$i18n.locale as Language].name" />
+							:drink="drink" />
 					</div>
 				</template>
 				<template #loading>
@@ -34,7 +34,6 @@
 </template>
 <script setup lang="ts">
 import { remToPixels } from '~/helpers/sizes';
-import type { Language } from '~/types/translations';
 
 const { overviewState, loadNextPage } = useDrinksOverview();
 const { screenType } = useScreenType();

@@ -4,24 +4,31 @@
 			<Card rounded="md" class="p-2 flex gap-4">
 				<Thumbnail />
 				<div>
-					<Heading>{{ props.title }}</Heading>
-					<div class="flex gap-2">
-						<Text v-for="(category, index) in props.categories" :key="index">
-							{{ category }}
-						</Text>
-					</div>
+					<Heading>{{ drink.translations[$i18n.locale as Language].name }}</Heading>
 				</div>
 			</Card>
 		</template>
 		<Card rounded="md" class="p-4">
-			<Heading>{{ props.title }}</Heading>
+			<Heading>{{ drink.translations[$i18n.locale as Language].name }}</Heading>
+			<div class="flex flex-col gap-1 mt-2">
+				<Text v-for="(item, index) in drink.ingredients" :key="index">
+					{{ item.quantity }}
+					{{ item.ingredient.translations[$i18n.locale as Language].unit }} —
+					{{ item.ingredient.translations[$i18n.locale as Language].name }}
+				</Text>
+			</div>
 		</Card>
 	</HoverCard>
 </template>
 <script setup lang="ts">
-const props = defineProps({
-	title: { type: String, default: '' },
-	categories: { type: Array as PropType<string[]>, default: () => [] },
-	ingredients: { type: Array as PropType<string[]>, default: () => [] }
+import { initEmptyDrink } from '~/constants/drink';
+import type { Drink } from '~/types/drink';
+import type { Language } from '~/types/translations';
+
+defineProps({
+	drink: {
+		type: Object as PropType<Drink>,
+		default: () => initEmptyDrink()
+	}
 });
 </script>
