@@ -4,7 +4,11 @@
 			<input
 				:id="props.id"
 				:value="props.modelValue"
-				class="flex-1 py-1 text-md leading-base font-normal outline-none border-none text-black dark:text-white bg-transparent placeholder-gray-500"
+				:class="[
+					'py-1 text-md leading-base font-normal outline-none border-none text-black dark:text-white bg-transparent placeholder-gray-500',
+					!props.inputWidth && 'flex-1'
+				]"
+				:style="props.inputWidth ? { width: props.inputWidth } : undefined"
 				type="number"
 				:name="props.name"
 				:placeholder="props.placeholder"
@@ -36,7 +40,8 @@ const props = defineProps({
 	suffix: { type: String, default: '' },
 	suffixOutside: { type: Boolean, default: false },
 	border: { type: Boolean, default: false },
-	hasError: { type: Boolean, default: false }
+	hasError: { type: Boolean, default: false },
+	inputWidth: { type: String, default: undefined }
 });
 
 const emit = defineEmits<{

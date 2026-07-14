@@ -20,6 +20,7 @@
 
 				<InputNumber
 					:model-value="quantities[sel._id]"
+					input-width="4ch"
 					suffix-outside
 					:suffix="sel.translations[$i18n.locale as Language].unit"
 					@update:model-value="(val: number) => updateQuantity(sel._id, val)" />
