@@ -1,5 +1,5 @@
 <template>
-	<Textarea
+	<textarea
 		:id="props.id"
 		:value="props.modelValue"
 		:class="textAreaStyle({ hasError: props.hasError, border: props.border })"
@@ -7,7 +7,7 @@
 		:placeholder="props.placeholder"
 		:rows="props.rows"
 		@input="handleUpdateInput"
-		@blur="handleBlurInput"></Textarea>
+		@blur="handleBlurInput"></textarea>
 </template>
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
