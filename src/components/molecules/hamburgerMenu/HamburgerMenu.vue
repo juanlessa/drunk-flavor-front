@@ -1,7 +1,7 @@
 <template>
 	<Popover.Root v-model:open="_isOpen">
 		<Popover.Trigger
-			class="rounded-full size-8 inline-flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-800 focus:shadow-[0_0_0_2px] focus:shadow-black dark:focus:shadow-white cursor-default outline-none"
+			class="rounded-full size-8 inline-flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-800 focus:shadow-[0_0_0_2px] focus:shadow-black dark:focus:shadow-white cursor-default outline-hidden"
 			aria-label="menu">
 			<component :is="_isOpen ? CloseIcon : MenuIcon" />
 		</Popover.Trigger>

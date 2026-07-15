@@ -12,7 +12,7 @@
 		<Combobox.Anchor
 			:class="selectInputContainerStyle({ border: props.border, hasError: props.hasError })">
 			<Combobox.Input
-				class="flex-1 py-1 text-md leading-base font-normal outline-none border-none text-black dark:text-white !bg-transparent selection:bg-black placeholder-gray-500"
+				class="flex-1 py-1 text-md leading-base font-normal outline-hidden border-none text-black dark:text-white !bg-transparent selection:bg-black placeholder-gray-500"
 				:placeholder="props.placeholder" />
 			<Combobox.Trigger :id="props.id">
 				<ChevronDownIcon />
@@ -30,7 +30,7 @@
 					<Combobox.Item
 						v-for="option in props.options"
 						:key="option.value"
-						class="relative text-md leading-base text-black dark:text-white rounded-md flex items-center pr-[35px] pl-[25px] select-none data-[disabled]:text-gray-500 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-blue-700 data-[highlighted]:text-white"
+						class="relative text-md leading-base text-black dark:text-white rounded-md flex items-center pr-[35px] pl-[25px] select-none data-[disabled]:text-gray-500 data-[disabled]:pointer-events-none data-[highlighted]:outline-hidden data-[highlighted]:bg-blue-700 data-[highlighted]:text-white"
 						:value="option">
 						<Combobox.ItemIndicator
 							class="absolute left-0 w-[25px] inline-flex items-center justify-center">
@@ -110,7 +110,7 @@ const handleUpdateModelValue = (option: InputSelectOption) => {
 };
 
 const selectInputContainerStyle = tv({
-	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3  box-border border-2 outline-none bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:border-black focus:dark:border-white data-[placeholder]:text-gray-500 ',
+	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3  box-border border-2 outline-hidden bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:border-black focus:dark:border-white data-[placeholder]:text-gray-500 ',
 	variants: {
 		border: {
 			true: 'border-gray-300 dark:border-gray-700'

@@ -26,7 +26,7 @@
 						<Select.Item
 							v-for="(option, index) in props.options"
 							:key="index"
-							class="text-md text-black dark:text-white rounded-md flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-gray-500 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-blue-700 data-[highlighted]:text-white"
+							class="text-md text-black dark:text-white rounded-md flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-gray-500 data-[disabled]:pointer-events-none data-[highlighted]:outline-hidden data-[highlighted]:bg-blue-700 data-[highlighted]:text-white"
 							:value="option.value">
 							<Select.ItemIndicator
 								class="absolute left-0 w-[25px] inline-flex items-center justify-center">
@@ -75,7 +75,7 @@ const handleUpdate = (value: string) => {
 };
 
 const selectInputContainerStyle = tv({
-	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3 py-1 text-md leading-base box-border border-2 outline-none text-black dark:text-white bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:border-black focus:dark:border-white data-[placeholder]:text-gray-500 ',
+	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3 py-1 text-md leading-base box-border border-2 outline-hidden text-black dark:text-white bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:border-black focus:dark:border-white data-[placeholder]:text-gray-500 ',
 	variants: {
 		border: {
 			true: 'border-gray-300 dark:border-gray-700'

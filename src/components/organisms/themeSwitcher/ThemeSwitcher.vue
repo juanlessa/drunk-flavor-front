@@ -3,11 +3,11 @@
 		<ClientOnly>
 			<Switch.Root
 				id="themeMode"
-				class="size-full rounded-full px-1 focus-within:outline focus-within:outline-black dark:focus-within:outline-white flex shadow-sm relative cursor-default"
+				class="size-full rounded-full px-1 focus-within:outline focus-within:outline-black dark:focus-within:outline-white flex shadow-xs relative cursor-default"
 				:checked="_isDark"
 				@update:checked="handleToggleTheme">
 				<Switch.Thumb
-					class="block size-6 my-auto bg-white dark:bg-gray-900 shadow-sm rounded-full transition-transform duration-500 will-ch ange-transform data-[state=checked]:translate-x-8">
+					class="block size-6 my-auto bg-white dark:bg-gray-900 shadow-xs rounded-full transition-transform duration-500 will-ch ange-transform data-[state=checked]:translate-x-8">
 					<div class="w-full h-full flex justify-center items-center">
 						<component
 							:is="$theme.isDark.value ? MoonIcon : SunIcon"

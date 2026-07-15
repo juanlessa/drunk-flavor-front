@@ -23,7 +23,7 @@
 
 		<Toast.Viewport
 			:hotkey="toastConfig.hotkey"
-			class="fixed top-0 right-0 flex flex-col p-4 gap-2 w-[390px] max-w-[100vw] m-0 list-none z-[10000] outline-none" />
+			class="fixed top-0 right-0 flex flex-col p-4 gap-2 w-[390px] max-w-[100vw] m-0 list-none z-[10000] outline-hidden" />
 	</Toast.Provider>
 </template>
 <script setup lang="ts">

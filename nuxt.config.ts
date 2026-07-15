@@ -1,12 +1,14 @@
-import { colors } from './src/tokens';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
 
+	compatibilityDate: '2026-07-15',
+
 	app: {
 		head: {
-			meta: [{ name: 'theme-color', content: colors.blue[700] }]
+			meta: [{ name: 'theme-color', content: '#1D4ED8' }]
 		}
 	},
 
@@ -16,11 +18,8 @@ export default defineNuxtConfig({
 		}
 	},
 
-	postcss: {
-		plugins: {
-			tailwindcss: {},
-			autoprefixer: {}
-		}
+	vite: {
+		plugins: [tailwindcss()]
 	},
 
 	srcDir: 'src/',

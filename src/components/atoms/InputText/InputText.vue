@@ -4,7 +4,7 @@
 			<input
 				:id="props.id"
 				:value="props.modelValue"
-				class="flex-1 py-1 text-md leading-base font-normal outline-none border-none text-black dark:text-white bg-transparent placeholder-gray-500"
+				class="flex-1 py-1 text-md leading-base font-normal outline-hidden border-none text-black dark:text-white bg-transparent placeholder-gray-500"
 				:type="props.type"
 				:name="props.name"
 				:placeholder="props.placeholder"
@@ -70,6 +70,8 @@ const inputTextContainerStyle = tv({
 });
 </script>
 <style scoped>
+@reference "~/styles/global.css";
+
 .input-container-focus-border:has(> input:focus) {
 	@apply border-black dark:border-white;
 }

@@ -5,7 +5,7 @@
 				:id="props.id"
 				:value="props.modelValue"
 				:class="[
-					'py-1 text-md leading-base font-normal outline-none border-none text-black dark:text-white bg-transparent placeholder-gray-500',
+					'py-1 text-md leading-base font-normal outline-hidden border-none text-black dark:text-white bg-transparent placeholder-gray-500',
 					!props.inputWidth && 'flex-1'
 				]"
 				:style="props.inputWidth ? { width: props.inputWidth } : undefined"
@@ -76,6 +76,8 @@ const inputNumberContainerStyle = tv({
 });
 </script>
 <style scoped>
+@reference "~/styles/global.css";
+
 .input-container-focus-border:has(> input:focus) {
 	@apply border-black dark:border-white;
 }
