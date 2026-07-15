@@ -54,10 +54,14 @@ export default defineNuxtConfig({
 	},
 
 	i18n: {
+		restructureDir: false,
 		vueI18n: './i18n.config.ts',
 		strategy: 'no_prefix',
 		defaultLocale: 'en',
-		locales: ['en', 'pt']
+		locales: ['en', 'pt'],
+		bundle: {
+			optimizeTranslationDirective: false
+		}
 	},
 
 	modules: [
@@ -65,6 +69,6 @@ export default defineNuxtConfig({
 		'@vueuse/nuxt',
 		'@nuxt/test-utils/module',
 		'@nuxt/eslint',
-		...(process.env.HISTOIRE ? [] : ['@nuxtjs/i18n'])
+		...(process.env.HISTOIRE || process.env.VITEST ? [] : ['@nuxtjs/i18n'])
 	]
 });
