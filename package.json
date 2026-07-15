@@ -31,8 +31,8 @@
 	"devDependencies": {
 		"@histoire/plugin-nuxt": "0.17.17",
 		"@histoire/plugin-vue": "0.17.17",
-		"@internationalized/date": "3.8.1",
-		"@internationalized/number": "3.6.2",
+		"@internationalized/date": "3.12.2",
+		"@internationalized/number": "3.6.7",
 		"@nuxt/eslint": "0.7.6",
 		"@nuxt/test-utils": "4.0.3",
 		"@nuxtjs/i18n": "9.5.4",
