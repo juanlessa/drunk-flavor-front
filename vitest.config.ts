@@ -9,21 +9,28 @@ export default defineConfig({
 	test: {
 		projects: [
 			{
+				resolve: {
+					alias: { '~': appDir, '@': appDir }
+				},
+				test: {
+					name: 'logic',
+					environment: 'node',
+					include: ['app/helpers/**/*.spec.ts']
+				}
+			},
+			{
 				plugins: [vue()],
 				resolve: {
-					alias: {
-						'~': appDir,
-						'@': appDir
-					}
+					alias: { '~': appDir, '@': appDir }
 				},
 				test: {
 					name: 'unit',
 					include: ['app/**/*.spec.ts'],
-					exclude: ['app/**/*.nuxt.spec.ts'],
+					exclude: ['app/**/*.nuxt.spec.ts', 'app/helpers/**/*.spec.ts'],
 					environment: 'happy-dom',
 					setupFiles: ['./vitest.setup.ts']
 				}
-			} as any,
+			},
 			await defineVitestProject({
 				test: {
 					name: 'nuxt',
