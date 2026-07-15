@@ -3,7 +3,7 @@
 		<header
 			class="h-20 w-full max-w-screen-desktop mx-auto px-4 desktop:px-0 flex items-center justify-between">
 			<Anchor :to="localePath('/')">
-				<img src="/logo.png" alt="DrunkFlavor" />
+				<img :src="'/logo.png'" alt="DrunkFlavor" />
 			</Anchor>
 			<div class="hidden desktop:block">
 				<div class="flex gap-8">
