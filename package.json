@@ -43,7 +43,7 @@
 		"@vueuse/nuxt": "12.8.2",
 		"autoprefixer": "10.4.21",
 		"eslint": "9.27.0",
-		"eslint-config-prettier": "10.1.5",
+		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-prettier": "5.4.0",
 		"happy-dom": "15.11.7",
 		"histoire": "0.17.17",
