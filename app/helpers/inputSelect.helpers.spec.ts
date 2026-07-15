@@ -38,7 +38,7 @@ describe('mapToSelectOptions', () => {
 		const result = mapToSelectOptions(entities, 'en');
 
 		result.forEach((option, index) => {
-			expect(option.value).toBe(entities[index]._id);
+			expect(option.value).toBe(entities[index]!._id);
 		});
 	});
 });
