@@ -48,7 +48,7 @@
 		"happy-dom": "15.11.7",
 		"histoire": "0.17.17",
 		"nuxt-typed-router": "3.8.0",
-		"playwright-core": "1.52.0",
+		"playwright-core": "1.61.1",
 		"postcss": "8.5.3",
 		"prettier": "3.5.3",
 		"tailwindcss": "3.4.19",
