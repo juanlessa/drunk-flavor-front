@@ -11,7 +11,7 @@ export default defineVitestConfig({
 				domEnvironment: 'happy-dom'
 			}
 		},
-		environmentMatchGlobs: [['src/**/*.nuxt.spec.ts', 'nuxt']]
+		environmentMatchGlobs: [['app/**/*.nuxt.spec.ts', 'nuxt']]
 	},
 	plugins: [tsconfigPaths()]
 });

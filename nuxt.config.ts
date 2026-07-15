@@ -22,11 +22,6 @@ export default defineNuxtConfig({
 		plugins: [tailwindcss()]
 	},
 
-	srcDir: 'src/',
-	dir: {
-		public: '../public'
-	},
-
 	css: ['~/styles/global.css'],
 
 	components: [
