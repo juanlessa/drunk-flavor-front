@@ -1,12 +1,12 @@
-import { z } from 'zod';
-import { getZodTranslationsSchema } from '~/helpers/getZodTranslationsSchema.js';
+import { z } from 'zod/v4';
+import { getZodTranslationsSchema } from '~/helpers/getZodTranslationsSchema';
 import { validateSchema } from '~/helpers/validateSchema';
 import type { DrinkForm } from '~/types/drink';
 
 // fields validation
-export const drinkNameValidation = z.string().trim().min(1, { message: 'errors.drinks.name' });
+export const drinkNameValidation = z.string().trim().min(1, { error: 'errors.drinks.name' });
 
-export const drinkMethodValidation = z.string().trim().min(1, { message: 'errors.drinks.method' });
+export const drinkMethodValidation = z.string().trim().min(1, { error: 'errors.drinks.method' });
 
 export const drinkIngredientsValidation = z
 	.array(
@@ -15,7 +15,7 @@ export const drinkIngredientsValidation = z
 			quantity: z.number().gt(0)
 		})
 	)
-	.min(1, { message: 'errors.drinks.ingredients' });
+	.min(1, { error: 'errors.drinks.ingredients' });
 
 // schemas
 export const drinkTranslationSchema = z.object({

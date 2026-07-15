@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { getZodTranslationsSchema } from '~/helpers/getZodTranslationsSchema';
 import { validateSchema } from '~/helpers/validateSchema';
 import type { IngredientForm } from '~/types/ingredient';
@@ -7,21 +7,21 @@ import type { IngredientForm } from '~/types/ingredient';
 export const ingredientNameValidation = z
 	.string()
 	.trim()
-	.min(1, { message: 'errors.ingredients.name' });
+	.min(1, { error: 'errors.ingredients.name' });
 
 export const ingredientUnitValidation = z
 	.string()
 	.trim()
-	.min(1, { message: 'errors.ingredients.unit' });
+	.min(1, { error: 'errors.ingredients.unit' });
 
 export const ingredientUnitPluralValidation = z
 	.string()
 	.trim()
-	.min(1, { message: 'errors.ingredients.unitPlural' });
+	.min(1, { error: 'errors.ingredients.unitPlural' });
 
 export const ingredientCategoryIdValidation = z
 	.string()
-	.min(1, { message: 'errors.ingredient.category' });
+	.min(1, { error: 'errors.ingredient.category' });
 
 export const ingredientIsAlcoholicValidation = z.boolean();
 

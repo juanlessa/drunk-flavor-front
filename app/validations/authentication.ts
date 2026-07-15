@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { validateSchema } from '~/helpers/validateSchema';
 import { userEmailValidation, userPasswordValidation } from './user';
 import type { LoginForm } from '~/types/authentication';

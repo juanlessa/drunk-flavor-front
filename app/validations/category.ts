@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { getZodTranslationsSchema } from '~/helpers/getZodTranslationsSchema';
 import { validateSchema } from '~/helpers/validateSchema';
 import type { CategoryForm } from '@/types/category';
@@ -7,7 +7,7 @@ import type { CategoryForm } from '@/types/category';
 export const categoryNameValidation = z
 	.string()
 	.trim()
-	.min(1, { message: 'organisms.categoryForm.nameInput.error' });
+	.min(1, { error: 'organisms.categoryForm.nameInput.error' });
 
 // schemas
 export const categoryTranslationSchema = z.object({

@@ -1,8 +1,8 @@
-import type { z } from 'zod';
+import type { z } from 'zod/v4';
 import type { FieldError } from '@/types/form';
 
 export const validateSchema =
-	<T>(schema: z.ZodTypeAny) =>
+	<T>(schema: z.ZodType) =>
 	(data: T): FieldError[] => {
 		let errors: Array<FieldError> = [];
 
