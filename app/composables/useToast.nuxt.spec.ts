@@ -1,11 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { registerEndpoint } from '@nuxt/test-utils/runtime';
 import { useToast } from './useToast';
-
-registerEndpoint('/me', () => ({
-	statusCode: 401,
-	body: { message: 'Unauthorized' }
-}));
 
 describe('useToast', () => {
 	let toast: ReturnType<typeof useToast>;

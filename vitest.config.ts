@@ -35,7 +35,8 @@ export default defineConfig({
 				test: {
 					name: 'nuxt',
 					include: ['app/**/*.nuxt.spec.ts'],
-					environment: 'nuxt'
+					environment: 'nuxt',
+					setupFiles: ['./vitest.nuxt.setup.ts']
 				}
 			})
 		]
