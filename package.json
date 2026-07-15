@@ -44,7 +44,7 @@
 		"autoprefixer": "10.5.3",
 		"eslint": "9.27.0",
 		"eslint-config-prettier": "10.1.8",
-		"eslint-plugin-prettier": "5.4.0",
+		"eslint-plugin-prettier": "5.5.6",
 		"happy-dom": "15.11.7",
 		"histoire": "0.17.17",
 		"nuxt-typed-router": "3.8.0",
