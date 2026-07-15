@@ -63,6 +63,6 @@ export default defineNuxtConfig({
 		'@vueuse/nuxt',
 		'@nuxt/test-utils/module',
 		'@nuxt/eslint',
-		...(process.env.HISTOIRE || process.env.VITEST ? [] : ['@nuxtjs/i18n'])
+		...(process.env.HISTOIRE ? [] : ['@nuxtjs/i18n'])
 	]
 });

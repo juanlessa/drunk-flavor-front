@@ -62,7 +62,6 @@
 		"playwright-core": "1.61.1",
 		"prettier": "3.9.5",
 		"tailwindcss": "4.3.2",
-		"vite-tsconfig-paths": "6.1.1",
 		"vitest": "4.1.10"
 	}
 }
