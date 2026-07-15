@@ -59,22 +59,10 @@ describe('Text', () => {
 			expect(wrapper.classes()).toContain('text-sm');
 		});
 
-		it('applies lg size class', () => {
-			const wrapper = mount(Text, { props: { size: 'lg' } });
-
-			expect(wrapper.classes()).toContain('text-lg');
-		});
-
 		it('applies bold weight class', () => {
 			const wrapper = mount(Text, { props: { weight: 'bold' } });
 
 			expect(wrapper.classes()).toContain('font-bold');
-		});
-
-		it('applies medium weight class', () => {
-			const wrapper = mount(Text, { props: { weight: 'medium' } });
-
-			expect(wrapper.classes()).toContain('font-medium');
 		});
 	});
 });

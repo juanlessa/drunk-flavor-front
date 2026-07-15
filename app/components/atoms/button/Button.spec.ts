@@ -33,9 +33,8 @@ describe('Button', () => {
 	describe('props', () => {
 		it('applies disabled attribute when disabled is true', () => {
 			const wrapper = mount(Button, { props: { disabled: true } });
-			const button = wrapper.find('button');
 
-			expect(button.attributes('disabled')).toBeDefined();
+			expect(wrapper.find('button').attributes('disabled')).toBeDefined();
 		});
 
 		it('sets the correct type attribute', () => {

@@ -38,19 +38,19 @@ describe('Heading', () => {
 	});
 
 	describe('styling', () => {
-		it('applies md size class by default', () => {
+		it('applies md size class by default (text-2xl)', () => {
 			const wrapper = mount(Heading);
 
 			expect(wrapper.classes()).toContain('text-2xl');
 		});
 
-		it('applies sm size class', () => {
+		it('applies sm size class (text-xl)', () => {
 			const wrapper = mount(Heading, { props: { size: 'sm' } });
 
 			expect(wrapper.classes()).toContain('text-xl');
 		});
 
-		it('applies lg size class', () => {
+		it('applies lg size class (text-4xl)', () => {
 			const wrapper = mount(Heading, { props: { size: 'lg' } });
 
 			expect(wrapper.classes()).toContain('text-4xl');

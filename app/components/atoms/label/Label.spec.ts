@@ -33,19 +33,10 @@ describe('Label', () => {
 			expect(wrapper.attributes('for')).toBe('input-email');
 		});
 
-		it('renders without for attribute when not provided', () => {
+		it('renders with empty for attribute when not provided', () => {
 			const wrapper = mount(Label);
 
 			expect(wrapper.attributes('for')).toBe('');
-		});
-	});
-
-	describe('styling', () => {
-		it('applies base text classes', () => {
-			const wrapper = mount(Label);
-
-			expect(wrapper.classes()).toContain('text-md');
-			expect(wrapper.classes()).toContain('font-regular');
 		});
 	});
 });

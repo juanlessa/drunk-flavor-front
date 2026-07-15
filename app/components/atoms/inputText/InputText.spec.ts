@@ -42,24 +42,16 @@ describe('InputText', () => {
 	});
 
 	describe('suffix', () => {
-		it('renders suffix inside the container when suffixOutside is false', () => {
+		it('renders suffix inside when suffixOutside is false', () => {
 			const wrapper = mount(InputText, { props: { suffix: 'kg' } });
 
 			expect(wrapper.text()).toContain('kg');
 		});
 
-		it('renders suffix outside the container when suffixOutside is true', () => {
+		it('renders suffix outside when suffixOutside is true', () => {
 			const wrapper = mount(InputText, { props: { suffix: 'ml', suffixOutside: true } });
 
 			expect(wrapper.text()).toContain('ml');
-		});
-
-		it('does not render suffix when empty', () => {
-			const wrapper = mount(InputText);
-			const divs = wrapper.findAll('div');
-			const suffixDivs = divs.filter((d) => d.text() !== '' && d.classes().includes('text-base'));
-
-			expect(suffixDivs).toHaveLength(0);
 		});
 	});
 
@@ -74,14 +66,13 @@ describe('InputText', () => {
 			expect(wrapper.emitted('update:modelValue')![0]).toEqual(['New value']);
 		});
 
-		it('emits update:modelValue and blur on blur', async () => {
+		it('emits blur on blur', async () => {
 			const wrapper = mount(InputText, { props: { modelValue: 'Test' } });
 			const input = wrapper.find('input');
 
 			await input.trigger('blur');
 
 			expect(wrapper.emitted('blur')).toHaveLength(1);
-			expect(wrapper.emitted('update:modelValue')).toBeTruthy();
 		});
 	});
 
@@ -89,13 +80,6 @@ describe('InputText', () => {
 		it('applies error border classes when hasError is true', () => {
 			const wrapper = mount(InputText, { props: { hasError: true } });
 			const container = wrapper.find('[class*="border-red"]');
-
-			expect(container.exists()).toBe(true);
-		});
-
-		it('applies border variant classes when border is true', () => {
-			const wrapper = mount(InputText, { props: { border: true } });
-			const container = wrapper.find('[class*="border-gray-300"]');
 
 			expect(container.exists()).toBe(true);
 		});

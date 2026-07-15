@@ -29,10 +29,7 @@ describe('Anchor', () => {
 		});
 
 		it('renders slot content over value prop', () => {
-			const wrapper = mountAnchor(
-				{ to: '/home', value: 'Fallback' },
-				{ default: 'Slot Link' }
-			);
+			const wrapper = mountAnchor({ to: '/home', value: 'Fallback' }, { default: 'Slot Link' });
 
 			expect(wrapper.text()).toBe('Slot Link');
 		});
