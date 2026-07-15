@@ -2,6 +2,12 @@
 	"name": "nuxt-app",
 	"private": true,
 	"type": "module",
+	"overrides": {
+		"@intlify/shared": "10.0.7",
+		"@intlify/core-base": "10.0.7",
+		"@intlify/message-compiler": "10.0.7",
+		"vue-i18n": "10.0.7"
+	},
 	"scripts": {
 		"build": "nuxt build",
 		"start": "node .output/server/index.mjs",
