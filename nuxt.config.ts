@@ -53,8 +53,8 @@ export default defineNuxtConfig({
 		strategy: 'no_prefix',
 		defaultLocale: 'en',
 		locales: ['en', 'pt'],
-		bundle: {
-			optimizeTranslationDirective: false
+		experimental: {
+			typedOptionsAndMessages: 'default'
 		}
 	},
 
