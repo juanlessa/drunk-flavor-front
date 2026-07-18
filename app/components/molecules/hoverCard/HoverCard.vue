@@ -9,7 +9,7 @@
 		</HoverCard.Trigger>
 		<HoverCard.Portal>
 			<HoverCard.Content
-				class="z-50 rounded-md border border-gray-200 shadow-lg dark:border-gray-750 dark:shadow-dark-card"
+				class="z-50 rounded-md bg-white dark:bg-black border border-gray-200 shadow-lg dark:border-gray-750 dark:shadow-dark-card"
 				:side="props.side"
 				:side-offset="props.sideOffset"
 				:align="props.align"

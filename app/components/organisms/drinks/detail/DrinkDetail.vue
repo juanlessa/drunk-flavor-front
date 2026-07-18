@@ -1,35 +1,33 @@
 <template>
-	<Box direction="col" class="flex-1 w-full max-w-screen-desktop mx-auto">
+	<Box direction="col">
 		<div
 			v-if="drink.cover"
 			class="w-full h-[30vh] bg-center bg-no-repeat bg-cover rounded-md overflow-hidden"
 			:style="{ backgroundImage: `url(${drink.cover})` }" />
 
-		<Card class="flex-1 p-4">
+		<Box direction="col" class="gap-6 p-4">
+			<Heading type="h1" size="lg" class="text-center">
+				{{ drink.translations[$i18n.locale as Language].name }}
+			</Heading>
+
 			<Box direction="col" class="gap-6">
-				<Heading type="h1" size="lg" class="text-center">
-					{{ drink.translations[$i18n.locale as Language].name }}
-				</Heading>
+				<Box direction="col" class="flex-1 gap-4">
+					<Heading size="md" class="text-center">
+						{{ $t('drinkDetailPage.ingredients') }}
+					</Heading>
+					<TextList :items="ingredientItems" size="lg" gap="none" />
+				</Box>
 
-				<Box class="gap-6">
-					<Box direction="col" class="flex-1 gap-4">
-						<Heading size="md" class="text-center">
-							{{ $t('drinkDetailPage.ingredients') }}
-						</Heading>
-						<TextList :items="ingredientItems" size="lg" gap="none" />
-					</Box>
-
-					<Box direction="col" class="flex-[2] gap-4">
-						<Heading size="md" class="text-center">
-							{{ $t('drinkDetailPage.instructions') }}
-						</Heading>
-						<Text size="lg">
-							{{ drink.translations[$i18n.locale as Language].method }}
-						</Text>
-					</Box>
+				<Box direction="col" class="flex-2 gap-4">
+					<Heading size="md" class="text-center">
+						{{ $t('drinkDetailPage.instructions') }}
+					</Heading>
+					<Text size="lg">
+						{{ drink.translations[$i18n.locale as Language].method }}
+					</Text>
 				</Box>
 			</Box>
-		</Card>
+		</Box>
 	</Box>
 </template>
 <script setup lang="ts">

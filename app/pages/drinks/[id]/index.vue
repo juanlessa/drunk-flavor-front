@@ -1,5 +1,5 @@
 <template>
-	<NuxtLayout>
+	<NuxtLayout name="primary">
 		<DrinkDetail :drink="drink" />
 	</NuxtLayout>
 </template>
