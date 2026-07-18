@@ -24,7 +24,7 @@ import type {
 	TextListWeight,
 	TextListGap
 } from '~/types/TextList';
-import { validateMarker, validateReversed } from '~/helpers/textList.helpers';
+import { validateMarker } from '~/helpers/textList.helpers';
 
 const props = defineProps({
 	type: {
@@ -38,8 +38,7 @@ const props = defineProps({
 	},
 	reversed: {
 		type: Boolean,
-		default: false,
-		validator: validateReversed
+		default: false
 	},
 	size: {
 		type: String as PropType<TextListSize>,

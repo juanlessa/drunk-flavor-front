@@ -14,11 +14,3 @@ export const validateMarker = (value: TextListMarker, props: { type?: TextListTy
 	}
 	return true;
 };
-
-export const validateReversed = (value: boolean, props: { type?: TextListType }): boolean => {
-	if (value && props.type !== 'ol') {
-		console.warn('[TextList] "reversed" can only be used with type "ol".');
-		return false;
-	}
-	return true;
-};

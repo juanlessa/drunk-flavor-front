@@ -17,16 +17,11 @@ describe('Box', () => {
 		});
 	});
 
-	describe('styling', () => {
-		it('applies flex class always', () => {
+	describe('direction', () => {
+		it('applies responsive direction by default (flex-col)', () => {
 			const wrapper = mount(Box);
 
 			expect(wrapper.classes()).toContain('flex');
-		});
-
-		it('applies responsive direction by default (flex-col tablet:flex-row)', () => {
-			const wrapper = mount(Box);
-
 			expect(wrapper.classes()).toContain('flex-col');
 		});
 
@@ -40,6 +35,44 @@ describe('Box', () => {
 			const wrapper = mount(Box, { props: { direction: 'col' } });
 
 			expect(wrapper.classes()).toContain('flex-col');
+		});
+
+		it('applies flex-row flex-wrap when direction is wrap', () => {
+			const wrapper = mount(Box, { props: { direction: 'wrap' } });
+
+			expect(wrapper.classes()).toContain('flex-row');
+			expect(wrapper.classes()).toContain('flex-wrap');
+		});
+
+		it('applies container-responsive classes with default breakpoint', () => {
+			const wrapper = mount(Box, {
+				props: { direction: 'container-responsive' }
+			});
+
+			expect(wrapper.classes()).toContain('flex-col');
+			expect(wrapper.classes().join(' ')).toContain('@md:flex-row');
+		});
+
+		it('applies container-responsive classes with custom breakpoint', () => {
+			const wrapper = mount(Box, {
+				props: { direction: 'container-responsive', containerBreakpoint: 'lg' }
+			});
+
+			expect(wrapper.classes().join(' ')).toContain('@lg:flex-row');
+		});
+	});
+
+	describe('container', () => {
+		it('does not apply @container by default', () => {
+			const wrapper = mount(Box);
+
+			expect(wrapper.classes()).not.toContain('@container');
+		});
+
+		it('applies @container when container prop is true', () => {
+			const wrapper = mount(Box, { props: { container: true } });
+
+			expect(wrapper.classes()).toContain('@container');
 		});
 	});
 });

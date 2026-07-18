@@ -5,7 +5,6 @@
 </template>
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import { validateContainerBreakpoint } from '~/helpers/box.helpers';
 import type { BoxContainerBreakpoint } from '~/types/Box';
 
 const props = defineProps({
@@ -19,8 +18,7 @@ const props = defineProps({
 	},
 	containerBreakpoint: {
 		type: String as PropType<BoxContainerBreakpoint>,
-		default: 'md',
-		validator: validateContainerBreakpoint
+		default: 'md'
 	}
 });
 

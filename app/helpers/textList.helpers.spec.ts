@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { validateMarker, validateReversed } from './textList.helpers';
+import { validateMarker } from './textList.helpers';
 
 describe('validateMarker', () => {
 	beforeEach(() => {
@@ -94,33 +94,3 @@ describe('validateMarker', () => {
 	});
 });
 
-describe('validateReversed', () => {
-	beforeEach(() => {
-		vi.spyOn(console, 'warn').mockImplementation(() => {});
-	});
-
-	it('accepts reversed=true for ol', () => {
-		expect(validateReversed(true, { type: 'ol' })).toBe(true);
-	});
-
-	it('accepts reversed=false for any type', () => {
-		expect(validateReversed(false, { type: 'ul' })).toBe(true);
-		expect(validateReversed(false, { type: 'ol' })).toBe(true);
-	});
-
-	it('rejects reversed=true for ul', () => {
-		expect(validateReversed(true, { type: 'ul' })).toBe(false);
-	});
-
-	it('rejects reversed=true when type is undefined (defaults to ul)', () => {
-		expect(validateReversed(true, {})).toBe(false);
-	});
-
-	it('warns when reversed is used with ul', () => {
-		validateReversed(true, { type: 'ul' });
-
-		expect(console.warn).toHaveBeenCalledWith(
-			expect.stringContaining('"reversed" can only be used with type "ol"')
-		);
-	});
-});
