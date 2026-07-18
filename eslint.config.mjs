@@ -35,7 +35,7 @@ export default withNuxt([
 			'vue/no-v-html': 'off',
 			'import/named': 'off',
 			'comma-dangle': ['error', 'never'],
-			quotes: ['error', 'single']
+			quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }]
 		}
 	}
 ]);
