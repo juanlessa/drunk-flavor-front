@@ -1,5 +1,5 @@
 <template>
-	<HoverCard side="right" :side-offset="8">
+	<HoverCard side="right" :side-offset="-8" :align="'start'" :align-offset="8">
 		<template #trigger>
 			<Card
 				rounded="md"

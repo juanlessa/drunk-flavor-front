@@ -5,12 +5,12 @@
 			class="w-full h-[30vh] bg-center bg-no-repeat bg-cover rounded-md overflow-hidden"
 			:style="{ backgroundImage: `url(${drink.cover})` }" />
 
-		<Box direction="col" class="gap-6 p-4">
+		<Box direction="col" class="gap-6 p-4" container>
 			<Heading type="h1" size="lg" class="text-center">
 				{{ drink.translations[$i18n.locale as Language].name }}
 			</Heading>
 
-			<Box direction="col" class="gap-6">
+			<Box direction="container-responsive" container-breakpoint="lg" class="gap-6">
 				<Box direction="col" class="flex-1 gap-4">
 					<Heading size="md" class="text-center">
 						{{ $t('drinkDetailPage.ingredients') }}
