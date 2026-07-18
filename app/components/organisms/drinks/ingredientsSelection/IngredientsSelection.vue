@@ -6,7 +6,7 @@
 		<Search
 			id="search-ingredients"
 			v-model:search-term="searchTerm"
-			:options="mapToSelectOptions(options, $i18n.locale as Language)"
+			:options="mapToSelectOptions(options, $i18n.locale)"
 			infinite-scroll
 			:loading="loading"
 			@load-more="loadNextPage"
@@ -15,14 +15,14 @@
 		<Box direction="col" class="gap-2">
 			<Box v-for="sel in selected" :key="sel._id" direction="row" class="gap-6 items-center">
 				<Text class="flex-1 text-left">{{
-					sel.translations[$i18n.locale as Language].name
+					sel.translations[$i18n.locale].name
 				}}</Text>
 
 				<InputNumber
 					:model-value="quantities[sel._id]"
 					input-width="4ch"
 					suffix-outside
-					:suffix="sel.translations[$i18n.locale as Language].unit"
+					:suffix="sel.translations[$i18n.locale].unit"
 					@update:model-value="(val: number) => updateQuantity(sel._id, val)" />
 
 				<button aria-label="remove ingredient" @click="handleRemove(sel._id)">
@@ -34,7 +34,6 @@
 </template>
 <script setup lang="ts">
 import type { DrinkIngredient, DrinkIngredientRequest } from '~/types/drink';
-import type { Language } from '~/types/translations';
 import { mapToSelectOptions } from '~/helpers/inputSelect.helpers';
 
 const props = defineProps({

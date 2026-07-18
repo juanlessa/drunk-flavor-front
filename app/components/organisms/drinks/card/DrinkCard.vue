@@ -7,7 +7,7 @@
 				@click="emit('click')">
 				<Thumbnail />
 				<div>
-					<Heading>{{ drink.translations[$i18n.locale as Language].name }}</Heading>
+					<Heading>{{ drink.translations[$i18n.locale].name }}</Heading>
 				</div>
 			</Card>
 		</template>
@@ -18,7 +18,6 @@
 <script setup lang="ts">
 import { initEmptyDrink } from '~/constants/drink';
 import type { Drink } from '~/types/drink';
-import type { Language } from '~/types/translations';
 
 defineProps({
 	drink: {

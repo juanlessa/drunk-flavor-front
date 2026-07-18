@@ -7,7 +7,7 @@
 
 		<Box direction="col" class="gap-6 p-4" container>
 			<Heading type="h1" size="lg" class="text-center">
-				{{ drink.translations[$i18n.locale as Language].name }}
+				{{ drink.translations[$i18n.locale].name }}
 			</Heading>
 
 			<Box direction="container-responsive" container-breakpoint="lg" class="gap-6">
@@ -23,7 +23,7 @@
 						{{ $t('drinkDetailPage.instructions') }}
 					</Heading>
 					<Text size="lg">
-						{{ drink.translations[$i18n.locale as Language].method }}
+						{{ drink.translations[$i18n.locale].method }}
 					</Text>
 				</Box>
 			</Box>
@@ -33,7 +33,6 @@
 <script setup lang="ts">
 import { initEmptyDrink } from '~/constants/drink';
 import type { Drink, DrinkIngredient } from '~/types/drink';
-import type { Language } from '~/types/translations';
 
 const { t, locale } = useI18n();
 
@@ -45,7 +44,7 @@ const props = defineProps({
 });
 
 const formatIngredient = (ing: DrinkIngredient): string => {
-	const lang = locale.value as Language;
+	const lang = locale.value;
 	const unit =
 		ing.quantity === 1
 			? ing.ingredient.translations[lang].unit

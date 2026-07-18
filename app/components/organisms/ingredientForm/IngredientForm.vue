@@ -84,7 +84,7 @@
 						id="category"
 						v-model="categorySelected"
 						v-model:search-term="categorySearchTerm"
-						:options="mapToSelectOptions(categoryOptions, $i18n.locale as Language)"
+						:options="mapToSelectOptions(categoryOptions, $i18n.locale)"
 						infinite-scroll
 						:loading="categoryLoading"
 						:has-error="!!checkError(`category_id`)"
@@ -111,7 +111,6 @@
 import { languages } from '~/constants/translations';
 import type { Ingredient, IngredientForm } from '~/types/ingredient';
 import { mapToSelectOptions } from '~/helpers/inputSelect.helpers';
-import type { Language } from '~/types/translations';
 import { mapIngredientToForm } from '~/helpers/ingredientMappers';
 
 const props = defineProps({
@@ -136,7 +135,7 @@ if (props.ingredient) {
 	updateFormState(mapIngredientToForm(props.ingredient));
 	categorySelected.value = {
 		value: props.ingredient.category._id,
-		label: props.ingredient.category.translations[locale.value as Language].name
+		label: props.ingredient.category.translations[locale.value].name
 	};
 }
 

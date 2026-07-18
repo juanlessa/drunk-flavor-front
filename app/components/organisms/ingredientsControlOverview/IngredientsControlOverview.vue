@@ -24,7 +24,7 @@
 							v-for="ingredient in ingredientRow"
 							:key="ingredient._id"
 							ref="itemControlCard"
-							:content="ingredient.translations[$i18n.locale as Language].name"
+							:content="ingredient.translations[$i18n.locale].name"
 							@click="() => handleEditIngredient(ingredient._id)"
 							@action="() => triggerDeleteModal(ingredient)" />
 					</div>
@@ -49,7 +49,6 @@
 <script setup lang="ts">
 import { initEmptyIngredient } from '~/constants/ingredient';
 import type { Ingredient } from '~/types/ingredient';
-import type { Language } from '~/types/translations';
 import { remToPixels } from '~/helpers/sizes';
 
 const { $router } = useNuxtApp();
@@ -103,7 +102,7 @@ function useIngredientDeleteModal() {
 	const ingredientToDelete = ref(initEmptyIngredient());
 
 	const modalContent = computed(() => ({
-		title: `${t('organisms.ingredientsControlOverview.deleteModal.title')} ${ingredientToDelete.value.translations[locale.value as Language].name}`,
+		title: `${t('organisms.ingredientsControlOverview.deleteModal.title')} ${ingredientToDelete.value.translations[locale.value].name}`,
 		description: `${t('organisms.ingredientsControlOverview.deleteModal.description')}`
 	}));
 

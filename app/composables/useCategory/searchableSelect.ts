@@ -1,6 +1,5 @@
 import type { CategorySearchSelectState } from '~/types/category';
 import type { QueryParams } from '~/types/query';
-import type { Language } from '~/types/translations';
 
 const initState = (): CategorySearchSelectState => ({
 	options: [],
@@ -79,7 +78,7 @@ export const useCategorySearchableSelect = () => {
 		const selectedCategory = state.value.options.find(
 			(opt) => opt._id === state.value.selected.value
 		);
-		const name = selectedCategory?.translations[newLocale as Language]?.name || '';
+		const name = selectedCategory?.translations[newLocale]?.name || '';
 		const id = state.value.selected.value;
 
 		state.value.selected = { label: name, value: id };

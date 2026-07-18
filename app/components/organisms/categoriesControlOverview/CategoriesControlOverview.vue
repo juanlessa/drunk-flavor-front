@@ -24,7 +24,7 @@
 							v-for="category in categoryRow"
 							:key="category._id"
 							ref="itemControlCard"
-							:content="category.translations[$i18n.locale as Language].name"
+							:content="category.translations[$i18n.locale].name"
 							@click="() => handleEditCategory(category._id)"
 							@action="() => triggerDeleteModal(category)" />
 					</div>
@@ -50,7 +50,6 @@
 import { initEmptyCategory } from '~/constants/category';
 import { remToPixels } from '~/helpers/sizes';
 import type { Category } from '~/types/category';
-import type { Language } from '~/types/translations';
 
 const { $router } = useNuxtApp();
 const { t, locale } = useI18n();
@@ -103,7 +102,7 @@ function useCategoryDeleteModal() {
 	const categoryToDelete = ref(initEmptyCategory());
 
 	const modalContent = computed(() => ({
-		title: `${t('organisms.categoriesControlOverview.deleteModal.title')} ${categoryToDelete.value.translations[locale.value as Language].name}`,
+		title: `${t('organisms.categoriesControlOverview.deleteModal.title')} ${categoryToDelete.value.translations[locale.value].name}`,
 		description: `${t('organisms.categoriesControlOverview.deleteModal.description')}`
 	}));
 

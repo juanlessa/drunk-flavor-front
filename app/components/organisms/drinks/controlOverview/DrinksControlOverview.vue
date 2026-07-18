@@ -24,7 +24,7 @@
 							v-for="drink in drinkRow"
 							:key="drink._id"
 							ref="itemControlCard"
-							:content="drink.translations[$i18n.locale as Language].name"
+							:content="drink.translations[$i18n.locale].name"
 							@click="() => handleEditDrink(drink._id)"
 							@action="() => triggerDeleteModal(drink)" />
 					</div>
@@ -49,7 +49,6 @@
 <script setup lang="ts">
 import { initEmptyDrink } from '~/constants/drink';
 import type { Drink } from '~/types/drink';
-import type { Language } from '~/types/translations';
 import { remToPixels } from '~/helpers/sizes';
 
 const { $router } = useNuxtApp();
@@ -103,7 +102,7 @@ function useDrinkDeleteModal() {
 	const drinkToDelete = ref(initEmptyDrink());
 
 	const modalContent = computed(() => ({
-		title: `${t('organisms.drinksControlOverview.deleteModal.title')} ${drinkToDelete.value.translations[locale.value as Language].name}`,
+		title: `${t('organisms.drinksControlOverview.deleteModal.title')} ${drinkToDelete.value.translations[locale.value].name}`,
 		description: `${t('organisms.drinksControlOverview.deleteModal.description')}`
 	}));
 
