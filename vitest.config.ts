@@ -13,7 +13,7 @@ export default defineConfig({
 					alias: { '~': appDir, '@': appDir }
 				},
 				test: {
-					name: 'logic',
+					name: 'node',
 					environment: 'node',
 					include: ['app/helpers/**/*.spec.ts']
 				}
@@ -24,7 +24,7 @@ export default defineConfig({
 					alias: { '~': appDir, '@': appDir }
 				},
 				test: {
-					name: 'unit',
+					name: 'happy-dom',
 					include: ['app/**/*.spec.ts'],
 					exclude: ['app/**/*.nuxt.spec.ts', 'app/helpers/**/*.spec.ts'],
 					environment: 'happy-dom',
