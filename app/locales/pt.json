@@ -67,8 +67,10 @@
 	"errors.ingredients.name": "nome deve ter no mínimo 1 carácter",
 	"errors.ingredients.unit": "unidade deve ter no mínimo 1 carácter",
 	"errors.ingredients.unitPlural": "unidade plural deve ter no mínimo 1 carácter",
-	"errors.ingredient.category": "categoria deve ser selecionada",
+	"errors.ingredients.category": "categoria deve ser selecionada",
 
+	"deleteModal.cancelButton.message": "cancelar",
+	"deleteModal.deleteButton.message": "excluir",
 	"deleteModal.message": "Tem certeza que deseja excluir o item",
 	"drinkDetailPage.ingredients": "Ingredientes",
 	"drinkDetailPage.ingredients.ofPreposition": "de",

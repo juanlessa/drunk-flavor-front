@@ -43,7 +43,7 @@ export default defineNuxtConfig({
 			compilerOptions: {
 				types: ['@nuxtjs/i18n']
 			},
-			include: ['./env.d.ts']
+			include: ['../i18n.config.ts']
 		}
 	},
 
