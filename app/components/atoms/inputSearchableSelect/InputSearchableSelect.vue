@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import { Combobox } from 'radix-vue/namespaced';
 import { tv } from 'tailwind-variants';
-import type { InputSelectOption } from '~/types/InputSelect';
+import type { InputSelectOption } from '../inputSelect/InputSelect.types';
 
 const props = defineProps({
 	modelValue: {

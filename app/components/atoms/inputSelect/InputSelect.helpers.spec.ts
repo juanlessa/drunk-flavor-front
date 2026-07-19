@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { mapToSelectOptions } from './inputSelect.helpers';
+import { mapToSelectOptions } from './InputSelect.helpers';
 
 describe('mapToSelectOptions', () => {
 	const entities = [

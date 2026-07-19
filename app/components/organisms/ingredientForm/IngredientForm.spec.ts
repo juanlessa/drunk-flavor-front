@@ -73,7 +73,7 @@ vi.mock('~/constants/translations', () => ({
 	languages: ['en', 'pt']
 }));
 
-vi.mock('~/helpers/inputSelect.helpers', () => ({
+vi.mock('~/components/atoms/inputSelect/InputSelect.helpers', () => ({
 	mapToSelectOptions: vi.fn(() => [])
 }));
 

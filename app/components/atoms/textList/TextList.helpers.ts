@@ -1,5 +1,5 @@
-import type { TextListMarker, TextListType } from '~/types/TextList';
-import { unorderedMarkers, orderedMarkers } from '~/types/TextList';
+import type { TextListMarker, TextListType } from './TextList.types';
+import { unorderedMarkers, orderedMarkers } from './TextList.types';
 
 export const validateMarker = (value: TextListMarker, props: { type?: TextListType }): boolean => {
 	const listType = props.type ?? 'ul';

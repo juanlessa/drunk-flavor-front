@@ -15,7 +15,7 @@ export default defineConfig({
 				test: {
 					name: 'node',
 					environment: 'node',
-					include: ['app/helpers/**/*.spec.ts']
+					include: ['app/helpers/**/*.spec.ts', 'app/**/*.helpers.spec.ts']
 				}
 			},
 			{
@@ -26,7 +26,11 @@ export default defineConfig({
 				test: {
 					name: 'happy-dom',
 					include: ['app/**/*.spec.ts'],
-					exclude: ['app/**/*.nuxt.spec.ts', 'app/helpers/**/*.spec.ts'],
+					exclude: [
+						'app/**/*.nuxt.spec.ts',
+						'app/helpers/**/*.spec.ts',
+						'app/**/*.helpers.spec.ts'
+					],
 					environment: 'happy-dom',
 					setupFiles: ['./vitest.setup.ts']
 				}

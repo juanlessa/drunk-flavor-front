@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
 import { Toast } from 'radix-vue/namespaced';
-import { toastConfig } from '~/constants/toastNotification';
+import { toastConfig } from './ToastNotification.constants';
 
 const { state, removeToast } = useToast();
 

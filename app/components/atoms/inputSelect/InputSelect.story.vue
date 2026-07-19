@@ -24,7 +24,7 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import type { InputSelectOption } from '~/types/InputSelect';
+import type { InputSelectOption } from './InputSelect.types';
 
 const selectInputSampleOptions: InputSelectOption[] = [
 	{ label: 'Juice', value: '1' },

@@ -23,8 +23,8 @@ import type {
 	TextListSize,
 	TextListWeight,
 	TextListGap
-} from '~/types/TextList';
-import { validateMarker } from '~/helpers/textList.helpers';
+} from './TextList.types';
+import { validateMarker } from './TextList.helpers';
 
 const props = defineProps({
 	type: {

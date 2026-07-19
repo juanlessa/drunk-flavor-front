@@ -5,7 +5,7 @@
 </template>
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { BoxContainerBreakpoint } from '~/types/Box';
+import type { BoxContainerBreakpoint } from './Box.types';
 
 const props = defineProps({
 	direction: {

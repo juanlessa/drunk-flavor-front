@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { ButtonSize, ButtonType, ButtonVariant } from '~/types/Button';
+import type { ButtonSize, ButtonType, ButtonVariant } from './Button.types';
 
 const props = defineProps({
 	value: {

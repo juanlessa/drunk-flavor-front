@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import ArrowRightIcon from '~/components/icons/ArrowRightIcon.vue';
 import LoginIcon from '~/components/icons/LoginIcon.vue';
-import type { ILink } from '~/types/TopBar';
+import type { ILink } from './TopBar.types';
 
 const { $auth } = useNuxtApp();
 const localePath = useLocalePath();

@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { Select } from 'radix-vue/namespaced';
 import { tv } from 'tailwind-variants';
-import type { InputSelectOption } from '~/types/InputSelect';
+import type { InputSelectOption } from './InputSelect.types';
 
 const props = defineProps({
 	modelValue: { type: String, default: '' },

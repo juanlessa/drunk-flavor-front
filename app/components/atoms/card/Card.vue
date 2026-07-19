@@ -5,7 +5,7 @@
 </template>
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { CardRounded } from '~/types/Card';
+import type { CardRounded } from './Card.types';
 
 const cardStyle = tv({
 	base: 'relative bg-white dark:bg-black',

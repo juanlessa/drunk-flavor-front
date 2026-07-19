@@ -1,4 +1,4 @@
-import type { ToastConfig } from '~/types/ToastNotification';
+import type { ToastConfig } from './ToastNotification.types';
 
 export const toastConfig: ToastConfig = {
 	duration: 5000, // time in milliseconds that each toast should remain visible

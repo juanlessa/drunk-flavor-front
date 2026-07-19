@@ -16,7 +16,7 @@
 </template>
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { ButtonProps } from '~/types/Button';
+import type { ButtonProps } from '~/components/atoms/button/Button.types';
 
 const props = defineProps({
 	actionButtonProps: {

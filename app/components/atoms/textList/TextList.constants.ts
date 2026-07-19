@@ -9,7 +9,7 @@ import {
 	type TextListSize,
 	type TextListWeight,
 	type TextListGap
-} from '~/types/TextList';
+} from './TextList.types';
 
 export const textListTypeOptions = Object.keys(TextListTypeEnum) as TextListType[];
 export const textListMarkerOptions = Object.keys(TextListMarkerEnum) as TextListMarker[];

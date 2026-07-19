@@ -110,7 +110,7 @@
 <script setup lang="ts">
 import { languages } from '~/constants/translations';
 import type { Ingredient, IngredientForm } from '~/types/ingredient';
-import { mapToSelectOptions } from '~/helpers/inputSelect.helpers';
+import { mapToSelectOptions } from '~/components/atoms/inputSelect/InputSelect.helpers';
 import { mapIngredientToForm } from '~/helpers/ingredientMappers';
 
 const props = defineProps({

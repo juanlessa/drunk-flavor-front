@@ -5,7 +5,7 @@ import {
 	type ButtonSize,
 	type ButtonType,
 	type ButtonVariant
-} from '~/types/Button';
+} from './Button.types';
 
 export const buttonVariantOptions = Object.keys(ButtonVariantEnum) as ButtonVariant[];
 export const buttonSizeOptions = Object.keys(ButtonSizeEnum) as ButtonSize[];

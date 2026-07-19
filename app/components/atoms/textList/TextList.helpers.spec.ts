@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { validateMarker } from './textList.helpers';
+import { validateMarker } from './TextList.helpers';
 
 describe('validateMarker', () => {
 	beforeEach(() => {

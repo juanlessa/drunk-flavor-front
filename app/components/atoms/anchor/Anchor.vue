@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
 import type { RouteLocationRaw } from 'vue-router';
-import type { AnchorSize, AnchorWeight } from '~/types/Anchor';
+import type { AnchorSize, AnchorWeight } from './Anchor.types';
 
 const anchorStyle = tv({
 	base: 'text-black dark:text-white',

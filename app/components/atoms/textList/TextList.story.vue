@@ -59,14 +59,14 @@ import type {
 	TextListSize,
 	TextListWeight,
 	TextListGap
-} from '~/types/TextList';
+} from './TextList.types';
 import {
 	textListTypeOptions,
 	textListMarkerOptions,
 	textListSizeOptions,
 	textListWeightOptions,
 	textListGapOptions
-} from '~/constants/TextList';
+} from './TextList.constants';
 
 type State = {
 	type: TextListType;

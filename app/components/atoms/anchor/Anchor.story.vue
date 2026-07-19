@@ -22,8 +22,8 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import type { AnchorSize, AnchorWeight } from '~/types/Anchor';
-import { AnchorSizeEnum, AnchorWeightEnum } from '~/types/Anchor';
+import type { AnchorSize, AnchorWeight } from './Anchor.types';
+import { AnchorSizeEnum, AnchorWeightEnum } from './Anchor.types';
 
 const anchorSizeOptions = Object.keys(AnchorSizeEnum) as AnchorSize[];
 const anchorWeightOptions = Object.keys(AnchorWeightEnum) as AnchorWeight[];

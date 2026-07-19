@@ -26,7 +26,7 @@
 </template>
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { InputTextType } from '~/types/InputText';
+import type { InputTextType } from './InputText.types';
 
 const props = defineProps({
 	modelValue: { type: [String, Number], default: '' },

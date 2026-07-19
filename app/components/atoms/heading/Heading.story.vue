@@ -16,8 +16,8 @@
 	</Story>
 </template>
 <script lang="ts" setup>
-import type { HeadingSize, HeadingType } from '~/types/Heading';
-import { headingSizeOptions, headingTypeOptions } from '~/constants/Heading';
+import type { HeadingSize, HeadingType } from './Heading.types';
+import { headingSizeOptions, headingTypeOptions } from './Heading.constants';
 
 type State = {
 	value: string;

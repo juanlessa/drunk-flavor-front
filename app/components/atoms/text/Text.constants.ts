@@ -5,7 +5,7 @@ import {
 	type TextType,
 	type TextSize,
 	type TextWeight
-} from '~/types/Text';
+} from './Text.types';
 
 export const textTypeOptions = Object.keys(TextTypeEnum) as TextType[];
 export const textSizeOptions = Object.keys(TextSizeEnum) as TextSize[];

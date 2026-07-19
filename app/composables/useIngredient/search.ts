@@ -1,5 +1,5 @@
 import type { IngredientSearchState } from '~/types/ingredient';
-import type { InputSelectOption } from '~/types/InputSelect';
+import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
 import type { QueryParams } from '~/types/query';
 
 const initState = (): IngredientSearchState => ({

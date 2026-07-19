@@ -1,4 +1,4 @@
-import type { InputSelectOption } from '~/types/InputSelect';
+import type { InputSelectOption } from './InputSelect.types';
 import type { TranslationAnyWithNameKey, Translations, Language } from '~/types/translations';
 
 export const mapToSelectOptions = <

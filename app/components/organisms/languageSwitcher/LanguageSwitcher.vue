@@ -7,7 +7,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import type { InputSelectOption } from '~/types/InputSelect';
+import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
 
 const { locale, setLocale } = useI18n();
 

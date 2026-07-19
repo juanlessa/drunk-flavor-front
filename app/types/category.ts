@@ -3,7 +3,7 @@ import type { Translations } from './translations';
 import type { FieldError } from './form';
 import type { Filter } from './filters';
 import type { QueryParams } from './query';
-import type { InputSelectOption } from './InputSelect';
+import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
 
 export type CategoryTranslation = {
 	name: string;
