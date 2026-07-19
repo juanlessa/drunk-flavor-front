@@ -27,7 +27,8 @@ export default defineNuxtPlugin({
 						`${SESSION_TOKEN_NAME}=${session}`
 					].join('; ');
 
-					options.headers = { ...options.headers, Cookie: cookies };
+					options.headers = new Headers(options.headers);
+					options.headers.set('Cookie', cookies);
 				}
 			}
 		});
