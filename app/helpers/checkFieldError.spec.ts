@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { checkFieldError } from './checkFieldError';
-import type { FieldError } from '~/types/form';
+import type { FieldError } from '~/types/form.types';
 
 describe('checkFieldError', () => {
 	const errors: FieldError[] = [

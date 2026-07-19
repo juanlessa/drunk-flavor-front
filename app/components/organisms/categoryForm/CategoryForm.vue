@@ -33,8 +33,8 @@
 	</Form>
 </template>
 <script setup lang="ts">
-import { languages } from '~/constants/translations';
-import type { CategoryForm } from '~/types/category';
+import { languages } from '~/domain/shared/translations.constants';
+import type { CategoryForm } from '~/types/category.types';
 
 const props = defineProps({
 	categoryForm: { type: Object as PropType<CategoryForm>, default: undefined }

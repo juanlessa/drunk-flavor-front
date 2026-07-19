@@ -31,8 +31,8 @@
 	</Box>
 </template>
 <script setup lang="ts">
-import { initEmptyDrink } from '~/factories/drink';
-import type { Drink, DrinkIngredient } from '~/types/drink';
+import { initEmptyDrink } from '~/domain/drink/drink.factory';
+import type { Drink, DrinkIngredient } from '~/types/drink.types';
 
 const { t, locale } = useI18n();
 

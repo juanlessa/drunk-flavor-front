@@ -1,6 +1,6 @@
 import { z } from 'zod/v4';
-import { languages } from '@/constants/translations';
-import type { Language } from '~/types/translations';
+import { languages } from '~/domain/shared/translations.constants';
+import type { Language } from '~/domain/shared/translations.types';
 
 export const getZodTranslationsSchema = (schema: z.ZodType) => {
 	const translationsSchema = languages.reduce(

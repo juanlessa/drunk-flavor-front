@@ -4,8 +4,8 @@
 	</div>
 </template>
 <script setup lang="ts">
-import type { CategoryForm } from '~/types/category';
-import { mapFormToCreateCategory } from '~/helpers/categoryMappers';
+import type { CategoryForm } from '~/types/category.types';
+import { mapFormToCreateCategory } from '~/mappers/category.mappers';
 
 const { $api, $router } = useNuxtApp();
 const { resetFormState } = useCategoryForm();

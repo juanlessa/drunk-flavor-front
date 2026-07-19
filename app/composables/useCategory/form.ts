@@ -1,6 +1,6 @@
-import type { CategoryForm, CategoryFormState } from '@/types/category';
+import type { CategoryForm, CategoryFormState } from '~/types/category.types';
 import { categoryFormValidator } from '@/validations/category';
-import { initEmptyCategoryForm } from '~/factories/category';
+import { initEmptyCategoryForm } from '~/factories/category.factory';
 import { checkFieldError } from '~/helpers/checkFieldError';
 
 const initState = (): CategoryFormState => ({

@@ -82,9 +82,9 @@
 	</Form>
 </template>
 <script setup lang="ts">
-import { languages } from '~/constants/translations';
-import { mapDrinkToForm } from '~/helpers/drinkMappers';
-import type { Drink, DrinkFormAndMedia } from '~/types/drink';
+import { languages } from '~/domain/shared/translations.constants';
+import { mapDrinkToForm } from '~/mappers/drink.mappers.js';
+import type { Drink, DrinkFormAndMedia } from '~/types/drink.types.js';
 import IngredientsSelection from '../ingredientsSelection/IngredientsSelection.vue';
 
 const props = defineProps({
@@ -97,9 +97,7 @@ const emit = defineEmits<{
 
 const { formState, updateFormState, checkError, validateForm } = useDrinkForm();
 
-const drinkIngredients = computed(() =>
-	props.drink ? props.drink.ingredients : []
-);
+const drinkIngredients = computed(() => (props.drink ? props.drink.ingredients : []));
 
 if (props.drink) {
 	updateFormState(mapDrinkToForm(props.drink));

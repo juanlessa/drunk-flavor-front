@@ -4,8 +4,8 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { mapCategoryToForm, mapFormToUpdateCategory } from '~/helpers/categoryMappers';
-import type { CategoryForm } from '~/types/category';
+import { mapCategoryToForm, mapFormToUpdateCategory } from '~/mappers/category.mappers';
+import type { CategoryForm } from '~/types/category.types';
 
 const props = defineProps({
 	categoryId: { type: String, required: true }

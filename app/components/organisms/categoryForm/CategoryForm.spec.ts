@@ -48,7 +48,7 @@ const mockValidateForm = vi.fn();
 const mockUpdateFormState = vi.fn();
 const mockResetFormState = vi.fn();
 
-vi.mock('~/constants/translations', () => ({
+vi.mock('~/domain/shared/translations.constants', () => ({
 	languages: ['en', 'pt']
 }));
 

@@ -5,7 +5,7 @@ export const userNameValidation = z.string().trim().min(1, { error: 'errors.user
 
 export const userSurnameValidation = z.string().trim().min(1, { error: 'errors.users.surname' });
 
-export const userEmailValidation = z.string().email({ error: 'errors.users.email' });
+export const userEmailValidation = z.email({ error: 'errors.users.email' });
 
 export const userPasswordValidation = z.string().min(8, { error: 'errors.users.password' });
 

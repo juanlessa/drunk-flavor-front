@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 import { getZodTranslationsSchema } from '~/helpers/getZodTranslationsSchema';
 import { validateSchema } from '~/helpers/validateSchema';
-import type { IngredientForm } from '~/types/ingredient';
+import type { IngredientForm } from '~/types/ingredient.types';
 
 // fields validation
 export const ingredientNameValidation = z

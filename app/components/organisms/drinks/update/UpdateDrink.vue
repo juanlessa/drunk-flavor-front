@@ -4,8 +4,8 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { mapFormToUpdateDrink } from '~/helpers/drinkMappers';
-import type { Drink, DrinkFormAndMedia } from '~/types/drink';
+import { mapFormToUpdateDrink } from '~/mappers/drink.mappers';
+import type { Drink, DrinkFormAndMedia } from '~/types/drink.types';
 
 const props = defineProps({
 	drinkId: { type: String, required: true }
@@ -46,7 +46,11 @@ const handleSubmit = async ({ form, cover, thumbnail }: DrinkFormAndMedia) => {
 		try {
 			await $api.drinks.updateCover(props.drinkId, cover);
 		} catch (error) {
-			addToast({ type: 'error', title: 'Error', message: 'drink cover has not been updated' });
+			addToast({
+				type: 'error',
+				title: 'Error',
+				message: 'drink cover has not been updated'
+			});
 			console.error(error);
 		}
 	}
@@ -55,7 +59,11 @@ const handleSubmit = async ({ form, cover, thumbnail }: DrinkFormAndMedia) => {
 		try {
 			await $api.drinks.updateThumbnail(props.drinkId, thumbnail);
 		} catch (error) {
-			addToast({ type: 'error', title: 'Error', message: 'drink thumbnail has not been updated' });
+			addToast({
+				type: 'error',
+				title: 'Error',
+				message: 'drink thumbnail has not been updated'
+			});
 			console.error(error);
 		}
 	}

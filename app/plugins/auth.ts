@@ -1,4 +1,4 @@
-import type { AuthState } from '~/types/authentication';
+import type { AuthState } from '~/types/auth.types';
 
 const initState = (): AuthState => {
 	return {

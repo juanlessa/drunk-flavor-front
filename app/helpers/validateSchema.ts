@@ -1,5 +1,5 @@
 import type { z } from 'zod/v4';
-import type { FieldError } from '@/types/form';
+import type { FieldError } from '~/types/form.types';
 
 export const validateSchema =
 	<T>(schema: z.ZodType) =>

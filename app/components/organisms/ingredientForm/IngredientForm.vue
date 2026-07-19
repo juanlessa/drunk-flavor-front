@@ -108,10 +108,10 @@
 	</Form>
 </template>
 <script setup lang="ts">
-import { languages } from '~/constants/translations';
-import type { Ingredient, IngredientForm } from '~/types/ingredient';
+import { languages } from '~/domain/shared/translations.constants';
+import type { Ingredient, IngredientForm } from '~/types/ingredient.types';
 import { mapToSelectOptions } from '~/components/atoms/inputSelect/InputSelect.helpers';
-import { mapIngredientToForm } from '~/helpers/ingredientMappers';
+import { mapIngredientToForm } from '~/mappers/ingredient.mappers';
 
 const props = defineProps({
 	ingredient: { type: Object as PropType<Ingredient>, default: undefined }

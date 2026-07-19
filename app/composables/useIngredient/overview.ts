@@ -1,4 +1,4 @@
-import type { IngredientsOverviewState } from '~/types/ingredient';
+import type { IngredientsOverviewState } from '~/types/ingredient.types';
 
 const initState = (): IngredientsOverviewState => ({
 	ingredients: [],

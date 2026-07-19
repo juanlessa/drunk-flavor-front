@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import guestMiddleware from './guest';
 
 const { mockAuthenticate, mockAuthState } = vi.hoisted(() => {
 	const mockAuthenticate = vi.fn();
@@ -11,8 +12,6 @@ const { mockAuthenticate, mockAuthState } = vi.hoisted(() => {
 	(globalThis as any).navigateTo = (path: string) => ({ redirect: path });
 	return { mockAuthenticate, mockAuthState };
 });
-
-import guestMiddleware from './guest';
 
 describe('guest middleware', () => {
 	beforeEach(() => {

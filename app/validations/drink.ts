@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 import { getZodTranslationsSchema } from '~/helpers/getZodTranslationsSchema';
 import { validateSchema } from '~/helpers/validateSchema';
-import type { DrinkForm } from '~/types/drink';
+import type { DrinkForm } from '~/types/drink.types';
 
 // fields validation
 export const drinkNameValidation = z.string().trim().min(1, { error: 'errors.drinks.name' });

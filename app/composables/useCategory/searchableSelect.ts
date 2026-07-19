@@ -1,5 +1,5 @@
-import type { CategorySearchSelectState } from '~/types/category';
-import type { QueryParams } from '~/types/query';
+import type { CategorySearchSelectState } from '~/types/category.types';
+import type { QueryParams } from '~/domain/shared/query.types';
 
 const initState = (): CategorySearchSelectState => ({
 	options: [],

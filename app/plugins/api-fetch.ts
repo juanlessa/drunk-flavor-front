@@ -1,10 +1,10 @@
-import { AUTH_TOKEN_NAME, SESSION_TOKEN_NAME } from '~/constants/authentication';
-import { authRepository } from '~/repositories/auth.repository';
-import { categoriesRepository } from '~/repositories/categories.repository';
-import { drinksRepository } from '~/repositories/drinks.repository';
-import { ingredientsRepository } from '~/repositories/ingredients.repository';
-import { profileRepository } from '~/repositories/profile.repository copy';
-import { usersRepository } from '~/repositories/users.repository';
+import { AUTH_TOKEN_NAME, SESSION_TOKEN_NAME } from '~/domain/auth/auth.constants';
+import { authRepository } from '~/domain/auth/auth.repository';
+import { categoriesRepository } from '~/domain/category/category.repository';
+import { drinksRepository } from '~/domain/drink/drink.repository';
+import { ingredientsRepository } from '~/domain/ingredient/ingredient.repository';
+import { profileRepository } from '~/domain/profile/profile.repository';
+import { usersRepository } from '~/domain/user/user.repository';
 
 export default defineNuxtPlugin({
 	name: 'api-fetch',

@@ -4,8 +4,8 @@
 	</div>
 </template>
 <script setup lang="ts">
-import type { IngredientForm } from '~/types/ingredient';
-import { mapFormToCreateIngredient } from '~/helpers/ingredientMappers';
+import type { IngredientForm } from '~/types/ingredient.types';
+import { mapFormToCreateIngredient } from '~/mappers/ingredient.mappers';
 
 const { $api, $router } = useNuxtApp();
 const { resetFormState } = useIngredientForm();

@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 import { validateSchema } from '~/helpers/validateSchema';
 import { userEmailValidation, userPasswordValidation } from './user';
-import type { LoginForm } from '~/types/authentication';
+import type { LoginForm } from '~/types/auth.types';
 
 // schemas
 export const loginFormSchema = z.object({

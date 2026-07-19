@@ -1,4 +1,4 @@
-import type { CategoriesOverviewState } from '@/types/category';
+import type { CategoriesOverviewState } from '~/types/category.types';
 
 const initState = (): CategoriesOverviewState => ({
 	categories: [],

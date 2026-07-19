@@ -69,7 +69,7 @@ const mockCategoryOptions = ref([]);
 const mockCategoryLoadNextPage = vi.fn();
 
 // --- Module mocks ---
-vi.mock('~/constants/translations', () => ({
+vi.mock('~/domain/shared/translations.constants', () => ({
 	languages: ['en', 'pt']
 }));
 
@@ -77,7 +77,7 @@ vi.mock('~/components/atoms/inputSelect/InputSelect.helpers', () => ({
 	mapToSelectOptions: vi.fn(() => [])
 }));
 
-vi.mock('~/helpers/ingredientMappers', () => ({
+vi.mock('~/domain/ingredient/ingredient.mappers', () => ({
 	mapIngredientToForm: vi.fn((ingredient) => ({
 		translations: ingredient.translations,
 		category_id: ingredient.category._id,

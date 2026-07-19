@@ -14,9 +14,7 @@
 
 		<Box direction="col" class="gap-2">
 			<Box v-for="sel in selected" :key="sel._id" direction="row" class="gap-6 items-center">
-				<Text class="flex-1 text-left">{{
-					sel.translations[$i18n.locale].name
-				}}</Text>
+				<Text class="flex-1 text-left">{{ sel.translations[$i18n.locale].name }}</Text>
 
 				<InputNumber
 					:model-value="quantities[sel._id]"
@@ -33,7 +31,7 @@
 	</Box>
 </template>
 <script setup lang="ts">
-import type { DrinkIngredient, DrinkIngredientRequest } from '~/types/drink';
+import type { DrinkIngredient, DrinkIngredientRequest } from '~/types/drink.types';
 import { mapToSelectOptions } from '~/components/atoms/inputSelect/InputSelect.helpers';
 
 const props = defineProps({

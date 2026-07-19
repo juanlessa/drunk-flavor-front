@@ -47,9 +47,9 @@
 	</DeleteModal>
 </template>
 <script setup lang="ts">
-import { initEmptyCategory } from '~/factories/category';
+import { initEmptyCategory } from '~/domain/category/category.factory';
 import { remToPixels } from '~/helpers/sizes';
-import type { Category } from '~/types/category';
+import type { Category } from '~/domain/category/category.entity';
 
 const { $router } = useNuxtApp();
 const { t, locale } = useI18n();

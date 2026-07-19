@@ -16,8 +16,8 @@
 	</HoverCard>
 </template>
 <script setup lang="ts">
-import { initEmptyDrink } from '~/factories/drink';
-import type { Drink } from '~/types/drink';
+import { initEmptyDrink } from '~/domain/drink/drink.factory';
+import type { Drink } from '~/types/drink.types';
 
 defineProps({
 	drink: {

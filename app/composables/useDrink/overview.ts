@@ -1,4 +1,4 @@
-import type { DrinksOverviewState } from '~/types/drink';
+import type { DrinksOverviewState } from '~/types/drink.types';
 
 const initState = (): DrinksOverviewState => ({
 	drinks: [],

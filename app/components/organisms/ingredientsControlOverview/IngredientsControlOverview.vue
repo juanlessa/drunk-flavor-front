@@ -47,8 +47,8 @@
 	</DeleteModal>
 </template>
 <script setup lang="ts">
-import { initEmptyIngredient } from '~/factories/ingredient';
-import type { Ingredient } from '~/types/ingredient';
+import { initEmptyIngredient } from '~/domain/ingredient/ingredient.factory';
+import type { Ingredient } from '~/types/ingredient.types';
 import { remToPixels } from '~/helpers/sizes';
 
 const { $router } = useNuxtApp();

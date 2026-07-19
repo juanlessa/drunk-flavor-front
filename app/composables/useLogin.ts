@@ -1,6 +1,6 @@
-import { initEmptyLoginForm } from '~/factories/authentication';
+import { initEmptyLoginForm } from '~/factories/auth.factory';
 import { checkFieldError } from '~/helpers/checkFieldError';
-import type { LoginFormState } from '~/types/authentication';
+import type { LoginFormState } from '~/types/auth.types';
 import { loginFormValidator } from '~/validations/authentication';
 
 const initState = (): LoginFormState => ({

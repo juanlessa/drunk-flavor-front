@@ -1,13 +1,13 @@
 /// <reference types="@histoire/plugin-vue/components" />
 
-import type { Language } from './app/types/translations';
+import type { Locale } from './app/types/i18n.types';
 import type en from './app/locales/en.json';
 
 type MessageSchema = typeof en;
 
 declare module '@intlify/core-base' {
 	interface GeneratedTypeConfig {
-		locale: Language;
+		locale: Locale;
 	}
 }
 
