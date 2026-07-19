@@ -47,7 +47,7 @@
 	</DeleteModal>
 </template>
 <script setup lang="ts">
-import { initEmptyIngredient } from '~/constants/ingredient';
+import { initEmptyIngredient } from '~/factories/ingredient';
 import type { Ingredient } from '~/types/ingredient';
 import { remToPixels } from '~/helpers/sizes';
 

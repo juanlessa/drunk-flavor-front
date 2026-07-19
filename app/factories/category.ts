@@ -1,4 +1,4 @@
-import type { Category, CategoryForm } from '@/types/category';
+import type { Category, CategoryForm } from '~/types/category';
 
 export const initEmptyCategory = (): Category => ({
 	_id: '',

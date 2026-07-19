@@ -31,7 +31,7 @@
 	</Box>
 </template>
 <script setup lang="ts">
-import { initEmptyDrink } from '~/constants/drink';
+import { initEmptyDrink } from '~/factories/drink';
 import type { Drink, DrinkIngredient } from '~/types/drink';
 
 const { t, locale } = useI18n();

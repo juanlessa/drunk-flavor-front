@@ -1,6 +1,6 @@
 import { checkFieldError } from '~/helpers/checkFieldError';
 import type { IngredientForm, IngredientFormState } from '~/types/ingredient';
-import { initEmptyIngredientForm } from '~/constants/ingredient';
+import { initEmptyIngredientForm } from '~/factories/ingredient';
 import { ingredientFormValidator } from '~/validations/ingredient';
 
 const initState = (): IngredientFormState => ({

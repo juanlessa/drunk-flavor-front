@@ -1,6 +1,6 @@
 import { checkFieldError } from '~/helpers/checkFieldError';
 import type { DrinkForm, DrinkFormState } from '~/types/drink';
-import { initEmptyDrinkForm } from '~/constants/drink';
+import { initEmptyDrinkForm } from '~/factories/drink';
 import { drinkFormValidator } from '~/validations/drink';
 
 const initState = (): DrinkFormState => ({

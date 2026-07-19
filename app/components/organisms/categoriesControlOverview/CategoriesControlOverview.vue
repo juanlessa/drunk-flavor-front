@@ -47,7 +47,7 @@
 	</DeleteModal>
 </template>
 <script setup lang="ts">
-import { initEmptyCategory } from '~/constants/category';
+import { initEmptyCategory } from '~/factories/category';
 import { remToPixels } from '~/helpers/sizes';
 import type { Category } from '~/types/category';
 

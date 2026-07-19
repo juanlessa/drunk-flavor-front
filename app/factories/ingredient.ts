@@ -1,5 +1,5 @@
 import type { Ingredient, IngredientForm } from '~/types/ingredient';
-import { initEmptyCategory } from '~/constants/category';
+import { initEmptyCategory } from '~/factories/category';
 
 export const initEmptyIngredient = (): Ingredient => ({
 	_id: '',

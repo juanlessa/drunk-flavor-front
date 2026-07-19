@@ -1,4 +1,4 @@
-import { initEmptyLoginForm } from '~/constants/authentication';
+import { initEmptyLoginForm } from '~/factories/authentication';
 import { checkFieldError } from '~/helpers/checkFieldError';
 import type { LoginFormState } from '~/types/authentication';
 import { loginFormValidator } from '~/validations/authentication';
