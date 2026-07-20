@@ -1,9 +1,11 @@
+import { textListOrderedMarkerOptions, textListUnorderedMarkerOptions } from './TextList.constants';
 import type { TextListMarker, TextListType } from './TextList.types';
-import { unorderedMarkers, orderedMarkers } from './TextList.types';
 
 export const validateMarker = (value: TextListMarker, props: { type?: TextListType }): boolean => {
 	const listType = props.type ?? 'ul';
-	const allowedMarkers = listType === 'ol' ? orderedMarkers : unorderedMarkers;
+	const allowedMarkers = [
+		...(listType === 'ol' ? textListOrderedMarkerOptions : textListUnorderedMarkerOptions)
+	];
 
 	if (!allowedMarkers.includes(value)) {
 		console.warn(

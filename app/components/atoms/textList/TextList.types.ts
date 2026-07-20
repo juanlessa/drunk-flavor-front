@@ -3,11 +3,15 @@ export enum TextListTypeEnum {
 	ol = 'ol'
 }
 
-export enum TextListMarkerEnum {
+export enum TextListUnorderedMarkerEnum {
 	none = 'none',
 	disc = 'disc',
 	circle = 'circle',
-	square = 'square',
+	square = 'square'
+}
+
+export enum TextListOrderedMarkerEnum {
+	none = 'none',
 	decimal = 'decimal',
 	'decimal-leading-zero' = 'decimal-leading-zero',
 	'lower-alpha' = 'lower-alpha',
@@ -41,18 +45,9 @@ export enum TextListGapEnum {
 }
 
 export type TextListType = keyof typeof TextListTypeEnum;
-export type TextListMarker = keyof typeof TextListMarkerEnum;
+export type TextListUnorderedMarker = keyof typeof TextListUnorderedMarkerEnum;
+export type TextListOrderedMarker = keyof typeof TextListOrderedMarkerEnum;
+export type TextListMarker = TextListUnorderedMarker | TextListOrderedMarker;
 export type TextListSize = keyof typeof TextListSizeEnum;
 export type TextListWeight = keyof typeof TextListWeightEnum;
 export type TextListGap = keyof typeof TextListGapEnum;
-
-export const unorderedMarkers: TextListMarker[] = ['none', 'disc', 'circle', 'square'];
-export const orderedMarkers: TextListMarker[] = [
-	'none',
-	'decimal',
-	'decimal-leading-zero',
-	'lower-alpha',
-	'upper-alpha',
-	'lower-roman',
-	'upper-roman'
-];

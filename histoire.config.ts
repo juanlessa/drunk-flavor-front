@@ -5,5 +5,8 @@ import { HstNuxt } from '@histoire/plugin-nuxt';
 export default defineConfig({
 	plugins: [HstVue(), HstNuxt()],
 	setupFile: '/app/histoire.setup.ts',
-	collectMaxThreads: 1
+	collectMaxThreads: 1,
+	defaultStoryProps: {
+		autoPropsDisabled: true
+	}
 });

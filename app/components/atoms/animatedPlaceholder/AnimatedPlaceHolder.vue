@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="animate-loading bg-loading-gradient dark:bg-loading-dark-gradient bg-[length:200%_100%]"
+		class="animate-loading bg-loading-gradient dark:bg-loading-dark-gradient bg-size-[200%_100%]"
 		:style="{ height, width, borderRadius }">
 		&nbsp;
 	</div>

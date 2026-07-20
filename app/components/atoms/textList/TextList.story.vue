@@ -1,109 +1,96 @@
 <template>
 	<Story title="Atoms/TextList">
-		<template #controls="{ state }">
-			<HstSelect
-				v-model="(state as State).type"
-				title="type"
-				:options="textListTypeOptions" />
-			<HstSelect
-				v-model="(state as State).marker"
-				title="marker"
-				:options="textListMarkerOptions" />
-			<HstSelect
-				v-model="(state as State).size"
-				title="size"
-				:options="textListSizeOptions" />
-			<HstSelect
-				v-model="(state as State).weight"
-				title="weight"
-				:options="textListWeightOptions" />
-			<HstSelect v-model="(state as State).gap" title="gap" :options="textListGapOptions" />
-			<HstCheckbox v-model="(state as State).reversed" title="reversed" />
-		</template>
-
-		<Variant title="unordered" :init-state="initState">
-			<template #default="{ state }">
-				<div class="p-4">
-					<TextList
-						:type="(state as State).type"
-						:marker="(state as State).marker"
-						:size="(state as State).size"
-						:weight="(state as State).weight"
-						:gap="(state as State).gap"
-						:reversed="(state as State).reversed"
-						:items="sampleItems" />
-				</div>
+		<Variant title="Unordered">
+			<template #controls>
+				<HstSelect
+					v-model="unorderedState.marker"
+					title="marker"
+					:options="textListUnorderedMarkerOptions" />
+				<HstSelect
+					v-model="unorderedState.size"
+					title="size"
+					:options="textListSizeOptions" />
+				<HstSelect
+					v-model="unorderedState.weight"
+					title="weight"
+					:options="textListWeightOptions" />
+				<HstSelect v-model="unorderedState.gap" title="gap" :options="textListGapOptions" />
 			</template>
+
+			<div class="p-4">
+				<TextList
+					type="ul"
+					:marker="unorderedState.marker"
+					:size="unorderedState.size"
+					:weight="unorderedState.weight"
+					:gap="unorderedState.gap"
+					:items="items" />
+			</div>
 		</Variant>
 
-		<Variant title="ordered" :init-state="initOrderedState">
-			<template #default="{ state }">
-				<div class="p-4">
-					<TextList
-						:type="(state as State).type"
-						:marker="(state as State).marker"
-						:size="(state as State).size"
-						:weight="(state as State).weight"
-						:gap="(state as State).gap"
-						:reversed="(state as State).reversed"
-						:items="stepsItems" />
-				</div>
+		<Variant title="Ordered">
+			<template #controls>
+				<HstSelect
+					v-model="orderedState.marker"
+					title="marker"
+					:options="textListOrderedMarkerOptions" />
+				<HstSelect
+					v-model="orderedState.size"
+					title="size"
+					:options="textListSizeOptions" />
+				<HstSelect
+					v-model="orderedState.weight"
+					title="weight"
+					:options="textListWeightOptions" />
+				<HstSelect v-model="orderedState.gap" title="gap" :options="textListGapOptions" />
+				<HstCheckbox v-model="orderedState.reversed" title="reversed" />
 			</template>
+
+			<div class="p-4">
+				<TextList
+					type="ol"
+					:marker="orderedState.marker"
+					:size="orderedState.size"
+					:weight="orderedState.weight"
+					:gap="orderedState.gap"
+					:reversed="orderedState.reversed"
+					:items="items" />
+			</div>
 		</Variant>
 	</Story>
 </template>
+
 <script lang="ts" setup>
+import { reactive } from 'vue';
 import type {
-	TextListType,
-	TextListMarker,
+	TextListUnorderedMarker,
+	TextListOrderedMarker,
 	TextListSize,
 	TextListWeight,
 	TextListGap
 } from './TextList.types';
 import {
-	textListTypeOptions,
-	textListMarkerOptions,
+	textListUnorderedMarkerOptions,
+	textListOrderedMarkerOptions,
 	textListSizeOptions,
 	textListWeightOptions,
 	textListGapOptions
 } from './TextList.constants';
 
-type State = {
-	type: TextListType;
-	marker: TextListMarker;
-	size: TextListSize;
-	weight: TextListWeight;
-	gap: TextListGap;
-	reversed: boolean;
-};
+const items = ['First item', 'Second item', 'Third item', 'Fourth item'];
 
-const sampleItems = ['Rum', 'Coconut Cream', 'Pineapple Juice', 'Ice cubes'];
+const unorderedState = reactive({
+	marker: 'disc' as TextListUnorderedMarker,
+	size: 'md' as TextListSize,
+	weight: 'regular' as TextListWeight,
+	gap: 'sm' as TextListGap
+});
 
-const stepsItems = [
-	'Blend the rum, coconut cream, and pineapple juice with ice',
-	'Pour into a chilled glass',
-	'Garnish with a pineapple slice and cherry'
-];
-
-function initState(): State {
-	return {
-		type: 'ul',
-		marker: 'disc',
-		size: 'md',
-		weight: 'regular',
-		gap: 'sm',
-		reversed: false
-	};
-}
-
-function initOrderedState(): State {
-	return {
-		type: 'ol',
-		marker: 'decimal',
-		size: 'md',
-		weight: 'regular',
-		gap: 'sm',
-		reversed: false
-	};
-}
+const orderedState = reactive({
+	marker: 'decimal' as TextListOrderedMarker,
+	size: 'md' as TextListSize,
+	weight: 'regular' as TextListWeight,
+	gap: 'sm' as TextListGap,
+	reversed: false
+});
 </script>

@@ -5,7 +5,7 @@
 				rounded="md"
 				class="w-full h-full p-2 flex gap-4 cursor-pointer"
 				@click="emit('click')">
-				<Thumbnail />
+				<Image :src="drink.thumbnail" alt="drink thumbnail" />
 				<div>
 					<Heading>{{ drink.translations[$i18n.locale].name }}</Heading>
 				</div>
@@ -16,8 +16,8 @@
 	</HoverCard>
 </template>
 <script setup lang="ts">
+import type { Drink } from '~/domain/drink/drink.entity';
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
-import type { Drink } from '~/types/drink.types';
 
 defineProps({
 	drink: {
