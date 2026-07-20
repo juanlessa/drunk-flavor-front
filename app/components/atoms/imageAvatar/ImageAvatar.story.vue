@@ -13,7 +13,8 @@
 		<Variant title="With Image">
 			<div class="m-3">
 				<ImageAvatar
-					:src="logoSrc"
+					class="bg-blue-100"
+					:src="avatarSrc"
 					:alt="state.alt"
 					:width="state.width"
 					:height="state.height"
@@ -24,11 +25,16 @@
 		<Variant title="Fallback">
 			<div class="m-3">
 				<ImageAvatar
+					class="bg-blue-100"
 					src="/invalid-source.png"
 					:alt="state.alt"
 					:width="state.width"
 					:height="state.height"
-					:rounded="state.rounded" />
+					:rounded="state.rounded">
+					<template #fallback>
+						<ProfileIcon />
+					</template>
+				</ImageAvatar>
 			</div>
 		</Variant>
 	</Story>
@@ -38,7 +44,8 @@
 import { reactive } from 'vue';
 import type { ImageAvatarRounded } from './ImageAvatar.types';
 import { imageAvatarRoundedOptions } from './ImageAvatar.constants';
-import logoSrc from '~/assets/logo.png';
+import avatarSrc from '~/assets/avatar.webp';
+import ProfileIcon from '~/components/icons/ProfileIcon.vue';
 
 const state = reactive({
 	alt: 'avatar alt',

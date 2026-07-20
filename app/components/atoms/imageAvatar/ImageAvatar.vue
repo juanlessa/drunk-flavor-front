@@ -8,7 +8,7 @@
 			:src="props.src"
 			:alt="props.alt" />
 		<Avatar.Fallback
-			class="h-full w-full flex items-center justify-center text-gray-600 bg-gray-100 text-lg font-medium rounded-[inherit]"
+			class="h-full w-full flex items-center justify-center text-gray-600 text-lg font-medium rounded-[inherit]"
 			:delay-ms="600">
 			<slot name="fallback">{{ props.alt }}</slot>
 		</Avatar.Fallback>

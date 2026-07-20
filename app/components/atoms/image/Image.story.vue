@@ -42,8 +42,8 @@ import logoSrc from '~/assets/logo.png';
 
 const state = reactive({
 	alt: 'image alt',
-	width: '7rem',
-	height: '8.5rem',
+	width: '21rem',
+	height: '4rem',
 	rounded: 'md' as ImageRounded,
 	strict: false
 });
