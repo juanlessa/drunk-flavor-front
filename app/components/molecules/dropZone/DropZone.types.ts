@@ -1,0 +1,30 @@
+export enum DropZoneAcceptEnum {
+	'image/jpeg' = 'image/jpeg',
+	'image/png' = 'image/png',
+	'image/webp' = 'image/webp',
+	'image/gif' = 'image/gif',
+	'image/svg+xml' = 'image/svg+xml',
+	'image/bmp' = 'image/bmp',
+	'image/tiff' = 'image/tiff',
+	'image/avif' = 'image/avif',
+	'application/pdf' = 'application/pdf',
+	'application/msword' = 'application/msword',
+	'application/vnd.openxmlformats-officedocument.wordprocessingml.document' = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+	'application/vnd.ms-excel' = 'application/vnd.ms-excel',
+	'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+	'application/vnd.ms-powerpoint' = 'application/vnd.ms-powerpoint',
+	'application/vnd.openxmlformats-officedocument.presentationml.presentation' = 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+	'application/zip' = 'application/zip',
+	'application/json' = 'application/json',
+	'text/plain' = 'text/plain',
+	'text/csv' = 'text/csv',
+	'text/html' = 'text/html',
+	'audio/mpeg' = 'audio/mpeg',
+	'audio/wav' = 'audio/wav',
+	'audio/ogg' = 'audio/ogg',
+	'video/mp4' = 'video/mp4',
+	'video/webm' = 'video/webm',
+	'video/ogg' = 'video/ogg'
+}
+
+export type DropZoneAccept = keyof typeof DropZoneAcceptEnum;

@@ -1,27 +1,37 @@
 <template>
-	<div class="w-full flex-1 flex flex-col">
-		<div
-			v-bind="getRootProps()"
-			class="flex-1 w-full px-6 pt-4 pb-8 flex flex-col items-center gap-2 bg-gray-200 dark:bg-gray-700 rounded-md">
-			<input v-bind="getInputProps()" :id="props.id" />
-			<Text v-if="isDragActive" size="sm">{{ $t('molecules.dropZone.drop.message') }}</Text>
+	<Box direction="col" class="flex-1">
+		<Box
+			ref="dropZoneRef"
+			direction="col"
+			class="flex-1 px-6 pt-4 pb-8 items-center gap-2 bg-gray-200 dark:bg-gray-700 rounded-md cursor-pointer"
+			@click="openFilePicker">
+			<input
+				:id="props.id"
+				ref="fileInputRef"
+				type="file"
+				:accept="props.accept.join(',')"
+				class="hidden"
+				@change="handleFileInput" />
+			<Text v-if="isOverDropZone" size="sm">{{ $t('molecules.dropZone.drop.message') }}</Text>
 			<Text v-else size="sm">{{ $t('molecules.dropZone.drag.message') }}</Text>
 			<Text size="sm">{{ $t('molecules.dropZone.or.message') }}</Text>
-			<Button variant="outline" size="sm">
+			<Button variant="outline" size="sm" class="cursor-pointer">
 				{{ $t('molecules.dropZone.selectFile.message') }}
 			</Button>
-		</div>
+		</Box>
 
-		<div class="drag-drop-label">
-			<p v-if="_modelValue">{{ _modelValue.name }}</p>
-			<CloseIcon v-if="_modelValue" class="cursor-pointer" @click="handleClear" />
-		</div>
-	</div>
+		<Box direction="row" class="gap-1 items-center" :class="!_modelValue && 'invisible'">
+			<Text>{{ fileName }}</Text>
+			<CloseIcon class="cursor-pointer" @click="handleClear" />
+		</Box>
+	</Box>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
-import { useDropzone, type FileRejectReason } from 'vue3-dropzone';
+import { shallowRef, computed, ref } from 'vue';
+import { useDropZone } from '@vueuse/core';
+import type { DropZoneAccept } from './DropZone.types';
+import { dropZoneImageAcceptOptions } from './DropZone.constants';
 
 const props = defineProps({
 	modelValue: {
@@ -31,13 +41,26 @@ const props = defineProps({
 	id: {
 		type: String,
 		default: undefined
+	},
+	/** Maximum file size in bytes (e.g. 5 * 1024 * 1024 for 5MB, 10 * 1024 * 1024 for 10MB) */
+	maxFileSize: {
+		type: Number,
+		default: 5 * 1024 * 1024
+	},
+	accept: {
+		type: Array as PropType<DropZoneAccept[]>,
+		default: () => dropZoneImageAcceptOptions
 	}
 });
+
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: File | undefined): void;
 }>();
 
-const _modelValue = ref<File | undefined>(props.modelValue);
+const dropZoneRef = ref<HTMLElement | null>(null);
+const fileInputRef = ref<HTMLInputElement | null>(null);
+const _modelValue = shallowRef<File | undefined>(props.modelValue);
+const fileName = computed(() => _modelValue.value?.name ?? '');
 
 watch(
 	() => props.modelValue,
@@ -46,24 +69,42 @@ watch(
 	}
 );
 
-const onDrop = (acceptedFiles: File[], _rejectReasons: FileRejectReason[]) => {
-	const maxFileSize = 5 * 1024 * 1024; // 5MB in byte
-	if (acceptedFiles.length === 1 && acceptedFiles[0].size < maxFileSize) {
-		_modelValue.value = acceptedFiles[0];
-		emit('update:modelValue', _modelValue.value);
-	}
+const handleFileDrop = (files: File[] | null) => {
+	if (!files || files.length === 0) return;
+	const [file] = files;
+	if (!file || file.size >= props.maxFileSize) return;
+	_modelValue.value = file;
+	emit('update:modelValue', file);
+};
+
+const handleFileInput = (event: Event) => {
+	const target = event.target as HTMLInputElement;
+	const files = target.files;
+	if (!files || files.length === 0) return;
+	const [file] = files;
+	if (
+		!file ||
+		file.size >= props.maxFileSize ||
+		!props.accept.includes(file.type as DropZoneAccept)
+	)
+		return;
+	_modelValue.value = file;
+	emit('update:modelValue', file);
+	target.value = '';
+};
+
+const openFilePicker = () => {
+	fileInputRef.value?.click();
 };
 
 const handleClear = () => {
 	_modelValue.value = undefined;
-	emit('update:modelValue', _modelValue.value);
+	emit('update:modelValue', undefined);
 };
 
-const options = reactive({
-	multiple: false,
-	onDrop,
-	accept: 'image/*'
+const { isOverDropZone } = useDropZone(dropZoneRef, {
+	dataTypes: props.accept,
+	onDrop: handleFileDrop,
+	multiple: false
 });
-
-const { getRootProps, getInputProps, isDragActive } = useDropzone(options);
 </script>
