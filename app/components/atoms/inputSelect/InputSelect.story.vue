@@ -1,54 +1,44 @@
 <template>
 	<Story title="Atoms/InputSelect">
-		<template #controls="{ state }: { state: State }">
+		<template #controls>
 			<HstCheckbox v-model="state.hasError" title="has error" />
 			<HstCheckbox v-model="state.border" title="border" />
+			<HstText v-model="state.placeholder" title="placeholder" />
 			<HstText v-model="state.id" title="id" />
 			<HstText v-model="state.name" title="name" />
 		</template>
 
-		<Variant title="default" :init-state="initState">
-			<template #default="{ state }: { state: State }">
-				<div class="p-3">
-					<InputSelect
-						:id="state.id"
-						v-model="state.modelValue"
-						:name="state.name"
-						:placeholder="state.placeholder"
-						:has-error="state.hasError"
-						:border="state.border"
-						:options="selectInputSampleOptions" />
-				</div>
-			</template>
+		<Variant title="default">
+			<div class="p-4">
+				<InputSelect
+					:id="state.id"
+					v-model="state.modelValue"
+					:name="state.name"
+					:placeholder="state.placeholder"
+					:has-error="state.hasError"
+					:border="state.border"
+					:options="sampleOptions" />
+			</div>
 		</Variant>
 	</Story>
 </template>
+
 <script lang="ts" setup>
+import { reactive } from 'vue';
 import type { InputSelectOption } from './InputSelect.types';
 
-const selectInputSampleOptions: InputSelectOption[] = [
-	{ label: 'Juice', value: '1' },
-	{ label: 'Soft drink', value: '2' },
-	{ label: 'Syrup', value: '3' }
+const sampleOptions: InputSelectOption[] = [
+	{ label: 'item 1', value: '1' },
+	{ label: 'item 2', value: '2' },
+	{ label: 'item 3', value: '3' }
 ];
 
-type State = {
-	modelValue: string;
-	id: string;
-	name: string;
-	hasError: boolean;
-	border: boolean;
-	placeholder: string;
-};
-
-function initState(): State {
-	return {
-		modelValue: '',
-		id: '',
-		name: '',
-		hasError: false,
-		border: false,
-		placeholder: 'select'
-	};
-}
+const state = reactive({
+	modelValue: '',
+	id: '',
+	name: '',
+	hasError: false,
+	border: false,
+	placeholder: 'select'
+});
 </script>

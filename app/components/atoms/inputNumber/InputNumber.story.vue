@@ -1,6 +1,6 @@
 <template>
 	<Story title="Atoms/InputNumber">
-		<template #controls="{ state }: { state: State }">
+		<template #controls>
 			<HstText v-model="state.placeholder" title="placeholder" />
 			<HstCheckbox v-model="state.hasError" title="has error" />
 			<HstCheckbox v-model="state.border" title="border" />
@@ -8,8 +8,8 @@
 			<HstText v-model="state.name" title="name" />
 		</template>
 
-		<Variant title="default" :init-state="initState">
-			<template #default="{ state }: { state: State }">
+		<Variant title="default">
+			<div class="p-4">
 				<InputNumber
 					:id="state.id"
 					v-model="state.modelValue"
@@ -17,11 +17,11 @@
 					:has-error="state.hasError"
 					:border="state.border"
 					:placeholder="state.placeholder" />
-			</template>
+			</div>
 		</Variant>
 
-		<Variant title="sufix" :init-state="initState">
-			<template #default="{ state }: { state: State }">
+		<Variant title="suffix">
+			<div class="p-4">
 				<InputNumber
 					:id="state.id"
 					v-model="state.modelValue"
@@ -30,11 +30,11 @@
 					:has-error="state.hasError"
 					:border="state.border"
 					:placeholder="state.placeholder" />
-			</template>
+			</div>
 		</Variant>
 
-		<Variant title="sufix-outside" :init-state="initState">
-			<template #default="{ state }: { state: State }">
+		<Variant title="suffix-outside">
+			<div class="p-4">
 				<InputNumber
 					:id="state.id"
 					v-model="state.modelValue"
@@ -44,27 +44,20 @@
 					:has-error="state.hasError"
 					:border="state.border"
 					:placeholder="state.placeholder" />
-			</template>
+			</div>
 		</Variant>
 	</Story>
 </template>
+
 <script lang="ts" setup>
-type State = {
-	modelValue: string;
-	id: string;
-	name: string;
-	hasError: boolean;
-	border: boolean;
-	placeholder: string;
-};
-function initState(): State {
-	return {
-		modelValue: '',
-		id: '',
-		name: '',
-		hasError: false,
-		border: false,
-		placeholder: ''
-	};
-}
+import { reactive } from 'vue';
+
+const state = reactive({
+	modelValue: '',
+	id: '',
+	name: '',
+	hasError: false,
+	border: false,
+	placeholder: ''
+});
 </script>

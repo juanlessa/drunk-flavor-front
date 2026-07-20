@@ -17,7 +17,7 @@
 				@blur="handleBlurInput" />
 			<div
 				v-if="props.suffix && !props.suffixOutside"
-				class="text-base text-normal text-white dark:text-black">
+				class="text-base text-normal text-black dark:text-white">
 				{{ props.suffix }}
 			</div>
 		</div>

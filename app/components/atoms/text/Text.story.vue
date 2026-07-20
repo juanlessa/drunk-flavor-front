@@ -1,38 +1,31 @@
 <template>
 	<Story title="Atoms/Text">
-		<template #controls="{ state }: { state: State }">
+		<template #controls>
 			<HstText v-model="state.value" title="value" />
 			<HstSelect v-model="state.size" title="size" :options="textSizeOptions" />
 			<HstSelect v-model="state.weight" title="weight" :options="textWeightOptions" />
 			<HstSelect v-model="state.type" title="type" :options="textTypeOptions" />
 		</template>
 
-		<Variant title="default" :init-state="initState">
-			<template #default="{ state }: { state: State }">
+		<Variant title="default">
+			<div class="p-4">
 				<Text :type="state.type" :size="state.size" :weight="state.weight">
 					{{ state.value }}
 				</Text>
-			</template>
+			</div>
 		</Variant>
 	</Story>
 </template>
+
 <script lang="ts" setup>
+import { reactive } from 'vue';
 import type { TextSize, TextType, TextWeight } from './Text.types';
 import { textSizeOptions, textTypeOptions, textWeightOptions } from './Text.constants';
 
-type State = {
-	value: string;
-	size: TextSize;
-	type: TextType;
-	weight: TextWeight;
-};
-
-function initState(): State {
-	return {
-		value: 'sample text',
-		size: 'md',
-		type: 'p',
-		weight: 'regular'
-	};
-}
+const state = reactive({
+	value: 'sample text',
+	size: 'md' as TextSize,
+	type: 'p' as TextType,
+	weight: 'regular' as TextWeight
+});
 </script>
