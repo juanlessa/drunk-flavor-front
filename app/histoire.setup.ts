@@ -1,7 +1,7 @@
 import { defineSetupVue3 } from '@histoire/plugin-vue';
 import { createI18n } from 'vue-i18n';
-import en from './locales/en.json';
-import pt from './locales/pt.json';
+import en from '../i18n/locales/en.json';
+import pt from '../i18n/locales/pt.json';
 
 export const setupVue3 = defineSetupVue3(({ app }) => {
 	const i18n = createI18n({

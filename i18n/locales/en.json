@@ -1,0 +1,140 @@
+{
+	"languages": {
+		"en": "English",
+		"pt": "Portuguese"
+	},
+	"molecules": {
+		"buttonGroup": {
+			"cancelButton": { "value": "cancel" },
+			"actionButton": { "value": "done" }
+		},
+		"deleteModal": {
+			"cancelButton": { "value": "cancel" },
+			"deleteButton": { "value": "delete" }
+		},
+		"dropZone": {
+			"drag": { "message": "Drag and drop the file here" },
+			"drop": { "message": "Drop the file here" },
+			"or": { "message": "OR" },
+			"selectFile": { "message": "select file" }
+		}
+	},
+	"organisms": {
+		"categoriesControlOverview": {
+			"createButton": { "value": "Create Category" },
+			"deleteModal": {
+				"title": "Are you sure you want to delete the item",
+				"description": "This action cannot be undo"
+			}
+		},
+		"categoryForm": {
+			"title": "Category",
+			"nameInput": { "label": "name", "placeholder": "" }
+		},
+		"footer": {
+			"author": "Juan Lessa",
+			"githubProject": "github project"
+		},
+		"ingredientsControlOverview": {
+			"createButton": { "value": "Create Ingredient" },
+			"deleteModal": {
+				"title": "Are you sure you want to delete the item",
+				"description": "This action cannot be undo"
+			}
+		},
+		"ingredientForm": {
+			"title": "Ingredient",
+			"nameInput": { "label": "name", "placeholder": "" },
+			"unitInput": { "label": "unit", "placeholder": "" },
+			"unitPluralInput": { "label": "unit plural", "placeholder": "" },
+			"generalSection": { "title": "General" },
+			"categoryInput": { "label": "category" },
+			"isAlcoholicInput": { "label": "is alcoholic?" }
+		},
+		"drinksControlOverview": {
+			"createButton": { "value": "Create drink" },
+			"deleteModal": {
+				"title": "Are you sure you want to delete the item",
+				"description": "This action cannot be undo"
+			}
+		},
+		"drinkForm": {
+			"title": "Drink",
+			"nameInput": { "label": "name", "placeholder": "" },
+			"methodInput": { "label": "method", "placeholder": "" },
+			"generalSection": { "title": "General" },
+			"coverInput": { "label": "cover" },
+			"thumbnailInput": { "label": "thumbnail" }
+		},
+		"topBar": {
+			"categories": "categories",
+			"drinks": "drinks",
+			"ingredients": "ingredients",
+			"login": "login",
+			"logout": "logout"
+		},
+		"loginForm": {
+			"emailInput": { "label": "email" },
+			"passwordInput": { "label": "password" }
+		},
+		"toastNotification": {
+			"label": "Notification"
+		}
+	},
+	"errors": {
+		"users": {
+			"email": "invalid email",
+			"password": "invalid password"
+		},
+		"categories": {
+			"name": "name must have a minimum of 1 character"
+		},
+		"ingredients": {
+			"name": "name must have a minimum of 1 character",
+			"unit": "unit must have a minimum of 1 character",
+			"unitPlural": "unit plural must have a minimum of 1 character",
+			"category": "category must be selected"
+		}
+	},
+	"deleteModal": {
+		"cancelButton": { "message": "cancel" },
+		"deleteButton": { "message": "delete" },
+		"message": "Are you sure you want to delete the item"
+	},
+	"drinkDetailPage": {
+		"ingredients": {
+			"title": "Ingredients",
+			"ofPreposition": "of"
+		},
+		"instructions": "Preparation Instructions"
+	},
+	"drinkForm": {
+		"generalSection": { "label": "General" },
+		"ingredients": {
+			"errorInvalidFormat": "drink must have a minimum of 1 ingredient",
+			"label": "ingredients"
+		},
+		"methodInput": {
+			"errorInvalidFormat": "method must have a minimum of 1 character",
+			"label": "method"
+		},
+		"nameInput": {
+			"errorInvalidFormat": "name must have a minimum of 1 character",
+			"label": "name"
+		},
+		"ingredientsInput": {
+			"label": "ingredients",
+			"name": { "label": "name" },
+			"quantity": { "label": "quantity" },
+			"new": { "message": "new ingredient" }
+		},
+		"submitButton": { "message": "done" }
+	},
+	"drinksPage": {
+		"loadDrinks": { "errorMessage": "Error loading drinks" },
+		"newDrinkButton": { "message": "new drink" }
+	},
+	"searchSelect": {
+		"noResult": { "message": "no results" }
+	}
+}

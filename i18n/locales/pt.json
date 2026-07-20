@@ -1,0 +1,144 @@
+{
+	"languages": {
+		"en": "Inglês",
+		"pt": "Português"
+	},
+	"molecules": {
+		"buttonGroup": {
+			"cancelButton": { "value": "cancelar" },
+			"actionButton": { "value": "concluído" }
+		},
+		"deleteModal": {
+			"cancelButton": { "value": "cancelar" },
+			"deleteButton": { "value": "excluir" }
+		},
+		"dropZone": {
+			"drag": { "message": "Arraste e solte o arquivo aqui" },
+			"drop": { "message": "Solte o arquivo aqui" },
+			"or": { "message": "OU" },
+			"selectFile": { "message": "selecione o arquivo" }
+		}
+	},
+	"organisms": {
+		"categoriesControlOverview": {
+			"createButton": { "value": "Criar Categoria" },
+			"deleteModal": {
+				"title": "Tem certeza que deseja excluir o item",
+				"description": "Essa ação não pode ser desfeita"
+			}
+		},
+		"categoryForm": {
+			"title": "Categoria",
+			"nameInput": { "label": "nome", "placeholder": "" }
+		},
+		"footer": {
+			"author": "Juan Lessa",
+			"githubProject": "projeto no github"
+		},
+		"ingredientsControlOverview": {
+			"createButton": { "value": "Criar Ingrediente" },
+			"deleteModal": {
+				"title": "Tem certeza que deseja deletar o item",
+				"description": "Essa ação não pode ser desfeita"
+			}
+		},
+		"ingredientForm": {
+			"title": "Ingrediente",
+			"nameInput": { "label": "nome", "placeholder": "" },
+			"unitInput": { "error": "unidade deve ter no mínimo 1 carácter", "label": "unidade", "placeholder": "" },
+			"unitPluralInput": { "label": "unidade plural", "placeholder": "" },
+			"generalSection": { "title": "Geral" },
+			"categoryInput": { "label": "categoria" },
+			"isAlcoholicInput": { "label": "é alcoólico?" }
+		},
+		"drinksControlOverview": {
+			"createButton": { "value": "Criar drink" },
+			"deleteModal": {
+				"title": "Tem certeza que deseja excluir o item",
+				"description": "Essa ação não pode ser desfeita"
+			}
+		},
+		"drinkForm": {
+			"title": "Drink",
+			"nameInput": { "label": "nome", "placeholder": "" },
+			"methodInput": { "label": "preparo", "placeholder": "" },
+			"generalSection": { "title": "Geral" },
+			"coverInput": { "label": "capa" },
+			"thumbnailInput": { "label": "miniatura" }
+		},
+		"topBar": {
+			"categories": "categorias",
+			"drinks": "drinks",
+			"ingredients": "ingredientes",
+			"login": "entrar",
+			"logout": "sair"
+		},
+		"loginForm": {
+			"emailInput": { "label": "email" },
+			"passwordInput": { "label": "senha" }
+		},
+		"toastNotification": {
+			"label": "Notificação"
+		}
+	},
+	"errors": {
+		"users": {
+			"email": "email inválido",
+			"password": "senha inválida"
+		},
+		"categories": {
+			"name": "nome deve ter no mínimo 1 carácter"
+		},
+		"ingredients": {
+			"name": "nome deve ter no mínimo 1 carácter",
+			"unit": "unidade deve ter no mínimo 1 carácter",
+			"unitPlural": "unidade plural deve ter no mínimo 1 carácter",
+			"category": "categoria deve ser selecionada"
+		}
+	},
+	"deleteModal": {
+		"cancelButton": { "message": "cancelar" },
+		"deleteButton": { "message": "excluir" },
+		"message": "Tem certeza que deseja excluir o item"
+	},
+	"drinkDetailPage": {
+		"ingredients": {
+			"title": "Ingredientes",
+			"ofPreposition": "de"
+		},
+		"instructions": "Modo de preparo"
+	},
+	"drinkForm": {
+		"generalSection": { "label": "Geral" },
+		"cancelButton": { "message": "cancelar" },
+		"ingredients": {
+			"errorInvalidFormat": "drink deve ter pelo menos 1 ingrediente",
+			"label": "ingredientes"
+		},
+		"methodInput": {
+			"errorInvalidFormat": "método deve ter no mínimo 1 carácter",
+			"label": "método"
+		},
+		"nameInput": {
+			"errorInvalidFormat": "nome deve ter no mínimo 1 carácter",
+			"label": "nome"
+		},
+		"ingredientsInput": {
+			"label": "ingredientes",
+			"name": { "label": "nome" },
+			"quantity": { "label": "quantidade" },
+			"new": { "message": "novo ingrediente" }
+		},
+		"submitButton": { "message": "concluído" }
+	},
+	"drinksPage": {
+		"loadDrinks": { "errorMessage": "Erro ao carregar os drinks" },
+		"newDrinkButton": { "message": "novo drink" }
+	},
+	"searchSelect": {
+		"noResult": { "message": "nenhum resultado" }
+	},
+	"updateIngredientPage": {
+		"loadIngredient": { "errorMessage": "Erro ao carregar o ingrediente" }
+	}
+}

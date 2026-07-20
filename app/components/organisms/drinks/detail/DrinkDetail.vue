@@ -13,7 +13,7 @@
 			<Box direction="container-responsive" container-breakpoint="lg" class="gap-6">
 				<Box direction="col" class="flex-1 gap-4">
 					<Heading size="md" class="text-center">
-						{{ $t('drinkDetailPage.ingredients') }}
+						{{ $t('drinkDetailPage.ingredients.title') }}
 					</Heading>
 					<TextList :items="ingredientItems" size="lg" gap="none" />
 				</Box>

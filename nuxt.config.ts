@@ -42,16 +42,17 @@ export default defineNuxtConfig({
 		tsConfig: {
 			compilerOptions: {
 				types: ['@nuxtjs/i18n']
-			},
-			include: ['../i18n.config.ts']
+			}
 		}
 	},
 
 	i18n: {
-		vueI18n: './i18n.config.ts',
 		strategy: 'no_prefix',
 		defaultLocale: 'en',
-		locales: ['en', 'pt'],
+		locales: [
+			{ code: 'en', name: 'English', file: 'en.json' },
+			{ code: 'pt', name: 'Português', file: 'pt.json' }
+		],
 		experimental: {
 			typedOptionsAndMessages: 'default'
 		}

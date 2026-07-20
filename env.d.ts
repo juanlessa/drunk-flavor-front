@@ -1,7 +1,7 @@
 /// <reference types="@histoire/plugin-vue/components" />
 
 import type { Locale } from './app/types/i18n.types';
-import type en from './app/locales/en.json';
+import type en from './i18n/locales/en.json';
 
 type MessageSchema = typeof en;
 
