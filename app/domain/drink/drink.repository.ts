@@ -26,10 +26,7 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 
 		return $fetch(`${path}/${id}/cover`, {
 			method: 'PATCH',
-			body: formData,
-			headers: {
-				'Content-Type': 'multipart/form-data'
-			}
+			body: formData
 		});
 	},
 
@@ -39,10 +36,7 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 
 		return $fetch(`${path}/${id}/thumbnail`, {
 			method: 'PATCH',
-			body: formData,
-			headers: {
-				'Content-Type': 'multipart/form-data'
-			}
+			body: formData
 		});
 	},
 

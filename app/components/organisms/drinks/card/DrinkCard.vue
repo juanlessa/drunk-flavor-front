@@ -5,7 +5,7 @@
 				rounded="md"
 				class="w-full h-full p-2 flex gap-4 cursor-pointer"
 				@click="emit('click')">
-				<Image :src="drink.thumbnail" alt="drink thumbnail" />
+				<Image :src="drink.thumbnail?.url ?? ''" alt="drink thumbnail" />
 				<div>
 					<Heading>{{ drink.translations[$i18n.locale].name }}</Heading>
 				</div>

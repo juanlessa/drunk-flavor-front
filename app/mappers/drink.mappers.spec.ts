@@ -9,8 +9,8 @@ const mockDrink: Drink = {
 		en: { name: 'Piña Colada', method: 'Blend everything' },
 		pt: { name: 'Piña Colada', method: 'Bata tudo' }
 	},
-	cover: 'cover.jpg',
-	thumbnail: 'thumb.jpg',
+	cover: { name: 'cover.jpg', mimetype: 'image/jpeg', url: 'https://example.com/cover.jpg' },
+	thumbnail: { name: 'thumb.jpg', mimetype: 'image/jpeg', url: 'https://example.com/thumb.jpg' },
 	ingredients: [
 		{
 			quantity: 60,

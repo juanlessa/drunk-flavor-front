@@ -4,7 +4,7 @@
 			<AlertDialog.Overlay
 				class="bg-black opacity-70 data-[state=open]:animate-overlayShow fixed inset-0 z-30" />
 			<AlertDialog.Content
-				class="p-6 z-[100] flex flex-col gap-8 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white dark:bg-gray-900 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-hidden">
+				class="p-6 z-100 flex flex-col gap-8 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-white dark:bg-gray-900 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-hidden">
 				<div class="flex flex-col">
 					<AlertDialog.Title as-child>
 						<Heading type="h2" size="sm">

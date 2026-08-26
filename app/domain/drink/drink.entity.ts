@@ -7,6 +7,12 @@ export type DrinkTranslation = {
 	method: string;
 };
 
+export type FileMetadata = {
+	name: string;
+	mimetype: string;
+	url: string;
+};
+
 export type DrinkIngredient = {
 	quantity: number;
 	ingredient: Ingredient;
@@ -14,7 +20,7 @@ export type DrinkIngredient = {
 
 export type Drink = DatabaseCommonInfo & {
 	translations: Translations<DrinkTranslation>;
-	cover: string;
-	thumbnail: string;
+	cover: FileMetadata | undefined;
+	thumbnail: FileMetadata | undefined;
 	ingredients: DrinkIngredient[];
 };

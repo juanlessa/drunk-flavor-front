@@ -3,7 +3,7 @@
 		<div
 			v-if="drink.cover"
 			class="w-full h-[30vh] bg-center bg-no-repeat bg-cover rounded-md overflow-hidden"
-			:style="{ backgroundImage: `url(${drink.cover})` }" />
+			:style="{ backgroundImage: `url(${drink.cover.url})` }" />
 
 		<Box direction="col" class="gap-6 p-4" container>
 			<Heading type="h1" size="lg" class="text-center">
