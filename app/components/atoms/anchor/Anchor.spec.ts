@@ -42,28 +42,22 @@ describe('Anchor', () => {
 	});
 
 	describe('styling', () => {
-		it('applies md size class by default', () => {
+		it('applies default text-body class', () => {
 			const wrapper = mountAnchor({ to: '/' });
 
-			expect(wrapper.classes()).toContain('text-md');
+			expect(wrapper.classes()).toContain('text-body');
 		});
 
-		it('applies regular weight class by default', () => {
+		it('applies default font-regular class', () => {
 			const wrapper = mountAnchor({ to: '/' });
 
 			expect(wrapper.classes()).toContain('font-regular');
 		});
 
-		it('applies lg size class', () => {
-			const wrapper = mountAnchor({ to: '/', size: 'lg' });
+		it('applies default text-content class', () => {
+			const wrapper = mountAnchor({ to: '/' });
 
-			expect(wrapper.classes()).toContain('text-lg');
-		});
-
-		it('applies bold weight class', () => {
-			const wrapper = mountAnchor({ to: '/', weight: 'bold' });
-
-			expect(wrapper.classes()).toContain('font-bold');
+			expect(wrapper.classes()).toContain('text-content');
 		});
 	});
 });
