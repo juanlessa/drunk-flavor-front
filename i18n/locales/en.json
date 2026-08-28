@@ -77,12 +77,23 @@
 			"emailInput": { "label": "email" },
 			"passwordInput": { "label": "password" }
 		},
+		"signupForm": {
+			"nameInput": { "label": "name" },
+			"surnameInput": { "label": "surname" },
+			"emailInput": { "label": "email" },
+			"passwordInput": { "label": "password" }
+		},
+		"forgotPasswordForm": {
+			"emailInput": { "label": "email" }
+		},
 		"toastNotification": {
 			"label": "Notification"
 		}
 	},
 	"errors": {
 		"users": {
+			"name": "name must have a minimum of 1 character",
+			"surname": "surname must have a minimum of 1 character",
 			"email": "invalid email",
 			"password": "invalid password"
 		},
