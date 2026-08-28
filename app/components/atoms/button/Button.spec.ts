@@ -46,19 +46,19 @@ describe('Button', () => {
 		it('applies primary variant classes by default', () => {
 			const wrapper = mount(Button);
 
-			expect(wrapper.find('button').classes()).toContain('bg-blue-500');
+			expect(wrapper.find('button').classes()).toContain('bg-accent');
 		});
 
 		it('applies secondary variant classes', () => {
 			const wrapper = mount(Button, { props: { variant: 'secondary' } });
 
-			expect(wrapper.find('button').classes()).toContain('bg-gray-300');
+			expect(wrapper.find('button').classes()).toContain('bg-surface-input');
 		});
 
 		it('applies delete variant classes', () => {
 			const wrapper = mount(Button, { props: { variant: 'delete' } });
 
-			expect(wrapper.find('button').classes()).toContain('bg-red-600');
+			expect(wrapper.find('button').classes()).toContain('bg-danger-emphasis');
 		});
 
 		it('applies outline variant classes', () => {
@@ -71,14 +71,14 @@ describe('Button', () => {
 			const wrapper = mount(Button, { props: { size: 'sm' } });
 
 			expect(wrapper.find('button').classes()).toContain('py-1');
-			expect(wrapper.find('button').classes()).toContain('text-sm');
+			expect(wrapper.find('button').classes()).toContain('text-body-sm');
 		});
 
 		it('applies md size classes by default', () => {
 			const wrapper = mount(Button);
 
 			expect(wrapper.find('button').classes()).toContain('py-2');
-			expect(wrapper.find('button').classes()).toContain('text-md');
+			expect(wrapper.find('button').classes()).toContain('text-body');
 		});
 	});
 

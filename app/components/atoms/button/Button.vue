@@ -37,18 +37,20 @@ const props = defineProps({
 });
 
 const buttonStyles = tv({
-	base: 'w-full max-w-80 tablet:max-w-64 rounded-full font-normal text-center px-4 disabled:cursor-not-allowed',
+	base: 'w-full max-w-80 tablet:max-w-64 rounded-full font-regular text-center px-4 disabled:cursor-not-allowed focus-visible:outline-hidden focus-visible:shadow-focus-ring',
 	variants: {
 		variant: {
-			primary: 'bg-blue-500 hover:bg-blue-400 dark:hover:bg-blue-600 text-white',
-			secondary: 'bg-gray-300  hover:bg-gray-100 disabled:bg-gray-100 text-black',
-			delete: 'bg-red-600 hover:bg-red-400 disabled:bg-red-300  text-white',
+			primary:
+				'bg-accent hover:bg-accent-hover text-content-on-accent disabled:bg-surface-hover disabled:text-content-subtle',
+			secondary:
+				'bg-surface-input hover:bg-surface-hover text-content disabled:bg-surface-hover disabled:text-content-subtle',
+			delete: 'bg-danger-emphasis hover:bg-danger-emphasis-hover text-content-on-accent disabled:bg-surface-hover disabled:text-content-subtle',
 			outline:
-				'bg-transparent border-2 border-gray-900 dark:border-gray-50 text-black dark:text-white'
+				'bg-transparent border-2 border-stroke-strong text-content hover:bg-surface-hover disabled:text-content-subtle disabled:border-stroke'
 		},
 		size: {
-			sm: 'py-1 text-sm',
-			md: 'py-2 text-md'
+			sm: 'py-1 text-body-sm',
+			md: 'py-2 text-body'
 		}
 	}
 });
