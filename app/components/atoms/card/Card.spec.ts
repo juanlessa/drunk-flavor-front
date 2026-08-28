@@ -11,41 +11,29 @@ describe('Card', () => {
 		});
 
 		it('renders slot content', () => {
-			const wrapper = mount(Card, { slots: { default: 'Card content' } });
+			const wrapper = mount(Card, { slots: { default: '<p>Hello</p>' } });
 
-			expect(wrapper.text()).toBe('Card content');
+			expect(wrapper.text()).toBe('Hello');
 		});
 	});
 
 	describe('styling', () => {
-		it('applies md rounded class by default', () => {
+		it('applies bg-surface class', () => {
+			const wrapper = mount(Card);
+
+			expect(wrapper.classes()).toContain('bg-surface');
+		});
+
+		it('applies shadow-card class', () => {
+			const wrapper = mount(Card);
+
+			expect(wrapper.classes()).toContain('shadow-card');
+		});
+
+		it('applies rounded-md by default', () => {
 			const wrapper = mount(Card);
 
 			expect(wrapper.classes()).toContain('rounded-md');
-		});
-
-		it('applies rounded-px when rounded is px', () => {
-			const wrapper = mount(Card, { props: { rounded: 'px' } });
-
-			expect(wrapper.classes()).toContain('rounded-px');
-		});
-
-		it('applies rounded-lg when rounded is lg', () => {
-			const wrapper = mount(Card, { props: { rounded: 'lg' } });
-
-			expect(wrapper.classes()).toContain('rounded-lg');
-		});
-
-		it('applies rounded-full when rounded is full', () => {
-			const wrapper = mount(Card, { props: { rounded: 'full' } });
-
-			expect(wrapper.classes()).toContain('rounded-full');
-		});
-
-		it('applies base background classes', () => {
-			const wrapper = mount(Card);
-
-			expect(wrapper.classes()).toContain('bg-white');
 		});
 	});
 });
