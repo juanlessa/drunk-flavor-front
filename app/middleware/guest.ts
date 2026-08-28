@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 		isAuthenticated = await $auth.authenticate();
 	}
 
-	if (isAuthenticated && to.path === localePath('/login').toString()) {
+	if (isAuthenticated && to.path === localePath('/signin').toString()) {
 		return navigateTo('/');
 	}
 });

@@ -6,7 +6,7 @@
 		<InputWrapper>
 			<template #label>
 				<Label for="email">
-					{{ $t('organisms.loginForm.emailInput.label') }}
+					{{ $t('organisms.signinForm.emailInput.label') }}
 				</Label>
 			</template>
 			<InputText
@@ -24,8 +24,8 @@
 		</InputWrapper>
 		<InputWrapper>
 			<template #label>
-				<Label for="email">
-					{{ $t('organisms.loginForm.passwordInput.label') }}
+				<Label for="password">
+					{{ $t('organisms.signinForm.passwordInput.label') }}
 				</Label>
 			</template>
 			<InputPassword
@@ -54,7 +54,7 @@
 const { $api, $router } = useNuxtApp();
 const { addToast } = useToast();
 const localePath = useLocalePath();
-const { formState, checkError, resetFormState, validateForm } = useLoginForm();
+const { formState, checkError, resetFormState, validateForm } = useSigninForm();
 
 const handleCancelButton = async () => {
 	resetFormState();
@@ -68,11 +68,11 @@ const handleSubmitButton = async () => {
 	}
 
 	try {
-		await $api.auth.login(formState.value.form);
+		await $api.auth.signin(formState.value.form);
 		$router.push(localePath('/'));
 	} catch (error) {
 		console.error(error);
-		addToast({ type: 'error', title: 'ERROR', message: 'error to login' });
+		addToast({ type: 'error', title: 'ERROR', message: 'error to signin' });
 	}
 };
 </script>

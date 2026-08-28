@@ -94,7 +94,7 @@ const { formState, checkError, resetFormState, validateForm } = useSignupForm();
 
 const handleCancelButton = async () => {
 	resetFormState();
-	return $router.push(localePath('/login'));
+	return $router.push(localePath('/signin'));
 };
 const handleSubmitButton = async () => {
 	formState.value.displayErrors = true;
@@ -106,7 +106,7 @@ const handleSubmitButton = async () => {
 	try {
 		await $api.auth.signup(formState.value.form);
 		addToast({ type: 'success', title: 'Success', message: 'Account created successfully' });
-		$router.push(localePath('/login'));
+		$router.push(localePath('/signin'));
 	} catch (error) {
 		console.error(error);
 		addToast({ type: 'error', title: 'Error', message: 'error to signup' });

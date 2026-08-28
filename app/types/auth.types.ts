@@ -1,13 +1,13 @@
 import type { FieldError } from './form.types';
 import type { Profile } from '../domain/profile/profile.entity';
 
-export type LoginForm = {
+export type SigninForm = {
 	email: string;
 	password: string;
 };
 
-export type LoginFormState = {
-	form: LoginForm;
+export type SigninFormState = {
+	form: SigninForm;
 	errors: FieldError[];
 	displayErrors: boolean;
 };

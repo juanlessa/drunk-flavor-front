@@ -1,5 +1,5 @@
 import type { $Fetch } from 'nitropack';
-import type { Signup, Login, ForgotPassword } from './auth.dtos';
+import type { Signup, Signin, ForgotPassword } from './auth.dtos';
 
 export const authRepository = ($fetch: $Fetch) => ({
 	async signup(body: Signup) {
@@ -9,8 +9,8 @@ export const authRepository = ($fetch: $Fetch) => ({
 		});
 	},
 
-	async login(body: Login) {
-		return $fetch('/login', {
+	async signin(body: Signin) {
+		return $fetch('/signin', {
 			method: 'POST',
 			body
 		});

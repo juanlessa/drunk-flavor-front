@@ -40,7 +40,7 @@ const { formState, checkError, resetFormState, validateForm } = useForgotPasswor
 
 const handleCancelButton = async () => {
 	resetFormState();
-	return $router.push(localePath('/login'));
+	return $router.push(localePath('/signin'));
 };
 const handleSubmitButton = async () => {
 	formState.value.displayErrors = true;
@@ -52,7 +52,7 @@ const handleSubmitButton = async () => {
 	try {
 		await $api.auth.forgotPassword(formState.value.form);
 		addToast({ type: 'success', title: 'Success', message: 'Recovery email sent' });
-		$router.push(localePath('/login'));
+		$router.push(localePath('/signin'));
 	} catch (error) {
 		console.error(error);
 		addToast({ type: 'error', title: 'Error', message: 'error to send recovery email' });

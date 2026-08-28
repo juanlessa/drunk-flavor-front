@@ -1,18 +1,18 @@
-import { initEmptyLoginForm } from '~/factories/auth.factory';
+import { initEmptySigninForm } from '~/factories/auth.factory';
 import { checkFieldError } from '~/helpers/checkFieldError';
-import type { LoginFormState } from '~/types/auth.types';
-import { loginFormValidator } from '~/validations/authentication';
+import type { SigninFormState } from '~/types/auth.types';
+import { signinFormValidator } from '~/validations/authentication';
 
-const initState = (): LoginFormState => ({
-	form: initEmptyLoginForm(),
+const initState = (): SigninFormState => ({
+	form: initEmptySigninForm(),
 	errors: [],
 	displayErrors: false
 });
 
-export const useLoginForm = () => {
+export const useSigninForm = () => {
 	const { t } = useI18n();
 
-	const state = useState<LoginFormState>('loginForm', initState);
+	const state = useState<SigninFormState>('signinForm', initState);
 
 	const resetFormState = () => {
 		state.value = initState();
@@ -31,7 +31,7 @@ export const useLoginForm = () => {
 			return;
 		}
 		const data = state.value.form;
-		const errors = loginFormValidator(data);
+		const errors = signinFormValidator(data);
 
 		state.value.errors = errors;
 	};

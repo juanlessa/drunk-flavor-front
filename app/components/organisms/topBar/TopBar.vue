@@ -37,7 +37,7 @@
 								class="px-2 inline-flex justify-between items-center">
 								<Text>{{ $t(link.i18nKey) }}</Text>
 								<component
-									:is="link.path === '/login' ? LoginIcon : ArrowRightIcon"
+									:is="link.path === '/signin' ? SigninIcon : ArrowRightIcon"
 									class="size-4" />
 							</Anchor>
 						</nav>
@@ -49,7 +49,7 @@
 </template>
 <script setup lang="ts">
 import ArrowRightIcon from '~/components/icons/ArrowRightIcon.vue';
-import LoginIcon from '~/components/icons/LoginIcon.vue';
+import SigninIcon from '~/components/icons/SigninIcon.vue';
 import type { ILink } from './TopBar.types';
 
 const { $auth } = useNuxtApp();
@@ -67,6 +67,6 @@ function getLinksBasedOnPermissions(isAuthenticated: boolean) {
 			{ i18nKey: 'organisms.topBar.drinks', path: '/drinks' }
 		];
 	}
-	return [{ i18nKey: 'organisms.topBar.login', path: '/login' }];
+	return [{ i18nKey: 'organisms.topBar.signin', path: '/signin' }];
 }
 </script>

@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useLoginForm } from './useLogin';
+import { useSigninForm } from './useSignin';
 
-describe('useLoginForm', () => {
-	let form: ReturnType<typeof useLoginForm>;
+describe('useSigninForm', () => {
+	let form: ReturnType<typeof useSigninForm>;
 
 	beforeEach(() => {
-		form = useLoginForm();
+		form = useSigninForm();
 		form.resetFormState();
 	});
 

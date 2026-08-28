@@ -70,10 +70,10 @@
 			"categories": "categories",
 			"drinks": "drinks",
 			"ingredients": "ingredients",
-			"login": "login",
+			"signin": "signin",
 			"logout": "logout"
 		},
-		"loginForm": {
+		"signinForm": {
 			"emailInput": { "label": "email" },
 			"passwordInput": { "label": "password" }
 		},
