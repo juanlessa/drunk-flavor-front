@@ -36,7 +36,7 @@ describe('ErrorMessage', () => {
 		it('applies error text color classes', () => {
 			const wrapper = mount(ErrorMessage, { props: { value: 'Error' } });
 
-			expect(wrapper.classes()).toContain('text-red-600');
+			expect(wrapper.classes()).toContain('text-danger');
 		});
 	});
 });
