@@ -1,34 +1,13 @@
 <template>
-	<component :is="props.type" :class="HeadingStyle({ size: props.size })">
+	<component :is="props.as" class="text-title font-bold text-content">
 		<slot>{{ props.value }}</slot>
 	</component>
 </template>
 <script setup lang="ts">
-import { tv } from 'tailwind-variants';
-import type { HeadingSize, HeadingType } from './Heading.types';
-
-const HeadingStyle = tv({
-	base: 'text-black dark:text-white leading-shorter',
-	variants: {
-		size: {
-			sm: 'text-xl',
-			md: 'text-2xl',
-			lg: 'text-4xl',
-			'2xl': 'text-5xl',
-			'3xl': 'text-6xl',
-			'4xl': 'text-7xl',
-			'5xl': 'text-8xl',
-			'6xl': 'text-9xl'
-		}
-	}
-});
+import type { HeadingType } from './Heading.types';
 
 const props = defineProps({
-	size: {
-		type: String as PropType<HeadingSize>,
-		default: 'md'
-	},
-	type: {
+	as: {
 		type: String as PropType<HeadingType>,
 		default: 'h2'
 	},
