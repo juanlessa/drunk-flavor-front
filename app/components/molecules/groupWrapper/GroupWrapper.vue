@@ -2,7 +2,7 @@
 	<div class="flex flex-col gap-6">
 		<div v-if="$slots.title || props.title">
 			<slot name="title">
-				<Heading type="h2" class="text-center">{{ props.title }}</Heading>
+				<Heading as="h2" class="text-center">{{ props.title }}</Heading>
 			</slot>
 		</div>
 		<div v-bind="$attrs">
