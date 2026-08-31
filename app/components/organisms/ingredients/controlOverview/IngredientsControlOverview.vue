@@ -16,10 +16,11 @@
 				:loading="overviewState.loading"
 				@load-more="loadNextPage">
 				<template #default="{ list }">
-					<div
+					<Box
 						v-for="{ data: ingredientRow, index } in list"
 						:key="index"
-						class="flex gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						direction="row"
+						class="gap-4 justify-center w-full max-w-screen-desktop mx-auto">
 						<ItemControlCard
 							v-for="ingredient in ingredientRow"
 							:key="ingredient._id"
@@ -27,15 +28,16 @@
 							:content="ingredient.translations[$i18n.locale].name"
 							@click="() => handleEditIngredient(ingredient._id)"
 							@action="() => triggerDeleteModal(ingredient)" />
-					</div>
+					</Box>
 				</template>
 				<template #loading>
-					<div
+					<Box
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
-						class="flex gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						direction="row"
+						class="gap-4 justify-center w-full max-w-screen-desktop mx-auto">
 						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
-					</div>
+					</Box>
 				</template>
 			</VirtualInfiniteGrid>
 		</ClientOnly>

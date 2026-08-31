@@ -3,8 +3,8 @@
 		:title="$t('organisms.ingredientForm.title')"
 		@cancel="handleCancelButton"
 		@submit="handleSubmitButton">
-		<div class="flex flex-col gap-4">
-			<div class="flex flex-col tablet:flex-row gap-4">
+		<Box direction="col" class="gap-4">
+			<Box direction="responsive" class="gap-4">
 				<GroupWrapper
 					v-for="lang in languages"
 					:key="lang"
@@ -70,17 +70,17 @@
 						</template>
 					</InputWrapper>
 				</GroupWrapper>
-			</div>
+			</Box>
 			<GroupWrapper
 				:title="$t('organisms.ingredientForm.generalSection.title')"
-				class="flex flex-row gap-4">
+				class="flex gap-4">
 				<InputWrapper>
 					<template #label>
 						<Label for="category">
 							{{ $t('organisms.ingredientForm.categoryInput.label') }}
 						</Label>
 					</template>
-					<InputSearchableSelect
+					<InputSelectSearchable
 						id="category"
 						v-model="categorySelected"
 						v-model:search-term="categorySearchTerm"
@@ -104,7 +104,7 @@
 					<InputSwitch v-model:checked="formState.form.is_alcoholic" />
 				</InputWrapper>
 			</GroupWrapper>
-		</div>
+		</Box>
 	</Form>
 </template>
 <script setup lang="ts">

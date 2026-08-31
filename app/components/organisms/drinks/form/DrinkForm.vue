@@ -6,7 +6,7 @@
 		<Box direction="col" class="gap-4">
 			<Box class="gap-4">
 				<Box v-for="lang in languages" :key="lang" direction="col" class="flex-1">
-					<Heading type="h2" class="text-center">
+					<Heading as="h2" class="text-center">
 						{{ $t(`languages.${lang}`) }}
 					</Heading>
 					<InputWrapper>
@@ -50,7 +50,7 @@
 				</Box>
 			</Box>
 			<Box direction="col">
-				<Heading type="h2" class="text-center">
+				<Heading as="h2" class="text-center">
 					{{ $t('organisms.drinkForm.generalSection.title') }}
 				</Heading>
 				<Box class="gap-4">

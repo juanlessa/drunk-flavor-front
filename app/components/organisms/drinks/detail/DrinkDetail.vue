@@ -6,23 +6,23 @@
 			:style="{ backgroundImage: `url(${drink.cover.url})` }" />
 
 		<Box direction="col" class="gap-6 p-4" container>
-			<Heading type="h1" size="lg" class="text-center">
+			<Heading as="h1" class="text-center text-headline-sm">
 				{{ drink.translations[$i18n.locale].name }}
 			</Heading>
 
 			<Box direction="container-responsive" container-breakpoint="lg" class="gap-6">
 				<Box direction="col" class="flex-1 gap-4">
-					<Heading size="md" class="text-center">
+					<Heading class="text-center">
 						{{ $t('drinkDetailPage.ingredients.title') }}
 					</Heading>
-					<TextList :items="ingredientItems" size="lg" gap="none" />
+					<TextList :items="ingredientItems" class="text-body-lg" gap="none" />
 				</Box>
 
 				<Box direction="col" class="flex-2 gap-4">
-					<Heading size="md" class="text-center">
+					<Heading class="text-center">
 						{{ $t('drinkDetailPage.instructions') }}
 					</Heading>
-					<Text size="lg">
+					<Text class="text-body-lg">
 						{{ drink.translations[$i18n.locale].method }}
 					</Text>
 				</Box>

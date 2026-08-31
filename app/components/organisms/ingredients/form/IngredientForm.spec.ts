@@ -28,7 +28,7 @@ const InputTextStub = {
 	props: ['id', 'modelValue', 'name', 'type', 'pattern', 'placeholder', 'hasError'],
 	emits: ['update:modelValue', 'blur']
 };
-const InputSearchableSelectStub = {
+const InputSelectSearchableStub = {
 	template: '<div data-testid="searchable-select" />',
 	props: ['id', 'modelValue', 'searchTerm', 'options', 'infiniteScroll', 'loading', 'hasError'],
 	emits: ['update:modelValue', 'update:searchTerm', 'load-more', 'blur']
@@ -113,7 +113,7 @@ const globalStubs = {
 	InputWrapper: InputWrapperStub,
 	Label: LabelStub,
 	InputText: InputTextStub,
-	InputSearchableSelect: InputSearchableSelectStub,
+	InputSelectSearchable: InputSelectSearchableStub,
 	InputSwitch: InputSwitchStub,
 	ErrorMessage: ErrorMessageStub
 };
@@ -198,7 +198,7 @@ describe('IngredientForm', () => {
 
 		it('renders a category searchable select', () => {
 			const wrapper = mountIngredientForm();
-			const select = wrapper.findComponent(InputSearchableSelectStub);
+			const select = wrapper.findComponent(InputSelectSearchableStub);
 
 			expect(select.exists()).toBe(true);
 		});

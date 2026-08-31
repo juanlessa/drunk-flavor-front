@@ -1,8 +1,8 @@
 <template>
 	<Form @submit="handleSubmitButton">
-		<div class="flex justify-center">
+		<Box direction="row" class="justify-center">
 			<Image src="/light-logo.png" alt="Drunk Flavor logo" width="8rem" height="auto" rounded="none" />
-		</div>
+		</Box>
 		<InputWrapper>
 			<template #label>
 				<Label for="email">

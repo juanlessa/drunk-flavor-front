@@ -10,25 +10,27 @@
 				:loading="overviewState.loading"
 				@load-more="loadNextPage">
 				<template #default="{ list }">
-					<div
+					<Box
 						v-for="{ data: drinkRow, index } in list"
 						:key="index"
-						class="flex gap-4 justify-center w-full max-w-screen-desktop mx-auto"
+						direction="row"
+						class="gap-4 justify-center w-full max-w-screen-desktop mx-auto"
 						:style="{ height: `${remToPixels(9.5)}px` }">
 						<DrinkCard
 							v-for="drink in drinkRow"
 							:key="drink._id"
 							:drink="drink"
 							@click="() => handleDrinkClick(drink._id)" />
-					</div>
+					</Box>
 				</template>
 				<template #loading>
-					<div
+					<Box
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
-						class="flex gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						direction="row"
+						class="gap-4 justify-center w-full max-w-screen-desktop mx-auto">
 						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
-					</div>
+					</Box>
 				</template>
 			</VirtualInfiniteGrid>
 		</ClientOnly>

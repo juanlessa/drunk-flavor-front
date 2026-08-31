@@ -1,48 +1,12 @@
 <template>
 	<Form @submit="handleSubmitButton">
-		<div class="flex justify-center">
+		<Box direction="row" class="justify-center">
 			<Image src="/light-logo.png" alt="Drunk Flavor logo" width="8rem" height="auto" rounded="none" />
-		</div>
-		<InputWrapper>
-			<template #label>
-				<Label for="name">
-					{{ $t('organisms.signupForm.nameInput.label') }}
-				</Label>
-			</template>
-			<InputText
-				id="name"
-				v-model="formState.form.name"
-				name="name"
-				placeholder=""
-				:has-error="!!checkError('name')"
-				:error-message="checkError('name')"
-				@blur="validateForm" />
-			<template #error>
-				<ErrorMessage :value="checkError('name')" />
-			</template>
-		</InputWrapper>
-		<InputWrapper>
-			<template #label>
-				<Label for="surname">
-					{{ $t('organisms.signupForm.surnameInput.label') }}
-				</Label>
-			</template>
-			<InputText
-				id="surname"
-				v-model="formState.form.surname"
-				name="surname"
-				placeholder=""
-				:has-error="!!checkError('surname')"
-				:error-message="checkError('surname')"
-				@blur="validateForm" />
-			<template #error>
-				<ErrorMessage :value="checkError('surname')" />
-			</template>
-		</InputWrapper>
+		</Box>
 		<InputWrapper>
 			<template #label>
 				<Label for="email">
-					{{ $t('organisms.signupForm.emailInput.label') }}
+					{{ $t('organisms.signinForm.emailInput.label') }}
 				</Label>
 			</template>
 			<InputText
@@ -61,7 +25,7 @@
 		<InputWrapper>
 			<template #label>
 				<Label for="password">
-					{{ $t('organisms.signupForm.passwordInput.label') }}
+					{{ $t('organisms.signinForm.passwordInput.label') }}
 				</Label>
 			</template>
 			<InputPassword
@@ -90,11 +54,11 @@
 const { $api, $router } = useNuxtApp();
 const { addToast } = useToast();
 const localePath = useLocalePath();
-const { formState, checkError, resetFormState, validateForm } = useSignupForm();
+const { formState, checkError, resetFormState, validateForm } = useSigninForm();
 
 const handleCancelButton = async () => {
 	resetFormState();
-	return $router.push(localePath('/signin'));
+	return $router.push(localePath('/'));
 };
 const handleSubmitButton = async () => {
 	formState.value.displayErrors = true;
@@ -104,12 +68,11 @@ const handleSubmitButton = async () => {
 	}
 
 	try {
-		await $api.auth.signup(formState.value.form);
-		addToast({ type: 'success', title: 'Success', message: 'Account created successfully' });
-		$router.push(localePath('/signin'));
+		await $api.auth.signin(formState.value.form);
+		$router.push(localePath('/'));
 	} catch (error) {
 		console.error(error);
-		addToast({ type: 'error', title: 'Error', message: 'error to signup' });
+		addToast({ type: 'error', title: 'ERROR', message: 'error to signin' });
 	}
 };
 </script>

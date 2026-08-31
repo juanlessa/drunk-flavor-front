@@ -3,7 +3,7 @@
 		:title="$t('organisms.categoryForm.title')"
 		@cancel="handleCancelButton"
 		@submit="handleSubmitButton">
-		<div class="flex flex-col tablet:flex-row gap-4">
+		<Box direction="responsive" class="gap-4">
 			<GroupWrapper
 				v-for="lang in languages"
 				:key="lang"
@@ -29,7 +29,7 @@
 					</template>
 				</InputWrapper>
 			</GroupWrapper>
-		</div>
+		</Box>
 	</Form>
 </template>
 <script setup lang="ts">
