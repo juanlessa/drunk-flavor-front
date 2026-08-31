@@ -27,42 +27,36 @@ describe('Text', () => {
 	});
 
 	describe('semantic element', () => {
-		it('renders a <span> when type is span', () => {
-			const wrapper = mount(Text, { props: { type: 'span' } });
+		it('renders a <span> when as is span', () => {
+			const wrapper = mount(Text, { props: { as: 'span' } });
 
 			expect(wrapper.element.tagName).toBe('SPAN');
 		});
 
-		it('renders a <strong> when type is strong', () => {
-			const wrapper = mount(Text, { props: { type: 'strong' } });
+		it('renders a <strong> when as is strong', () => {
+			const wrapper = mount(Text, { props: { as: 'strong' } });
 
 			expect(wrapper.element.tagName).toBe('STRONG');
 		});
 	});
 
 	describe('styling', () => {
-		it('applies md size class by default', () => {
+		it('applies default text-body class', () => {
 			const wrapper = mount(Text);
 
-			expect(wrapper.classes()).toContain('text-md');
+			expect(wrapper.classes()).toContain('text-body');
 		});
 
-		it('applies regular weight class by default', () => {
+		it('applies default font-regular class', () => {
 			const wrapper = mount(Text);
 
 			expect(wrapper.classes()).toContain('font-regular');
 		});
 
-		it('applies sm size class', () => {
-			const wrapper = mount(Text, { props: { size: 'sm' } });
+		it('applies default text-content class', () => {
+			const wrapper = mount(Text);
 
-			expect(wrapper.classes()).toContain('text-sm');
-		});
-
-		it('applies bold weight class', () => {
-			const wrapper = mount(Text, { props: { weight: 'bold' } });
-
-			expect(wrapper.classes()).toContain('font-bold');
+			expect(wrapper.classes()).toContain('text-content');
 		});
 	});
 });
