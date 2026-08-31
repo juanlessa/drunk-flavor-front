@@ -72,13 +72,13 @@ describe('InputTextArea', () => {
 		it('applies error border when hasError is true', () => {
 			const wrapper = mount(InputTextArea, { props: { hasError: true } });
 
-			expect(wrapper.find('textarea').classes().some((c) => c.includes('border-red'))).toBe(true);
+			expect(wrapper.find('textarea').classes().some((c) => c.includes('border-danger-stroke'))).toBe(true);
 		});
 
 		it('does not apply error border by default', () => {
 			const wrapper = mount(InputTextArea);
 
-			expect(wrapper.find('textarea').classes().some((c) => c.includes('border-red'))).toBe(
+			expect(wrapper.find('textarea').classes().some((c) => c.includes('border-danger-stroke'))).toBe(
 				false
 			);
 		});

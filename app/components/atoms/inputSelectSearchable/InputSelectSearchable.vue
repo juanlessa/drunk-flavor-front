@@ -12,7 +12,7 @@
 		<Combobox.Anchor
 			:class="selectInputContainerStyle({ border: props.border, hasError: props.hasError })">
 			<Combobox.Input
-				class="flex-1 py-1 text-md leading-base font-normal outline-hidden border-none text-black dark:text-white !bg-transparent selection:bg-black placeholder-gray-500"
+				class="flex-1 py-1 text-body font-regular outline-hidden border-none text-content !bg-transparent selection:bg-accent selection:text-content-on-accent placeholder-content-muted"
 				:placeholder="props.placeholder" />
 			<Combobox.Trigger :id="props.id">
 				<ChevronDownIcon />
@@ -20,7 +20,7 @@
 		</Combobox.Anchor>
 
 		<Combobox.Content
-			class="w-full z-10 absolute mt-1 overflow-hidden dark:bg-gray-800 bg-gray-200 border-gray-200 dark:border-gray-800 rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform]">
+			class="w-full z-dropdown absolute mt-1 overflow-hidden bg-surface-overlay rounded-md shadow-overlay will-change-[opacity,transform]">
 			<Combobox.Viewport class="py-1">
 				<Combobox.Empty as-child>
 					<Text :value="props.noResult" class="text-center py-2" />
@@ -30,7 +30,7 @@
 					<Combobox.Item
 						v-for="option in props.options"
 						:key="option.value"
-						class="relative text-md leading-base text-black dark:text-white rounded-md flex items-center pr-[35px] pl-[25px] select-none data-[disabled]:text-gray-500 data-[disabled]:pointer-events-none data-[highlighted]:outline-hidden data-[highlighted]:bg-blue-700 data-[highlighted]:text-white"
+						class="relative text-body text-content rounded-md flex items-center pr-[35px] pl-[25px] select-none data-[disabled]:text-content-subtle data-[disabled]:pointer-events-none data-[highlighted]:outline-hidden data-[highlighted]:bg-accent-strong data-[highlighted]:text-content-on-accent"
 						:value="option">
 						<Combobox.ItemIndicator
 							class="absolute left-0 w-[25px] inline-flex items-center justify-center">
@@ -110,13 +110,13 @@ const handleUpdateModelValue = (option: InputSelectOption) => {
 };
 
 const selectInputContainerStyle = tv({
-	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3  box-border border-2 outline-hidden bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:border-black focus:dark:border-white data-[placeholder]:text-gray-500 ',
+	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3 box-border border-2 outline-hidden bg-surface-input border-surface-input focus-within:border-stroke-strong data-[placeholder]:text-content-muted',
 	variants: {
 		border: {
-			true: 'border-gray-300 dark:border-gray-700'
+			true: 'border-stroke-control'
 		},
 		hasError: {
-			true: 'border-red-400 dark:border-red-600'
+			true: 'border-danger-stroke'
 		}
 	}
 });

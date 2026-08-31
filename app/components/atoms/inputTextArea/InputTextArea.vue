@@ -60,13 +60,13 @@ const handleBlurInput = (event: Event) => {
 };
 
 const textAreaStyle = tv({
-	base: 'w-full py-1 px-3 rounded-md box-border border-2  bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 text-black dark:text-white placeholder-gray-500',
+	base: 'w-full py-1 px-3 rounded-md box-border border-2 bg-surface-input border-surface-input text-body text-content placeholder-content-muted focus:border-stroke-strong outline-hidden',
 	variants: {
 		border: {
-			true: 'border-gray-300 dark:border-gray-700'
+			true: 'border-stroke-control'
 		},
 		hasError: {
-			true: 'border-red-400 dark:border-red-600'
+			true: 'border-danger-stroke'
 		}
 	}
 });

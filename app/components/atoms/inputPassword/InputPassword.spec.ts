@@ -93,7 +93,7 @@ describe('InputPassword', () => {
 		it('applies error border when hasError is true', () => {
 			const wrapper = mountInputPassword({ hasError: true });
 
-			expect(wrapper.find('[class*="border-red"]').exists()).toBe(true);
+			expect(wrapper.find('[class*="border-danger-stroke"]').exists()).toBe(true);
 		});
 	});
 });

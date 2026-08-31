@@ -79,14 +79,14 @@ describe('InputText', () => {
 	describe('styling', () => {
 		it('applies error border classes when hasError is true', () => {
 			const wrapper = mount(InputText, { props: { hasError: true } });
-			const container = wrapper.find('[class*="border-red"]');
+			const container = wrapper.find('[class*="border-danger-stroke"]');
 
 			expect(container.exists()).toBe(true);
 		});
 
 		it('does not apply error classes by default', () => {
 			const wrapper = mount(InputText);
-			const container = wrapper.find('[class*="border-red"]');
+			const container = wrapper.find('[class*="border-danger-stroke"]');
 
 			expect(container.exists()).toBe(false);
 		});
