@@ -17,6 +17,9 @@
 			"drop": { "message": "Solte o arquivo aqui" },
 			"or": { "message": "OU" },
 			"selectFile": { "message": "selecione o arquivo" }
+		},
+		"itemControlCard": {
+			"deleteButton": { "label": "excluir item" }
 		}
 	},
 	"organisms": {
@@ -65,6 +68,9 @@
 			"generalSection": { "title": "Geral" },
 			"coverInput": { "label": "capa" },
 			"thumbnailInput": { "label": "miniatura" }
+		},
+		"ingredientsSelection": {
+			"removeButton": { "label": "remover ingrediente" }
 		},
 		"topBar": {
 			"categories": "categorias",
