@@ -44,7 +44,7 @@
 		"@internationalized/date": "3.12.3",
 		"@internationalized/number": "3.6.7",
 		"@nuxt/eslint": "1.17.0",
-		"@nuxt/test-utils": "4.1.0",
+		"@nuxt/test-utils": "4.3.2",
 		"@nuxtjs/i18n": "10.6.0",
 		"@tailwindcss/vite": "4.3.3",
 		"@testing-library/vue": "8.1.0",
