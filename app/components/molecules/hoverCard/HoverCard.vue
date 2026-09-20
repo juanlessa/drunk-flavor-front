@@ -9,7 +9,7 @@
 		</HoverCard.Trigger>
 		<HoverCard.Portal>
 			<HoverCard.Content
-				class="z-popover rounded-md bg-surface-overlay border border-stroke shadow-overlay"
+				class="z-popover rounded-overlay bg-surface-overlay border border-stroke shadow-overlay"
 				:side="props.side"
 				:side-offset="props.sideOffset"
 				:align="props.align"
@@ -23,6 +23,7 @@
 </template>
 <script setup lang="ts">
 import { HoverCard } from 'radix-vue/namespaced';
+import { INTERACTION_TIMING_MS } from '~/constants/durations.constants';
 
 type Side = 'top' | 'right' | 'bottom' | 'left';
 type Align = 'start' | 'center' | 'end';
@@ -50,11 +51,11 @@ const props = defineProps({
 	},
 	openDelay: {
 		type: Number,
-		default: 700
+		default: INTERACTION_TIMING_MS.hoverCardOpenDelay
 	},
 	closeDelay: {
 		type: Number,
-		default: 300
+		default: INTERACTION_TIMING_MS.hoverCardCloseDelay
 	},
 	avoidCollisions: {
 		type: Boolean,

@@ -60,23 +60,6 @@ describe('Box', () => {
 			expect(wrapper.classes()).toContain('flex-row');
 			expect(wrapper.classes()).toContain('flex-wrap');
 		});
-
-		it('applies container-responsive classes with default breakpoint', () => {
-			const wrapper = mount(Box, {
-				props: { direction: 'container-responsive' }
-			});
-
-			expect(wrapper.classes()).toContain('flex-col');
-			expect(wrapper.classes().join(' ')).toContain('@md:flex-row');
-		});
-
-		it('applies container-responsive classes with custom breakpoint', () => {
-			const wrapper = mount(Box, {
-				props: { direction: 'container-responsive', containerBreakpoint: 'lg' }
-			});
-
-			expect(wrapper.classes().join(' ')).toContain('@lg:flex-row');
-		});
 	});
 
 	describe('container', () => {

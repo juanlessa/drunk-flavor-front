@@ -8,11 +8,11 @@
 		<Popover.Portal>
 			<Popover.Content
 				:align="'end'"
-				:align-offset="16"
+				:align-offset="FLOATING_POSITION_PX.mobileMenuAlignOffset"
 				side="bottom"
 				:trap-focus="true"
-				:side-offset="24"
-				class="absolute right-[-2rem] w-screen bg-surface shadow-card will-change-[transform,opacity]">
+				:side-offset="FLOATING_POSITION_PX.mobileMenuSideOffset"
+				class="absolute mobile-menu-envelope bg-surface shadow-card will-change-[transform,opacity]">
 				<slot></slot>
 			</Popover.Content>
 		</Popover.Portal>
@@ -20,6 +20,7 @@
 </template>
 <script setup lang="ts">
 import { Popover } from 'radix-vue/namespaced';
+import { FLOATING_POSITION_PX } from '~/constants/floatingPosition.constants';
 import MenuIcon from '~/components/icons/MenuIcon.vue';
 import CloseIcon from '~/components/icons/CloseIcon.vue';
 

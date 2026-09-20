@@ -7,7 +7,7 @@
 			v-for="toast in state.displayingToasts"
 			:key="toast.id"
 			:duration="toast.duration"
-			class="relative px-4 py-2 rounded-md flex flex-col shadow-overlay data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-transform data-[swipe=cancel]:duration-short data-[swipe=cancel]:ease-exit"
+			class="relative px-4 py-2 rounded-overlay flex flex-col shadow-overlay data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-transform data-[swipe=cancel]:duration-short data-[swipe=cancel]:ease-exit"
 			:class="toastColorsStyle({ type: toast.type })"
 			@update:open="(_value) => removeToast(toast)">
 			<Toast.Title as-child>
@@ -23,7 +23,7 @@
 
 		<Toast.Viewport
 			:hotkey="toastConfig.hotkey"
-			class="fixed top-0 right-0 flex flex-col p-4 gap-2 w-[390px] max-w-[100vw] m-0 list-none z-toast outline-hidden" />
+			class="fixed top-0 right-0 flex flex-col p-4 gap-2 w-toast-viewport max-w-[100vw] m-0 list-none z-toast outline-hidden" />
 	</Toast.Provider>
 </template>
 <script setup lang="ts">

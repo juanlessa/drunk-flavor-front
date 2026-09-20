@@ -10,9 +10,7 @@
 			:pattern="`${props.pattern}`"
 			@input="handleUpdateInput"
 			@blur="handleBlurInput" />
-		<div
-			class="text-body cursor-pointer text-content-muted"
-			@click="togglePasswordVisibility">
+		<div class="text-body cursor-pointer text-content-muted" @click="togglePasswordVisibility">
 			<HideIcon v-if="_isPasswordVisible" />
 			<ShowIcon v-else />
 		</div>
@@ -55,7 +53,7 @@ const togglePasswordVisibility = () => {
 };
 
 const inputPasswordContainerStyle = tv({
-	base: 'flex-1 flex items-center gap-2 px-3 rounded-md box-border border-2 bg-surface-input border-surface-input input-container-focus-border',
+	base: 'flex-1 flex items-center gap-2 px-3 rounded-control box-border control-border-width bg-surface-input border-surface-input input-container-focus-border',
 	variants: {
 		border: {
 			true: 'border-stroke-control'

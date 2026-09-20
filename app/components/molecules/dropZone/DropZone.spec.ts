@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import DropZone from './DropZone.vue';
@@ -89,7 +89,7 @@ describe('DropZone', () => {
 	describe('file input selection', () => {
 		it('has a clickable drop area that contains the file input', () => {
 			const wrapper = mountDropZone();
-			const dropArea = wrapper.find('.rounded-md.cursor-pointer');
+			const dropArea = wrapper.find('[data-testid="drop-zone-area"]');
 			const input = dropArea.find('input[type="file"]');
 
 			expect(dropArea.exists()).toBe(true);

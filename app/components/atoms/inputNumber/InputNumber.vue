@@ -19,7 +19,12 @@
 				{{ props.suffix }}
 			</div>
 		</div>
-		<div v-if="props.suffix && props.suffixOutside" class="text-body text-content-muted">
+		<div
+			v-if="props.suffix && props.suffixOutside"
+			class="text-body text-content-muted"
+			:style="
+				props.suffixWidth ? { inlineSize: props.suffixWidth, flex: 'none' } : undefined
+			">
 			{{ props.suffix }}
 		</div>
 	</div>
@@ -35,6 +40,8 @@ const props = defineProps({
 	pattern: { type: String, default: undefined },
 	suffix: { type: String, default: '' },
 	suffixOutside: { type: Boolean, default: false },
+	/** CSS inline size reserved for an outside suffix (e.g. '7ch', '4rem') */
+	suffixWidth: { type: String, default: undefined },
 	border: { type: Boolean, default: false },
 	hasError: { type: Boolean, default: false },
 	/** CSS width value (e.g. '5ch', '4rem', '60px') */
@@ -60,7 +67,7 @@ const handleBlurInput = (event: Event) => {
 };
 
 const inputNumberContainerStyle = tv({
-	base: 'flex-1 flex items-center gap-2 px-3 rounded-md box-border border-2 bg-surface-input border-surface-input input-container-focus-border',
+	base: 'flex-1 flex items-center gap-2 px-3 rounded-control box-border control-border-width bg-surface-input border-surface-input input-container-focus-border',
 	variants: {
 		border: {
 			true: 'border-stroke-control'

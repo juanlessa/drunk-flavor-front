@@ -60,7 +60,7 @@ const handleBlurInput = (event: Event) => {
 };
 
 const textAreaStyle = tv({
-	base: 'w-full py-1 px-3 rounded-md box-border border-2 bg-surface-input border-surface-input text-body text-content placeholder-content-muted focus:border-stroke-strong outline-hidden',
+	base: 'w-full py-1 px-3 rounded-control box-border control-border-width bg-surface-input border-surface-input text-body text-content placeholder-content-muted focus:border-stroke-strong outline-hidden',
 	variants: {
 		border: {
 			true: 'border-stroke-control'

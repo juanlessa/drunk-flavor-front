@@ -24,7 +24,7 @@
 		</Combobox.Anchor>
 
 		<Combobox.Content
-			class="w-full z-dropdown absolute mt-1 overflow-hidden bg-surface-overlay rounded-md shadow-overlay will-change-[opacity,transform]">
+			class="w-full z-dropdown absolute mt-1 overflow-hidden bg-surface-overlay rounded-overlay shadow-overlay will-change-[opacity,transform]">
 			<Combobox.Viewport class="py-1">
 				<Combobox.Empty as-child>
 					<Text :value="props.noResult" class="text-center py-2" />
@@ -34,10 +34,9 @@
 					<Combobox.Item
 						v-for="option in props.options"
 						:key="option.value"
-						class="relative text-body text-content rounded-md flex items-center pr-[35px] pl-[25px] select-none data-[disabled]:text-content-subtle data-[disabled]:pointer-events-none data-[highlighted]:outline-hidden data-[highlighted]:bg-accent-strong data-[highlighted]:text-content-on-accent"
+						class="relative text-body text-content rounded-option flex items-center option-control-insets select-none data-[disabled]:text-content-subtle data-[disabled]:pointer-events-none data-[highlighted]:outline-hidden data-[highlighted]:bg-accent-strong data-[highlighted]:text-content-on-accent"
 						:value="option">
-						<Combobox.ItemIndicator
-							class="absolute left-0 w-[25px] inline-flex items-center justify-center">
+						<Combobox.ItemIndicator class="option-indicator-layout">
 						</Combobox.ItemIndicator>
 						<span>
 							{{ option.label }}
@@ -106,7 +105,7 @@ const handleUpdateModelValue = (option: InputSelectOption) => {
 };
 
 const selectInputContainerStyle = tv({
-	base: 'w-full inline-flex items-center justify-between gap-2 rounded-lg px-3 box-border border-2 outline-hidden bg-surface-input border-surface-input focus-within:border-stroke-strong data-[placeholder]:text-content-muted',
+	base: 'w-full inline-flex items-center justify-between gap-2 rounded-control px-3 box-border control-border-width outline-hidden bg-surface-input border-surface-input focus-within:border-stroke-strong data-[placeholder]:text-content-muted',
 	variants: {
 		border: {
 			true: 'border-stroke-control'

@@ -7,7 +7,7 @@
 </template>
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
-import type { BoxAs, BoxContainerBreakpoint, BoxDirection } from './Box.types';
+import type { BoxAs, BoxDirection } from './Box.types';
 
 const props = defineProps({
 	as: {
@@ -21,10 +21,6 @@ const props = defineProps({
 	container: {
 		type: Boolean,
 		default: false
-	},
-	containerBreakpoint: {
-		type: String as PropType<BoxContainerBreakpoint>,
-		default: 'md'
 	}
 });
 
@@ -35,8 +31,7 @@ const containerStyle = tv({
 			row: 'flex-row',
 			col: 'flex-col',
 			responsive: 'flex-col tablet:flex-row',
-			wrap: 'flex-row flex-wrap',
-			'container-responsive': `flex-col @${props.containerBreakpoint}:flex-row`
+			wrap: 'flex-row flex-wrap'
 		},
 		container: {
 			true: '@container'

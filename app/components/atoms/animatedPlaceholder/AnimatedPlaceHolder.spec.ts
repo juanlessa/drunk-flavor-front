@@ -29,11 +29,11 @@ describe('AnimatedPlaceHolder', () => {
 			expect(style).toContain('border-radius: 0.5rem');
 		});
 
-		it('applies default borderRadius of 0px', () => {
+		it('applies default borderRadius token', () => {
 			const wrapper = mount(AnimatedPlaceHolder);
 			const style = wrapper.attributes('style');
 
-			expect(style).toContain('border-radius: 0px');
+			expect(style).toContain('border-radius: var(--radius-none)');
 		});
 	});
 

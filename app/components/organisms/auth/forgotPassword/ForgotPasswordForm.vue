@@ -1,7 +1,12 @@
 <template>
 	<Form @submit="handleSubmitButton">
 		<Box direction="row" class="justify-center">
-			<Image src="/light-logo.png" alt="Drunk Flavor logo" width="8rem" height="auto" rounded="none" />
+			<Image
+				src="/light-logo.png"
+				alt="Drunk Flavor logo"
+				width="var(--size-auth-logo)"
+				height="auto"
+				rounded="none" />
 		</Box>
 		<InputWrapper>
 			<template #label>

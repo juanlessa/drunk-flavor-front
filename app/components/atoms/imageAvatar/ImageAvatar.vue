@@ -8,8 +8,8 @@
 			:src="props.src"
 			:alt="props.alt" />
 		<Avatar.Fallback
-			class="h-full w-full flex items-center justify-center text-gray-600 text-lg font-medium rounded-[inherit]"
-			:delay-ms="600">
+			class="h-full w-full flex items-center justify-center bg-surface-sunken text-content-muted text-body-lg font-medium rounded-[inherit]"
+			:delay-ms="INTERACTION_TIMING_MS.avatarFallbackDelay">
 			<slot name="fallback">{{ props.alt }}</slot>
 		</Avatar.Fallback>
 	</Avatar.Root>
@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import { tv } from 'tailwind-variants';
 import { Avatar } from 'radix-vue/namespaced';
+import { INTERACTION_TIMING_MS } from '~/constants/durations.constants';
 import type { ImageAvatarRounded, ImageAvatarWidth, ImageAvatarHeight } from './ImageAvatar.types';
 
 const props = defineProps({

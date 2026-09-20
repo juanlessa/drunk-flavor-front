@@ -2,8 +2,9 @@
 	<Box direction="col" class="flex-1">
 		<Box
 			ref="dropZoneRef"
+			data-testid="drop-zone-area"
 			direction="col"
-			class="flex-1 px-6 pt-4 pb-8 items-center gap-2 bg-surface-input rounded-md cursor-pointer"
+			class="flex-1 px-6 pt-4 pb-8 items-center gap-2 bg-surface-input rounded-dropzone cursor-pointer"
 			@click="openFilePicker">
 			<input
 				:id="props.id"
@@ -12,7 +13,9 @@
 				:accept="props.accept.join(',')"
 				class="hidden"
 				@change="handleFileInput" />
-			<Text v-if="isOverDropZone" class="text-body-sm">{{ $t('molecules.dropZone.drop.message') }}</Text>
+			<Text v-if="isOverDropZone" class="text-body-sm">{{
+				$t('molecules.dropZone.drop.message')
+			}}</Text>
 			<Text v-else class="text-body-sm">{{ $t('molecules.dropZone.drag.message') }}</Text>
 			<Text class="text-body-sm">{{ $t('molecules.dropZone.or.message') }}</Text>
 			<Button variant="outline" size="sm" class="cursor-pointer">

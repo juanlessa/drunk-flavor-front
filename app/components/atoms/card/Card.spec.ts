@@ -30,10 +30,10 @@ describe('Card', () => {
 			expect(wrapper.classes()).toContain('shadow-card');
 		});
 
-		it('applies rounded-md by default', () => {
+		it('applies rounded-card by default', () => {
 			const wrapper = mount(Card);
 
-			expect(wrapper.classes()).toContain('rounded-md');
+			expect(wrapper.classes()).toContain('rounded-card');
 		});
 	});
 });
