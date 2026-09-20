@@ -1,0 +1,11 @@
+@theme {
+	--font-sans: 'Roboto', sans-serif;
+	--font-mono: monospace;
+
+	--font-default: var(--font-sans);
+	--font-code: var(--font-mono);
+
+	--font-weight-regular: 400;
+	--font-weight-medium: 500;
+	--font-weight-bold: 700;
+}

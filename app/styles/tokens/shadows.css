@@ -1,0 +1,28 @@
+@theme {
+	--shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+	--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	--shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+	--shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+	--shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+	--shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+	--shadow-none: none;
+	--shadow-switch-track: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--shadow-switch-thumb: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+	/* Keep theme colors indirect: Tailwind v4 inlines shadow geometry. */
+	--shadow-card: 0 0 0 1px var(--shadow-ring-color), 0 0.25rem 0.25rem var(--shadow-card-color);
+	--shadow-overlay:
+		0 0 0 1px var(--shadow-ring-color), 0 10px 38px -10px var(--shadow-overlay-color-near),
+		0 10px 20px -15px var(--shadow-overlay-color-far);
+	--shadow-focus-ring: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-focus-ring);
+	--shadow-focus-ring-flat: 0 0 0 2px var(--color-focus-ring);
+}
+
+/* Light defaults; themes.css must load later. */
+:root {
+	--shadow-card-color: rgb(0 0 0 / 0.25);
+	--shadow-overlay-color-near: rgb(0 0 0 / 0.35);
+	--shadow-overlay-color-far: rgb(0 0 0 / 0.2);
+	--shadow-ring-color: transparent;
+}

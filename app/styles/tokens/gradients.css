@@ -1,0 +1,10 @@
+@utility bg-loading-gradient {
+	background-image: linear-gradient(
+		to right,
+		var(--color-loading-shimmer-base) 0%,
+		var(--color-loading-shimmer-highlight) 10%,
+		var(--color-loading-shimmer-base) 20%,
+		var(--color-loading-shimmer-base) 100%
+	);
+	background-size: 200% 100%;
+}

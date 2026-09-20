@@ -1,0 +1,67 @@
+:root {
+	--size-option-control: 25px;
+	--spacing-option-leading: 25px;
+	--spacing-option-trailing: 35px;
+	--size-dialog-max-block: 85vh;
+	--size-dialog-inline-fluid: 90vw;
+	--size-dialog-max-inline: 500px;
+	--size-toast-viewport: 390px;
+	--size-auth-panel-max-inline: 25rem;
+	--size-drink-cover-block: 30vh;
+	--spacing-mobile-menu-inline-offset: 2rem;
+	--spacing-form-page-inset: 1.5rem;
+	--size-auth-logo: 8rem;
+	--size-control-card-max-inline: 45%;
+}
+
+@utility h-option-control {
+	height: var(--size-option-control);
+}
+
+@utility option-control-insets {
+	padding-inline-start: var(--spacing-option-leading);
+	padding-inline-end: var(--spacing-option-trailing);
+}
+
+@utility option-indicator-layout {
+	position: absolute;
+	inset-inline-start: 0;
+	width: var(--size-option-control);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@utility dialog-envelope {
+	inset-block-start: 50%;
+	inset-inline-start: 50%;
+	max-block-size: var(--size-dialog-max-block);
+	inline-size: var(--size-dialog-inline-fluid);
+	max-inline-size: var(--size-dialog-max-inline);
+	translate: -50% -50%;
+}
+
+@utility w-toast-viewport {
+	width: var(--size-toast-viewport);
+}
+
+@utility max-w-auth-panel {
+	max-width: var(--size-auth-panel-max-inline);
+}
+
+@utility max-w-control-card {
+	max-width: var(--size-control-card-max-inline);
+}
+
+@utility h-drink-cover {
+	height: var(--size-drink-cover-block);
+}
+
+@utility mobile-menu-envelope {
+	right: calc(var(--spacing-mobile-menu-inline-offset) * -1);
+	width: 100vw;
+}
+
+@utility p-form-page {
+	padding: var(--spacing-form-page-inset);
+}
