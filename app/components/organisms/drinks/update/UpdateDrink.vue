@@ -1,7 +1,5 @@
 <template>
-	<div class="p-6">
-		<DrinkForm :drink="drink" @cancel="handleCancel" @submit="handleSubmit" />
-	</div>
+	<DrinkForm :drink="drink" @cancel="handleCancel" @submit="handleSubmit" />
 </template>
 <script setup lang="ts">
 import { mapFormToUpdateDrink } from '~/mappers/drink.mappers';

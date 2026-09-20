@@ -1,6 +1,7 @@
 <template>
 	<Form
 		:title="$t('organisms.categoryForm.title')"
+		class="p-form-page"
 		@cancel="handleCancelButton"
 		@submit="handleSubmitButton">
 		<Box direction="responsive" class="gap-4">

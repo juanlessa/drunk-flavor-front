@@ -3,6 +3,11 @@
 		"en": "Inglês",
 		"pt": "Português"
 	},
+	"atoms": {
+		"inputPassword": {
+			"toggleVisibilityButton": { "label": "alternar visibilidade da senha" }
+		}
+	},
 	"molecules": {
 		"buttonGroup": {
 			"cancelButton": { "value": "cancelar" },
@@ -16,7 +21,8 @@
 			"drag": { "message": "Arraste e solte o arquivo aqui" },
 			"drop": { "message": "Solte o arquivo aqui" },
 			"or": { "message": "OU" },
-			"selectFile": { "message": "selecione o arquivo" }
+			"selectFile": { "message": "selecione o arquivo" },
+			"clearButton": { "label": "limpar arquivo" }
 		},
 		"itemControlCard": {
 			"deleteButton": { "label": "excluir item" }
@@ -36,7 +42,8 @@
 		},
 		"footer": {
 			"author": "Juan Lessa",
-			"githubProject": "projeto no github"
+			"githubProject": "projeto no github",
+			"socialNav": { "label": "social" }
 		},
 		"ingredientsControlOverview": {
 			"createButton": { "value": "Criar Ingrediente" },
@@ -77,7 +84,9 @@
 			"drinks": "drinks",
 			"ingredients": "ingredientes",
 			"signin": "entrar",
-			"logout": "sair"
+			"logout": "sair",
+			"primaryNav": { "label": "principal" },
+			"mobileNav": { "label": "mobile" }
 		},
 		"signinForm": {
 			"emailInput": { "label": "email" },

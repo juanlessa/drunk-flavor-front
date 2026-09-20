@@ -2,10 +2,10 @@
 	<AlertDialog.Root :open="_isOpen" @update:open="handleUpdateIsOpen">
 		<AlertDialog.Portal>
 			<AlertDialog.Overlay
-				class="bg-surface-scrim data-[state=open]:animate-overlayShow fixed inset-0 z-overlay" />
+				class="bg-surface-scrim data-[state=open]:animate-overlay-enter fixed inset-0 z-overlay" />
 			<AlertDialog.Content
-				class="p-6 z-modal flex flex-col gap-8 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-surface shadow-overlay focus:outline-hidden">
-				<div class="flex flex-col">
+				class="p-6 z-modal flex flex-col gap-8 data-[state=open]:animate-dialog-enter fixed dialog-envelope rounded-overlay bg-surface shadow-overlay focus:outline-hidden">
+				<Box direction="col">
 					<AlertDialog.Title as-child>
 						<Heading as="h2" class="text-title-sm">
 							<slot name="title">{{ props.title }}</slot>
@@ -16,7 +16,7 @@
 							<slot name="description">{{ props.description }}</slot>
 						</Text>
 					</AlertDialog.Description>
-				</div>
+				</Box>
 				<ButtonGroup>
 					<AlertDialog.Cancel as-child @click="handleCancel">
 						<Button variant="secondary">

@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import Form from './Form.vue';
+import Box from '~/components/atoms/box/Box.vue';
 
 const HeadingStub = {
 	template: '<h1><slot>{{ value }}</slot></h1>',
@@ -17,6 +18,7 @@ const mountForm = (props = {}, slots = {}) =>
 		props,
 		slots,
 		global: {
+			components: { Box },
 			stubs: { Heading: HeadingStub, ButtonGroup: ButtonGroupStub }
 		}
 	});
@@ -58,6 +60,12 @@ describe('Form', () => {
 			const wrapper = mountForm();
 
 			expect(wrapper.attributes('novalidate')).toBeDefined();
+		});
+
+		it('forwards a consumer class to the form element', () => {
+			const wrapper = mountForm({ class: 'p-form-page' });
+
+			expect(wrapper.classes()).toContain('p-form-page');
 		});
 	});
 

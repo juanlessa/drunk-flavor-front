@@ -10,38 +10,38 @@ describe('AnimatedPlaceHolder', () => {
 			expect(wrapper.element.tagName).toBe('DIV');
 		});
 
-		it('applies default dimensions via style', () => {
+		it('applies default dimension classes', () => {
 			const wrapper = mount(AnimatedPlaceHolder);
-			const style = wrapper.attributes('style');
+			const classes = wrapper.classes();
 
-			expect(style).toContain('height: 1.5rem');
-			expect(style).toContain('width: 3rem');
-		});
-
-		it('applies custom dimensions via props', () => {
-			const wrapper = mount(AnimatedPlaceHolder, {
-				props: { height: '2rem', width: '10rem', borderRadius: '0.5rem' }
-			});
-			const style = wrapper.attributes('style');
-
-			expect(style).toContain('height: 2rem');
-			expect(style).toContain('width: 10rem');
-			expect(style).toContain('border-radius: 0.5rem');
-		});
-
-		it('applies default borderRadius token', () => {
-			const wrapper = mount(AnimatedPlaceHolder);
-			const style = wrapper.attributes('style');
-
-			expect(style).toContain('border-radius: var(--radius-none)');
+			expect(classes).toContain('h-6');
+			expect(classes).toContain('w-12');
+			expect(classes).toContain('rounded-none');
 		});
 	});
 
 	describe('styling', () => {
-		it('applies animation class', () => {
+		it('applies the animation and gradient classes', () => {
 			const wrapper = mount(AnimatedPlaceHolder);
+			const classes = wrapper.classes();
 
-			expect(wrapper.classes()).toContain('animate-loading');
+			expect(classes).toContain('animate-loading');
+			expect(classes).toContain('bg-loading-gradient');
+		});
+
+		it('lets a consumer class override the default dimensions', () => {
+			const wrapper = mount(AnimatedPlaceHolder, {
+				attrs: { class: 'w-40 h-5 rounded-xs' }
+			});
+			const classes = wrapper.classes();
+
+			// twMerge drops the conflicting defaults in favor of the consumer classes
+			expect(classes).toContain('w-40');
+			expect(classes).toContain('h-5');
+			expect(classes).toContain('rounded-xs');
+			expect(classes).not.toContain('w-12');
+			expect(classes).not.toContain('h-6');
+			expect(classes).not.toContain('rounded-none');
 		});
 	});
 });

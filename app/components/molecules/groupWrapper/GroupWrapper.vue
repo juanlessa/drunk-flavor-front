@@ -1,10 +1,10 @@
 <template>
 	<div class="flex flex-col gap-6">
-		<div v-if="$slots.title || props.title">
+		<template v-if="$slots.title || props.title">
 			<slot name="title">
 				<Heading as="h2" class="text-center">{{ props.title }}</Heading>
 			</slot>
-		</div>
+		</template>
 		<div v-bind="$attrs">
 			<slot></slot>
 		</div>

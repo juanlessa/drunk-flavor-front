@@ -1,7 +1,5 @@
 <template>
-	<div class="p-6">
-		<CategoryForm @cancel="handleCancel" @submit="handleSubmit" />
-	</div>
+	<CategoryForm @cancel="handleCancel" @submit="handleSubmit" />
 </template>
 <script setup lang="ts">
 import type { CategoryForm } from '~/types/category.types';

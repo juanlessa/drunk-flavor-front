@@ -1,15 +1,21 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import InputPassword from './InputPassword.vue';
+import IconButton from '~/components/atoms/iconButton/IconButton.vue';
 
 const HideIconStub = { template: '<svg data-testid="hide-icon" />' };
 const ShowIconStub = { template: '<svg data-testid="show-icon" />' };
+
+const toggleButtonSelector =
+	'button[aria-label="atoms.inputPassword.toggleVisibilityButton.label"]';
 
 const mountInputPassword = (props = {}) =>
 	mount(InputPassword, {
 		props,
 		global: {
-			stubs: { HideIcon: HideIconStub, ShowIcon: ShowIconStub }
+			components: { IconButton },
+			stubs: { HideIcon: HideIconStub, ShowIcon: ShowIconStub },
+			mocks: { $t: (key: string) => key }
 		}
 	});
 
@@ -48,9 +54,9 @@ describe('InputPassword', () => {
 			expect(wrapper.find('[data-testid="hide-icon"]').exists()).toBe(false);
 		});
 
-		it('toggles to text type when visibility icon is clicked', async () => {
+		it('toggles to text type when visibility button is clicked', async () => {
 			const wrapper = mountInputPassword();
-			const toggle = wrapper.find('[class*="cursor-pointer"]');
+			const toggle = wrapper.find(toggleButtonSelector);
 
 			await toggle.trigger('click');
 
@@ -60,7 +66,7 @@ describe('InputPassword', () => {
 
 		it('toggles back to password type on second click', async () => {
 			const wrapper = mountInputPassword();
-			const toggle = wrapper.find('[class*="cursor-pointer"]');
+			const toggle = wrapper.find(toggleButtonSelector);
 
 			await toggle.trigger('click');
 			await toggle.trigger('click');

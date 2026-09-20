@@ -1,16 +1,15 @@
 <template>
 	<Box direction="col">
-		<div
+		<ImageCover
 			v-if="drink.cover"
-			class="w-full h-[30vh] bg-center bg-no-repeat bg-cover rounded-md overflow-hidden"
-			:style="{ backgroundImage: `url(${drink.cover.url})` }" />
-
+			:src="drink.cover.url"
+			:alt="drink.translations[$i18n.locale].name" />
 		<Box direction="col" class="gap-6 p-4" container>
 			<Heading as="h1" class="text-center text-headline-sm">
 				{{ drink.translations[$i18n.locale].name }}
 			</Heading>
 
-			<Box direction="container-responsive" container-breakpoint="lg" class="gap-6">
+			<Box direction="col" class="gap-6 @detail-layout:flex-row">
 				<Box direction="col" class="flex-1 gap-4">
 					<Heading class="text-center">
 						{{ $t('drinkDetailPage.ingredients.title') }}
@@ -32,7 +31,7 @@
 </template>
 <script setup lang="ts">
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
-import type { Drink, DrinkIngredient } from '~/types/drink.types';
+import type { Drink, DrinkIngredient } from '~/domain/drink/drink.entity';
 
 const { t, locale } = useI18n();
 

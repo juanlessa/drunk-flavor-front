@@ -1,7 +1,5 @@
 <template>
-	<div class="p-6">
-		<CategoryForm :category-form="categoryForm" @cancel="handleCancel" @submit="handleSubmit" />
-	</div>
+	<CategoryForm :category-form="categoryForm" @cancel="handleCancel" @submit="handleSubmit" />
 </template>
 <script setup lang="ts">
 import { mapCategoryToForm, mapFormToUpdateCategory } from '~/mappers/category.mappers';

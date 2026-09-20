@@ -10,10 +10,13 @@
 			:pattern="`${props.pattern}`"
 			@input="handleUpdateInput"
 			@blur="handleBlurInput" />
-		<div class="text-body cursor-pointer text-content-muted" @click="togglePasswordVisibility">
+		<IconButton
+			class="text-content-muted"
+			:aria-label="$t('atoms.inputPassword.toggleVisibilityButton.label')"
+			@click="togglePasswordVisibility">
 			<HideIcon v-if="_isPasswordVisible" />
 			<ShowIcon v-else />
-		</div>
+		</IconButton>
 	</div>
 </template>
 <script setup lang="ts">

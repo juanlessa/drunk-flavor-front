@@ -1,28 +1,23 @@
 <template>
 	<Story title="Atoms/AnimatedPlaceHolder">
-		<template #controls>
-			<HstText v-model="state.height" title="height" />
-			<HstText v-model="state.width" title="width" />
-			<HstText v-model="state.borderRadius" title="borderRadius" />
-		</template>
-
 		<Variant title="default">
 			<div class="p-4">
-				<AnimatedPlaceHolder
-					:height="state.height"
-					:width="state.width"
-					:border-radius="state.borderRadius" />
+				<AnimatedPlaceHolder />
+			</div>
+		</Variant>
+
+		<Variant title="custom size via class">
+			<div class="p-4">
+				<AnimatedPlaceHolder class="w-40 h-5 rounded-xs" />
+			</div>
+		</Variant>
+
+		<Variant title="fills container">
+			<div class="p-4 h-24 w-64">
+				<AnimatedPlaceHolder class="h-full w-full rounded-md" />
 			</div>
 		</Variant>
 	</Story>
 </template>
 
-<script lang="ts" setup>
-import { reactive } from 'vue';
-
-const state = reactive({
-	height: '1.5rem',
-	width: '5rem',
-	borderRadius: '0px'
-});
-</script>
+<script lang="ts" setup></script>

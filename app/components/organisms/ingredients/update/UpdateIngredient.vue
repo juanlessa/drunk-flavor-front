@@ -1,7 +1,5 @@
 <template>
-	<div class="p-6">
-		<IngredientForm :ingredient="ingredient" @cancel="handleCancel" @submit="handleSubmit" />
-	</div>
+	<IngredientForm :ingredient="ingredient" @cancel="handleCancel" @submit="handleSubmit" />
 </template>
 <script setup lang="ts">
 import { mapFormToUpdateIngredient } from '~/mappers/ingredient.mappers';

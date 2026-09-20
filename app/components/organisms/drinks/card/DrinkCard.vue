@@ -8,7 +8,10 @@
 				@click="emit('click')"
 				@keydown.enter="emit('click')"
 				@keydown.space.prevent="emit('click')">
-				<Image :src="drink.thumbnail?.url ?? ''" alt="drink thumbnail" />
+				<ImageThumbnail
+					:src="drink.thumbnail?.url ?? ''"
+					alt="drink thumbnail"
+					src-fallback="/thumbnail-placeholder.png" />
 				<div>
 					<Heading>{{ drink.translations[$i18n.locale].name }}</Heading>
 				</div>

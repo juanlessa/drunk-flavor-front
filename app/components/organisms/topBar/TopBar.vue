@@ -1,56 +1,68 @@
 <template>
-	<div class="bg-white dark:bg-gray-900 w-screen">
-		<header
-			class="h-20 w-full max-w-screen-desktop mx-auto px-4 desktop:px-0 flex items-center justify-between">
+	<Box direction="col" class="bg-surface w-screen items-center">
+		<Box
+			as="header"
+			direction="row"
+			class="h-20 w-full max-w-screen-desktop px-4 desktop:px-0 items-center justify-between">
 			<Anchor :to="localePath('/')">
-				<img :src="'/logo.png'" alt="DrunkFlavor" class="h-12 w-auto" />
+				<Image :src="'/logo.png'" alt="DrunkFlavor" class="h-12" />
 			</Anchor>
-			<div class="hidden desktop:block">
-				<div class="flex gap-8">
-					<div class="flex gap-8 items-center">
-						<LanguageSwitcher />
-						<ThemeSwitcher />
-					</div>
-					<nav class="inline-flex gap-2 items-center">
-						<Anchor
-							v-for="link in links"
-							:key="link.path"
-							:to="localePath(link.path)"
-							class="px-2 inline-flex justify-between items-center">
-							<Text>{{ $t(link.i18nKey) }}</Text>
-						</Anchor>
-					</nav>
-				</div>
-			</div>
-			<div class="desktop:hidden">
+			<Box direction="row" class="hidden desktop:flex gap-8">
+				<Box direction="row" class="gap-8 items-center">
+					<LanguageSwitcher />
+					<ThemeSwitcher />
+				</Box>
+				<Box
+					as="nav"
+					direction="row"
+					class="gap-2 items-center"
+					:aria-label="$t('organisms.topBar.primaryNav.label')">
+					<Anchor
+						v-for="link in links"
+						:key="link.path"
+						:to="localePath(link.path)"
+						class="px-2 inline-flex justify-between items-center">
+						<Text as="span">{{ $t(link.i18nKey) }}</Text>
+					</Anchor>
+				</Box>
+			</Box>
+			<Box direction="row" class="desktop:hidden">
 				<HamburgerMenu>
-					<div class="p-6 flex flex-col gap-8">
-						<div class="flex gap-6 justify-center items-center">
+					<Box direction="col" class="p-6 gap-8">
+						<Box direction="row" class="gap-6 justify-center items-center">
 							<LanguageSwitcher />
 							<ThemeSwitcher />
-						</div>
-						<nav class="flex flex-col gap-2">
+						</Box>
+						<Box
+							as="nav"
+							direction="col"
+							class="gap-2"
+							:aria-label="$t('organisms.topBar.mobileNav.label')">
 							<Anchor
 								v-for="link in links"
 								:key="link.path"
 								:to="localePath(link.path)"
 								class="px-2 inline-flex justify-between items-center">
-								<Text>{{ $t(link.i18nKey) }}</Text>
+								<Text as="span">{{ $t(link.i18nKey) }}</Text>
 								<component
 									:is="link.path === '/signin' ? SigninIcon : ArrowRightIcon"
 									class="size-4" />
 							</Anchor>
-						</nav>
-					</div>
+						</Box>
+					</Box>
 				</HamburgerMenu>
-			</div>
-		</header>
-	</div>
+			</Box>
+		</Box>
+	</Box>
 </template>
 <script setup lang="ts">
 import ArrowRightIcon from '~/components/icons/ArrowRightIcon.vue';
 import SigninIcon from '~/components/icons/SigninIcon.vue';
-import type { ILink } from './TopBar.types';
+
+type ILink = {
+	i18nKey: string;
+	path: string;
+};
 
 const { $auth } = useNuxtApp();
 const localePath = useLocalePath();

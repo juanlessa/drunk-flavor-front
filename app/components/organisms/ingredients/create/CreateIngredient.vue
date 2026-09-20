@@ -1,7 +1,5 @@
 <template>
-	<div class="p-6">
-		<IngredientForm @cancel="handleCancel" @submit="handleSubmit" />
-	</div>
+	<IngredientForm @cancel="handleCancel" @submit="handleSubmit" />
 </template>
 <script setup lang="ts">
 import type { IngredientForm } from '~/types/ingredient.types';

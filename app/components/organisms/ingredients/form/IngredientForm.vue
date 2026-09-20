@@ -1,6 +1,7 @@
 <template>
 	<Form
 		:title="$t('organisms.ingredientForm.title')"
+		class="p-form-page"
 		@cancel="handleCancelButton"
 		@submit="handleSubmitButton">
 		<Box direction="col" class="gap-4">

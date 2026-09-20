@@ -25,7 +25,11 @@
 
 		<Box direction="row" class="gap-1 items-center" :class="!_modelValue && 'invisible'">
 			<Text>{{ fileName }}</Text>
-			<CloseIcon class="cursor-pointer" @click="handleClear" />
+			<IconButton
+				:aria-label="$t('molecules.dropZone.clearButton.label')"
+				@click="handleClear">
+				<CloseIcon />
+			</IconButton>
 		</Box>
 	</Box>
 </template>
