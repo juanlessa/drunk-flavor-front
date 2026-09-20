@@ -1,5 +1,5 @@
 <template>
-	<NuxtLink class="text-body font-regular text-content" :to="props.to">
+	<NuxtLink class="text-body font-regular text-content cursor-pointer" :to="props.to">
 		<slot>{{ props.value }}</slot>
 	</NuxtLink>
 </template>

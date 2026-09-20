@@ -37,7 +37,7 @@ const props = defineProps({
 });
 
 const buttonStyles = tv({
-	base: 'w-full max-w-80 tablet:max-w-64 rounded-full font-regular text-center px-4 disabled:cursor-not-allowed focus-visible:outline-hidden focus-visible:shadow-focus-ring',
+	base: 'w-full max-w-80 tablet:max-w-64 rounded-full font-regular text-center px-4 enabled:cursor-pointer disabled:cursor-not-allowed focus-visible:outline-hidden focus-visible:shadow-focus-ring',
 	variants: {
 		variant: {
 			primary:
@@ -46,7 +46,7 @@ const buttonStyles = tv({
 				'bg-surface-input hover:bg-surface-hover text-content disabled:bg-surface-hover disabled:text-content-subtle',
 			delete: 'bg-danger-emphasis hover:bg-danger-emphasis-hover text-content-on-accent disabled:bg-surface-hover disabled:text-content-subtle',
 			outline:
-				'bg-transparent border-2 border-stroke-strong text-content hover:bg-surface-hover disabled:text-content-subtle disabled:border-stroke'
+				'bg-surface-transparent border-2 border-stroke-strong text-content hover:bg-surface-hover disabled:text-content-subtle disabled:border-stroke'
 		},
 		size: {
 			sm: 'py-1 text-body-sm',

@@ -64,7 +64,7 @@ describe('Button', () => {
 		it('applies outline variant classes', () => {
 			const wrapper = mount(Button, { props: { variant: 'outline' } });
 
-			expect(wrapper.find('button').classes()).toContain('bg-transparent');
+			expect(wrapper.find('button').classes()).toContain('bg-surface-transparent');
 		});
 
 		it('applies sm size classes', () => {
