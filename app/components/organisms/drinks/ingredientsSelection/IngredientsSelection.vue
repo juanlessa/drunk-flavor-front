@@ -34,8 +34,9 @@
 	</Box>
 </template>
 <script setup lang="ts">
-import type { DrinkIngredient, DrinkIngredientRequest } from '~/types/drink.types';
 import { mapToSelectOptions } from '~/components/atoms/inputSelect/InputSelect.helpers';
+import type { DrinkIngredient } from '~/domain/drink/drink.entity';
+import type { DrinkIngredientRequest } from '~/domain/drink/drink.dtos';
 
 const props = defineProps({
 	initialIngredients: {
