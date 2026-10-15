@@ -1,0 +1,69 @@
+@theme {
+	/* Pair every text token with a unitless line-height to preserve inheritance. */
+
+	--text-caption-sm: 0.625rem;
+	--text-caption: 0.75rem;
+	--text-body-sm: 0.875rem;
+	--text-body: 1rem;
+	--text-body-lg: 1.125rem;
+	--text-title-sm: 1.25rem;
+	--text-title: 1.5rem;
+	--text-title-lg: 1.75rem;
+	--text-headline-sm: 2rem;
+	--text-headline: 2.25rem;
+	--text-headline-lg: 3rem;
+	--text-display-sm: 4rem;
+	--text-display: 4.5rem;
+	--text-display-lg: 6rem;
+
+	--text-caption-sm--line-height: var(--leading-base);
+	--text-caption--line-height: var(--leading-base);
+	--text-body-sm--line-height: var(--leading-base);
+	--text-body--line-height: var(--leading-base);
+	--text-body-lg--line-height: var(--leading-base);
+	--text-title-sm--line-height: var(--leading-short);
+	--text-title--line-height: var(--leading-short);
+	--text-title-lg--line-height: var(--leading-short);
+	--text-headline-sm--line-height: var(--leading-shorter);
+	--text-headline--line-height: var(--leading-shorter);
+	--text-headline-lg--line-height: var(--leading-shorter);
+	--text-display-sm--line-height: var(--leading-shorter);
+	--text-display--line-height: var(--leading-shorter);
+	--text-display-lg--line-height: var(--leading-shorter);
+
+	--text-xxs: var(--text-caption-sm);
+	--text-xxs--line-height: var(--leading-base);
+	--text-xs: var(--text-caption);
+	--text-xs--line-height: var(--leading-base);
+	--text-sm: var(--text-body-sm);
+	--text-sm--line-height: var(--leading-base);
+	--text-md: var(--text-body);
+	--text-md--line-height: var(--leading-base);
+	--text-base: var(--text-body);
+	--text-base--line-height: var(--leading-base);
+	--text-lg: var(--text-body-lg);
+	--text-lg--line-height: var(--leading-base);
+	--text-xl: var(--text-title-sm);
+	--text-xl--line-height: var(--leading-short);
+	--text-2xl: var(--text-title);
+	--text-2xl--line-height: var(--leading-short);
+	--text-3xl: var(--text-title-lg);
+	--text-3xl--line-height: var(--leading-short);
+	--text-4xl: var(--text-headline-sm);
+	--text-4xl--line-height: var(--leading-shorter);
+	--text-5xl: var(--text-headline);
+	--text-5xl--line-height: var(--leading-shorter);
+	--text-6xl: var(--text-headline-lg);
+	--text-6xl--line-height: var(--leading-shorter);
+	--text-7xl: var(--text-display-sm);
+	--text-7xl--line-height: var(--leading-shorter);
+	--text-8xl: var(--text-display);
+	--text-8xl--line-height: var(--leading-shorter);
+	--text-9xl: var(--text-display-lg);
+	--text-9xl--line-height: var(--leading-shorter);
+
+	--leading-shorter: 1.25;
+	--leading-short: 1.4;
+	--leading-base: 1.6;
+	--leading-tall: 1.8;
+}

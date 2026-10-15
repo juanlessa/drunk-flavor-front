@@ -1,30 +1,29 @@
 <template>
-	<Story title="Molecules/DrinkCard">
-		<template #controls="{ state }: { state: State }">
-			<HstText v-model="state.title" title="title" />
+	<Story title="Organisms/DrinkCard">
+		<template #controls="{ state }">
+			<HstText v-model="(state as State).drink.translations.en.name" title="name" />
+			<HstText v-model="(state as State).drink.translations.en.method" title="method" />
 		</template>
 
 		<Variant title="default" :init-state="initState">
-			<template #default="{ state }: { state: State }">
-				<DrinkCard
-					:title="state.title"
-					:categories="state.categories"
-					:ingredients="state.ingredients" />
+			<template #default="{ state }">
+				<DrinkCard :drink="(state as State).drink" />
 			</template>
 		</Variant>
 	</Story>
 </template>
 <script lang="ts" setup>
+import { initEmptyDrink } from '~/domain/drink/drink.factory';
+import type { Drink } from '~/domain/drink/drink.entity';
+
 type State = {
-	title: string;
-	categories: string[];
-	ingredients: string[];
+	drink: Drink;
 };
+
 function initState(): State {
-	return {
-		title: 'Drink title',
-		categories: ['Juice', 'Soft drink', 'fruit'],
-		ingredients: ['15 ml of Orange Juice', '60 ml of soda', '15 ml of lime']
-	};
+	const drink = initEmptyDrink();
+	drink.translations.en = { name: 'Drink title', method: 'Shake and serve' };
+	drink.translations.pt = { name: 'Nome do drink', method: 'Bata e sirva' };
+	return { drink };
 }
 </script>

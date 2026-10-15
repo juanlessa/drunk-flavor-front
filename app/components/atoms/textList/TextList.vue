@@ -1,34 +1,24 @@
 <template>
 	<component
-		:is="props.type"
-		:class="
-			textListStyle({
-				size: props.size,
-				weight: props.weight,
-				gap: props.gap,
-				marker: props.marker
-			})
-		"
-		:reversed="props.type === 'ol' && props.reversed ? true : undefined">
+		:is="props.as"
+		class="text-body font-regular text-content"
+		:class="textListStyle({ gap: props.gap, marker: props.marker })"
+		:reversed="props.as === 'ol' && props.reversed ? true : undefined">
 		<slot>
 			<li v-for="(item, index) in props.items" :key="index">{{ item }}</li>
 		</slot>
 	</component>
 </template>
 <script setup lang="ts">
-import { tv } from 'tailwind-variants';
-import type {
-	TextListType,
-	TextListMarker,
-	TextListSize,
-	TextListWeight,
-	TextListGap
-} from './TextList.types';
+import { tv } from '~/utils/tv';
+import type { TextListMarker, TextListGap } from './TextList.types';
 import { validateMarker } from './TextList.helpers';
 
+type TextListElement = 'ul' | 'ol';
+
 const props = defineProps({
-	type: {
-		type: String as PropType<TextListType>,
+	as: {
+		type: String as PropType<TextListElement>,
 		default: 'ul'
 	},
 	marker: {
@@ -39,14 +29,6 @@ const props = defineProps({
 	reversed: {
 		type: Boolean,
 		default: false
-	},
-	size: {
-		type: String as PropType<TextListSize>,
-		default: 'md'
-	},
-	weight: {
-		type: String as PropType<TextListWeight>,
-		default: 'regular'
 	},
 	gap: {
 		type: String as PropType<TextListGap>,
@@ -59,22 +41,8 @@ const props = defineProps({
 });
 
 const textListStyle = tv({
-	base: 'flex flex-col pl-5 text-black dark:text-white',
+	base: 'flex flex-col pl-5',
 	variants: {
-		size: {
-			xxs: 'text-xxs',
-			xs: 'text-xs',
-			sm: 'text-sm',
-			md: 'text-md',
-			lg: 'text-lg',
-			xl: 'text-xl',
-			'2xl': 'text-2xl'
-		},
-		weight: {
-			regular: 'font-regular',
-			medium: 'font-medium',
-			bold: 'font-bold'
-		},
 		gap: {
 			none: 'gap-0',
 			sm: 'gap-1',

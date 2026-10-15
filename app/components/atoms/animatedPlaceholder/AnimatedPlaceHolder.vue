@@ -1,14 +1,15 @@
 <template>
-	<div
-		class="animate-loading bg-loading-gradient dark:bg-loading-dark-gradient bg-size-[200%_100%]"
-		:style="{ height, width, borderRadius }">
-		&nbsp;
-	</div>
+	<div :class="animatedPlaceholderStyle({ class: attrs.class })">&nbsp;</div>
 </template>
 <script setup>
-defineProps({
-	height: { type: String, default: '1.5rem' },
-	width: { type: String, default: '3rem' },
-	borderRadius: { type: String, default: '0px' }
+import { useAttrs } from 'vue';
+import { tv } from '~/utils/tv';
+
+defineOptions({ inheritAttrs: false });
+
+const attrs = useAttrs();
+
+const animatedPlaceholderStyle = tv({
+	base: 'animate-loading bg-loading-gradient h-6 w-12 rounded-none'
 });
 </script>

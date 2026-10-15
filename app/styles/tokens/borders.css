@@ -1,0 +1,7 @@
+:root {
+	--border-width-control: 2px;
+}
+
+@utility control-border-width {
+	border-width: var(--border-width-control);
+}

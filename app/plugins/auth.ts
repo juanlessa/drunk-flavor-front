@@ -29,11 +29,17 @@ export default defineNuxtPlugin({
 			}
 		};
 
+		const signout = async () => {
+			await $api.auth.signout();
+			state.value = initState();
+		};
+
 		return {
 			provide: {
 				auth: {
 					state,
-					authenticate
+					authenticate,
+					signout
 				}
 			}
 		};

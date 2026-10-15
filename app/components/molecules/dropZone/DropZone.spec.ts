@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import DropZone from './DropZone.vue';
@@ -6,6 +6,8 @@ import Box from '~/components/atoms/box/Box.vue';
 import Text from '~/components/atoms/text/Text.vue';
 import Button from '~/components/atoms/button/Button.vue';
 import CloseIcon from '~/components/icons/CloseIcon.vue';
+
+const clearButtonSelector = 'button[aria-label="molecules.dropZone.clearButton.label"]';
 
 const createFile = (name: string, size: number, type: string): File => {
 	const content = new Array(size).fill('a').join('');
@@ -89,7 +91,7 @@ describe('DropZone', () => {
 	describe('file input selection', () => {
 		it('has a clickable drop area that contains the file input', () => {
 			const wrapper = mountDropZone();
-			const dropArea = wrapper.find('.rounded-md.cursor-pointer');
+			const dropArea = wrapper.find('[data-testid="drop-zone-area"]');
 			const input = dropArea.find('input[type="file"]');
 
 			expect(dropArea.exists()).toBe(true);
@@ -146,11 +148,11 @@ describe('DropZone', () => {
 	});
 
 	describe('clear file', () => {
-		it('emits undefined when clear icon is clicked', async () => {
+		it('emits undefined when clear button is clicked', async () => {
 			const file = createFile('photo.png', 1024, 'image/png');
 			const wrapper = mountDropZone({ modelValue: file });
 
-			await wrapper.findComponent(CloseIcon).trigger('click');
+			await wrapper.find(clearButtonSelector).trigger('click');
 			await nextTick();
 
 			expect(wrapper.emitted('update:modelValue')).toHaveLength(1);
@@ -161,7 +163,7 @@ describe('DropZone', () => {
 			const file = createFile('photo.png', 1024, 'image/png');
 			const wrapper = mountDropZone({ modelValue: file });
 
-			await wrapper.findComponent(CloseIcon).trigger('click');
+			await wrapper.find(clearButtonSelector).trigger('click');
 			await nextTick();
 			await flushPromises();
 

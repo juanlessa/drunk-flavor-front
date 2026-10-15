@@ -3,6 +3,11 @@
 		"en": "Inglês",
 		"pt": "Português"
 	},
+	"atoms": {
+		"inputPassword": {
+			"toggleVisibilityButton": { "label": "alternar visibilidade da senha" }
+		}
+	},
 	"molecules": {
 		"buttonGroup": {
 			"cancelButton": { "value": "cancelar" },
@@ -16,7 +21,11 @@
 			"drag": { "message": "Arraste e solte o arquivo aqui" },
 			"drop": { "message": "Solte o arquivo aqui" },
 			"or": { "message": "OU" },
-			"selectFile": { "message": "selecione o arquivo" }
+			"selectFile": { "message": "selecione o arquivo" },
+			"clearButton": { "label": "limpar arquivo" }
+		},
+		"itemControlCard": {
+			"deleteButton": { "label": "excluir item" }
 		}
 	},
 	"organisms": {
@@ -33,7 +42,8 @@
 		},
 		"footer": {
 			"author": "Juan Lessa",
-			"githubProject": "projeto no github"
+			"githubProject": "projeto no github",
+			"socialNav": { "label": "social" }
 		},
 		"ingredientsControlOverview": {
 			"createButton": { "value": "Criar Ingrediente" },
@@ -45,7 +55,11 @@
 		"ingredientForm": {
 			"title": "Ingrediente",
 			"nameInput": { "label": "nome", "placeholder": "" },
-			"unitInput": { "error": "unidade deve ter no mínimo 1 carácter", "label": "unidade", "placeholder": "" },
+			"unitInput": {
+				"error": "unidade deve ter no mínimo 1 carácter",
+				"label": "unidade",
+				"placeholder": ""
+			},
 			"unitPluralInput": { "label": "unidade plural", "placeholder": "" },
 			"generalSection": { "title": "Geral" },
 			"categoryInput": { "label": "categoria" },
@@ -66,25 +80,41 @@
 			"coverInput": { "label": "capa" },
 			"thumbnailInput": { "label": "miniatura" }
 		},
+		"ingredientsSelection": {
+			"removeButton": { "label": "remover ingrediente" }
+		},
 		"topBar": {
 			"categories": "categorias",
 			"drinks": "drinks",
 			"ingredients": "ingredientes",
 			"signin": "entrar",
-			"logout": "sair"
+			"logout": "sair",
+			"logoutError": "Não foi possível sair. Tente novamente.",
+			"primaryNav": { "label": "principal" },
+			"mobileNav": { "label": "mobile" }
 		},
 		"signinForm": {
+			"title": "Bem-vindo de volta",
 			"emailInput": { "label": "email" },
-			"passwordInput": { "label": "senha" }
+			"passwordInput": { "label": "senha" },
+			"submitButton": { "value": "entrar" },
+			"forgotPasswordLink": { "value": "Esqueceu sua senha?" },
+			"signupPrompt": { "message": "Não tem uma conta?", "link": "Criar conta" }
 		},
 		"signupForm": {
+			"title": "Criar uma conta",
 			"nameInput": { "label": "nome" },
 			"surnameInput": { "label": "sobrenome" },
 			"emailInput": { "label": "email" },
-			"passwordInput": { "label": "senha" }
+			"passwordInput": { "label": "senha" },
+			"submitButton": { "value": "Criar conta" },
+			"hasAccount": { "message": "Já tem uma conta?", "link": "Entrar" }
 		},
 		"forgotPasswordForm": {
-			"emailInput": { "label": "email" }
+			"title": "Redefinir senha",
+			"emailInput": { "label": "email" },
+			"submitButton": { "value": "Enviar código" },
+			"rememberPassword": { "message": "Lembrou sua senha?", "link": "Voltar para o login" }
 		},
 		"toastNotification": {
 			"label": "Notificação"
@@ -95,7 +125,10 @@
 			"name": "nome deve ter no mínimo 1 carácter",
 			"surname": "sobrenome deve ter no mínimo 1 carácter",
 			"email": "email inválido",
-			"password": "senha inválida"
+			"password": "senha inválida",
+			"passwordMinSize": "senha deve ter no mínimo 8 caracteres",
+			"passwordMaxSize": "senha deve ter no máximo 64 caracteres",
+			"weakPassword": "senha deve conter maiúscula, minúscula, número e caractere especial"
 		},
 		"categories": {
 			"name": "nome deve ter no mínimo 1 carácter"

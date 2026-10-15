@@ -19,20 +19,25 @@
 				<InputNumber
 					:model-value="quantities[sel._id]"
 					input-width="4ch"
+					suffix-width="7ch"
 					suffix-outside
 					:suffix="sel.translations[$i18n.locale].unit"
 					@update:model-value="(val: number) => updateQuantity(sel._id, val)" />
 
-				<button aria-label="remove ingredient" @click="handleRemove(sel._id)">
+				<Button
+					variant="icon"
+					:aria-label="$t('organisms.ingredientsSelection.removeButton.label')"
+					@click="handleRemove(sel._id)">
 					<TrashIcon />
-				</button>
+				</Button>
 			</Box>
 		</Box>
 	</Box>
 </template>
 <script setup lang="ts">
-import type { DrinkIngredient, DrinkIngredientRequest } from '~/types/drink.types';
 import { mapToSelectOptions } from '~/components/atoms/inputSelect/InputSelect.helpers';
+import type { DrinkIngredient } from '~/domain/drink/drink.entity';
+import type { DrinkIngredientRequest } from '~/domain/drink/drink.dtos';
 
 const props = defineProps({
 	initialIngredients: {

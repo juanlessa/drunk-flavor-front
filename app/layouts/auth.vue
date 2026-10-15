@@ -1,10 +1,20 @@
 <template>
-	<div
-		class="w-screen min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 tablet:bg-gray-100 tablet:dark:bg-gray-850">
-		<main
-			class="flex-1 max-w-[25rem] p-4 rounded-md bg-white dark:bg-gray-900 tablet:shadow-light-card dark:tablet:shadow-dark-card">
+	<Box
+		direction="row"
+		class="w-screen min-h-screen items-center justify-center bg-surface tablet:bg-surface-sunken">
+		<Box
+			as="main"
+			direction="col"
+			class="flex-1 max-w-auth-panel gap-10 p-4 rounded-auth-panel bg-surface tablet:shadow-card">
+			<Box direction="row" class="h-auth-logo justify-center">
+				<Anchor :to="localePath('/')">
+					<Image src="/light-logo.png" alt="Drunk Flavor logo" />
+				</Anchor>
+			</Box>
 			<slot></slot>
-		</main>
-	</div>
+		</Box>
+	</Box>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const localePath = useLocalePath();
+</script>

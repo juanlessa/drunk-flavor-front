@@ -16,6 +16,12 @@ export const authRepository = ($fetch: $Fetch) => ({
 		});
 	},
 
+	async signout() {
+		return $fetch('/signout', {
+			method: 'POST'
+		});
+	},
+
 	async forgotPassword(body: ForgotPassword) {
 		return $fetch('/forgot-password', {
 			method: 'POST',

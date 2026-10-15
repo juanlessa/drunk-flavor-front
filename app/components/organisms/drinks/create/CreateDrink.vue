@@ -1,7 +1,5 @@
 <template>
-	<div class="p-6">
-		<DrinkForm @cancel="handleCancel" @submit="handleSubmit" />
-	</div>
+	<DrinkForm @cancel="handleCancel" @submit="handleSubmit" />
 </template>
 <script setup lang="ts">
 import type { DrinkForm, DrinkFormAndMedia } from '~/types/drink.types';

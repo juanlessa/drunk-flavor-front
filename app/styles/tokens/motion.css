@@ -1,0 +1,123 @@
+@theme {
+	--ease-enter: cubic-bezier(0, 0, 0.2, 1);
+	--ease-exit: cubic-bezier(0.4, 0, 1, 1);
+	--ease-move: cubic-bezier(0.4, 0, 0.2, 1);
+	--animate-loading: loadingAnimate var(--duration-loading) linear infinite;
+	--animate-overlay-enter: overlay-enter var(--duration-short) var(--ease-enter);
+	--animate-dialog-enter: dialog-enter var(--duration-short) var(--ease-enter);
+	--animate-floating-enter-from-top: floating-enter-from-top var(--duration-short)
+		var(--ease-enter);
+	--animate-floating-enter-from-right: floating-enter-from-right var(--duration-short)
+		var(--ease-enter);
+	--animate-floating-enter-from-bottom: floating-enter-from-bottom var(--duration-short)
+		var(--ease-enter);
+	--animate-floating-enter-from-left: floating-enter-from-left var(--duration-short)
+		var(--ease-enter);
+	--animate-theme-icon: theme-icon-spin var(--duration-theme-toggle) linear 1;
+}
+
+:root {
+	--duration-micro: 100ms;
+	--duration-short: 200ms;
+	--duration-medium: 300ms;
+	--duration-theme-toggle: 500ms;
+	--duration-loading: 1200ms;
+}
+
+@utility duration-micro {
+	transition-duration: var(--duration-micro);
+}
+
+@utility duration-short {
+	transition-duration: var(--duration-short);
+}
+
+@utility duration-medium {
+	transition-duration: var(--duration-medium);
+}
+
+@utility duration-theme-toggle {
+	transition-duration: var(--duration-theme-toggle);
+}
+
+@keyframes loadingAnimate {
+	0% {
+		background-position: 50% 0;
+	}
+	100% {
+		background-position: -150% 0;
+	}
+}
+
+@keyframes overlay-enter {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes dialog-enter {
+	from {
+		opacity: 0;
+		scale: 0.96;
+	}
+	to {
+		opacity: 1;
+		scale: 1;
+	}
+}
+
+@keyframes floating-enter-from-top {
+	from {
+		opacity: 0;
+		transform: translateY(-0.25rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes floating-enter-from-right {
+	from {
+		opacity: 0;
+		transform: translateX(0.25rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes floating-enter-from-bottom {
+	from {
+		opacity: 0;
+		transform: translateY(0.25rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes floating-enter-from-left {
+	from {
+		opacity: 0;
+		transform: translateX(-0.25rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes theme-icon-spin {
+	from {
+		rotate: 0deg;
+	}
+	to {
+		rotate: 360deg;
+	}
+}

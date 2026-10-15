@@ -1,12 +1,13 @@
 <template>
 	<Form
 		:title="$t('organisms.drinkForm.title')"
+		class="p-form-page"
 		@cancel="handleCancelButton"
 		@submit="handleSubmitButton">
 		<Box direction="col" class="gap-4">
 			<Box class="gap-4">
 				<Box v-for="lang in languages" :key="lang" direction="col" class="flex-1">
-					<Heading type="h2" class="text-center">
+					<Heading as="h2" class="text-center">
 						{{ $t(`languages.${lang}`) }}
 					</Heading>
 					<InputWrapper>
@@ -50,7 +51,7 @@
 				</Box>
 			</Box>
 			<Box direction="col">
-				<Heading type="h2" class="text-center">
+				<Heading as="h2" class="text-center">
 					{{ $t('organisms.drinkForm.generalSection.title') }}
 				</Heading>
 				<Box class="gap-4">
@@ -84,7 +85,8 @@
 <script setup lang="ts">
 import { languages } from '~/domain/shared/translations.constants';
 import { mapDrinkToForm } from '~/mappers/drink.mappers.js';
-import type { Drink, DrinkFormAndMedia } from '~/types/drink.types.js';
+import type { Drink } from '~/domain/drink/drink.entity';
+import type { DrinkFormAndMedia } from '~/types/drink.types';
 import IngredientsSelection from '../ingredientsSelection/IngredientsSelection.vue';
 
 const props = defineProps({

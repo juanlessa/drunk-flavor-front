@@ -1,24 +1,26 @@
 <template>
-	<div :class="containerStyle({ direction: props.direction, container: props.container })">
+	<component
+		:is="props.as"
+		:class="containerStyle({ direction: props.direction, container: props.container })">
 		<slot></slot>
-	</div>
+	</component>
 </template>
 <script setup lang="ts">
-import { tv } from 'tailwind-variants';
-import type { BoxContainerBreakpoint } from './Box.types';
+import { tv } from '~/utils/tv';
+import type { BoxAs, BoxDirection } from './Box.types';
 
 const props = defineProps({
+	as: {
+		type: String as PropType<BoxAs>,
+		default: 'div'
+	},
 	direction: {
-		type: String as PropType<'row' | 'col' | 'responsive' | 'wrap' | 'container-responsive'>,
+		type: String as PropType<BoxDirection>,
 		default: 'responsive'
 	},
 	container: {
 		type: Boolean,
 		default: false
-	},
-	containerBreakpoint: {
-		type: String as PropType<BoxContainerBreakpoint>,
-		default: 'md'
 	}
 });
 
@@ -29,8 +31,7 @@ const containerStyle = tv({
 			row: 'flex-row',
 			col: 'flex-col',
 			responsive: 'flex-col tablet:flex-row',
-			wrap: 'flex-row flex-wrap',
-			'container-responsive': `flex-col @${props.containerBreakpoint}:flex-row`
+			wrap: 'flex-row flex-wrap'
 		},
 		container: {
 			true: '@container'

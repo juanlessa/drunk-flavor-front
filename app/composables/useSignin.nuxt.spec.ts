@@ -27,7 +27,7 @@ describe('useSigninForm', () => {
 	describe('resetFormState', () => {
 		it('resets form and flags to initial state', () => {
 			form.formState.value.form.email = 'test@test.com';
-			form.formState.value.form.password = 'password123';
+			form.formState.value.form.password = 'Password123!';
 			form.formState.value.displayErrors = true;
 
 			form.resetFormState();
@@ -44,9 +44,7 @@ describe('useSigninForm', () => {
 		});
 
 		it('returns translated message when field has error', () => {
-			form.formState.value.errors = [
-				{ field: 'email', message: 'errors.users.email' }
-			];
+			form.formState.value.errors = [{ field: 'email', message: 'errors.users.email' }];
 
 			expect(form.checkError('email')).toBeTruthy();
 		});
@@ -72,7 +70,7 @@ describe('useSigninForm', () => {
 			form.validateForm();
 
 			form.formState.value.form.email = 'valid@test.com';
-			form.formState.value.form.password = 'password123';
+			form.formState.value.form.password = 'Password123!';
 			form.validateForm();
 
 			expect(form.formState.value.errors).toEqual([]);

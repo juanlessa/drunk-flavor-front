@@ -16,20 +16,19 @@
 
 		<Select.Portal>
 			<Select.Content
-				class="w-full dark:bg-gray-800 bg-gray-200 border-gray-200 dark:border-gray-800 rounded-md shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade z-[100]"
+				class="w-full bg-surface-overlay rounded-overlay shadow-overlay will-change-[opacity,transform] data-[side=top]:animate-floating-enter-from-top data-[side=right]:animate-floating-enter-from-right data-[side=bottom]:animate-floating-enter-from-bottom data-[side=left]:animate-floating-enter-from-left z-dropdown"
 				:style="{ width: 'var(--radix-select-trigger-width)' }"
 				side="bottom"
-				:side-offset="3"
+				:side-offset="FLOATING_POSITION_PX.selectSideOffset"
 				position="popper">
 				<Select.Viewport class="p-1">
 					<Select.Group>
 						<Select.Item
 							v-for="(option, index) in props.options"
 							:key="index"
-							class="text-md text-black dark:text-white rounded-md flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-gray-500 data-[disabled]:pointer-events-none data-[highlighted]:outline-hidden data-[highlighted]:bg-blue-700 data-[highlighted]:text-white"
+							class="text-body text-content rounded-option flex items-center h-option-control option-control-insets relative select-none data-[disabled]:text-content-subtle data-[disabled]:pointer-events-none data-[highlighted]:outline-hidden data-[highlighted]:bg-accent-strong data-[highlighted]:text-content-on-accent"
 							:value="option.value">
-							<Select.ItemIndicator
-								class="absolute left-0 w-[25px] inline-flex items-center justify-center">
+							<Select.ItemIndicator class="option-indicator-layout">
 							</Select.ItemIndicator>
 							<Select.ItemText>
 								{{ option.label }}
@@ -43,7 +42,8 @@
 </template>
 <script setup lang="ts">
 import { Select } from 'radix-vue/namespaced';
-import { tv } from 'tailwind-variants';
+import { tv } from '~/utils/tv';
+import { FLOATING_POSITION_PX } from '~/constants/floatingPosition.constants';
 import type { InputSelectOption } from './InputSelect.types';
 
 const props = defineProps({
@@ -75,13 +75,13 @@ const handleUpdate = (value: string) => {
 };
 
 const selectInputContainerStyle = tv({
-	base: 'w-full inline-flex items-center justify-between gap-2 rounded-md px-3 py-1 text-md leading-base box-border border-2 outline-hidden text-black dark:text-white bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:border-black focus:dark:border-white data-[placeholder]:text-gray-500 ',
+	base: 'w-full inline-flex items-center justify-between gap-2 rounded-control px-3 py-1 text-body box-border control-border-width outline-hidden text-content bg-surface-input border-surface-input focus:border-stroke-strong data-[placeholder]:text-content-muted',
 	variants: {
 		border: {
-			true: 'border-gray-300 dark:border-gray-700'
+			true: 'border-stroke-control'
 		},
 		hasError: {
-			true: 'border-red-400 dark:border-red-600'
+			true: 'border-danger-stroke'
 		}
 	}
 });
