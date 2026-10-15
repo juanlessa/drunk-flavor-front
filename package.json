@@ -58,7 +58,7 @@
 		"eslint-plugin-prettier": "5.5.6",
 		"happy-dom": "21.0.1",
 		"histoire": "1.0.0-beta.1",
-		"nuxt-typed-router": "4.0.10",
+		"nuxt-typed-router": "4.0.11",
 		"playwright-core": "1.64.1",
 		"prettier": "3.9.7",
 		"tailwindcss": "4.3.3",
