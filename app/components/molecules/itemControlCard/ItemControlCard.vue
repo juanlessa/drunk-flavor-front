@@ -1,18 +1,21 @@
 <template>
-	<div
-		class="flex w-full h-10 tablet:max-w-[45%] py-2 px-4 rounded-lg gap-4 cursor-pointer bg-white dark:bg-gray-900 shadow-light-card dark:shadow-dark-card"
-		@click="emit('click')">
+	<div :class="itemControlCardStyle()" :style="itemControlCardDimensions" @click="emit('click')">
 		<div class="flex-1">
 			<slot>
 				<Text>{{ props.content }}</Text>
 			</slot>
 		</div>
-		<button aria-label="delete" @click.stop="emit('action')">
+		<Button
+			variant="icon"
+			:aria-label="$t('molecules.itemControlCard.deleteButton.label')"
+			@click.stop="emit('action')">
 			<TrashIcon />
-		</button>
+		</Button>
 	</div>
 </template>
 <script setup lang="ts">
+import { itemControlCardDimensions, itemControlCardStyle } from './ItemControlCard.styles';
+
 const props = defineProps({
 	content: {
 		type: String,

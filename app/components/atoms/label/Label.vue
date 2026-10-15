@@ -1,5 +1,5 @@
 <template>
-	<label :for="props.for" class="text-md font-regular text-black dark:text-white">
+	<label :for="props.for" class="text-body font-regular text-content">
 		<slot>{{ props.value }}</slot>
 	</label>
 </template>

@@ -1,8 +1,10 @@
 import { textListOrderedMarkerOptions, textListUnorderedMarkerOptions } from './TextList.constants';
-import type { TextListMarker, TextListType } from './TextList.types';
+import type { TextListMarker } from './TextList.types';
 
-export const validateMarker = (value: TextListMarker, props: { type?: TextListType }): boolean => {
-	const listType = props.type ?? 'ul';
+type TextListElement = 'ul' | 'ol';
+
+export const validateMarker = (value: TextListMarker, props: { as?: TextListElement }): boolean => {
+	const listType = props.as ?? 'ul';
 	const allowedMarkers = [
 		...(listType === 'ol' ? textListOrderedMarkerOptions : textListUnorderedMarkerOptions)
 	];

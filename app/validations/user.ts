@@ -7,7 +7,12 @@ export const userSurnameValidation = z.string().trim().min(1, { error: 'errors.u
 
 export const userEmailValidation = z.email({ error: 'errors.users.email' });
 
-export const userPasswordValidation = z.string().min(8, { error: 'errors.users.password' });
+const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=\-{}\[\]:;"'<>,.?/~`]).{8,64}$/;
+export const userPasswordValidation = z
+	.string()
+	.min(8, { error: 'errors.users.passwordMinSize' })
+	.max(64, { error: 'errors.users.passwordMaxSize' })
+	.regex(passwordPattern, { error: 'errors.users.weakPassword' });
 
 export const userRoleValidation = z.string().trim().min(1, { error: 'errors.users.role' });
 

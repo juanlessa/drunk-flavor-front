@@ -2,7 +2,11 @@ export enum ButtonVariantEnum {
 	primary = 'primary',
 	secondary = 'secondary',
 	delete = 'delete',
-	outline = 'outline'
+	outline = 'outline',
+	/** Icon-only action: no fill, square hit area, hover surface. Needs `ariaLabel`. */
+	icon = 'icon',
+	/** Bare text action, visually like an Anchor. For signin/signout style actions. */
+	plain = 'plain'
 }
 
 export enum ButtonSizeEnum {
@@ -26,4 +30,5 @@ export type ButtonProps = Partial<{
 	type: ButtonType;
 	disabled: boolean;
 	value: string;
+	ariaLabel: string;
 }>;

@@ -1,63 +1,114 @@
 <template>
-	<div class="bg-white dark:bg-gray-900 w-screen">
-		<header
-			class="h-20 w-full max-w-screen-desktop mx-auto px-4 desktop:px-0 flex items-center justify-between">
+	<Box direction="col" class="bg-surface w-screen items-center">
+		<Box
+			as="header"
+			direction="row"
+			class="h-20 w-full max-w-screen-desktop px-4 desktop:px-0 items-center justify-between">
 			<Anchor :to="localePath('/')">
-				<img :src="'/logo.png'" alt="DrunkFlavor" class="h-12 w-auto" />
+				<Image :src="'/logo.png'" alt="DrunkFlavor" class="h-12" />
 			</Anchor>
-			<div class="hidden desktop:block">
-				<div class="flex gap-8">
-					<div class="flex gap-8 items-center">
-						<LanguageSwitcher />
-						<ThemeSwitcher />
-					</div>
-					<nav class="inline-flex gap-2 items-center">
-						<Anchor
-							v-for="link in links"
-							:key="link.path"
-							:to="localePath(link.path)"
-							class="px-2 inline-flex justify-between items-center">
-							<Text>{{ $t(link.i18nKey) }}</Text>
-						</Anchor>
-					</nav>
-				</div>
-			</div>
-			<div class="desktop:hidden">
+			<Box direction="row" class="hidden desktop:flex gap-8">
+				<Box direction="row" class="gap-8 items-center">
+					<LanguageSwitcher />
+					<ThemeSwitcher />
+				</Box>
+				<Box
+					as="nav"
+					direction="row"
+					class="gap-2 items-center"
+					:aria-label="$t('organisms.topBar.primaryNav.label')">
+					<Anchor
+						v-for="link in links"
+						:key="link.path"
+						:to="localePath(link.path)"
+						class="px-2 inline-flex justify-between items-center">
+						<Text as="span">{{ $t(link.i18nKey) }}</Text>
+					</Anchor>
+					<Button
+						v-if="isAuthenticated"
+						variant="plain"
+						class="px-2 inline-flex gap-2 justify-between items-center"
+						:disabled="isSigningOut"
+						@click="handleSignout">
+						<Text as="span">{{ $t('organisms.topBar.logout') }}</Text>
+					</Button>
+				</Box>
+			</Box>
+			<Box direction="row" class="desktop:hidden">
 				<HamburgerMenu>
-					<div class="p-6 flex flex-col gap-8">
-						<div class="flex gap-6 justify-center items-center">
+					<Box direction="col" class="p-6 gap-8">
+						<Box direction="row" class="gap-6 justify-center items-center">
 							<LanguageSwitcher />
 							<ThemeSwitcher />
-						</div>
-						<nav class="flex flex-col gap-2">
+						</Box>
+						<Box
+							as="nav"
+							direction="col"
+							class="gap-2"
+							:aria-label="$t('organisms.topBar.mobileNav.label')">
 							<Anchor
 								v-for="link in links"
 								:key="link.path"
 								:to="localePath(link.path)"
 								class="px-2 inline-flex justify-between items-center">
-								<Text>{{ $t(link.i18nKey) }}</Text>
+								<Text as="span">{{ $t(link.i18nKey) }}</Text>
 								<component
-									:is="link.path === '/login' ? LoginIcon : ArrowRightIcon"
+									:is="link.path === '/signin' ? SigninIcon : ArrowRightIcon"
 									class="size-4" />
 							</Anchor>
-						</nav>
-					</div>
+							<Button
+								v-if="isAuthenticated"
+								variant="plain"
+								class="w-full px-2 inline-flex gap-2 justify-between items-center"
+								:disabled="isSigningOut"
+								@click="handleSignout">
+								<Text as="span">{{ $t('organisms.topBar.logout') }}</Text>
+								<LogoutIcon class="size-4" />
+							</Button>
+						</Box>
+					</Box>
 				</HamburgerMenu>
-			</div>
-		</header>
-	</div>
+			</Box>
+		</Box>
+	</Box>
 </template>
 <script setup lang="ts">
 import ArrowRightIcon from '~/components/icons/ArrowRightIcon.vue';
-import LoginIcon from '~/components/icons/LoginIcon.vue';
-import type { ILink } from './TopBar.types';
+import LogoutIcon from '~/components/icons/LogoutIcon.vue';
+import SigninIcon from '~/components/icons/SigninIcon.vue';
+
+type ILink = {
+	i18nKey: string;
+	path: string;
+};
 
 const { $auth } = useNuxtApp();
+const { t } = useI18n();
+const { addToast } = useToast();
 const localePath = useLocalePath();
+const isSigningOut = ref(false);
 
-const links = computed<ILink[]>(() =>
-	getLinksBasedOnPermissions($auth.state.value.isAuthenticated)
-);
+const isAuthenticated = computed(() => $auth.state.value.isAuthenticated);
+const links = computed<ILink[]>(() => getLinksBasedOnPermissions(isAuthenticated.value));
+
+const handleSignout = async () => {
+	if (isSigningOut.value) return;
+
+	isSigningOut.value = true;
+	try {
+		await $auth.signout();
+		await navigateTo(localePath('/'));
+	} catch (error) {
+		console.error(error);
+		addToast({
+			type: 'error',
+			title: 'ERROR',
+			message: t('organisms.topBar.logoutError')
+		});
+	} finally {
+		isSigningOut.value = false;
+	}
+};
 
 function getLinksBasedOnPermissions(isAuthenticated: boolean) {
 	if (isAuthenticated) {
@@ -67,6 +118,6 @@ function getLinksBasedOnPermissions(isAuthenticated: boolean) {
 			{ i18nKey: 'organisms.topBar.drinks', path: '/drinks' }
 		];
 	}
-	return [{ i18nKey: 'organisms.topBar.login', path: '/login' }];
+	return [{ i18nKey: 'organisms.topBar.signin', path: '/signin' }];
 }
 </script>

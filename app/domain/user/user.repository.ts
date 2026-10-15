@@ -1,6 +1,7 @@
 import type { $Fetch } from 'nitropack';
 import type { CreateUser, UpdateRole } from './user.dtos';
 import type { User } from './user.entity';
+import type { QueryParams } from '~/domain/shared/query.types';
 
 const path = '/users';
 
@@ -26,8 +27,10 @@ export const usersRepository = ($fetch: $Fetch) => ({
 		});
 	},
 
-	async list() {
-		return $fetch<User[]>(path);
+	async list(query: QueryParams) {
+		return $fetch<User[]>(path, {
+			params: query
+		});
 	},
 
 	async get(id: string) {

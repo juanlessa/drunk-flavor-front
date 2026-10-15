@@ -2,8 +2,9 @@
 	<Box direction="col" class="flex-1">
 		<Box
 			ref="dropZoneRef"
+			data-testid="drop-zone-area"
 			direction="col"
-			class="flex-1 px-6 pt-4 pb-8 items-center gap-2 bg-gray-200 dark:bg-gray-700 rounded-md cursor-pointer"
+			class="flex-1 px-6 pt-4 pb-8 items-center gap-2 bg-surface-input rounded-dropzone cursor-pointer"
 			@click="openFilePicker">
 			<input
 				:id="props.id"
@@ -12,9 +13,11 @@
 				:accept="props.accept.join(',')"
 				class="hidden"
 				@change="handleFileInput" />
-			<Text v-if="isOverDropZone" size="sm">{{ $t('molecules.dropZone.drop.message') }}</Text>
-			<Text v-else size="sm">{{ $t('molecules.dropZone.drag.message') }}</Text>
-			<Text size="sm">{{ $t('molecules.dropZone.or.message') }}</Text>
+			<Text v-if="isOverDropZone" class="text-body-sm">{{
+				$t('molecules.dropZone.drop.message')
+			}}</Text>
+			<Text v-else class="text-body-sm">{{ $t('molecules.dropZone.drag.message') }}</Text>
+			<Text class="text-body-sm">{{ $t('molecules.dropZone.or.message') }}</Text>
 			<Button variant="outline" size="sm" class="cursor-pointer">
 				{{ $t('molecules.dropZone.selectFile.message') }}
 			</Button>
@@ -22,7 +25,12 @@
 
 		<Box direction="row" class="gap-1 items-center" :class="!_modelValue && 'invisible'">
 			<Text>{{ fileName }}</Text>
-			<CloseIcon class="cursor-pointer" @click="handleClear" />
+			<Button
+				variant="icon"
+				:aria-label="$t('molecules.dropZone.clearButton.label')"
+				@click="handleClear">
+				<CloseIcon />
+			</Button>
 		</Box>
 	</Box>
 </template>

@@ -1,0 +1,22 @@
+@theme {
+	--radius-none: 0;
+	--radius-px: 1px;
+	--radius-skeleton-block: 0.125rem;
+	--radius-xs: 0.25rem;
+	--radius-sm: 0.375rem;
+	--radius-md: 0.5rem;
+	--radius-lg: 1rem;
+	--radius-xl: 1.5rem;
+	--radius-2xl: 2rem;
+	--radius-full: 9999px;
+
+	--radius-control: var(--radius-md);
+	--radius-option: var(--radius-md);
+	--radius-overlay: var(--radius-md);
+	--radius-card: var(--radius-md);
+	--radius-control-card: var(--radius-lg);
+	--radius-dropzone: var(--radius-md);
+	--radius-auth-panel: var(--radius-md);
+	--radius-media: var(--radius-md);
+	--radius-icon-action: var(--radius-md);
+}

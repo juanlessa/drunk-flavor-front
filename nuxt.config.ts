@@ -22,7 +22,12 @@ export default defineNuxtConfig({
 		plugins: [tailwindcss()]
 	},
 
-	css: ['~/styles/global.css'],
+	css: [
+		'@fontsource/roboto/latin-400.css',
+		'@fontsource/roboto/latin-500.css',
+		'@fontsource/roboto/latin-700.css',
+		'~/styles/global.css'
+	],
 
 	components: [
 		{

@@ -1,5 +1,5 @@
 <template>
-	<span class="text-md font-regular text-red-600 dark:text-red-400">
+	<span class="text-body font-regular text-danger">
 		<slot>{{ props.value }}</slot>
 	</span>
 </template>

@@ -1,10 +1,11 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import Box from './Box.vue';
+import { boxAsOptions } from './Box.constants';
 
 describe('Box', () => {
 	describe('rendering', () => {
-		it('renders a <div> element', () => {
+		it('renders a <div> element by default', () => {
 			const wrapper = mount(Box);
 
 			expect(wrapper.element.tagName).toBe('DIV');
@@ -14,6 +15,22 @@ describe('Box', () => {
 			const wrapper = mount(Box, { slots: { default: '<p>Child</p>' } });
 
 			expect(wrapper.text()).toBe('Child');
+		});
+	});
+
+	describe('as', () => {
+		it.each(boxAsOptions)('renders <%s> when as is %s', (as) => {
+			const wrapper = mount(Box, { props: { as } });
+
+			expect(wrapper.element.tagName).toBe(as.toUpperCase());
+		});
+
+		it('keeps the layout classes when rendering a semantic element', () => {
+			const wrapper = mount(Box, { props: { as: 'nav', direction: 'row' } });
+
+			expect(wrapper.element.tagName).toBe('NAV');
+			expect(wrapper.classes()).toContain('flex');
+			expect(wrapper.classes()).toContain('flex-row');
 		});
 	});
 
@@ -42,23 +59,6 @@ describe('Box', () => {
 
 			expect(wrapper.classes()).toContain('flex-row');
 			expect(wrapper.classes()).toContain('flex-wrap');
-		});
-
-		it('applies container-responsive classes with default breakpoint', () => {
-			const wrapper = mount(Box, {
-				props: { direction: 'container-responsive' }
-			});
-
-			expect(wrapper.classes()).toContain('flex-col');
-			expect(wrapper.classes().join(' ')).toContain('@md:flex-row');
-		});
-
-		it('applies container-responsive classes with custom breakpoint', () => {
-			const wrapper = mount(Box, {
-				props: { direction: 'container-responsive', containerBreakpoint: 'lg' }
-			});
-
-			expect(wrapper.classes().join(' ')).toContain('@lg:flex-row');
 		});
 	});
 

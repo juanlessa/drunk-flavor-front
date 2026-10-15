@@ -89,14 +89,14 @@ describe('InputNumber', () => {
 	describe('styling', () => {
 		it('applies error border when hasError is true', () => {
 			const wrapper = mount(InputNumber, { props: { hasError: true } });
-			const container = wrapper.find('[class*="border-red"]');
+			const container = wrapper.find('[class*="border-danger-stroke"]');
 
 			expect(container.exists()).toBe(true);
 		});
 
 		it('does not apply error border by default', () => {
 			const wrapper = mount(InputNumber);
-			const container = wrapper.find('[class*="border-red"]');
+			const container = wrapper.find('[class*="border-danger-stroke"]');
 
 			expect(container.exists()).toBe(false);
 		});

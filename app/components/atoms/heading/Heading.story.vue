@@ -2,12 +2,11 @@
 	<Story title="Atoms/Heading">
 		<template #controls>
 			<HstText v-model="state.value" title="value" />
-			<HstSelect v-model="state.size" title="size" :options="headingSizeOptions" />
-			<HstSelect v-model="state.type" title="type" :options="headingTypeOptions" />
+			<HstSelect v-model="state.as" title="as" :options="headingTypeOptions" />
 		</template>
 
 		<Variant title="default">
-			<Heading :type="state.type" :size="state.size">
+			<Heading :as="state.as">
 				{{ state.value }}
 			</Heading>
 		</Variant>
@@ -16,12 +15,11 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue';
-import type { HeadingSize, HeadingType } from './Heading.types';
-import { headingSizeOptions, headingTypeOptions } from './Heading.constants';
+import type { HeadingType } from './Heading.types';
+import { headingTypeOptions } from './Heading.constants';
 
 const state = reactive({
 	value: 'sample Heading',
-	size: 'md' as HeadingSize,
-	type: 'h2' as HeadingType
+	as: 'h2' as HeadingType
 });
 </script>

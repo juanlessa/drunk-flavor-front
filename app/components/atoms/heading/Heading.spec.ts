@@ -28,32 +28,32 @@ describe('Heading', () => {
 
 	describe('semantic element', () => {
 		it.each(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const)(
-			'renders <%s> when type is %s',
-			(type) => {
-				const wrapper = mount(Heading, { props: { type } });
+			'renders <%s> when as is %s',
+			(as) => {
+				const wrapper = mount(Heading, { props: { as } });
 
-				expect(wrapper.element.tagName).toBe(type.toUpperCase());
+				expect(wrapper.element.tagName).toBe(as.toUpperCase());
 			}
 		);
 	});
 
 	describe('styling', () => {
-		it('applies md size class by default (text-2xl)', () => {
+		it('applies default text-title class', () => {
 			const wrapper = mount(Heading);
 
-			expect(wrapper.classes()).toContain('text-2xl');
+			expect(wrapper.classes()).toContain('text-title');
 		});
 
-		it('applies sm size class (text-xl)', () => {
-			const wrapper = mount(Heading, { props: { size: 'sm' } });
+		it('applies default font-bold class', () => {
+			const wrapper = mount(Heading);
 
-			expect(wrapper.classes()).toContain('text-xl');
+			expect(wrapper.classes()).toContain('font-bold');
 		});
 
-		it('applies lg size class (text-4xl)', () => {
-			const wrapper = mount(Heading, { props: { size: 'lg' } });
+		it('applies default text-content class', () => {
+			const wrapper = mount(Heading);
 
-			expect(wrapper.classes()).toContain('text-4xl');
+			expect(wrapper.classes()).toContain('text-content');
 		});
 	});
 });

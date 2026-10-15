@@ -37,5 +37,25 @@ export default withNuxt([
 			'comma-dangle': ['error', 'never'],
 			quotes: ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }]
 		}
+	},
+	{
+		// The `tv` exported by tailwind-variants does not know the design-system tokens,
+		// so its merge config silently drops custom text colours/sizes.
+		// Recipes must use the configured instance instead.
+		ignores: ['app/utils/tv.ts'],
+		rules: {
+			'no-restricted-imports': [
+				'error',
+				{
+					paths: [
+						{
+							name: 'tailwind-variants',
+							message:
+								"Import { tv } from '~/utils/tv' so the design-system merge config applies."
+						}
+					]
+				}
+			]
+		}
 	}
 ]);

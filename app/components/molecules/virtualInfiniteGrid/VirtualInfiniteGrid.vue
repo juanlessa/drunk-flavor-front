@@ -1,6 +1,9 @@
 <template>
-	<div v-bind="containerProps" :style="{ height: heightComputed }">
-		<div v-bind="wrapperProps" class="flex flex-col" :style="{ gap: `${props.itemsGap}px` }">
+	<div v-bind="containerProps" :style="virtualGridStyle">
+		<div
+			v-bind="wrapperProps"
+			class="flex flex-col"
+			:style="{ gap: 'var(--virtual-grid-items-gap)' }">
 			<slot :list="list"></slot>
 			<slot v-if="props.loading" name="loading"></slot>
 		</div>
@@ -25,6 +28,11 @@ const emit = defineEmits<{
 const heightComputed = computed(() =>
 	typeof props.height === 'number' ? `${props.height}px` : props.height
 );
+const virtualGridStyle = computed(() => ({
+	height: heightComputed.value,
+	'--virtual-grid-item-height': `${props.itemHeight}px`,
+	'--virtual-grid-items-gap': `${props.itemsGap}px`
+}));
 const itemsComputed = computed(() => chunkArray(props.items, props.gridColumns));
 
 const { list, containerProps, wrapperProps } = useVirtualList(itemsComputed, {

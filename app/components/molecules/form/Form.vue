@@ -1,20 +1,20 @@
 <template>
-	<form class="flex flex-col gap-10" novalidate @submit.prevent="emit('submit')">
-		<div v-if="$slots.title || props.title">
+	<Box as="form" direction="col" class="gap-10" novalidate @submit.prevent="emit('submit')">
+		<template v-if="$slots.title || props.title">
 			<slot name="title">
-				<Heading class="text-center" type="h1" size="lg">{{ props.title }}</Heading>
+				<Heading as="h1" class="text-center text-headline-sm">{{ props.title }}</Heading>
 			</slot>
-		</div>
-		<div>
+		</template>
+		<Box direction="col">
 			<slot></slot>
-		</div>
+		</Box>
 		<slot name="buttons">
 			<ButtonGroup
 				:cancel-button-props="props.cancelButtonProps"
 				:action-button-props="{ ...props.actionButtonProps, type: 'submit' }"
 				@cancel="emit('cancel')" />
 		</slot>
-	</form>
+	</Box>
 </template>
 <script setup lang="ts">
 import type { ButtonProps } from '~/components/atoms/button/Button.types';

@@ -1,0 +1,7 @@
+@theme static {
+	/* Keep static: useScreenType reads these CSS variables at runtime. */
+	--breakpoint-tablet: 768px;
+	--breakpoint-desktop: 1190px;
+
+	--container-detail-layout: 32rem;
+}

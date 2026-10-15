@@ -10,8 +10,8 @@ describe('TextList', () => {
 			expect(wrapper.element.tagName).toBe('UL');
 		});
 
-		it('renders an <ol> element when type is ol', () => {
-			const wrapper = mount(TextList, { props: { type: 'ol' } });
+		it('renders an <ol> element when as is ol', () => {
+			const wrapper = mount(TextList, { props: { as: 'ol' } });
 
 			expect(wrapper.element.tagName).toBe('OL');
 		});
@@ -49,7 +49,7 @@ describe('TextList', () => {
 	describe('reversed', () => {
 		it('applies reversed attribute on ol', () => {
 			const wrapper = mount(TextList, {
-				props: { type: 'ol', reversed: true, marker: 'decimal' }
+				props: { as: 'ol', reversed: true, marker: 'decimal' }
 			});
 
 			expect(wrapper.attributes('reversed')).toBeDefined();
@@ -57,7 +57,7 @@ describe('TextList', () => {
 
 		it('does not apply reversed attribute on ul', () => {
 			const wrapper = mount(TextList, {
-				props: { type: 'ul', reversed: true }
+				props: { as: 'ul', reversed: true }
 			});
 
 			expect(wrapper.attributes('reversed')).toBeUndefined();
@@ -65,28 +65,16 @@ describe('TextList', () => {
 	});
 
 	describe('styling', () => {
-		it('applies md size class by default', () => {
+		it('applies default text-body class', () => {
 			const wrapper = mount(TextList);
 
-			expect(wrapper.classes()).toContain('text-md');
+			expect(wrapper.classes()).toContain('text-body');
 		});
 
-		it('applies lg size class', () => {
-			const wrapper = mount(TextList, { props: { size: 'lg' } });
-
-			expect(wrapper.classes()).toContain('text-lg');
-		});
-
-		it('applies regular weight class by default', () => {
+		it('applies default font-regular class', () => {
 			const wrapper = mount(TextList);
 
 			expect(wrapper.classes()).toContain('font-regular');
-		});
-
-		it('applies bold weight class', () => {
-			const wrapper = mount(TextList, { props: { weight: 'bold' } });
-
-			expect(wrapper.classes()).toContain('font-bold');
 		});
 
 		it('applies disc marker class', () => {
@@ -103,7 +91,7 @@ describe('TextList', () => {
 		});
 
 		it('applies decimal marker class for ol', () => {
-			const wrapper = mount(TextList, { props: { type: 'ol', marker: 'decimal' } });
+			const wrapper = mount(TextList, { props: { as: 'ol', marker: 'decimal' } });
 
 			expect(wrapper.classes()).toContain('list-decimal');
 		});

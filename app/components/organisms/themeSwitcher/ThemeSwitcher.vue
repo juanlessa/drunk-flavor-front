@@ -1,21 +1,23 @@
 <template>
-	<div class="bg-gray-200 dark:bg-gray-800 w-16 h-8 rounded-full">
+	<div class="bg-surface-input w-16 h-8 rounded-full">
 		<ClientOnly>
 			<Switch.Root
 				id="themeMode"
-				class="size-full rounded-full px-1 focus-within:outline focus-within:outline-black dark:focus-within:outline-white flex shadow-xs relative cursor-default"
-				:checked="_isDark"
+				class="size-full rounded-full px-1 focus-within:outline focus-within:outline-focus-ring flex shadow-switch-track relative cursor-default"
+				:checked="$theme.isDark.value"
 				@update:checked="handleToggleTheme">
 				<Switch.Thumb
-					class="block size-6 my-auto bg-white dark:bg-gray-900 shadow-xs rounded-full transition-transform duration-500 will-ch ange-transform data-[state=checked]:translate-x-8">
-					<div class="w-full h-full flex justify-center items-center">
+					class="block size-6 my-auto bg-surface shadow-switch-thumb rounded-full transition-transform duration-short ease-move will-change-transform data-[state=checked]:translate-x-8"
+					@animationend="handleThemeIconAnimation"
+					@animationcancel="handleThemeIconAnimation">
+					<Box direction="row" class="w-full h-full justify-center items-center">
 						<component
 							:is="$theme.isDark.value ? MoonIcon : SunIcon"
 							:class="[
-								{ 'animate-[spin_0.5s_linear_infinite]': isAnimated },
-								'size-4 fill-blue-700'
+								{ 'animate-theme-icon': isAnimated },
+								'size-4 text-accent-content'
 							]" />
-					</div>
+					</Box>
 				</Switch.Thumb>
 			</Switch.Root>
 		</ClientOnly>
@@ -28,16 +30,17 @@ import MoonIcon from '~/components/icons/MoonIcon.vue';
 
 const { $theme } = useNuxtApp();
 
-const _isDark = ref($theme.isDark.value);
-const isAnimated = ref<boolean>(false);
+const isAnimated = ref(false);
 
 const handleToggleTheme = (value: boolean) => {
 	isAnimated.value = true;
-	$theme.toggle();
-	_isDark.value = value;
-	setTimeout(() => {
+	$theme.isDark.value = value;
+};
+
+const handleThemeIconAnimation = (event: AnimationEvent) => {
+	if (event.animationName === 'theme-icon-spin') {
 		isAnimated.value = false;
-	}, 500);
+	}
 };
 </script>
 <style scoped></style>

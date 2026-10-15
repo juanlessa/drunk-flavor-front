@@ -5,7 +5,7 @@
 				:id="props.id"
 				:value="props.modelValue"
 				:class="[
-					'py-1 text-md leading-base font-normal outline-hidden border-none text-black dark:text-white bg-transparent placeholder-gray-500',
+					'py-1 text-body font-regular outline-hidden border-none text-content bg-transparent placeholder-content-muted',
 					!props.inputWidth && 'flex-1'
 				]"
 				:style="props.inputWidth ? { width: props.inputWidth } : undefined"
@@ -15,21 +15,22 @@
 				:pattern="`${props.pattern}`"
 				@input="handleUpdateInput"
 				@blur="handleBlurInput" />
-			<div
-				v-if="props.suffix && !props.suffixOutside"
-				class="text-base text-normal text-black dark:text-white">
+			<div v-if="props.suffix && !props.suffixOutside" class="text-body text-content-muted">
 				{{ props.suffix }}
 			</div>
 		</div>
 		<div
 			v-if="props.suffix && props.suffixOutside"
-			class="text-base text-normal text-black dark:text-white">
+			class="text-body text-content-muted"
+			:style="
+				props.suffixWidth ? { inlineSize: props.suffixWidth, flex: 'none' } : undefined
+			">
 			{{ props.suffix }}
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { tv } from 'tailwind-variants';
+import { tv } from '~/utils/tv';
 
 const props = defineProps({
 	modelValue: { type: [String, Number], default: '' },
@@ -39,6 +40,8 @@ const props = defineProps({
 	pattern: { type: String, default: undefined },
 	suffix: { type: String, default: '' },
 	suffixOutside: { type: Boolean, default: false },
+	/** CSS inline size reserved for an outside suffix (e.g. '7ch', '4rem') */
+	suffixWidth: { type: String, default: undefined },
 	border: { type: Boolean, default: false },
 	hasError: { type: Boolean, default: false },
 	/** CSS width value (e.g. '5ch', '4rem', '60px') */
@@ -64,13 +67,13 @@ const handleBlurInput = (event: Event) => {
 };
 
 const inputNumberContainerStyle = tv({
-	base: 'flex-1 flex items-center gap-2 px-3 rounded-md box-border border-2 bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 input-container-focus-border',
+	base: 'flex-1 flex items-center gap-2 px-3 rounded-control box-border control-border-width bg-surface-input border-surface-input input-container-focus-border',
 	variants: {
 		border: {
-			true: 'border-gray-300 dark:border-gray-700'
+			true: 'border-stroke-control'
 		},
 		hasError: {
-			true: 'border-red-400 dark:border-red-600'
+			true: 'border-danger-stroke'
 		}
 	}
 });
@@ -79,7 +82,7 @@ const inputNumberContainerStyle = tv({
 @reference "~/styles/global.css";
 
 .input-container-focus-border:has(> input:focus) {
-	@apply border-black dark:border-white;
+	@apply border-stroke-strong;
 }
 
 /* remove arrows or spinners */

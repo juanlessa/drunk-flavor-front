@@ -36,11 +36,46 @@
 				{{ state.value }}
 			</Button>
 		</Variant>
+
+		<Variant title="Outline">
+			<Button
+				variant="outline"
+				:size="state.size"
+				:disabled="state.disabled"
+				:type="state.type">
+				{{ state.value }}
+			</Button>
+		</Variant>
+
+		<Variant title="Icon">
+			<div class="p-4">
+				<Button
+					variant="icon"
+					aria-label="delete item"
+					:disabled="state.disabled"
+					:type="state.type">
+					<TrashIcon />
+				</Button>
+			</div>
+		</Variant>
+
+		<Variant title="Plain">
+			<div class="p-4">
+				<Button
+					variant="plain"
+					:size="state.size"
+					:disabled="state.disabled"
+					:type="state.type">
+					{{ state.value }}
+				</Button>
+			</div>
+		</Variant>
 	</Story>
 </template>
 
 <script lang="ts" setup>
 import { reactive } from 'vue';
+import TrashIcon from '~/components/icons/TrashIcon.vue';
 import type { ButtonSize, ButtonType } from './Button.types';
 import { buttonSizeOptions, buttonTypeOptions } from './Button.constants';
 
