@@ -30,7 +30,7 @@
 	},
 	"dependencies": {
 		"@fontsource/roboto": "5.3.0",
-		"nanoid": "6.0.1",
+		"nanoid": "6.0.2",
 		"nuxt": "4.4.8",
 		"radix-vue": "1.9.17",
 		"tailwind-merge": "3.7.0",
