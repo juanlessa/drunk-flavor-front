@@ -22,9 +22,9 @@
 
 	--color-focus-ring: var(--color-blue-300);
 
-	--color-accent: var(--color-blue-600);
-	--color-accent-hover: var(--color-blue-700);
-	--color-accent-strong: var(--color-blue-700);
+	/* accent, accent-hover and accent-strong are deliberately NOT overridden here:
+	   the brand blue stays identical in both themes. Only accent-content, used as
+	   text/icon color on dark surfaces, is lightened for contrast. */
 	--color-accent-content: var(--color-blue-400);
 
 	--color-success: var(--color-green-400);

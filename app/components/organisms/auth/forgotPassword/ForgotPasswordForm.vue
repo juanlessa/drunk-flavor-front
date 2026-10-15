@@ -1,13 +1,5 @@
 <template>
-	<Form @submit="handleSubmitButton">
-		<Box direction="row" class="justify-center">
-			<Image
-				src="/light-logo.png"
-				alt="Drunk Flavor logo"
-				width="var(--size-auth-logo)"
-				height="auto"
-				rounded="none" />
-		</Box>
+	<Form :title="$t('organisms.forgotPasswordForm.title')" @submit="handleSubmitButton">
 		<InputWrapper>
 			<template #label>
 				<Label for="email">
@@ -28,11 +20,21 @@
 			</template>
 		</InputWrapper>
 		<template #buttons>
-			<ButtonGroup
-				direction="column"
-				:cancel-button-props="{ variant: 'secondary' }"
-				:action-button-props="{ variant: 'primary', type: 'submit' }"
-				@cancel="handleCancelButton" />
+			<Box direction="col" class="gap-6">
+				<ButtonGroup direction="column" :has-cancel-button="false">
+					<Button variant="primary" type="submit">
+						{{ $t('organisms.forgotPasswordForm.submitButton.value') }}
+					</Button>
+				</ButtonGroup>
+				<Box direction="row" class="gap-1 justify-center items-center">
+					<Text as="span" class="text-content-subtle">
+						{{ $t('organisms.forgotPasswordForm.rememberPassword.message') }}
+					</Text>
+					<Anchor :to="localePath('/signin')">
+						{{ $t('organisms.forgotPasswordForm.rememberPassword.link') }}
+					</Anchor>
+				</Box>
+			</Box>
 		</template>
 	</Form>
 </template>
@@ -41,12 +43,8 @@
 const { $api, $router } = useNuxtApp();
 const { addToast } = useToast();
 const localePath = useLocalePath();
-const { formState, checkError, resetFormState, validateForm } = useForgotPasswordForm();
+const { formState, checkError, validateForm } = useForgotPasswordForm();
 
-const handleCancelButton = async () => {
-	resetFormState();
-	return $router.push(localePath('/signin'));
-};
 const handleSubmitButton = async () => {
 	formState.value.displayErrors = true;
 	validateForm();

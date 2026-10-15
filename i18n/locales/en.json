@@ -84,22 +84,33 @@
 			"drinks": "drinks",
 			"ingredients": "ingredients",
 			"signin": "signin",
-			"logout": "logout",
+			"logout": "signout",
+			"logoutError": "Unable to sign out. Please try again.",
 			"primaryNav": { "label": "primary" },
 			"mobileNav": { "label": "mobile" }
 		},
 		"signinForm": {
+			"title": "Welcome back",
 			"emailInput": { "label": "email" },
-			"passwordInput": { "label": "password" }
+			"passwordInput": { "label": "password" },
+			"submitButton": { "value": "sign in" },
+			"forgotPasswordLink": { "value": "Forgot your password?" },
+			"signupPrompt": { "message": "Don't have an account?", "link": "Sign up" }
 		},
 		"signupForm": {
+			"title": "Create an account",
 			"nameInput": { "label": "name" },
 			"surnameInput": { "label": "surname" },
 			"emailInput": { "label": "email" },
-			"passwordInput": { "label": "password" }
+			"passwordInput": { "label": "password" },
+			"submitButton": { "value": "Create Account" },
+			"hasAccount": { "message": "Already have an account?", "link": "Sign in" }
 		},
 		"forgotPasswordForm": {
-			"emailInput": { "label": "email" }
+			"title": "Reset Password",
+			"emailInput": { "label": "email" },
+			"submitButton": { "value": "Send Code" },
+			"rememberPassword": { "message": "Remember your password?", "link": "Back to Login" }
 		},
 		"toastNotification": {
 			"label": "Notification"
@@ -110,7 +121,10 @@
 			"name": "name must have a minimum of 1 character",
 			"surname": "surname must have a minimum of 1 character",
 			"email": "invalid email",
-			"password": "invalid password"
+			"password": "invalid password",
+			"passwordMinSize": "password must have at least 8 characters",
+			"passwordMaxSize": "password must have at most 64 characters",
+			"weakPassword": "password must contain uppercase, lowercase, number and special character"
 		},
 		"categories": {
 			"name": "name must have a minimum of 1 character"

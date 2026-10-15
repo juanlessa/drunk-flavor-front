@@ -10,8 +10,8 @@
 			<VirtualInfiniteGrid
 				:items="overviewState.categories"
 				:height="containerHeight"
-				:item-height="remToPixels(2.5)"
-				:items-gap="remToPixels(1)"
+				:item-height="CARD_GRID_METRICS_PX.controlRowHeight"
+				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
 				@load-more="loadNextPage">
@@ -20,7 +20,7 @@
 						v-for="{ data: categoryRow, index } in list"
 						:key="index"
 						direction="row"
-						class="gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						:class="virtualGridRowStyle({ fixedHeight: true })">
 						<ItemControlCard
 							v-for="category in categoryRow"
 							:key="category._id"
@@ -35,7 +35,7 @@
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
 						direction="row"
-						class="gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						:class="virtualGridRowStyle()">
 						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
 					</Box>
 				</template>
@@ -50,8 +50,11 @@
 </template>
 <script setup lang="ts">
 import { initEmptyCategory } from '~/domain/category/category.factory';
-import { remToPixels } from '~/helpers/sizes';
 import type { Category } from '~/domain/category/category.entity';
+import {
+	CARD_GRID_METRICS_PX,
+	virtualGridRowStyle
+} from '~/components/molecules/virtualInfiniteGrid/VirtualInfiniteGrid.contract';
 
 const { $router } = useNuxtApp();
 const { t, locale } = useI18n();
@@ -121,7 +124,7 @@ function useCategoryDeleteModal() {
 		try {
 			await deleteCategory(categoryToDelete.value._id);
 			addToast({ type: 'success', title: 'SUCCESS!', message: 'category deleted' });
-		} catch (error) {
+		} catch {
 			addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete category' });
 		} finally {
 			categoryToDelete.value = initEmptyCategory();

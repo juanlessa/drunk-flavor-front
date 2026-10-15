@@ -42,7 +42,7 @@
 </template>
 <script setup lang="ts">
 import { Select } from 'radix-vue/namespaced';
-import { tv } from 'tailwind-variants';
+import { tv } from '~/utils/tv';
 import { FLOATING_POSITION_PX } from '~/constants/floatingPosition.constants';
 import type { InputSelectOption } from './InputSelect.types';
 

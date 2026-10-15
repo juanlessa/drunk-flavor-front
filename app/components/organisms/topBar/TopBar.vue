@@ -24,6 +24,14 @@
 						class="px-2 inline-flex justify-between items-center">
 						<Text as="span">{{ $t(link.i18nKey) }}</Text>
 					</Anchor>
+					<Button
+						v-if="isAuthenticated"
+						variant="plain"
+						class="px-2 inline-flex gap-2 justify-between items-center"
+						:disabled="isSigningOut"
+						@click="handleSignout">
+						<Text as="span">{{ $t('organisms.topBar.logout') }}</Text>
+					</Button>
 				</Box>
 			</Box>
 			<Box direction="row" class="desktop:hidden">
@@ -48,6 +56,15 @@
 									:is="link.path === '/signin' ? SigninIcon : ArrowRightIcon"
 									class="size-4" />
 							</Anchor>
+							<Button
+								v-if="isAuthenticated"
+								variant="plain"
+								class="w-full px-2 inline-flex gap-2 justify-between items-center"
+								:disabled="isSigningOut"
+								@click="handleSignout">
+								<Text as="span">{{ $t('organisms.topBar.logout') }}</Text>
+								<LogoutIcon class="size-4" />
+							</Button>
 						</Box>
 					</Box>
 				</HamburgerMenu>
@@ -57,6 +74,7 @@
 </template>
 <script setup lang="ts">
 import ArrowRightIcon from '~/components/icons/ArrowRightIcon.vue';
+import LogoutIcon from '~/components/icons/LogoutIcon.vue';
 import SigninIcon from '~/components/icons/SigninIcon.vue';
 
 type ILink = {
@@ -65,11 +83,32 @@ type ILink = {
 };
 
 const { $auth } = useNuxtApp();
+const { t } = useI18n();
+const { addToast } = useToast();
 const localePath = useLocalePath();
+const isSigningOut = ref(false);
 
-const links = computed<ILink[]>(() =>
-	getLinksBasedOnPermissions($auth.state.value.isAuthenticated)
-);
+const isAuthenticated = computed(() => $auth.state.value.isAuthenticated);
+const links = computed<ILink[]>(() => getLinksBasedOnPermissions(isAuthenticated.value));
+
+const handleSignout = async () => {
+	if (isSigningOut.value) return;
+
+	isSigningOut.value = true;
+	try {
+		await $auth.signout();
+		await navigateTo(localePath('/'));
+	} catch (error) {
+		console.error(error);
+		addToast({
+			type: 'error',
+			title: 'ERROR',
+			message: t('organisms.topBar.logoutError')
+		});
+	} finally {
+		isSigningOut.value = false;
+	}
+};
 
 function getLinksBasedOnPermissions(isAuthenticated: boolean) {
 	if (isAuthenticated) {

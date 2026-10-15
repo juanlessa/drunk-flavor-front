@@ -30,7 +30,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { tv } from 'tailwind-variants';
+import { tv } from '~/utils/tv';
 
 const props = defineProps({
 	modelValue: { type: [String, Number], default: '' },

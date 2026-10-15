@@ -110,7 +110,8 @@
 </template>
 <script setup lang="ts">
 import { languages } from '~/domain/shared/translations.constants';
-import type { Ingredient, IngredientForm } from '~/types/ingredient.types';
+import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
+import type { IngredientForm } from '~/types/ingredient.types';
 import { mapToSelectOptions } from '~/components/atoms/inputSelect/InputSelect.helpers';
 import { mapIngredientToForm } from '~/mappers/ingredient.mappers';
 

@@ -1,10 +1,14 @@
 <template>
-	<div
-		class="flex items-center w-full tablet:max-w-[45%] py-2 px-4 rounded-lg gap-4 cursor-pointer bg-surface shadow-card">
-		<div class="flex-1 py-[0.125rem]">
-			<AnimatedPlaceHolder width="10rem" height="1.25rem" border-radius="0.25rem" />
+	<div :class="itemControlCardStyle({ skeleton: true })" :style="itemControlCardDimensions">
+		<div class="flex-1 py-0.5">
+			<AnimatedPlaceHolder class="w-40 h-5 rounded-xs" />
 		</div>
-		<AnimatedPlaceHolder width="1rem" height="1rem" border-radius="0.125rem" />
+		<AnimatedPlaceHolder class="w-4 h-4 rounded-skeleton-block" />
 	</div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import {
+	itemControlCardDimensions,
+	itemControlCardStyle
+} from '~/components/molecules/itemControlCard/ItemControlCard.styles';
+</script>

@@ -85,7 +85,8 @@
 <script setup lang="ts">
 import { languages } from '~/domain/shared/translations.constants';
 import { mapDrinkToForm } from '~/mappers/drink.mappers.js';
-import type { Drink, DrinkFormAndMedia } from '~/types/drink.types.js';
+import type { Drink } from '~/domain/drink/drink.entity';
+import type { DrinkFormAndMedia } from '~/types/drink.types';
 import IngredientsSelection from '../ingredientsSelection/IngredientsSelection.vue';
 
 const props = defineProps({

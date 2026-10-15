@@ -10,7 +10,7 @@
 		@blur="handleBlurInput"></textarea>
 </template>
 <script setup lang="ts">
-import { tv } from 'tailwind-variants';
+import { tv } from '~/utils/tv';
 
 const props = defineProps({
 	modelValue: {

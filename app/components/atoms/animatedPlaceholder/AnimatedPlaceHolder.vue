@@ -3,7 +3,7 @@
 </template>
 <script setup>
 import { useAttrs } from 'vue';
-import { tv } from 'tailwind-variants';
+import { tv } from '~/utils/tv';
 
 defineOptions({ inheritAttrs: false });
 

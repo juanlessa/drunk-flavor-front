@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import type { VueWrapper } from '@vue/test-utils';
 import { mount, flushPromises } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import ImageThumbnail from './ImageThumbnail.vue';

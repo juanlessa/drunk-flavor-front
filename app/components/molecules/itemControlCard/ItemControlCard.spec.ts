@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import ItemControlCard from './ItemControlCard.vue';
-import IconButton from '~/components/atoms/iconButton/IconButton.vue';
+import Button from '~/components/atoms/button/Button.vue';
 
 const TrashIconStub = { template: '<svg data-testid="trash-icon" />' };
 const TextStub = { template: '<p><slot /></p>', props: ['value'] };
@@ -13,7 +13,7 @@ const mountItemControlCard = (props = {}, slots = {}) =>
 		props,
 		slots,
 		global: {
-			components: { IconButton },
+			components: { Button },
 			stubs: { TrashIcon: TrashIconStub, Text: TextStub },
 			mocks: { $t: (key: string) => key }
 		}

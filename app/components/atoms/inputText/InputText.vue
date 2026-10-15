@@ -21,7 +21,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { tv } from 'tailwind-variants';
+import { tv } from '~/utils/tv';
 import type { InputTextType } from './InputText.types';
 
 const props = defineProps({

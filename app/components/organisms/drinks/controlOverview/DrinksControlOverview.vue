@@ -10,8 +10,8 @@
 			<VirtualInfiniteGrid
 				:items="overviewState.drinks"
 				:height="containerHeight"
-				:item-height="remToPixels(2.5)"
-				:items-gap="remToPixels(1)"
+				:item-height="CARD_GRID_METRICS_PX.controlRowHeight"
+				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
 				@load-more="loadNextPage">
@@ -20,7 +20,7 @@
 						v-for="{ data: drinkRow, index } in list"
 						:key="index"
 						direction="row"
-						class="gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						:class="virtualGridRowStyle({ fixedHeight: true })">
 						<ItemControlCard
 							v-for="drink in drinkRow"
 							:key="drink._id"
@@ -35,7 +35,7 @@
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
 						direction="row"
-						class="gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						:class="virtualGridRowStyle()">
 						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
 					</Box>
 				</template>
@@ -50,8 +50,11 @@
 </template>
 <script setup lang="ts">
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
-import type { Drink } from '~/types/drink.types';
-import { remToPixels } from '~/helpers/sizes';
+import type { Drink } from '~/domain/drink/drink.entity';
+import {
+	CARD_GRID_METRICS_PX,
+	virtualGridRowStyle
+} from '~/components/molecules/virtualInfiniteGrid/VirtualInfiniteGrid.contract';
 
 const { $router } = useNuxtApp();
 const { t, locale } = useI18n();

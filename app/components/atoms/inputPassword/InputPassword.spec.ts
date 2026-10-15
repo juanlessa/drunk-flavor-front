@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { describe, it, expect } from 'vitest';
 import InputPassword from './InputPassword.vue';
-import IconButton from '~/components/atoms/iconButton/IconButton.vue';
+import Button from '~/components/atoms/button/Button.vue';
 
 const HideIconStub = { template: '<svg data-testid="hide-icon" />' };
 const ShowIconStub = { template: '<svg data-testid="show-icon" />' };
@@ -13,7 +13,7 @@ const mountInputPassword = (props = {}) =>
 	mount(InputPassword, {
 		props,
 		global: {
-			components: { IconButton },
+			components: { Button },
 			stubs: { HideIcon: HideIconStub, ShowIcon: ShowIconStub },
 			mocks: { $t: (key: string) => key }
 		}

@@ -1,24 +1,24 @@
 <template>
 	<Story title="Atoms/InputTextArea">
-		<template #controls="{ state }: { state: State }">
-			<HstText v-model="state.placeholder" title="placeholder" />
-			<HstCheckbox v-model="state.hasError" title="has error" />
-			<HstCheckbox v-model="state.border" title="border" />
-			<HstNumber v-model="state.rows" title="rows" />
-			<HstText v-model="state.id" title="id" />
-			<HstText v-model="state.name" title="name" />
+		<template #controls="{ state }">
+			<HstText v-model="(state as State).placeholder" title="placeholder" />
+			<HstCheckbox v-model="(state as State).hasError" title="has error" />
+			<HstCheckbox v-model="(state as State).border" title="border" />
+			<HstNumber v-model="(state as State).rows" title="rows" />
+			<HstText v-model="(state as State).id" title="id" />
+			<HstText v-model="(state as State).name" title="name" />
 		</template>
 
 		<Variant title="default" :init-state="initState">
-			<template #default="{ state }: { state: State }">
+			<template #default="{ state }">
 				<InputTextArea
-					:id="state.id"
-					v-model="state.modelValue"
-					:name="state.name"
-					:rows="state.rows"
-					:has-error="state.hasError"
-					:border="state.border"
-					:placeholder="state.placeholder" />
+					:id="(state as State).id"
+					v-model="(state as State).modelValue"
+					:name="(state as State).name"
+					:rows="(state as State).rows"
+					:has-error="(state as State).hasError"
+					:border="(state as State).border"
+					:placeholder="(state as State).placeholder" />
 			</template>
 		</Variant>
 	</Story>

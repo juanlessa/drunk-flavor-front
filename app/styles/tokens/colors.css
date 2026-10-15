@@ -91,8 +91,11 @@
 
 	--color-focus-ring: var(--color-blue-600);
 
-	--color-accent: var(--color-blue-600);
-	--color-accent-hover: var(--color-blue-700);
+	/* Accent is the brand blue from the logo assets (#1d4ed8 = blue-700) and is
+	   intentionally theme-invariant; themes.css must not override it. Paired with
+	   content-on-accent (white) it yields 6.70:1, above the WCAG AA 4.5:1 floor. */
+	--color-accent: var(--color-blue-700);
+	--color-accent-hover: var(--color-blue-800);
 	--color-accent-strong: var(--color-blue-700);
 	--color-accent-content: var(--color-blue-600);
 

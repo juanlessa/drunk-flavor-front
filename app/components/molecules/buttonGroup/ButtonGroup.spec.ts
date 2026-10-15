@@ -3,7 +3,8 @@ import { describe, it, expect } from 'vitest';
 import ButtonGroup from './ButtonGroup.vue';
 
 const ButtonStub = {
-	template: '<button :disabled="disabled" @click="$emit(\'click\')"><slot>{{ value }}</slot></button>',
+	template:
+		'<button :disabled="disabled" @click="$emit(\'click\')"><slot>{{ value }}</slot></button>',
 	props: ['value', 'variant', 'size', 'type', 'disabled']
 };
 
@@ -44,9 +45,10 @@ describe('ButtonGroup', () => {
 		it('emits cancel when cancel button is clicked', async () => {
 			const wrapper = mountButtonGroup();
 			const buttons = wrapper.findAll('button');
-			const cancelButton = buttons[0];
+			const [cancelButton] = buttons;
 
-			await cancelButton.trigger('click');
+			expect(cancelButton).toBeDefined();
+			await cancelButton!.trigger('click');
 
 			expect(wrapper.emitted('cancel')).toBeTruthy();
 		});
@@ -56,7 +58,8 @@ describe('ButtonGroup', () => {
 			const buttons = wrapper.findAll('button');
 			const actionButton = buttons[1];
 
-			await actionButton.trigger('click');
+			expect(actionButton).toBeDefined();
+			await actionButton!.trigger('click');
 
 			expect(wrapper.emitted('action')).toBeTruthy();
 		});

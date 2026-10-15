@@ -4,8 +4,8 @@
 			<VirtualInfiniteGrid
 				:items="overviewState.drinks"
 				:height="containerHeight"
-				:item-height="remToPixels(9.5)"
-				:items-gap="remToPixels(1)"
+				:item-height="CARD_GRID_METRICS_PX.drinkRowHeight"
+				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
 				@load-more="loadNextPage">
@@ -14,8 +14,7 @@
 						v-for="{ data: drinkRow, index } in list"
 						:key="index"
 						direction="row"
-						class="gap-4 justify-center w-full max-w-screen-desktop mx-auto"
-						:style="{ height: `${remToPixels(9.5)}px` }">
+						:class="virtualGridRowStyle({ fixedHeight: true })">
 						<DrinkCard
 							v-for="drink in drinkRow"
 							:key="drink._id"
@@ -28,7 +27,7 @@
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
 						direction="row"
-						class="gap-4 justify-center w-full max-w-screen-desktop mx-auto">
+						:class="virtualGridRowStyle()">
 						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
 					</Box>
 				</template>
@@ -37,7 +36,10 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { remToPixels } from '~/helpers/sizes';
+import {
+	CARD_GRID_METRICS_PX,
+	virtualGridRowStyle
+} from '~/components/molecules/virtualInfiniteGrid/VirtualInfiniteGrid.contract';
 
 const { $router } = useNuxtApp();
 const localePath = useLocalePath();

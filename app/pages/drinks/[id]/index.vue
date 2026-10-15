@@ -5,7 +5,7 @@
 </template>
 <script setup lang="ts">
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
-import type { Drink } from '~/types/drink.types';
+import type { Drink } from '~/domain/drink/drink.entity';
 
 definePageMeta({
 	middleware: 'guest'

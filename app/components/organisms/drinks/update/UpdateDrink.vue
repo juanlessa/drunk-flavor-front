@@ -3,7 +3,8 @@
 </template>
 <script setup lang="ts">
 import { mapFormToUpdateDrink } from '~/mappers/drink.mappers';
-import type { Drink, DrinkFormAndMedia } from '~/types/drink.types';
+import type { Drink } from '~/domain/drink/drink.entity';
+import type { DrinkFormAndMedia } from '~/types/drink.types';
 
 const props = defineProps({
 	drinkId: { type: String, required: true }

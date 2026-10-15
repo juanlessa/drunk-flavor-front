@@ -4,6 +4,8 @@
 	</component>
 </template>
 <script setup lang="ts">
+import type { TextType } from './Text.types';
+
 const props = defineProps({
 	as: {
 		type: String as PropType<TextType>,

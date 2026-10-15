@@ -10,17 +10,18 @@
 			:pattern="`${props.pattern}`"
 			@input="handleUpdateInput"
 			@blur="handleBlurInput" />
-		<IconButton
+		<Button
+			variant="icon"
 			class="text-content-muted"
 			:aria-label="$t('atoms.inputPassword.toggleVisibilityButton.label')"
 			@click="togglePasswordVisibility">
 			<HideIcon v-if="_isPasswordVisible" />
 			<ShowIcon v-else />
-		</IconButton>
+		</Button>
 	</div>
 </template>
 <script setup lang="ts">
-import { tv } from 'tailwind-variants';
+import { tv } from '~/utils/tv';
 import HideIcon from '~/components/icons/HideIcon.vue';
 import ShowIcon from '~/components/icons/ShowIcon.vue';
 

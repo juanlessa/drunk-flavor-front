@@ -5,7 +5,6 @@ import DropZone from './DropZone.vue';
 import Box from '~/components/atoms/box/Box.vue';
 import Text from '~/components/atoms/text/Text.vue';
 import Button from '~/components/atoms/button/Button.vue';
-import IconButton from '~/components/atoms/iconButton/IconButton.vue';
 import CloseIcon from '~/components/icons/CloseIcon.vue';
 
 const clearButtonSelector = 'button[aria-label="molecules.dropZone.clearButton.label"]';
@@ -16,7 +15,7 @@ const createFile = (name: string, size: number, type: string): File => {
 };
 
 const globalConfig = {
-	components: { Box, Text, Button, IconButton, CloseIcon },
+	components: { Box, Text, Button, CloseIcon },
 	mocks: { $t: (key: string) => key }
 };
 

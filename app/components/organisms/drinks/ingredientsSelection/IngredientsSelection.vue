@@ -24,11 +24,12 @@
 					:suffix="sel.translations[$i18n.locale].unit"
 					@update:model-value="(val: number) => updateQuantity(sel._id, val)" />
 
-				<IconButton
+				<Button
+					variant="icon"
 					:aria-label="$t('organisms.ingredientsSelection.removeButton.label')"
 					@click="handleRemove(sel._id)">
 					<TrashIcon />
-				</IconButton>
+				</Button>
 			</Box>
 		</Box>
 	</Box>

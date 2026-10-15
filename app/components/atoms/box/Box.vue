@@ -6,7 +6,7 @@
 	</component>
 </template>
 <script setup lang="ts">
-import { tv } from 'tailwind-variants';
+import { tv } from '~/utils/tv';
 import type { BoxAs, BoxDirection } from './Box.types';
 
 const props = defineProps({

@@ -3,7 +3,8 @@
 </template>
 <script setup lang="ts">
 import { mapFormToUpdateIngredient } from '~/mappers/ingredient.mappers';
-import type { Ingredient, IngredientForm } from '~/types/ingredient.types';
+import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
+import type { IngredientForm } from '~/types/ingredient.types';
 
 const props = defineProps({
 	ingredientId: { type: String, required: true }
