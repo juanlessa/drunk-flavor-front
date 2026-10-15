@@ -29,6 +29,7 @@
 		"format": "prettier --write ."
 	},
 	"dependencies": {
+		"@fontsource/roboto": "5.3.0",
 		"nanoid": "6.0.1",
 		"nuxt": "4.4.8",
 		"radix-vue": "1.9.17",
@@ -61,6 +62,7 @@
 		"playwright-core": "1.62.1",
 		"prettier": "3.9.6",
 		"tailwindcss": "4.3.3",
-		"vitest": "4.1.11"
+		"vitest": "4.1.11",
+		"vue-tsc": "3.3.11"
 	}
 }
