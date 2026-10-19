@@ -13,3 +13,17 @@ export type Signin = {
 export type ForgotPassword = {
 	email: string;
 };
+
+export type ResetPassword = {
+	token: string;
+	password: string;
+	confirmPassword: string;
+};
+
+export type ConfirmEmail = {
+	token: string;
+};
+
+export type ResendEmailVerification = {
+	email: string;
+};

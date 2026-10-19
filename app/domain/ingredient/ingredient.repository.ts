@@ -1,5 +1,6 @@
 import type { $Fetch } from 'nitropack';
 import type { QueryParams } from '../shared/query.types';
+import { serializeListQuery } from '../shared/query.helpers';
 import type { CreateIngredient, UpdateIngredient } from './ingredient.dtos';
 import type { Ingredient } from './ingredient.entity';
 
@@ -28,7 +29,7 @@ export const ingredientsRepository = ($fetch: $Fetch) => ({
 	},
 
 	async list(query: QueryParams) {
-		return $fetch<Ingredient[]>(path, { query });
+		return $fetch<Ingredient[]>(path, { query: serializeListQuery(query) });
 	},
 
 	async get(id: string) {

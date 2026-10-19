@@ -1,5 +1,6 @@
 import type { $Fetch } from 'nitropack';
 import type { QueryParams } from '../shared/query.types';
+import { serializeListQuery } from '../shared/query.helpers';
 import type { CreateDrink, UpdateDrink } from './drink.dtos';
 import type { Drink } from './drink.entity';
 
@@ -48,7 +49,7 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 	},
 
 	async list(query: QueryParams) {
-		return $fetch<Drink[]>(path, { query });
+		return $fetch<Drink[]>(path, { query: serializeListQuery(query) });
 	},
 
 	async get(id: string) {

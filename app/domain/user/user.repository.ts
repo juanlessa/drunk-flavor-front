@@ -2,6 +2,7 @@ import type { $Fetch } from 'nitropack';
 import type { CreateUser, UpdateRole } from './user.dtos';
 import type { User } from './user.entity';
 import type { QueryParams } from '~/domain/shared/query.types';
+import { serializeListQuery } from '~/domain/shared/query.helpers';
 
 const path = '/users';
 
@@ -29,7 +30,7 @@ export const usersRepository = ($fetch: $Fetch) => ({
 
 	async list(query: QueryParams) {
 		return $fetch<User[]>(path, {
-			params: query
+			query: serializeListQuery(query)
 		});
 	},
 

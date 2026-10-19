@@ -1,5 +1,12 @@
 import type { $Fetch } from 'nitropack';
-import type { Signup, Signin, ForgotPassword } from './auth.dtos';
+import type {
+	Signup,
+	Signin,
+	ForgotPassword,
+	ResetPassword,
+	ConfirmEmail,
+	ResendEmailVerification
+} from './auth.dtos';
 
 export const authRepository = ($fetch: $Fetch) => ({
 	async signup(body: Signup) {
@@ -23,7 +30,28 @@ export const authRepository = ($fetch: $Fetch) => ({
 	},
 
 	async forgotPassword(body: ForgotPassword) {
-		return $fetch('/forgot-password', {
+		return $fetch('/password-reset/request', {
+			method: 'POST',
+			body
+		});
+	},
+
+	async resetPassword(body: ResetPassword) {
+		return $fetch('/password-reset/confirm', {
+			method: 'POST',
+			body
+		});
+	},
+
+	async confirmEmail(body: ConfirmEmail) {
+		return $fetch('/email-verification/confirm', {
+			method: 'POST',
+			body
+		});
+	},
+
+	async resendEmailVerification(body: ResendEmailVerification) {
+		return $fetch('/email-verification/resend', {
 			method: 'POST',
 			body
 		});

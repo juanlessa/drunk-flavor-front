@@ -1,5 +1,6 @@
 import type { $Fetch } from 'nitropack';
 import type { QueryParams } from '../shared/query.types';
+import { serializeListQuery } from '../shared/query.helpers';
 import type { CreateCategory, UpdateCategory } from './category.dtos';
 import type { Category } from './category.entity';
 
@@ -28,7 +29,7 @@ export const categoriesRepository = ($fetch: $Fetch) => ({
 	},
 
 	async list(query: QueryParams) {
-		return $fetch<Category[]>(path, { query });
+		return $fetch<Category[]>(path, { query: serializeListQuery(query) });
 	},
 
 	async get(id: string) {
