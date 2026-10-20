@@ -6,6 +6,18 @@
 	"atoms": {
 		"inputPassword": {
 			"toggleVisibilityButton": { "label": "toggle password visibility" }
+		},
+		"passwordStrength": {
+			"bar": { "label": "password strength" },
+			"requirements": {
+				"length": "8-64 characters",
+				"lowercase": "one lowercase letter",
+				"uppercase": "one uppercase letter",
+				"digit": "one number",
+				"special": "one special character",
+				"match": "passwords match"
+			},
+			"state": { "met": "met", "unmet": "not met" }
 		}
 	},
 	"molecules": {
@@ -103,6 +115,7 @@
 			"surnameInput": { "label": "surname" },
 			"emailInput": { "label": "email" },
 			"passwordInput": { "label": "password" },
+			"confirmPasswordInput": { "label": "confirm password" },
 			"submitButton": { "value": "Create Account" },
 			"hasAccount": { "message": "Already have an account?", "link": "Sign in" }
 		},

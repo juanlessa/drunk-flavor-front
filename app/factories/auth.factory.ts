@@ -14,7 +14,8 @@ export const initEmptySignupForm = (): SignupForm => ({
 	name: '',
 	surname: '',
 	email: '',
-	password: ''
+	password: '',
+	confirmPassword: ''
 });
 
 export const initEmptyForgotPasswordForm = (): ForgotPasswordForm => ({

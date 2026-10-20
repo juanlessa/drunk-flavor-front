@@ -13,10 +13,8 @@
 				placeholder=""
 				:has-error="!!checkError('password')"
 				:error-message="checkError('password')"
-				@blur="validateForm" />
-			<template #error>
-				<ErrorMessage :value="checkError('password')" />
-			</template>
+				@focus="isPasswordActive = true"
+				@blur="handlePasswordBlur" />
 		</InputWrapper>
 		<InputWrapper>
 			<template #label>
@@ -32,10 +30,11 @@
 				:has-error="!!checkError('confirmPassword')"
 				:error-message="checkError('confirmPassword')"
 				@blur="validateForm" />
-			<template #error>
-				<ErrorMessage :value="checkError('confirmPassword')" />
-			</template>
 		</InputWrapper>
+		<PasswordStrength
+			:password="formState.form.password"
+			:confirm-password="formState.form.confirmPassword"
+			:active="isPasswordActive" />
 		<template #buttons>
 			<Box direction="col" class="gap-6">
 				<ButtonGroup direction="column" :has-cancel-button="false">
@@ -63,6 +62,13 @@ const localePath = useLocalePath();
 const route = useRoute('reset-password-token');
 const { t } = useI18n();
 const { formState, resetFormState, checkError, validateForm } = useResetPasswordForm();
+
+const isPasswordActive = ref(false);
+
+const handlePasswordBlur = () => {
+	isPasswordActive.value = false;
+	validateForm();
+};
 
 const handleSubmitButton = async () => {
 	formState.value.displayErrors = true;

@@ -19,12 +19,18 @@ export const signinFormSchema = z.object({
 	password: userPasswordValidation
 });
 
-export const signupFormSchema = z.object({
-	name: userNameValidation,
-	surname: userSurnameValidation,
-	email: userEmailValidation,
-	password: userPasswordValidation
-});
+export const signupFormSchema = z
+	.object({
+		name: userNameValidation,
+		surname: userSurnameValidation,
+		email: userEmailValidation,
+		password: userPasswordValidation,
+		confirmPassword: z.string()
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		error: 'errors.auth.passwordsMismatch',
+		path: ['confirmPassword']
+	});
 
 export const forgotPasswordFormSchema = z.object({
 	email: userEmailValidation

@@ -17,6 +17,7 @@ export type SignupForm = {
 	surname: string;
 	email: string;
 	password: string;
+	confirmPassword: string;
 };
 
 export type SignupFormState = {
