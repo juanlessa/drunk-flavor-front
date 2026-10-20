@@ -8,10 +8,7 @@
 
 		<Variant title="default">
 			<div class="p-4">
-				<InputSwitch
-					:id="state.id"
-					:name="state.name"
-					:checked="state.checked" />
+				<InputSwitch :id="state.id" :name="state.name" :checked="state.checked" />
 			</div>
 		</Variant>
 	</Story>

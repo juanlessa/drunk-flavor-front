@@ -27,7 +27,10 @@ describe('guest middleware', () => {
 	it('does nothing when user is not authenticated', async () => {
 		mockAuthenticate.mockResolvedValue(false);
 
-		const result = await guestMiddleware({ path: '/signin' } as RouteLocationNormalized, {} as RouteLocationNormalized);
+		const result = await guestMiddleware(
+			{ path: '/signin' } as RouteLocationNormalized,
+			{} as RouteLocationNormalized
+		);
 
 		expect(result).toBeUndefined();
 	});
@@ -35,7 +38,10 @@ describe('guest middleware', () => {
 	it('does nothing when authenticated user visits a non-signin page', async () => {
 		mockAuthState.value.isAuthenticated = true;
 
-		const result = await guestMiddleware({ path: '/categories' } as RouteLocationNormalized, {} as RouteLocationNormalized);
+		const result = await guestMiddleware(
+			{ path: '/categories' } as RouteLocationNormalized,
+			{} as RouteLocationNormalized
+		);
 
 		expect(result).toBeUndefined();
 	});
@@ -43,7 +49,10 @@ describe('guest middleware', () => {
 	it('redirects to / when authenticated user visits /signin', async () => {
 		mockAuthState.value.isAuthenticated = true;
 
-		const result = await guestMiddleware({ path: '/signin' } as RouteLocationNormalized, {} as RouteLocationNormalized);
+		const result = await guestMiddleware(
+			{ path: '/signin' } as RouteLocationNormalized,
+			{} as RouteLocationNormalized
+		);
 
 		expect(result).toEqual({ redirect: '/' });
 	});
@@ -51,7 +60,10 @@ describe('guest middleware', () => {
 	it('attempts authentication when state says not authenticated', async () => {
 		mockAuthenticate.mockResolvedValue(true);
 
-		await guestMiddleware({ path: '/signin' } as RouteLocationNormalized, {} as RouteLocationNormalized);
+		await guestMiddleware(
+			{ path: '/signin' } as RouteLocationNormalized,
+			{} as RouteLocationNormalized
+		);
 
 		expect(mockAuthenticate).toHaveBeenCalled();
 	});
@@ -59,7 +71,10 @@ describe('guest middleware', () => {
 	it('redirects when authenticate succeeds and path is /signin', async () => {
 		mockAuthenticate.mockResolvedValue(true);
 
-		const result = await guestMiddleware({ path: '/signin' } as RouteLocationNormalized, {} as RouteLocationNormalized);
+		const result = await guestMiddleware(
+			{ path: '/signin' } as RouteLocationNormalized,
+			{} as RouteLocationNormalized
+		);
 
 		expect(result).toEqual({ redirect: '/' });
 	});
@@ -67,7 +82,10 @@ describe('guest middleware', () => {
 	it('does not redirect when authenticate fails', async () => {
 		mockAuthenticate.mockResolvedValue(false);
 
-		const result = await guestMiddleware({ path: '/signin' } as RouteLocationNormalized, {} as RouteLocationNormalized);
+		const result = await guestMiddleware(
+			{ path: '/signin' } as RouteLocationNormalized,
+			{} as RouteLocationNormalized
+		);
 
 		expect(result).toBeUndefined();
 	});

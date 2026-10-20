@@ -56,9 +56,7 @@ describe('useCategoryForm', () => {
 		});
 
 		it('returns translated message when field has error', () => {
-			form.formState.value.errors = [
-				{ field: 'translations.en.name', message: 'error.key' }
-			];
+			form.formState.value.errors = [{ field: 'translations.en.name', message: 'error.key' }];
 
 			const result = form.checkError('translations.en.name');
 

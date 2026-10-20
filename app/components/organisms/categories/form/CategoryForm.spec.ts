@@ -4,8 +4,9 @@ import { ref } from 'vue';
 import CategoryForm from './CategoryForm.vue';
 
 const FormStub = {
-	template: '<form @submit.prevent="$emit(\'submit\')">'
-		+ '<slot /><button type="button" @click="$emit(\'cancel\')">cancel</button></form>',
+	template:
+		'<form @submit.prevent="$emit(\'submit\')">' +
+		'<slot /><button type="button" @click="$emit(\'cancel\')">cancel</button></form>',
 	props: ['title'],
 	emits: ['submit', 'cancel']
 };
