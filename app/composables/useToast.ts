@@ -1,5 +1,9 @@
 import { nanoid } from 'nanoid';
-import type { ICreateToast, Toast, ToastState } from '~/components/organisms/toastNotification/ToastNotification.types';
+import type {
+	ICreateToast,
+	Toast,
+	ToastState
+} from '~/components/organisms/toastNotification/ToastNotification.types';
 
 const initState = (): ToastState => ({
 	maxToastsOnScreen: 7,

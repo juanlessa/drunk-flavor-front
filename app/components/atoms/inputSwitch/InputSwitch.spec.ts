@@ -27,7 +27,9 @@ describe('InputSwitch', () => {
 		it('is unchecked by default', () => {
 			const wrapper = mount(InputSwitch);
 
-			expect(wrapper.find('button[role="switch"]').attributes('data-state')).toBe('unchecked');
+			expect(wrapper.find('button[role="switch"]').attributes('data-state')).toBe(
+				'unchecked'
+			);
 		});
 
 		it('is checked when checked prop is true', () => {

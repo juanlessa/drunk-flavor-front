@@ -69,9 +69,7 @@ describe('useDrinkForm', () => {
 		});
 
 		it('returns translated message when field has error', () => {
-			form.formState.value.errors = [
-				{ field: 'translations.en.name', message: 'error.key' }
-			];
+			form.formState.value.errors = [{ field: 'translations.en.name', message: 'error.key' }];
 
 			expect(form.checkError('translations.en.name')).toBeTruthy();
 		});

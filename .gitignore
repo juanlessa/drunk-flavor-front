@@ -18,6 +18,9 @@ logs
 .fleet
 .idea
 
+# Agent workflow artifacts
+.agents
+
 # Local env files
 .env
 .env.*

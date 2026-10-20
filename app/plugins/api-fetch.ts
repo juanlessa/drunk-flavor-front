@@ -1,4 +1,3 @@
-import { AUTH_TOKEN_NAME, SESSION_TOKEN_NAME } from '~/domain/auth/auth.constants';
 import { authRepository } from '~/domain/auth/auth.repository';
 import { categoriesRepository } from '~/domain/category/category.repository';
 import { drinksRepository } from '~/domain/drink/drink.repository';
@@ -11,24 +10,26 @@ export default defineNuxtPlugin({
 	parallel: true,
 	setup() {
 		const config = useRuntimeConfig();
-		const tokenCookie = useCookie(AUTH_TOKEN_NAME);
-		const sessionCookie = useCookie(SESSION_TOKEN_NAME);
+
+		// The auth cookies (Authorization, __Host-Refresh-Token) are HttpOnly
+		// and owned by the backend, so client-side JS cannot read them. During
+		// SSR we forward the browser's incoming Cookie header verbatim. We avoid
+		// useCookie here because its forced initial client cookie write
+		// re-serializes the __Host- prefixed cookie without the Secure
+		// attribute, which cookie-es rejects on plain-HTTP dev.
+		// useRequestHeaders must be read here in setup (inside the Nuxt
+		// instance context), not inside the async onRequest callback.
+		const incomingCookie = import.meta.server
+			? useRequestHeaders(['cookie']).cookie
+			: undefined;
 
 		const apiFetcher = $fetch.create({
 			baseURL: config.public.apiBase,
 			credentials: 'include',
 			onRequest: async ({ options }) => {
-				if (import.meta.server) {
-					const token = tokenCookie.value || '';
-					const session = sessionCookie.value || '';
-
-					const cookies = [
-						`${AUTH_TOKEN_NAME}=${token}`,
-						`${SESSION_TOKEN_NAME}=${session}`
-					].join('; ');
-
+				if (import.meta.server && incomingCookie) {
 					options.headers = new Headers(options.headers);
-					options.headers.set('Cookie', cookies);
+					options.headers.set('Cookie', incomingCookie);
 				}
 			}
 		});

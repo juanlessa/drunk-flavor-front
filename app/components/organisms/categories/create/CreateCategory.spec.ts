@@ -99,9 +99,7 @@ describe('CreateCategory', () => {
 			await form.vm.$emit('submit', categoryFormPayload);
 			await wrapper.vm.$nextTick();
 
-			expect(mockAddToast).toHaveBeenCalledWith(
-				expect.objectContaining({ type: 'success' })
-			);
+			expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'success' }));
 		});
 
 		it('navigates back on API success', async () => {
@@ -128,9 +126,7 @@ describe('CreateCategory', () => {
 			await form.vm.$emit('submit', categoryFormPayload);
 			await wrapper.vm.$nextTick();
 
-			expect(mockAddToast).toHaveBeenCalledWith(
-				expect.objectContaining({ type: 'error' })
-			);
+			expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'error' }));
 		});
 
 		it('does not navigate back on API failure', async () => {

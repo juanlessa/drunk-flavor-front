@@ -1,9 +1,6 @@
 <template>
 	<Box direction="col" class="bg-surface w-screen items-center">
-		<Box
-			as="footer"
-			direction="row"
-			class="h-12 w-full max-w-screen-desktop px-6 items-center">
+		<Box as="footer" direction="row" class="h-12 w-full max-w-screen-desktop px-6 items-center">
 			<Box
 				as="nav"
 				direction="row"

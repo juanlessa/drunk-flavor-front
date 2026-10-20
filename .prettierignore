@@ -1,0 +1,12 @@
+node_modules/
+.nuxt/
+.output/
+.data/
+.nitro/
+.cache/
+dist/
+coverage/
+*.min.js
+*.map
+pnpm-lock.yaml
+package-lock.json
