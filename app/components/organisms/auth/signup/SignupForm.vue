@@ -69,13 +69,30 @@
 					placeholder=""
 					:has-error="!!checkError('password')"
 					:error-message="checkError('password')"
-					@blur="validateForm" />
-				<template #error>
-					<ErrorMessage :value="checkError('password')" />
-				</template>
+					@focus="isPasswordActive = true"
+					@blur="handlePasswordBlur" />
 			</InputWrapper>
-			<!-- Single action, so no cancel, and the generic "done" label is replaced
-			     by the one that names what the button actually does. -->
+			<InputWrapper>
+				<template #label>
+					<Label for="confirmPassword">
+						{{ $t('organisms.signupForm.confirmPasswordInput.label') }}
+					</Label>
+				</template>
+				<InputPassword
+					id="confirmPassword"
+					v-model="formState.form.confirmPassword"
+					name="confirmPassword"
+					placeholder=""
+					:has-error="!!checkError('confirmPassword')"
+					:error-message="checkError('confirmPassword')"
+					@blur="validateForm" />
+			</InputWrapper>
+			<PasswordStrength
+				class="mt-4"
+				:password="formState.form.password"
+				:confirm-password="formState.form.confirmPassword"
+				:active="isPasswordActive" />
+
 			<template #buttons>
 				<ButtonGroup
 					:has-cancel-button="false"
@@ -87,13 +104,11 @@
 			</template>
 		</Form>
 
-		<!-- Outside the form on purpose: the form owns account creation only.
-		     Alternative ways in (signin now, social providers later) live here. -->
 		<Box direction="row" class="gap-1 justify-center items-center">
 			<Text as="span" class="text-content-subtle">
 				{{ $t('organisms.signupForm.hasAccount.message') }}
 			</Text>
-			<Anchor :to="localePath('/signin')">
+			<Anchor :to="localePath('/signin')" @click="resetFormState">
 				{{ $t('organisms.signupForm.hasAccount.link') }}
 			</Anchor>
 		</Box>
@@ -106,6 +121,13 @@ const { addToast } = useToast();
 const localePath = useLocalePath();
 const { formState, checkError, resetFormState, validateForm } = useSignupForm();
 
+const isPasswordActive = ref(false);
+
+const handlePasswordBlur = () => {
+	isPasswordActive.value = false;
+	validateForm();
+};
+
 const handleSubmitButton = async () => {
 	formState.value.displayErrors = true;
 	validateForm();
@@ -115,8 +137,6 @@ const handleSubmitButton = async () => {
 
 	try {
 		await $api.auth.signup(formState.value.form);
-		// The form lives in shared useState, so the typed password would survive the
-		// redirect and be waiting here on the next visit.
 		resetFormState();
 		addToast({ type: 'success', title: 'Success', message: 'Account created successfully' });
 		$router.push(localePath('/signin'));

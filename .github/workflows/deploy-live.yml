@@ -37,9 +37,13 @@ jobs:
                   cache: npm
 
             - name: Install, verify, and build
+              env:
+                  NODE_ENV: production
+                  NUXT_PUBLIC_API_BASE: ${{ vars.NUXT_PUBLIC_API_BASE }}
+                  NUXT_PUBLIC_IMAGE_HOST: ${{ vars.NUXT_PUBLIC_IMAGE_HOST }}
               run: |
                   set -Eeuo pipefail
-                  npm ci --legacy-peer-deps
+                  npm ci
                   npm run lint
                   npm test
                   npm run build

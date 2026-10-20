@@ -77,15 +77,23 @@ import ArrowRightIcon from '~/components/icons/ArrowRightIcon.vue';
 import LogoutIcon from '~/components/icons/LogoutIcon.vue';
 import SigninIcon from '~/components/icons/SigninIcon.vue';
 
+import type {
+	AppActions,
+	AppCanParameters,
+	AppSubjects
+} from '~/domain/accessControl/accessControl.types';
+
 type ILink = {
 	i18nKey: string;
 	path: string;
+	can?: { action: AppActions; subject: AppSubjects };
 };
 
 const { $auth } = useNuxtApp();
 const { t } = useI18n();
 const { addToast } = useToast();
 const localePath = useLocalePath();
+const { can } = useAppAbility();
 const isSigningOut = ref(false);
 
 const isAuthenticated = computed(() => $auth.state.value.isAuthenticated);
@@ -110,14 +118,31 @@ const handleSignout = async () => {
 	}
 };
 
-function getLinksBasedOnPermissions(isAuthenticated: boolean) {
-	if (isAuthenticated) {
-		return [
-			{ i18nKey: 'organisms.topBar.categories', path: '/categories' },
-			{ i18nKey: 'organisms.topBar.ingredients', path: '/ingredients' },
-			{ i18nKey: 'organisms.topBar.drinks', path: '/drinks' }
-		];
+function getLinksBasedOnPermissions(isAuthenticated: boolean): ILink[] {
+	if (!isAuthenticated) {
+		return [{ i18nKey: 'organisms.topBar.signin', path: '/signin' }];
 	}
-	return [{ i18nKey: 'organisms.topBar.signin', path: '/signin' }];
+
+	const managementLinks: ILink[] = [
+		{
+			i18nKey: 'organisms.topBar.categories',
+			path: '/categories',
+			can: { action: 'manage', subject: 'Category' }
+		},
+		{
+			i18nKey: 'organisms.topBar.ingredients',
+			path: '/ingredients',
+			can: { action: 'manage', subject: 'Ingredient' }
+		},
+		{
+			i18nKey: 'organisms.topBar.drinks',
+			path: '/drinks',
+			can: { action: 'manage', subject: 'Drink' }
+		}
+	];
+
+	return managementLinks.filter(
+		(link) => !link.can || can(...([link.can.action, link.can.subject] as AppCanParameters))
+	);
 }
 </script>

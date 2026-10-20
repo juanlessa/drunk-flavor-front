@@ -9,6 +9,7 @@
 			:placeholder="props.placeholder"
 			:pattern="`${props.pattern}`"
 			@input="handleUpdateInput"
+			@focus="emit('focus')"
 			@blur="handleBlurInput" />
 		<Button
 			variant="icon"
@@ -36,7 +37,7 @@ const props = defineProps({
 });
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: string): void;
-	(e: 'blur'): void;
+	(e: 'blur' | 'focus'): void;
 }>();
 
 const _isPasswordVisible = ref(false);

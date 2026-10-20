@@ -6,7 +6,7 @@ import type { DrinkForm, DrinkFormAndMedia } from '~/types/drink.types';
 import { mapFormToCreateDrink } from '~/mappers/drink.mappers';
 
 const { $api, $router } = useNuxtApp();
-const { resetFormState } = useIngredientForm();
+const { resetFormState } = useDrinkForm();
 const { addToast } = useToast();
 
 const handleCancel = () => {

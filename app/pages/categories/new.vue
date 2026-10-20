@@ -5,6 +5,7 @@
 </template>
 <script setup lang="ts">
 definePageMeta({
-	middleware: 'auth'
+	middleware: 'auth',
+	can: { action: 'create', subject: 'Category' }
 });
 </script>

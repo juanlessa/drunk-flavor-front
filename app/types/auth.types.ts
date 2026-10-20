@@ -17,6 +17,7 @@ export type SignupForm = {
 	surname: string;
 	email: string;
 	password: string;
+	confirmPassword: string;
 };
 
 export type SignupFormState = {
@@ -31,6 +32,17 @@ export type ForgotPasswordForm = {
 
 export type ForgotPasswordFormState = {
 	form: ForgotPasswordForm;
+	errors: FieldError[];
+	displayErrors: boolean;
+};
+
+export type ResetPasswordForm = {
+	password: string;
+	confirmPassword: string;
+};
+
+export type ResetPasswordFormState = {
+	form: ResetPasswordForm;
 	errors: FieldError[];
 	displayErrors: boolean;
 };

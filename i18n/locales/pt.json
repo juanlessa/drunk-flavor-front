@@ -6,6 +6,18 @@
 	"atoms": {
 		"inputPassword": {
 			"toggleVisibilityButton": { "label": "alternar visibilidade da senha" }
+		},
+		"passwordStrength": {
+			"bar": { "label": "força da senha" },
+			"requirements": {
+				"length": "8 a 64 caracteres",
+				"lowercase": "uma letra minúscula",
+				"uppercase": "uma letra maiúscula",
+				"digit": "um número",
+				"special": "um caractere especial",
+				"match": "as senhas coincidem"
+			},
+			"state": { "met": "atendido", "unmet": "não atendido" }
 		}
 	},
 	"molecules": {
@@ -56,7 +68,7 @@
 			"title": "Ingrediente",
 			"nameInput": { "label": "nome", "placeholder": "" },
 			"unitInput": {
-				"error": "unidade deve ter no mínimo 1 carácter",
+				"error": "unidade é obrigatória",
 				"label": "unidade",
 				"placeholder": ""
 			},
@@ -107,6 +119,7 @@
 			"surnameInput": { "label": "sobrenome" },
 			"emailInput": { "label": "email" },
 			"passwordInput": { "label": "senha" },
+			"confirmPasswordInput": { "label": "confirmar senha" },
 			"submitButton": { "value": "Criar conta" },
 			"hasAccount": { "message": "Já tem uma conta?", "link": "Entrar" }
 		},
@@ -114,7 +127,41 @@
 			"title": "Redefinir senha",
 			"emailInput": { "label": "email" },
 			"submitButton": { "value": "Enviar código" },
-			"rememberPassword": { "message": "Lembrou sua senha?", "link": "Voltar para o login" }
+			"rememberPassword": { "message": "Lembrou sua senha?", "link": "Voltar para entrar" }
+		},
+		"resetPasswordForm": {
+			"title": "Defina uma nova senha",
+			"passwordInput": { "label": "nova senha" },
+			"confirmPasswordInput": { "label": "confirmar senha" },
+			"submitButton": { "value": "Redefinir senha" },
+			"backToSignin": { "message": "Lembrou sua senha?", "link": "Voltar para entrar" },
+			"success": {
+				"title": "Senha atualizada",
+				"message": "Sua senha foi redefinida. Você já pode entrar.",
+				"signinLink": "Ir para o login"
+			},
+			"toast": {
+				"successTitle": "Sucesso",
+				"successMessage": "Senha redefinida com sucesso",
+				"errorTitle": "Erro",
+				"errorMessage": "Não foi possível redefinir a senha. O link pode estar inválido ou expirado."
+			}
+		},
+		"verifyEmail": {
+			"pending": {
+				"title": "Verificando seu email",
+				"message": "Aguarde enquanto confirmamos seu endereço de email."
+			},
+			"success": {
+				"title": "Email verificado",
+				"message": "Seu email foi confirmado. Você já pode entrar.",
+				"signinLink": "Ir para o login"
+			},
+			"error": {
+				"title": "Falha na verificação",
+				"message": "Não foi possível verificar seu email. O link pode estar inválido ou expirado.",
+				"signinLink": "Ir para o login"
+			}
 		},
 		"toastNotification": {
 			"label": "Notificação"
@@ -122,21 +169,24 @@
 	},
 	"errors": {
 		"users": {
-			"name": "nome deve ter no mínimo 1 carácter",
-			"surname": "sobrenome deve ter no mínimo 1 carácter",
+			"name": "nome é obrigatório",
+			"surname": "sobrenome é obrigatório",
 			"email": "email inválido",
 			"password": "senha inválida",
 			"passwordMinSize": "senha deve ter no mínimo 8 caracteres",
 			"passwordMaxSize": "senha deve ter no máximo 64 caracteres",
 			"weakPassword": "senha deve conter maiúscula, minúscula, número e caractere especial"
 		},
+		"auth": {
+			"passwordsMismatch": "as senhas não coincidem"
+		},
 		"categories": {
-			"name": "nome deve ter no mínimo 1 carácter"
+			"name": "nome é obrigatório"
 		},
 		"ingredients": {
-			"name": "nome deve ter no mínimo 1 carácter",
-			"unit": "unidade deve ter no mínimo 1 carácter",
-			"unitPlural": "unidade plural deve ter no mínimo 1 carácter",
+			"name": "nome é obrigatório",
+			"unit": "unidade é obrigatória",
+			"unitPlural": "unidade plural é obrigatória",
 			"category": "categoria deve ser selecionada"
 		}
 	},
@@ -156,15 +206,15 @@
 		"generalSection": { "label": "Geral" },
 		"cancelButton": { "message": "cancelar" },
 		"ingredients": {
-			"errorInvalidFormat": "drink deve ter pelo menos 1 ingrediente",
+			"errorInvalidFormat": "pelo menos um ingrediente é obrigatório",
 			"label": "ingredientes"
 		},
 		"methodInput": {
-			"errorInvalidFormat": "método deve ter no mínimo 1 carácter",
+			"errorInvalidFormat": "preparo é obrigatório",
 			"label": "método"
 		},
 		"nameInput": {
-			"errorInvalidFormat": "nome deve ter no mínimo 1 carácter",
+			"errorInvalidFormat": "nome é obrigatório",
 			"label": "nome"
 		},
 		"ingredientsInput": {

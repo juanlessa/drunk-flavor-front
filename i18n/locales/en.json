@@ -6,6 +6,18 @@
 	"atoms": {
 		"inputPassword": {
 			"toggleVisibilityButton": { "label": "toggle password visibility" }
+		},
+		"passwordStrength": {
+			"bar": { "label": "password strength" },
+			"requirements": {
+				"length": "8-64 characters",
+				"lowercase": "one lowercase letter",
+				"uppercase": "one uppercase letter",
+				"digit": "one number",
+				"special": "one special character",
+				"match": "passwords match"
+			},
+			"state": { "met": "met", "unmet": "not met" }
 		}
 	},
 	"molecules": {
@@ -103,6 +115,7 @@
 			"surnameInput": { "label": "surname" },
 			"emailInput": { "label": "email" },
 			"passwordInput": { "label": "password" },
+			"confirmPasswordInput": { "label": "confirm password" },
 			"submitButton": { "value": "Create Account" },
 			"hasAccount": { "message": "Already have an account?", "link": "Sign in" }
 		},
@@ -110,7 +123,41 @@
 			"title": "Reset Password",
 			"emailInput": { "label": "email" },
 			"submitButton": { "value": "Send Code" },
-			"rememberPassword": { "message": "Remember your password?", "link": "Back to Login" }
+			"rememberPassword": { "message": "Remember your password?", "link": "Back to sign in" }
+		},
+		"resetPasswordForm": {
+			"title": "Set a new password",
+			"passwordInput": { "label": "new password" },
+			"confirmPasswordInput": { "label": "confirm password" },
+			"submitButton": { "value": "Reset password" },
+			"backToSignin": { "message": "Remember your password?", "link": "Back to sign in" },
+			"success": {
+				"title": "Password updated",
+				"message": "Your password has been reset. You can sign in now.",
+				"signinLink": "Go to sign in"
+			},
+			"toast": {
+				"successTitle": "Success",
+				"successMessage": "Password reset successfully",
+				"errorTitle": "Error",
+				"errorMessage": "Unable to reset password. The link may be invalid or expired."
+			}
+		},
+		"verifyEmail": {
+			"pending": {
+				"title": "Verifying your email",
+				"message": "Please wait while we confirm your email address."
+			},
+			"success": {
+				"title": "Email verified",
+				"message": "Your email has been confirmed. You can sign in now.",
+				"signinLink": "Go to sign in"
+			},
+			"error": {
+				"title": "Verification failed",
+				"message": "We could not verify your email. The link may be invalid or expired.",
+				"signinLink": "Go to sign in"
+			}
 		},
 		"toastNotification": {
 			"label": "Notification"
@@ -118,21 +165,24 @@
 	},
 	"errors": {
 		"users": {
-			"name": "name must have a minimum of 1 character",
-			"surname": "surname must have a minimum of 1 character",
+			"name": "name is required",
+			"surname": "surname is required",
 			"email": "invalid email",
 			"password": "invalid password",
 			"passwordMinSize": "password must have at least 8 characters",
 			"passwordMaxSize": "password must have at most 64 characters",
 			"weakPassword": "password must contain uppercase, lowercase, number and special character"
 		},
+		"auth": {
+			"passwordsMismatch": "passwords do not match"
+		},
 		"categories": {
-			"name": "name must have a minimum of 1 character"
+			"name": "name is required"
 		},
 		"ingredients": {
-			"name": "name must have a minimum of 1 character",
-			"unit": "unit must have a minimum of 1 character",
-			"unitPlural": "unit plural must have a minimum of 1 character",
+			"name": "name is required",
+			"unit": "unit is required",
+			"unitPlural": "unit plural is required",
 			"category": "category must be selected"
 		}
 	},
@@ -151,15 +201,15 @@
 	"drinkForm": {
 		"generalSection": { "label": "General" },
 		"ingredients": {
-			"errorInvalidFormat": "drink must have a minimum of 1 ingredient",
+			"errorInvalidFormat": "at least one ingredient is required",
 			"label": "ingredients"
 		},
 		"methodInput": {
-			"errorInvalidFormat": "method must have a minimum of 1 character",
+			"errorInvalidFormat": "method is required",
 			"label": "method"
 		},
 		"nameInput": {
-			"errorInvalidFormat": "name must have a minimum of 1 character",
+			"errorInvalidFormat": "name is required",
 			"label": "name"
 		},
 		"ingredientsInput": {
