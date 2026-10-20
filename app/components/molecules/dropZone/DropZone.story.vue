@@ -12,7 +12,10 @@
 
 		<Variant title="all types">
 			<div class="p-4 max-w-96">
-				<DropZone v-model="state.file" :accept="dropZoneAcceptOptions" :max-file-size="maxFileSizeBytes" />
+				<DropZone
+					v-model="state.file"
+					:accept="dropZoneAcceptOptions"
+					:max-file-size="maxFileSizeBytes" />
 			</div>
 		</Variant>
 	</Story>

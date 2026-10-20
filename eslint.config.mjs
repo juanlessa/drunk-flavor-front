@@ -2,6 +2,9 @@ import withNuxt from './.nuxt/eslint.config.mjs';
 import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default withNuxt([
+	{
+		ignores: ['node_modules/', 'Dockerfile', '.nuxt/', 'README.md', 'public/']
+	},
 	eslintConfigPrettier,
 	{
 		rules: {

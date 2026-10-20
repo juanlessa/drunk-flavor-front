@@ -44,7 +44,9 @@ const fallback = useImage(() => ({ src: props.srcFallback }));
 const isPrimaryReady = computed(() => !!props.src && primary.isReady.value);
 
 /** Primary is done and did not produce an image, so the fallback takes over. */
-const isPrimaryDone = computed(() => !props.src || (!primary.isLoading.value && !isPrimaryReady.value));
+const isPrimaryDone = computed(
+	() => !props.src || (!primary.isLoading.value && !isPrimaryReady.value)
+);
 
 /** Show the fallback only after the primary failed and the fallback resolved. */
 const isFallbackReady = computed(() => isPrimaryDone.value && fallback.isReady.value);

@@ -6,10 +6,10 @@
 		"@histoire/plugin-nuxt": {
 			"nuxt": "$nuxt"
 		},
-		"vue-i18n": "11.4.14",
-		"@intlify/shared": "11.4.14",
-		"@intlify/core-base": "11.4.14",
-		"@intlify/message-compiler": "11.4.14",
+		"vue-i18n": "11.4.16",
+		"@intlify/shared": "11.4.16",
+		"@intlify/core-base": "11.4.16",
+		"@intlify/message-compiler": "11.4.16",
 		"glob": "13.0.6"
 	},
 	"scripts": {
@@ -22,11 +22,16 @@
 		"story:build": "HISTOIRE=true histoire build",
 		"story:preview": "HISTOIRE=true histoire preview",
 		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"lint:staged": "lint-staged",
+		"typecheck": "vue-tsc --noEmit",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
-		"lint:fix": "eslint . --fix",
-		"format": "prettier --write ."
+		"prepare": "husky",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"format:staged": "pretty-quick --staged"
 	},
 	"dependencies": {
 		"@fontsource/roboto": "5.3.0",
@@ -58,9 +63,13 @@
 		"eslint-plugin-prettier": "5.5.7",
 		"happy-dom": "21.0.3",
 		"histoire": "1.0.0-beta.1",
+		"husky": "9.1.7",
+		"lint-staged": "17.6.0",
+		"nuxt-security": "2.6.0",
 		"nuxt-typed-router": "4.0.10",
 		"playwright-core": "1.64.1",
 		"prettier": "3.9.10",
+		"pretty-quick": "4.2.2",
 		"tailwindcss": "4.3.3",
 		"typescript": "6.0.3",
 		"vitest": "5.0.5",
