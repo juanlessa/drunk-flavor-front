@@ -1,5 +1,18 @@
 import { registerEndpoint, mockNuxtImport } from '@nuxt/test-utils/runtime';
 
+mockNuxtImport('useRuntimeConfig', (original) => {
+	return () => {
+		const config = (original as () => Record<string, unknown>)();
+		return {
+			...config,
+			public: {
+				...(config.public as Record<string, unknown>),
+				apiBase: ''
+			}
+		};
+	};
+});
+
 // Mock external API endpoints that fire during app initialization.
 // The auth plugin calls GET /me via the guest middleware on every route navigation.
 registerEndpoint('/me', {
