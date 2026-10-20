@@ -43,7 +43,11 @@ jobs:
                   NUXT_PUBLIC_IMAGE_HOST: ${{ vars.NUXT_PUBLIC_IMAGE_HOST }}
               run: |
                   set -Eeuo pipefail
-                  npm ci
+                  # NODE_ENV=production (needed for the production CSP and parseEnvs)
+                  # makes npm skip devDependencies by default, but the build tooling
+                  # (tailwind, nuxt-security, vue-tsc, vitest, eslint) lives there.
+                  # --include=dev installs them while keeping the prod build mode.
+                  npm ci --include=dev
                   npm run lint
                   npm test
                   npm run build
