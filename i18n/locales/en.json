@@ -112,6 +112,40 @@
 			"submitButton": { "value": "Send Code" },
 			"rememberPassword": { "message": "Remember your password?", "link": "Back to Login" }
 		},
+		"resetPasswordForm": {
+			"title": "Set a new password",
+			"passwordInput": { "label": "new password" },
+			"confirmPasswordInput": { "label": "confirm password" },
+			"submitButton": { "value": "Reset password" },
+			"backToSignin": { "message": "Remember your password?", "link": "Back to Login" },
+			"success": {
+				"title": "Password updated",
+				"message": "Your password has been reset. You can sign in now.",
+				"signinLink": "Go to sign in"
+			},
+			"toast": {
+				"successTitle": "Success",
+				"successMessage": "Password reset successfully",
+				"errorTitle": "Error",
+				"errorMessage": "Unable to reset password. The link may be invalid or expired."
+			}
+		},
+		"verifyEmail": {
+			"pending": {
+				"title": "Verifying your email",
+				"message": "Please wait while we confirm your email address."
+			},
+			"success": {
+				"title": "Email verified",
+				"message": "Your email has been confirmed. You can sign in now.",
+				"signinLink": "Go to sign in"
+			},
+			"error": {
+				"title": "Verification failed",
+				"message": "We could not verify your email. The link may be invalid or expired.",
+				"signinLink": "Go to sign in"
+			}
+		},
 		"toastNotification": {
 			"label": "Notification"
 		}
@@ -125,6 +159,9 @@
 			"passwordMinSize": "password must have at least 8 characters",
 			"passwordMaxSize": "password must have at most 64 characters",
 			"weakPassword": "password must contain uppercase, lowercase, number and special character"
+		},
+		"auth": {
+			"passwordsMismatch": "passwords do not match"
 		},
 		"categories": {
 			"name": "name must have a minimum of 1 character"

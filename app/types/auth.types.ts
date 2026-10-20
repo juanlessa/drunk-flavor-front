@@ -35,6 +35,17 @@ export type ForgotPasswordFormState = {
 	displayErrors: boolean;
 };
 
+export type ResetPasswordForm = {
+	password: string;
+	confirmPassword: string;
+};
+
+export type ResetPasswordFormState = {
+	form: ResetPasswordForm;
+	errors: FieldError[];
+	displayErrors: boolean;
+};
+
 export type AuthState = {
 	user: Profile | undefined;
 	isAuthenticated: boolean;

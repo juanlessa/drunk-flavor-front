@@ -116,6 +116,40 @@
 			"submitButton": { "value": "Enviar código" },
 			"rememberPassword": { "message": "Lembrou sua senha?", "link": "Voltar para o login" }
 		},
+		"resetPasswordForm": {
+			"title": "Defina uma nova senha",
+			"passwordInput": { "label": "nova senha" },
+			"confirmPasswordInput": { "label": "confirmar senha" },
+			"submitButton": { "value": "Redefinir senha" },
+			"backToSignin": { "message": "Lembrou sua senha?", "link": "Voltar para o login" },
+			"success": {
+				"title": "Senha atualizada",
+				"message": "Sua senha foi redefinida. Você já pode entrar.",
+				"signinLink": "Ir para o login"
+			},
+			"toast": {
+				"successTitle": "Sucesso",
+				"successMessage": "Senha redefinida com sucesso",
+				"errorTitle": "Erro",
+				"errorMessage": "Não foi possível redefinir a senha. O link pode estar inválido ou expirado."
+			}
+		},
+		"verifyEmail": {
+			"pending": {
+				"title": "Verificando seu email",
+				"message": "Aguarde enquanto confirmamos seu endereço de email."
+			},
+			"success": {
+				"title": "Email verificado",
+				"message": "Seu email foi confirmado. Você já pode entrar.",
+				"signinLink": "Ir para o login"
+			},
+			"error": {
+				"title": "Falha na verificação",
+				"message": "Não foi possível verificar seu email. O link pode estar inválido ou expirado.",
+				"signinLink": "Ir para o login"
+			}
+		},
 		"toastNotification": {
 			"label": "Notificação"
 		}
@@ -129,6 +163,9 @@
 			"passwordMinSize": "senha deve ter no mínimo 8 caracteres",
 			"passwordMaxSize": "senha deve ter no máximo 64 caracteres",
 			"weakPassword": "senha deve conter maiúscula, minúscula, número e caractere especial"
+		},
+		"auth": {
+			"passwordsMismatch": "as senhas não coincidem"
 		},
 		"categories": {
 			"name": "nome deve ter no mínimo 1 carácter"
