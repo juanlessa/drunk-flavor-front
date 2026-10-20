@@ -8,21 +8,21 @@ const path = '/categories';
 
 export const categoriesRepository = ($fetch: $Fetch) => ({
 	async create(body: CreateCategory) {
-		return $fetch(path, {
+		return $fetch<undefined>(path, {
 			method: 'POST',
 			body
 		});
 	},
 
 	async update(body: UpdateCategory) {
-		return $fetch(path, {
+		return $fetch<undefined>(path, {
 			method: 'PATCH',
 			body
 		});
 	},
 
 	async delete(id: string) {
-		return $fetch(path, {
+		return $fetch<undefined>(path, {
 			method: 'DELETE',
 			body: { id }
 		});

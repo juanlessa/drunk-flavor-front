@@ -15,7 +15,7 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 	},
 
 	async update(body: UpdateDrink) {
-		return $fetch(path, {
+		return $fetch<undefined>(path, {
 			method: 'PATCH',
 			body
 		});
@@ -25,7 +25,7 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 		const formData = new FormData();
 		formData.append('cover', file);
 
-		return $fetch(`${path}/${id}/cover`, {
+		return $fetch<undefined>(`${path}/${id}/cover`, {
 			method: 'PATCH',
 			body: formData
 		});
@@ -35,14 +35,14 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 		const formData = new FormData();
 		formData.append('thumbnail', file);
 
-		return $fetch(`${path}/${id}/thumbnail`, {
+		return $fetch<undefined>(`${path}/${id}/thumbnail`, {
 			method: 'PATCH',
 			body: formData
 		});
 	},
 
 	async delete(id: string) {
-		return $fetch(path, {
+		return $fetch<undefined>(path, {
 			method: 'DELETE',
 			body: { id }
 		});

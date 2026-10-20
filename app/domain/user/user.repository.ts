@@ -8,21 +8,21 @@ const path = '/users';
 
 export const usersRepository = ($fetch: $Fetch) => ({
 	async create(body: CreateUser) {
-		return $fetch(path, {
+		return $fetch<undefined>(path, {
 			method: 'POST',
 			body
 		});
 	},
 
 	async updateRole(body: UpdateRole) {
-		return $fetch(`${path}/role`, {
+		return $fetch<undefined>(`${path}/role`, {
 			method: 'PATCH',
 			body
 		});
 	},
 
 	async delete(id: string) {
-		return $fetch(path, {
+		return $fetch<undefined>(path, {
 			method: 'DELETE',
 			body: { id }
 		});

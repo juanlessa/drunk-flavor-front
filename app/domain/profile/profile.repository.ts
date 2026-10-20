@@ -4,7 +4,7 @@ import type { UpdatePassword, UpdateProfile } from '~/domain/profile/profile.dto
 
 export const profileRepository = ($fetch: $Fetch) => ({
 	async delete() {
-		return $fetch('/me', {
+		return $fetch<undefined>('/me', {
 			method: 'DELETE'
 		});
 	},
@@ -14,14 +14,14 @@ export const profileRepository = ($fetch: $Fetch) => ({
 	},
 
 	async update(body: UpdateProfile) {
-		return $fetch('/me', {
+		return $fetch<undefined>('/me', {
 			method: 'PATCH',
 			body
 		});
 	},
 
 	async updatePassword(body: UpdatePassword) {
-		return $fetch('/update-password', {
+		return $fetch<undefined>('/update-password', {
 			method: 'PATCH',
 			body
 		});
