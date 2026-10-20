@@ -1,8 +1,8 @@
-import { useFetch } from '#app';
+import { useFetch, type UseFetchOptions } from '#app';
 
-type useFetchType = typeof useFetch;
+type UseFetchRequest = Parameters<typeof useFetch>[0];
 
-export const useAPIFetch: useFetchType = (path, options = {}) => {
+export const useAPIFetch = <ResT>(path: UseFetchRequest, options: UseFetchOptions<ResT> = {}) => {
 	const config = useRuntimeConfig();
 
 	options.baseURL = config.public.apiBase;
