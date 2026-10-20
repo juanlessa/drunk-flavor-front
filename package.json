@@ -22,6 +22,7 @@
 		"story:build": "HISTOIRE=true histoire build",
 		"story:preview": "HISTOIRE=true histoire preview",
 		"lint": "eslint .",
+		"typecheck": "vue-tsc --noEmit",
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
