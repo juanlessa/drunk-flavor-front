@@ -1,6 +1,9 @@
 <template>
 	<Box direction="col" class="w-full gap-1">
-		<Box :direction="props.direction" class="gap-2" :class="props.direction === 'row' && 'items-center'">
+		<Box
+			:direction="props.direction"
+			class="gap-2"
+			:class="props.direction === 'row' && 'items-center'">
 			<slot name="label"></slot>
 			<slot></slot>
 		</Box>

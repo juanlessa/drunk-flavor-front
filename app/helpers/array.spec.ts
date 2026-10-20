@@ -5,13 +5,20 @@ describe('chunkArray', () => {
 	it('splits an array into chunks of the specified size', () => {
 		const result = chunkArray([1, 2, 3, 4, 5, 6], 2);
 
-		expect(result).toEqual([[1, 2], [3, 4], [5, 6]]);
+		expect(result).toEqual([
+			[1, 2],
+			[3, 4],
+			[5, 6]
+		]);
 	});
 
 	it('handles arrays not evenly divisible by chunk size', () => {
 		const result = chunkArray([1, 2, 3, 4, 5], 3);
 
-		expect(result).toEqual([[1, 2, 3], [4, 5]]);
+		expect(result).toEqual([
+			[1, 2, 3],
+			[4, 5]
+		]);
 	});
 
 	it('returns one chunk when chunk size equals array length', () => {
@@ -35,7 +42,10 @@ describe('chunkArray', () => {
 	it('works with string arrays', () => {
 		const result = chunkArray(['a', 'b', 'c', 'd'], 2);
 
-		expect(result).toEqual([['a', 'b'], ['c', 'd']]);
+		expect(result).toEqual([
+			['a', 'b'],
+			['c', 'd']
+		]);
 	});
 
 	it('works with object arrays', () => {
