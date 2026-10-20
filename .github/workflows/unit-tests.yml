@@ -1,15 +1,15 @@
 name: unit testing flow
 
 on:
-    push:
-        branches:
-            - 'releases/**'
-            - 'main'
-            - 'develop'
     pull_request:
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-    run-tests:
+    validate:
+        name: lint, typecheck and unit tests
         runs-on: ubuntu-latest
 
         steps:
@@ -22,15 +22,18 @@ jobs:
                   node-version-file: '.nvmrc'
 
             - name: Install dependencies
-              run: npm ci
+              run: npm ci --legacy-peer-deps
 
-            - name: Run lint
+            - name: Format check
+              run: npm run format:check
+
+            - name: Lint
               run: npm run lint
 
             - name: Typecheck
               run: npm run typecheck
 
-            - name: Run tests
+            - name: Unit tests
               run: npm test
 
             - name: Dependency audit
