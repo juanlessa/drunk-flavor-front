@@ -5,7 +5,8 @@
 </template>
 <script setup lang="ts">
 definePageMeta({
-	middleware: 'auth'
+	middleware: 'auth',
+	can: { action: 'update', subject: 'Ingredient' }
 });
 
 const route = useRoute('ingredients-id-edit');
