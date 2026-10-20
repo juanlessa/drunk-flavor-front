@@ -1,7 +1,10 @@
 <template>
 	<Story title="Molecules/InputWrapper">
 		<template #controls>
-			<HstSelect v-model="state.direction" title="direction" :options="inputWrapperDirectionOptions" />
+			<HstSelect
+				v-model="state.direction"
+				title="direction"
+				:options="inputWrapperDirectionOptions" />
 			<HstCheckbox v-model="state.showError" title="show error" />
 		</template>
 

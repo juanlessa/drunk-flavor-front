@@ -148,9 +148,7 @@ describe('UpdateIngredient', () => {
 			await form.vm.$emit('submit', ingredientFormPayload);
 			await flushPromises();
 
-			expect(mockAddToast).toHaveBeenCalledWith(
-				expect.objectContaining({ type: 'success' })
-			);
+			expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'success' }));
 		});
 
 		it('navigates back on API success', async () => {
@@ -177,9 +175,7 @@ describe('UpdateIngredient', () => {
 			await form.vm.$emit('submit', ingredientFormPayload);
 			await flushPromises();
 
-			expect(mockAddToast).toHaveBeenCalledWith(
-				expect.objectContaining({ type: 'error' })
-			);
+			expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'error' }));
 		});
 
 		it('does not navigate back on API failure', async () => {

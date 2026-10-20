@@ -1,0 +1,37 @@
+name: codeql analysis
+
+on:
+    pull_request:
+    schedule:
+        # Weekly run so new CodeQL queries are applied even without a PR.
+        - cron: '21 4 * * 1'
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+    analyze:
+        name: analyze javascript/typescript
+        runs-on: ubuntu-latest
+
+        permissions:
+            # Required to read the code being analyzed.
+            contents: read
+            # Required to upload the analysis results to the Security tab.
+            security-events: write
+
+        steps:
+            - name: Git checkout
+              uses: actions/checkout@v4
+
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@v3
+              with:
+                  languages: javascript-typescript
+                  build-mode: none
+
+            - name: Perform CodeQL analysis
+              uses: github/codeql-action/analyze@v3
+              with:
+                  category: '/language:javascript-typescript'

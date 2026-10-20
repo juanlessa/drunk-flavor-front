@@ -1,6 +1,11 @@
 import { z } from 'zod/v4';
 import { validateSchema } from '~/helpers/validateSchema';
-import { userEmailValidation, userNameValidation, userPasswordValidation, userSurnameValidation } from './user';
+import {
+	userEmailValidation,
+	userNameValidation,
+	userPasswordValidation,
+	userSurnameValidation
+} from './user';
 import type { ForgotPasswordForm, SigninForm, SignupForm } from '~/types/auth.types';
 
 // schemas
@@ -23,4 +28,5 @@ export const forgotPasswordFormSchema = z.object({
 //validators
 export const signinFormValidator = validateSchema<SigninForm>(signinFormSchema);
 export const signupFormValidator = validateSchema<SignupForm>(signupFormSchema);
-export const forgotPasswordFormValidator = validateSchema<ForgotPasswordForm>(forgotPasswordFormSchema);
+export const forgotPasswordFormValidator =
+	validateSchema<ForgotPasswordForm>(forgotPasswordFormSchema);

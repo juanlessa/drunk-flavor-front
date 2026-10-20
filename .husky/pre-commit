@@ -1,0 +1,5 @@
+echo "\nRunning Prettier to format staged files..."
+npm run format:staged --silent
+
+echo "\nRunning ESLint to lint staged files..."
+npm run lint:staged --silent
