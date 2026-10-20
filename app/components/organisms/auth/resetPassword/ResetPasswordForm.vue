@@ -46,7 +46,7 @@
 					<Text as="span" class="text-content-subtle">
 						{{ $t('organisms.resetPasswordForm.backToSignin.message') }}
 					</Text>
-					<Anchor :to="localePath('/signin')">
+					<Anchor :to="localePath('/signin')" @click="resetFormState">
 						{{ $t('organisms.resetPasswordForm.backToSignin.link') }}
 					</Anchor>
 				</Box>

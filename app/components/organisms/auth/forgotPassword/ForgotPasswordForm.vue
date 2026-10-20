@@ -30,7 +30,7 @@
 					<Text as="span" class="text-content-subtle">
 						{{ $t('organisms.forgotPasswordForm.rememberPassword.message') }}
 					</Text>
-					<Anchor :to="localePath('/signin')">
+					<Anchor :to="localePath('/signin')" @click="resetFormState">
 						{{ $t('organisms.forgotPasswordForm.rememberPassword.link') }}
 					</Anchor>
 				</Box>
@@ -43,7 +43,7 @@
 const { $api, $router } = useNuxtApp();
 const { addToast } = useToast();
 const localePath = useLocalePath();
-const { formState, checkError, validateForm } = useForgotPasswordForm();
+const { formState, checkError, validateForm, resetFormState } = useForgotPasswordForm();
 
 const handleSubmitButton = async () => {
 	formState.value.displayErrors = true;

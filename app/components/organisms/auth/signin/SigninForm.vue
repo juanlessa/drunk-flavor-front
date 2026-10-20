@@ -42,7 +42,7 @@
 				</InputWrapper>
 			</Box>
 			<Box direction="row" class="pt-2 justify-end">
-				<Anchor :to="localePath('/forgot-password')">
+				<Anchor :to="localePath('/forgot-password')" @click="resetFormState">
 					{{ $t('organisms.signinForm.forgotPasswordLink.value') }}
 				</Anchor>
 			</Box>
@@ -63,7 +63,7 @@
 				$t('organisms.signinForm.signupPrompt.message')
 			}}</Text>
 
-			<Anchor :to="localePath('/signup')">
+			<Anchor :to="localePath('/signup')" @click="resetFormState">
 				{{ $t('organisms.signinForm.signupPrompt.link') }}
 			</Anchor>
 		</Box>

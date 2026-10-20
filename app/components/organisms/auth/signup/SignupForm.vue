@@ -88,6 +88,7 @@
 					@blur="validateForm" />
 			</InputWrapper>
 			<PasswordStrength
+				class="mt-4"
 				:password="formState.form.password"
 				:confirm-password="formState.form.confirmPassword"
 				:active="isPasswordActive" />
@@ -107,7 +108,7 @@
 			<Text as="span" class="text-content-subtle">
 				{{ $t('organisms.signupForm.hasAccount.message') }}
 			</Text>
-			<Anchor :to="localePath('/signin')">
+			<Anchor :to="localePath('/signin')" @click="resetFormState">
 				{{ $t('organisms.signupForm.hasAccount.link') }}
 			</Anchor>
 		</Box>

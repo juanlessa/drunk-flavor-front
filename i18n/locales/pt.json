@@ -68,7 +68,7 @@
 			"title": "Ingrediente",
 			"nameInput": { "label": "nome", "placeholder": "" },
 			"unitInput": {
-				"error": "unidade deve ter no mínimo 1 carácter",
+				"error": "unidade é obrigatória",
 				"label": "unidade",
 				"placeholder": ""
 			},
@@ -127,14 +127,14 @@
 			"title": "Redefinir senha",
 			"emailInput": { "label": "email" },
 			"submitButton": { "value": "Enviar código" },
-			"rememberPassword": { "message": "Lembrou sua senha?", "link": "Voltar para o login" }
+			"rememberPassword": { "message": "Lembrou sua senha?", "link": "Voltar para entrar" }
 		},
 		"resetPasswordForm": {
 			"title": "Defina uma nova senha",
 			"passwordInput": { "label": "nova senha" },
 			"confirmPasswordInput": { "label": "confirmar senha" },
 			"submitButton": { "value": "Redefinir senha" },
-			"backToSignin": { "message": "Lembrou sua senha?", "link": "Voltar para o login" },
+			"backToSignin": { "message": "Lembrou sua senha?", "link": "Voltar para entrar" },
 			"success": {
 				"title": "Senha atualizada",
 				"message": "Sua senha foi redefinida. Você já pode entrar.",
@@ -169,8 +169,8 @@
 	},
 	"errors": {
 		"users": {
-			"name": "nome deve ter no mínimo 1 carácter",
-			"surname": "sobrenome deve ter no mínimo 1 carácter",
+			"name": "nome é obrigatório",
+			"surname": "sobrenome é obrigatório",
 			"email": "email inválido",
 			"password": "senha inválida",
 			"passwordMinSize": "senha deve ter no mínimo 8 caracteres",
@@ -181,12 +181,12 @@
 			"passwordsMismatch": "as senhas não coincidem"
 		},
 		"categories": {
-			"name": "nome deve ter no mínimo 1 carácter"
+			"name": "nome é obrigatório"
 		},
 		"ingredients": {
-			"name": "nome deve ter no mínimo 1 carácter",
-			"unit": "unidade deve ter no mínimo 1 carácter",
-			"unitPlural": "unidade plural deve ter no mínimo 1 carácter",
+			"name": "nome é obrigatório",
+			"unit": "unidade é obrigatória",
+			"unitPlural": "unidade plural é obrigatória",
 			"category": "categoria deve ser selecionada"
 		}
 	},
@@ -206,15 +206,15 @@
 		"generalSection": { "label": "Geral" },
 		"cancelButton": { "message": "cancelar" },
 		"ingredients": {
-			"errorInvalidFormat": "drink deve ter pelo menos 1 ingrediente",
+			"errorInvalidFormat": "pelo menos um ingrediente é obrigatório",
 			"label": "ingredientes"
 		},
 		"methodInput": {
-			"errorInvalidFormat": "método deve ter no mínimo 1 carácter",
+			"errorInvalidFormat": "preparo é obrigatório",
 			"label": "método"
 		},
 		"nameInput": {
-			"errorInvalidFormat": "nome deve ter no mínimo 1 carácter",
+			"errorInvalidFormat": "nome é obrigatório",
 			"label": "nome"
 		},
 		"ingredientsInput": {
