@@ -102,7 +102,7 @@
 							{{ $t('organisms.ingredientForm.isAlcoholicInput.label') }}
 						</Label>
 					</template>
-					<InputSwitch v-model:checked="formState.form.is_alcoholic" />
+					<InputSwitch id="is-alcoholic" v-model:checked="formState.form.is_alcoholic" />
 				</InputWrapper>
 			</GroupWrapper>
 		</Box>
