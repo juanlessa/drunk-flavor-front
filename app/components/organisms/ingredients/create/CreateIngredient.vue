@@ -17,6 +17,7 @@ const handleSubmit = async (ingredientForm: IngredientForm) => {
 	const createIngredient = mapFormToCreateIngredient(ingredientForm);
 	try {
 		await $api.ingredients.create(createIngredient);
+		resetFormState();
 		addToast({ type: 'success', title: 'Success', message: 'ingredient has been created' });
 		$router.back();
 	} catch (error) {
