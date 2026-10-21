@@ -12,3 +12,12 @@
 @import './tokens/gradients.css';
 @import './tokens/themes.css';
 @import './tokens/accessibility.css';
+
+/* Paint the document root with the app's background so the mobile overscroll
+   ("rubber band") area matches the page instead of exposing the browser's
+   default white. --color-surface-sunken is theme-aware: the `.dark` class that
+   useDark sets on <html> switches it to the dark value automatically. */
+html,
+body {
+	background-color: var(--color-surface-sunken);
+}
