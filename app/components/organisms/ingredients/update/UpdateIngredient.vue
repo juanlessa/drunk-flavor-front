@@ -33,6 +33,7 @@ const handleSubmit = async (ingredientForm: IngredientForm) => {
 	const updateIngredient = mapFormToUpdateIngredient(props.ingredientId, ingredientForm);
 	try {
 		await $api.ingredients.update(updateIngredient);
+		resetFormState();
 		addToast({ type: 'success', title: 'Success', message: 'ingredient has been updated' });
 		$router.back();
 	} catch (error) {

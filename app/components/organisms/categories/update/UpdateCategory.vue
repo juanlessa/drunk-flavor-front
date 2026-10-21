@@ -33,6 +33,7 @@ const handleSubmit = async (categoryForm: CategoryForm) => {
 	const updateCategory = mapFormToUpdateCategory(props.categoryId, categoryForm);
 	try {
 		await $api.categories.update(updateCategory);
+		resetFormState();
 		addToast({ type: 'success', title: 'Success', message: 'category has been updated' });
 		$router.back();
 	} catch (error) {

@@ -17,6 +17,7 @@ const handleSubmit = async (categoryForm: CategoryForm) => {
 	const createCategory = mapFormToCreateCategory(categoryForm);
 	try {
 		await $api.categories.create(createCategory);
+		resetFormState();
 		addToast({ type: 'success', title: 'Success', message: 'category has been created' });
 		$router.back();
 	} catch (error) {

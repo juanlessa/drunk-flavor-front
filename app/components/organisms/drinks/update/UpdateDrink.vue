@@ -67,6 +67,7 @@ const handleSubmit = async ({ form, cover, thumbnail }: DrinkFormAndMedia) => {
 		}
 	}
 
+	resetFormState();
 	$router.back();
 };
 </script>
