@@ -136,6 +136,18 @@
 			"forgotPasswordLink": { "value": "Forgot your password?" },
 			"signupPrompt": { "message": "Don't have an account?", "link": "Sign up" }
 		},
+		"completeProfileForm": {
+			"title": "Complete your profile",
+			"description": "Add your name to finish setting up your account.",
+			"nameInput": { "label": "name" },
+			"surnameInput": { "label": "surname" },
+			"submitButton": { "value": "Continue" },
+			"signoutPrompt": { "message": "Not you?", "link": "Sign out" },
+			"error": {
+				"title": "Error",
+				"message": "Unable to update your profile. Please try again."
+			}
+		},
 		"googleSignIn": {
 			"divider": "or",
 			"error": {

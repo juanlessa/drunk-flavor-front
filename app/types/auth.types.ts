@@ -47,6 +47,17 @@ export type ResetPasswordFormState = {
 	displayErrors: boolean;
 };
 
+export type CompleteProfileForm = {
+	name: string;
+	surname: string;
+};
+
+export type CompleteProfileFormState = {
+	form: CompleteProfileForm;
+	errors: FieldError[];
+	displayErrors: boolean;
+};
+
 export type AuthState = {
 	user: Profile | undefined;
 	isAuthenticated: boolean;

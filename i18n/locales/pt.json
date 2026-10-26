@@ -136,6 +136,18 @@
 			"forgotPasswordLink": { "value": "Esqueceu sua senha?" },
 			"signupPrompt": { "message": "Não tem uma conta?", "link": "Criar conta" }
 		},
+		"completeProfileForm": {
+			"title": "Complete seu perfil",
+			"description": "Adicione seu nome para concluir a configuração da sua conta.",
+			"nameInput": { "label": "nome" },
+			"surnameInput": { "label": "sobrenome" },
+			"submitButton": { "value": "Continuar" },
+			"signoutPrompt": { "message": "Não é você?", "link": "Sair" },
+			"error": {
+				"title": "Erro",
+				"message": "Não foi possível atualizar seu perfil. Tente novamente."
+			}
+		},
 		"googleSignIn": {
 			"divider": "ou",
 			"error": {
