@@ -15,10 +15,6 @@ export const useDrinkRating = (drinkId: MaybeRefOrGetter<string>) => {
 
 	const isAuthenticated = computed(() => $auth.state.value.isAuthenticated);
 
-	const refreshSummary = async () => {
-		summary.value = await $api.ratings.getSummaryByDrink(toValue(drinkId));
-	};
-
 	const load = async (): Promise<boolean> => {
 		isLoading.value = true;
 		try {
@@ -53,14 +49,15 @@ export const useDrinkRating = (drinkId: MaybeRefOrGetter<string>) => {
 
 		try {
 			if (previousRating) {
-				await $api.ratings.update({ id: previousRating._id, value });
+				const result = await $api.ratings.update({ id: previousRating._id, value });
 				myRating.value = { ...previousRating, value };
+				summary.value = result.summary;
 			} else {
-				const { id } = await $api.ratings.create({ drink_id: toValue(drinkId), value });
-				myRating.value = { _id: id, value };
+				const result = await $api.ratings.create({ drink_id: toValue(drinkId), value });
+				myRating.value = { _id: result.id, value };
+				summary.value = result.summary;
 			}
 
-			await refreshSummary();
 			return true;
 		} catch (error) {
 			console.error(error);
@@ -82,8 +79,8 @@ export const useDrinkRating = (drinkId: MaybeRefOrGetter<string>) => {
 		isSaving.value = true;
 
 		try {
-			await $api.ratings.delete(previousRating._id);
-			await refreshSummary();
+			const result = await $api.ratings.delete(previousRating._id);
+			summary.value = result.summary;
 			return true;
 		} catch (error) {
 			console.error(error);

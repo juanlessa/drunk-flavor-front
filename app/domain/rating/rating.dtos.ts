@@ -1,3 +1,5 @@
+import type { RatingSummary } from './rating.entity';
+
 export type CreateRating = {
 	drink_id: string;
 	value: number;
@@ -8,6 +10,10 @@ export type UpdateRating = {
 	value: number;
 };
 
-export type CreateRatingResponse = {
+export type RatingMutationResponse = {
+	summary: RatingSummary;
+};
+
+export type CreateRatingResponse = RatingMutationResponse & {
 	id: string;
 };

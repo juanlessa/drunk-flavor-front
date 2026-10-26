@@ -1,7 +1,12 @@
 import type { $Fetch } from 'nitropack';
 import type { PaginatedQueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
-import type { CreateRating, CreateRatingResponse, UpdateRating } from './rating.dtos';
+import type {
+	CreateRating,
+	CreateRatingResponse,
+	RatingMutationResponse,
+	UpdateRating
+} from './rating.dtos';
 import type { Rating, RatingSummary } from './rating.entity';
 
 const path = '/ratings';
@@ -14,13 +19,13 @@ export const ratingsRepository = ($fetch: $Fetch) => ({
 		});
 	},
 	async update({ id, ...body }: UpdateRating) {
-		return $fetch<undefined>(`${path}/${id}`, {
+		return $fetch<RatingMutationResponse>(`${path}/${id}`, {
 			method: 'PATCH',
 			body
 		});
 	},
 	async delete(id: string) {
-		return $fetch<undefined>(`${path}/${id}`, {
+		return $fetch<RatingMutationResponse>(`${path}/${id}`, {
 			method: 'DELETE'
 		});
 	},
