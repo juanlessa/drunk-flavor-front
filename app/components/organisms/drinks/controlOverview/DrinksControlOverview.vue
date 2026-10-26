@@ -1,5 +1,5 @@
 <template>
-	<ButtonGroup class="py-4">
+	<ButtonGroup class="p-4">
 		<Button @click="handleCreateDrink">
 			{{ $t('organisms.drinksControlOverview.createButton.value') }}
 		</Button>

@@ -6,3 +6,9 @@ export type QueryParams = {
 	search?: { [k: string]: string | undefined };
 	sort?: { [k: string]: SortOrder | undefined };
 };
+
+/**
+ * Pagination + sort only. Used by endpoints whose backend query schema is
+ * `.strict()` and rejects a `search` key (e.g. comments and ratings).
+ */
+export type PaginatedQueryParams = Omit<QueryParams, 'search'>;

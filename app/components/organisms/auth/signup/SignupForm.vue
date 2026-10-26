@@ -1,92 +1,94 @@
 <template>
 	<Box direction="col" class="gap-6">
 		<Form :title="$t('organisms.signupForm.title')" @submit="handleSubmitButton">
-			<InputWrapper>
-				<template #label>
-					<Label for="name">
-						{{ $t('organisms.signupForm.nameInput.label') }}
-					</Label>
-				</template>
-				<InputText
-					id="name"
-					v-model="formState.form.name"
-					name="name"
-					placeholder=""
-					:has-error="!!checkError('name')"
-					:error-message="checkError('name')"
-					@blur="validateForm" />
-				<template #error>
-					<ErrorMessage :value="checkError('name')" />
-				</template>
-			</InputWrapper>
-			<InputWrapper>
-				<template #label>
-					<Label for="surname">
-						{{ $t('organisms.signupForm.surnameInput.label') }}
-					</Label>
-				</template>
-				<InputText
-					id="surname"
-					v-model="formState.form.surname"
-					name="surname"
-					placeholder=""
-					:has-error="!!checkError('surname')"
-					:error-message="checkError('surname')"
-					@blur="validateForm" />
-				<template #error>
-					<ErrorMessage :value="checkError('surname')" />
-				</template>
-			</InputWrapper>
-			<InputWrapper>
-				<template #label>
-					<Label for="email">
-						{{ $t('organisms.signupForm.emailInput.label') }}
-					</Label>
-				</template>
-				<InputText
-					id="email"
-					v-model="formState.form.email"
-					name="email"
-					type="email"
-					placeholder=""
-					:has-error="!!checkError('email')"
-					:error-message="checkError('email')"
-					@blur="validateForm" />
-				<template #error>
-					<ErrorMessage :value="checkError('email')" />
-				</template>
-			</InputWrapper>
-			<InputWrapper>
-				<template #label>
-					<Label for="password">
-						{{ $t('organisms.signupForm.passwordInput.label') }}
-					</Label>
-				</template>
-				<InputPassword
-					id="password"
-					v-model="formState.form.password"
-					name="password"
-					placeholder=""
-					:has-error="!!checkError('password')"
-					:error-message="checkError('password')"
-					@focus="isPasswordActive = true"
-					@blur="handlePasswordBlur" />
-			</InputWrapper>
-			<InputWrapper>
-				<template #label>
-					<Label for="confirmPassword">
-						{{ $t('organisms.signupForm.confirmPasswordInput.label') }}
-					</Label>
-				</template>
-				<InputPassword
-					id="confirmPassword"
-					v-model="formState.form.confirmPassword"
-					name="confirmPassword"
-					placeholder=""
-					:has-error="!!checkError('confirmPassword')"
-					:error-message="checkError('confirmPassword')"
-					@blur="validateForm" />
-			</InputWrapper>
+			<Box direction="col" class="gap-4">
+				<InputWrapper>
+					<template #label>
+						<Label for="name">
+							{{ $t('organisms.signupForm.nameInput.label') }}
+						</Label>
+					</template>
+					<InputText
+						id="name"
+						v-model="formState.form.name"
+						name="name"
+						placeholder=""
+						:has-error="!!checkError('name')"
+						:error-message="checkError('name')"
+						@blur="validateForm" />
+					<template #error>
+						<ErrorMessage :value="checkError('name')" />
+					</template>
+				</InputWrapper>
+				<InputWrapper>
+					<template #label>
+						<Label for="surname">
+							{{ $t('organisms.signupForm.surnameInput.label') }}
+						</Label>
+					</template>
+					<InputText
+						id="surname"
+						v-model="formState.form.surname"
+						name="surname"
+						placeholder=""
+						:has-error="!!checkError('surname')"
+						:error-message="checkError('surname')"
+						@blur="validateForm" />
+					<template #error>
+						<ErrorMessage :value="checkError('surname')" />
+					</template>
+				</InputWrapper>
+				<InputWrapper>
+					<template #label>
+						<Label for="email">
+							{{ $t('organisms.signupForm.emailInput.label') }}
+						</Label>
+					</template>
+					<InputText
+						id="email"
+						v-model="formState.form.email"
+						name="email"
+						type="email"
+						placeholder=""
+						:has-error="!!checkError('email')"
+						:error-message="checkError('email')"
+						@blur="validateForm" />
+					<template #error>
+						<ErrorMessage :value="checkError('email')" />
+					</template>
+				</InputWrapper>
+				<InputWrapper>
+					<template #label>
+						<Label for="password">
+							{{ $t('organisms.signupForm.passwordInput.label') }}
+						</Label>
+					</template>
+					<InputPassword
+						id="password"
+						v-model="formState.form.password"
+						name="password"
+						placeholder=""
+						:has-error="!!checkError('password')"
+						:error-message="checkError('password')"
+						@focus="isPasswordActive = true"
+						@blur="handlePasswordBlur" />
+				</InputWrapper>
+				<InputWrapper>
+					<template #label>
+						<Label for="confirmPassword">
+							{{ $t('organisms.signupForm.confirmPasswordInput.label') }}
+						</Label>
+					</template>
+					<InputPassword
+						id="confirmPassword"
+						v-model="formState.form.confirmPassword"
+						name="confirmPassword"
+						placeholder=""
+						:has-error="!!checkError('confirmPassword')"
+						:error-message="checkError('confirmPassword')"
+						@blur="validateForm" />
+				</InputWrapper>
+			</Box>
 			<PasswordStrength
 				class="mt-4"
 				:password="formState.form.password"

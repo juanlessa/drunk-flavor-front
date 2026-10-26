@@ -4,7 +4,7 @@
 			ref="dropZoneRef"
 			data-testid="drop-zone-area"
 			direction="col"
-			class="flex-1 px-6 pt-4 pb-8 items-center gap-2 bg-surface-input rounded-dropzone cursor-pointer"
+			class="flex-1 px-6 pt-4 pb-8 items-center gap-2 bg-surface-input border border-stroke-input hover:border-stroke-control focus-within:border-focus-ring rounded-dropzone cursor-pointer transition-colors duration-short"
 			@click="openFilePicker">
 			<input
 				:id="props.id"

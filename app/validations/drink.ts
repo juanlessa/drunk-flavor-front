@@ -12,7 +12,9 @@ export const drinkIngredientsValidation = z
 	.array(
 		z.object({
 			ingredient_id: z.string().min(1),
-			quantity: z.number().gt(0)
+			quantity: z
+				.number({ error: 'errors.drinks.quantity' })
+				.gt(0, { error: 'errors.drinks.quantity' })
 		})
 	)
 	.min(1, { error: 'errors.drinks.ingredients' });

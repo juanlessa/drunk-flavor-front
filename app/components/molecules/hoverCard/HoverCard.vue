@@ -9,7 +9,7 @@
 		</HoverCard.Trigger>
 		<HoverCard.Portal>
 			<HoverCard.Content
-				class="z-popover rounded-overlay bg-surface-overlay border border-stroke shadow-overlay"
+				class="z-popover rounded-overlay bg-surface-elevated border border-stroke shadow-overlay"
 				:side="props.side"
 				:side-offset="props.sideOffset"
 				:align="props.align"

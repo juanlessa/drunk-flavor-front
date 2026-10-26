@@ -35,16 +35,29 @@ vi.stubGlobal('useToast', () => ({
 const ingredientData = {
 	_id: 'ing-1',
 	translations: {
-		en: { name: 'Sugar', unit: 'tsp', unit_plural: 'tsps' },
-		pt: { name: 'Açúcar', unit: 'colher', unit_plural: 'colheres' }
+		en: { name: 'Sugar' },
+		pt: { name: 'Açúcar' }
 	},
 	category: {
 		_id: 'cat-1',
 		translations: { en: { name: 'Sweetener' }, pt: { name: 'Adoçante' } },
+		is_alcoholic: false,
 		created_at: new Date(),
 		updated_at: new Date()
 	},
-	is_alcoholic: false,
+	unit: {
+		_id: 'unit-1',
+		translations: {
+			en: { name: 'teaspoon', name_plural: 'teaspoons' },
+			pt: { name: 'colher de chá', name_plural: 'colheres de chá' }
+		},
+		symbol: 'tsp',
+		space_before_symbol: true,
+		allow_decimal: true,
+		kind: 'volume',
+		created_at: new Date(),
+		updated_at: new Date()
+	},
 	created_at: new Date(),
 	updated_at: new Date()
 };
@@ -56,11 +69,11 @@ vi.stubGlobal('useAsyncData', () => ({
 
 const ingredientFormPayload = {
 	translations: {
-		en: { name: 'Sugar', unit: 'tsp', unit_plural: 'tsps' },
-		pt: { name: 'Açúcar', unit: 'colher', unit_plural: 'colheres' }
+		en: { name: 'Sugar' },
+		pt: { name: 'Açúcar' }
 	},
 	category_id: 'cat-1',
-	is_alcoholic: false
+	unit_id: 'unit-1'
 };
 
 const mountUpdateIngredient = async () => {
@@ -137,7 +150,7 @@ describe('UpdateIngredient', () => {
 				id: 'ing-1',
 				translations: ingredientFormPayload.translations,
 				category_id: 'cat-1',
-				is_alcoholic: false
+				unit_id: 'unit-1'
 			});
 		});
 

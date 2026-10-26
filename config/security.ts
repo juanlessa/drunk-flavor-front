@@ -5,6 +5,8 @@ const { NODE_ENV, NUXT_PUBLIC_API_BASE, NUXT_PUBLIC_IMAGE_HOST } = parseEnvs();
 
 const isProduction = NODE_ENV === 'production';
 
+const GOOGLE_IDENTITY_ORIGIN_PATH = 'https://accounts.google.com/gsi/';
+
 type SecurityHeaders = Exclude<NonNullable<SecurityModuleOptions['headers']>, false>;
 type CspDirectives = NonNullable<SecurityHeaders['contentSecurityPolicy']>;
 
@@ -31,7 +33,8 @@ const weakCspDirectives: CspDirectives = {
 
 const productionCspDirectives: CspDirectives = {
 	'img-src': ["'self'", 'data:', NUXT_PUBLIC_IMAGE_HOST],
-	'connect-src': ["'self'", NUXT_PUBLIC_API_BASE],
+	// Google Identity Services calls its own endpoints under /gsi/ (button + FedCM flow).
+	'connect-src': ["'self'", NUXT_PUBLIC_API_BASE, GOOGLE_IDENTITY_ORIGIN_PATH],
 	'upgrade-insecure-requests': true
 };
 
@@ -45,6 +48,9 @@ export const securityOptions: Partial<SecurityModuleOptions> = {
 	sri: true,
 	headers: {
 		contentSecurityPolicy,
-		strictTransportSecurity: false
+		strictTransportSecurity: false,
+		crossOriginOpenerPolicy: 'same-origin-allow-popups',
+		crossOriginEmbedderPolicy: 'unsafe-none',
+		referrerPolicy: 'strict-origin-when-cross-origin'
 	}
 };

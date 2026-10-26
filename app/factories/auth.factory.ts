@@ -2,7 +2,8 @@ import type {
 	SigninForm,
 	SignupForm,
 	ForgotPasswordForm,
-	ResetPasswordForm
+	ConfirmPasswordForm,
+	CompleteProfileForm
 } from '../types/auth.types';
 
 export const initEmptySigninForm = (): SigninForm => ({
@@ -18,11 +19,16 @@ export const initEmptySignupForm = (): SignupForm => ({
 	confirmPassword: ''
 });
 
+export const initEmptyCompleteProfileForm = (): CompleteProfileForm => ({
+	name: '',
+	surname: ''
+});
+
 export const initEmptyForgotPasswordForm = (): ForgotPasswordForm => ({
 	email: ''
 });
 
-export const initEmptyResetPasswordForm = (): ResetPasswordForm => ({
+export const initEmptyConfirmPasswordForm = (): ConfirmPasswordForm => ({
 	password: '',
 	confirmPassword: ''
 });

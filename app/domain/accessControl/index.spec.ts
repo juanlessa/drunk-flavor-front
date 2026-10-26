@@ -1,14 +1,16 @@
 import { describe, it, expect } from 'vitest';
-import type { Profile } from '~/domain/profile/profile.entity';
+import type { CompleteUser } from '~/domain/user/user.entity';
 import { defineAbilityForUser } from './index';
 
-const buildProfile = (overrides: Partial<Profile>): Profile => ({
+const buildProfile = (overrides: Partial<CompleteUser>): CompleteUser => ({
 	_id: 'user-1',
 	created_at: new Date(),
 	updated_at: new Date(),
 	name: 'Test',
 	surname: 'User',
 	email: 'test@example.com',
+	email_verified: true,
+	status: 'active',
 	role: 'member',
 	...overrides
 });

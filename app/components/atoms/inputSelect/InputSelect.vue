@@ -75,7 +75,7 @@ const handleUpdate = (value: string) => {
 };
 
 const selectInputContainerStyle = tv({
-	base: 'w-full inline-flex items-center justify-between gap-2 rounded-control px-3 py-1 text-body box-border control-border-width outline-hidden text-content bg-surface-input border-surface-input focus:border-stroke-strong data-[placeholder]:text-content-muted',
+	base: 'w-full inline-flex items-center justify-between gap-2 rounded-control px-3 py-1 text-body box-border control-border-width outline-hidden text-content bg-surface-input border-stroke-input focus:border-focus-ring data-[placeholder]:text-content-muted',
 	variants: {
 		border: {
 			true: 'border-stroke-control'

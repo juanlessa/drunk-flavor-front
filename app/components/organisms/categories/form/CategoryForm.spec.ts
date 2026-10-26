@@ -32,13 +32,19 @@ const ErrorMessageStub = {
 	template: '<span data-testid="error-message">{{ value }}</span>',
 	props: ['value']
 };
+const InputSwitchStub = {
+	template: '<input type="checkbox" data-testid="switch" />',
+	props: ['checked'],
+	emits: ['update:checked']
+};
 
 const mockFormState = ref({
 	form: {
 		translations: {
 			en: { name: '' },
 			pt: { name: '' }
-		}
+		},
+		is_alcoholic: false
 	},
 	errors: [] as { field: string; message: string }[],
 	displayErrors: false
@@ -67,6 +73,7 @@ const globalStubs = {
 	InputWrapper: InputWrapperStub,
 	Label: LabelStub,
 	InputText: InputTextStub,
+	InputSwitch: InputSwitchStub,
 	ErrorMessage: ErrorMessageStub
 };
 
@@ -90,7 +97,8 @@ describe('CategoryForm', () => {
 				translations: {
 					en: { name: '' },
 					pt: { name: '' }
-				}
+				},
+				is_alcoholic: false
 			},
 			errors: [],
 			displayErrors: false
@@ -106,11 +114,18 @@ describe('CategoryForm', () => {
 			expect(form.props('title')).toBe('organisms.categoryForm.title');
 		});
 
-		it('renders one GroupWrapper per language', () => {
+		it('renders one GroupWrapper per language plus the general section', () => {
 			const wrapper = mountCategoryForm();
 			const groups = wrapper.findAllComponents(GroupWrapperStub);
 
-			expect(groups).toHaveLength(2);
+			// 2 language groups + 1 general section
+			expect(groups).toHaveLength(3);
+		});
+
+		it('renders an is_alcoholic switch in the general section', () => {
+			const wrapper = mountCategoryForm();
+
+			expect(wrapper.find('[data-testid="switch"]').exists()).toBe(true);
 		});
 
 		it('renders a name input for each language', () => {
@@ -182,7 +197,10 @@ describe('CategoryForm', () => {
 			expect(mockValidateForm).toHaveBeenCalled();
 			expect(wrapper.emitted('submit')).toBeTruthy();
 			expect(wrapper.emitted('submit')![0]).toEqual([
-				{ translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } } }
+				{
+					translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
+					is_alcoholic: false
+				}
 			]);
 		});
 

@@ -6,6 +6,7 @@ export const initEmptyCategory = (): Category => ({
 		en: { name: '' },
 		pt: { name: '' }
 	},
+	is_alcoholic: false,
 	created_at: new Date(),
 	updated_at: new Date()
 });

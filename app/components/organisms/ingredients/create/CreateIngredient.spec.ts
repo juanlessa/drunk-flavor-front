@@ -39,11 +39,11 @@ const mountCreateIngredient = () =>
 
 const ingredientFormPayload = {
 	translations: {
-		en: { name: 'Sugar', unit: 'tsp', unit_plural: 'tsps' },
-		pt: { name: 'Açúcar', unit: 'colher', unit_plural: 'colheres' }
+		en: { name: 'Sugar' },
+		pt: { name: 'Açúcar' }
 	},
 	category_id: 'cat-1',
-	is_alcoholic: false
+	unit_id: 'unit-1'
 };
 
 describe('CreateIngredient', () => {
@@ -93,7 +93,7 @@ describe('CreateIngredient', () => {
 			expect(mockApiCreate).toHaveBeenCalledWith({
 				translations: ingredientFormPayload.translations,
 				category_id: 'cat-1',
-				is_alcoholic: false
+				unit_id: 'unit-1'
 			});
 		});
 

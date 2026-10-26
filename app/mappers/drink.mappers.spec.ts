@@ -2,6 +2,21 @@ import { describe, it, expect } from 'vitest';
 import { mapDrinkToForm, mapFormToCreateDrink, mapFormToUpdateDrink } from './drink.mappers';
 import type { DrinkForm } from '../types/drink.types';
 import type { Drink } from '~/domain/drink/drink.entity';
+import type { Unit } from '~/domain/unit/unit.entity';
+
+const mockMilliliterUnit: Unit = {
+	_id: 'unit-1',
+	translations: {
+		en: { name: 'milliliter', name_plural: 'milliliters' },
+		pt: { name: 'mililitro', name_plural: 'mililitros' }
+	},
+	symbol: 'ml',
+	space_before_symbol: false,
+	allow_decimal: true,
+	kind: 'volume',
+	created_at: new Date(),
+	updated_at: new Date()
+};
 
 const mockDrink: Drink = {
 	_id: 'drink-1',
@@ -17,16 +32,17 @@ const mockDrink: Drink = {
 			ingredient: {
 				_id: 'ing-1',
 				translations: {
-					en: { name: 'Rum', unit: 'ml', unit_plural: 'ml' },
-					pt: { name: 'Rum', unit: 'ml', unit_plural: 'ml' }
+					en: { name: 'Rum' },
+					pt: { name: 'Rum' }
 				},
 				category: {
 					_id: 'cat-1',
 					translations: { en: { name: 'Spirits' }, pt: { name: 'Destilados' } },
+					is_alcoholic: true,
 					created_at: new Date(),
 					updated_at: new Date()
 				},
-				is_alcoholic: true,
+				unit: mockMilliliterUnit,
 				created_at: new Date(),
 				updated_at: new Date()
 			}
@@ -36,21 +52,24 @@ const mockDrink: Drink = {
 			ingredient: {
 				_id: 'ing-2',
 				translations: {
-					en: { name: 'Pineapple Juice', unit: 'ml', unit_plural: 'ml' },
-					pt: { name: 'Suco de abacaxi', unit: 'ml', unit_plural: 'ml' }
+					en: { name: 'Pineapple Juice' },
+					pt: { name: 'Suco de abacaxi' }
 				},
 				category: {
 					_id: 'cat-2',
 					translations: { en: { name: 'Juices' }, pt: { name: 'Sucos' } },
+					is_alcoholic: false,
 					created_at: new Date(),
 					updated_at: new Date()
 				},
-				is_alcoholic: false,
+				unit: mockMilliliterUnit,
 				created_at: new Date(),
 				updated_at: new Date()
 			}
 		}
 	],
+	avg_rating: 0,
+	ratings_count: 0,
 	created_at: new Date(),
 	updated_at: new Date()
 };

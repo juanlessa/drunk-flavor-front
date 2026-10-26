@@ -1,6 +1,10 @@
 <template>
 	<NuxtLayout name="primary">
-		<DrinkDetail :drink="drink" />
+		<DrinkDetail :drink="drink">
+			<template #rating>
+				<DrinkRatingSection v-if="drink._id" :drink-id="drink._id" />
+			</template>
+		</DrinkDetail>
 	</NuxtLayout>
 </template>
 <script setup lang="ts">

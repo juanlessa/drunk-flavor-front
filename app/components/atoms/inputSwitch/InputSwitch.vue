@@ -5,7 +5,8 @@
 		:checked="_checked"
 		:value="props.value"
 		:required="props.required"
-		class="w-14 h-8 focus-within:outline focus-within:outline-focus-ring flex bg-surface-input shadow-switch-track rounded-full relative data-[state=checked]:bg-accent-strong cursor-default"
+		:disabled="props.disabled"
+		class="w-14 h-8 flex bg-surface-input border border-stroke-input shadow-switch-track rounded-full relative data-[state=checked]:bg-accent focus-visible:outline-hidden focus-visible:shadow-focus-ring cursor-default disabled:opacity-disabled disabled:cursor-not-allowed"
 		@update:checked="handleUpdateChecked">
 		<Switch.Thumb
 			class="block w-6 h-6 my-auto bg-content-on-accent shadow-switch-thumb rounded-full transition-transform duration-short ease-move translate-x-1 will-change-transform data-[state=checked]:translate-x-7" />

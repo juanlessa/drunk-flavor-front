@@ -57,12 +57,12 @@ const buttonStyles = tv({
 	variants: {
 		variant: {
 			primary:
-				'bg-accent hover:bg-accent-hover text-content-on-accent disabled:bg-surface-hover disabled:text-content-subtle',
+				'bg-accent hover:bg-accent-hover active:bg-accent-active text-content-on-accent disabled:bg-surface-hover disabled:text-content-subtle',
 			secondary:
-				'bg-surface-input hover:bg-surface-hover text-content disabled:bg-surface-hover disabled:text-content-subtle',
-			delete: 'bg-danger-emphasis hover:bg-danger-emphasis-hover text-content-on-accent disabled:bg-surface-hover disabled:text-content-subtle',
+				'bg-surface-control hover:bg-surface-control-hover active:bg-surface-control-active text-content disabled:bg-surface-hover disabled:text-content-subtle',
+			delete: 'bg-danger-emphasis hover:bg-danger-emphasis-hover active:bg-danger-emphasis-active text-content-on-accent disabled:bg-surface-hover disabled:text-content-subtle',
 			outline:
-				'bg-surface-transparent border-2 border-stroke-strong text-content hover:bg-surface-hover disabled:text-content-subtle disabled:border-stroke',
+				'bg-surface-transparent border-2 border-stroke-strong text-content hover:bg-surface-hover active:bg-surface-control disabled:text-content-subtle disabled:border-stroke',
 			icon: 'inline-flex items-center justify-center p-1 rounded-icon-action enabled:hover:bg-surface-hover disabled:opacity-disabled',
 			plain: 'bg-surface-transparent text-content disabled:text-content-subtle'
 		},

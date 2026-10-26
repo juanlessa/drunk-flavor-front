@@ -13,7 +13,7 @@ export type IngredientsOverviewState = {
 export type IngredientForm = {
 	translations: Translations<IngredientTranslation>;
 	category_id: string;
-	is_alcoholic: boolean;
+	unit_id: string;
 };
 
 export type IngredientFormState = {

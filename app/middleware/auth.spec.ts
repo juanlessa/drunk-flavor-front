@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { RouteLocationNormalized } from 'vue-router';
 import type { Profile } from '~/domain/profile/profile.entity';
+import type { CompleteUser } from '~/domain/user/user.entity';
 import authMiddleware from './auth';
 
 const { mockAuthenticate, mockAuthState } = vi.hoisted(() => {
@@ -17,22 +18,35 @@ const { mockAuthenticate, mockAuthState } = vi.hoisted(() => {
 	(globalThis as unknown as Record<string, unknown>).navigateTo = (path: string) => ({
 		redirect: path
 	});
+	(globalThis as unknown as Record<string, unknown>).useLocalePath = () => (path: string) => path;
 	return { mockAuthenticate, mockAuthState };
 });
 
-const buildProfile = (overrides: Partial<Profile>): Profile => ({
+const buildIncompleteProfile = (): Profile => ({
+	_id: 'user-2',
+	created_at: new Date(),
+	updated_at: new Date(),
+	email: 'google@example.com',
+	email_verified: true,
+	status: 'incomplete_profile',
+	role: 'member'
+});
+
+const buildProfile = (overrides: Partial<CompleteUser>): CompleteUser => ({
 	_id: 'user-1',
 	created_at: new Date(),
 	updated_at: new Date(),
 	name: 'Test',
 	surname: 'User',
 	email: 'test@example.com',
+	email_verified: true,
+	status: 'active',
 	role: 'member',
 	...overrides
 });
 
-const route = (meta: Record<string, unknown> = {}) =>
-	({ meta }) as unknown as RouteLocationNormalized;
+const route = (meta: Record<string, unknown> = {}, path = '/drinks') =>
+	({ meta, path }) as unknown as RouteLocationNormalized;
 
 describe('auth middleware', () => {
 	beforeEach(() => {
@@ -88,6 +102,27 @@ describe('auth middleware', () => {
 
 		const result = await authMiddleware(
 			route({ can: { action: 'manage', subject: 'User' } }),
+			{} as RouteLocationNormalized
+		);
+
+		expect(result).toBeUndefined();
+	});
+
+	it('redirects an incomplete profile to the complete-profile page', async () => {
+		mockAuthState.value.isAuthenticated = true;
+		mockAuthState.value.user = buildIncompleteProfile();
+
+		const result = await authMiddleware(route(), {} as RouteLocationNormalized);
+
+		expect(result).toEqual({ redirect: '/complete-profile' });
+	});
+
+	it('lets an incomplete profile reach the complete-profile page', async () => {
+		mockAuthState.value.isAuthenticated = true;
+		mockAuthState.value.user = buildIncompleteProfile();
+
+		const result = await authMiddleware(
+			route({}, '/complete-profile'),
 			{} as RouteLocationNormalized
 		);
 

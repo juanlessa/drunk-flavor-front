@@ -1,5 +1,5 @@
 <template>
-	<ButtonGroup class="py-4">
+	<ButtonGroup class="p-4">
 		<Button @click="handleCreateCategory">
 			{{ $t('organisms.categoriesControlOverview.createButton.value') }}
 		</Button>

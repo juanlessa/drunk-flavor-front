@@ -20,6 +20,11 @@
 			"state": { "met": "met", "unmet": "not met" }
 		}
 	},
+	"layouts": {
+		"auth": {
+			"backButton": { "value": "back" }
+		}
+	},
 	"molecules": {
 		"buttonGroup": {
 			"cancelButton": { "value": "cancel" },
@@ -50,12 +55,40 @@
 		},
 		"categoryForm": {
 			"title": "Category",
-			"nameInput": { "label": "name", "placeholder": "" }
+			"nameInput": { "label": "name", "placeholder": "" },
+			"generalSection": { "title": "General" },
+			"isAlcoholicInput": { "label": "is alcoholic?" }
+		},
+		"unitsControlOverview": {
+			"createButton": { "value": "Create Unit" },
+			"deleteModal": {
+				"title": "Are you sure you want to delete the item",
+				"description": "This action cannot be undo"
+			}
+		},
+		"unitForm": {
+			"title": "Unit",
+			"nameInput": { "label": "name", "placeholder": "" },
+			"namePluralInput": { "label": "name plural", "placeholder": "" },
+			"generalSection": { "title": "General" },
+			"symbolInput": { "label": "symbol", "placeholder": "e.g. ml" },
+			"kindInput": {
+				"label": "kind",
+				"placeholder": "select a kind",
+				"options": {
+					"volume": "volume",
+					"mass": "mass",
+					"count": "count",
+					"informal": "informal"
+				}
+			},
+			"spaceBeforeSymbolInput": { "label": "space before symbol?" },
+			"allowDecimalInput": { "label": "allow decimal?" }
 		},
 		"footer": {
-			"author": "Juan Lessa",
-			"githubProject": "github project",
-			"socialNav": { "label": "social" }
+			"privacyPolicy": "Privacy Policy",
+			"termsOfService": "Terms of Service",
+			"legalNav": { "label": "legal" }
 		},
 		"ingredientsControlOverview": {
 			"createButton": { "value": "Create Ingredient" },
@@ -67,11 +100,9 @@
 		"ingredientForm": {
 			"title": "Ingredient",
 			"nameInput": { "label": "name", "placeholder": "" },
-			"unitInput": { "label": "unit", "placeholder": "" },
-			"unitPluralInput": { "label": "unit plural", "placeholder": "" },
 			"generalSection": { "title": "General" },
 			"categoryInput": { "label": "category" },
-			"isAlcoholicInput": { "label": "is alcoholic?" }
+			"unitInput": { "label": "unit" }
 		},
 		"drinksControlOverview": {
 			"createButton": { "value": "Create drink" },
@@ -79,6 +110,14 @@
 				"title": "Are you sure you want to delete the item",
 				"description": "This action cannot be undo"
 			}
+		},
+		"drinkCard": {
+			"ingredientsLabel": "INGREDIENTS",
+			"ingredientsCount": "{count} ingredient | {count} ingredients",
+			"remainingIngredients": "+{count} ingredient | +{count} ingredients",
+			"noRatings": "No ratings yet",
+			"ratingSummaryLabelOne": "{value} out of 5 stars, based on 1 rating",
+			"ratingSummaryLabelMany": "{value} out of 5 stars, based on {count} ratings"
 		},
 		"drinkForm": {
 			"title": "Drink",
@@ -93,6 +132,7 @@
 		},
 		"topBar": {
 			"categories": "categories",
+			"units": "units",
 			"drinks": "drinks",
 			"ingredients": "ingredients",
 			"signin": "signin",
@@ -101,13 +141,36 @@
 			"primaryNav": { "label": "primary" },
 			"mobileNav": { "label": "mobile" }
 		},
-		"signinForm": {
+		"signin": {
 			"title": "Welcome back",
+			"divider": "or",
+			"signupPrompt": { "message": "Don't have an account?", "link": "Sign up" },
+			"error": { "title": "Error" }
+		},
+		"credentialsSignIn": {
 			"emailInput": { "label": "email" },
 			"passwordInput": { "label": "password" },
 			"submitButton": { "value": "sign in" },
 			"forgotPasswordLink": { "value": "Forgot your password?" },
-			"signupPrompt": { "message": "Don't have an account?", "link": "Sign up" }
+			"error": { "message": "Email or password incorrect." }
+		},
+		"completeProfileForm": {
+			"title": "Complete your profile",
+			"description": "Add your name to finish setting up your account.",
+			"nameInput": { "label": "name" },
+			"surnameInput": { "label": "surname" },
+			"submitButton": { "value": "Continue" },
+			"signoutPrompt": { "message": "Not you?", "link": "Sign out" },
+			"error": {
+				"title": "Error",
+				"message": "Unable to update your profile. Please try again."
+			}
+		},
+		"googleSignIn": {
+			"error": {
+				"message": "Unable to sign in with Google. Please try again.",
+				"emailNotVerified": "Your Google account email is not verified."
+			}
 		},
 		"signupForm": {
 			"title": "Create an account",
@@ -125,7 +188,7 @@
 			"submitButton": { "value": "Send Code" },
 			"rememberPassword": { "message": "Remember your password?", "link": "Back to sign in" }
 		},
-		"resetPasswordForm": {
+		"confirmPasswordForm": {
 			"title": "Set a new password",
 			"passwordInput": { "label": "new password" },
 			"confirmPasswordInput": { "label": "confirm password" },
@@ -179,11 +242,21 @@
 		"categories": {
 			"name": "name is required"
 		},
+		"units": {
+			"name": "name is required",
+			"namePlural": "name plural is required",
+			"kind": "kind must be selected"
+		},
 		"ingredients": {
 			"name": "name is required",
-			"unit": "unit is required",
-			"unitPlural": "unit plural is required",
+			"unit": "unit must be selected",
 			"category": "category must be selected"
+		},
+		"drinks": {
+			"name": "name is required",
+			"method": "method is required",
+			"ingredients": "add at least one ingredient",
+			"quantity": "quantity must be greater than 0"
 		}
 	},
 	"deleteModal": {
@@ -196,7 +269,25 @@
 			"title": "Ingredients",
 			"ofPreposition": "of"
 		},
-		"instructions": "Preparation Instructions"
+		"instructions": "Preparation Instructions",
+		"rating": {
+			"title": "Ratings",
+			"loading": "Loading ratings...",
+			"loadError": "Unable to load ratings.",
+			"noRatings": "No ratings yet",
+			"count": "{count} rating | {count} ratings",
+			"summaryLabel": "{value} out of 5 stars, based on {count} ratings",
+			"signIn": "Sign in to rate",
+			"rateDrink": "Rate this drink",
+			"myRating": "My rating · {value} ★",
+			"yourRating": "Your rating",
+			"valueLabel": "{value} out of 5 stars",
+			"remove": "Remove rating",
+			"saved": "Rating saved.",
+			"removed": "Rating removed.",
+			"saveError": "Unable to save your rating. Please try again.",
+			"removeError": "Unable to remove your rating. Please try again."
+		}
 	},
 	"drinkForm": {
 		"generalSection": { "label": "General" },

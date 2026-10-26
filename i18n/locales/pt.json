@@ -20,6 +20,11 @@
 			"state": { "met": "atendido", "unmet": "não atendido" }
 		}
 	},
+	"layouts": {
+		"auth": {
+			"backButton": { "value": "voltar" }
+		}
+	},
 	"molecules": {
 		"buttonGroup": {
 			"cancelButton": { "value": "cancelar" },
@@ -50,12 +55,40 @@
 		},
 		"categoryForm": {
 			"title": "Categoria",
-			"nameInput": { "label": "nome", "placeholder": "" }
+			"nameInput": { "label": "nome", "placeholder": "" },
+			"generalSection": { "title": "Geral" },
+			"isAlcoholicInput": { "label": "é alcoólico?" }
+		},
+		"unitsControlOverview": {
+			"createButton": { "value": "Criar Unidade" },
+			"deleteModal": {
+				"title": "Tem certeza que deseja excluir o item",
+				"description": "Essa ação não pode ser desfeita"
+			}
+		},
+		"unitForm": {
+			"title": "Unidade",
+			"nameInput": { "label": "nome", "placeholder": "" },
+			"namePluralInput": { "label": "nome no plural", "placeholder": "" },
+			"generalSection": { "title": "Geral" },
+			"symbolInput": { "label": "símbolo", "placeholder": "ex. ml" },
+			"kindInput": {
+				"label": "tipo",
+				"placeholder": "selecione um tipo",
+				"options": {
+					"volume": "volume",
+					"mass": "massa",
+					"count": "contagem",
+					"informal": "informal"
+				}
+			},
+			"spaceBeforeSymbolInput": { "label": "espaço antes do símbolo?" },
+			"allowDecimalInput": { "label": "permite decimal?" }
 		},
 		"footer": {
-			"author": "Juan Lessa",
-			"githubProject": "projeto no github",
-			"socialNav": { "label": "social" }
+			"privacyPolicy": "Política de Privacidade",
+			"termsOfService": "Termos de Serviço",
+			"legalNav": { "label": "documentos legais" }
 		},
 		"ingredientsControlOverview": {
 			"createButton": { "value": "Criar Ingrediente" },
@@ -67,15 +100,9 @@
 		"ingredientForm": {
 			"title": "Ingrediente",
 			"nameInput": { "label": "nome", "placeholder": "" },
-			"unitInput": {
-				"error": "unidade é obrigatória",
-				"label": "unidade",
-				"placeholder": ""
-			},
-			"unitPluralInput": { "label": "unidade plural", "placeholder": "" },
 			"generalSection": { "title": "Geral" },
 			"categoryInput": { "label": "categoria" },
-			"isAlcoholicInput": { "label": "é alcoólico?" }
+			"unitInput": { "label": "unidade" }
 		},
 		"drinksControlOverview": {
 			"createButton": { "value": "Criar drink" },
@@ -83,6 +110,14 @@
 				"title": "Tem certeza que deseja excluir o item",
 				"description": "Essa ação não pode ser desfeita"
 			}
+		},
+		"drinkCard": {
+			"ingredientsLabel": "INGREDIENTES",
+			"ingredientsCount": "{count} ingrediente | {count} ingredientes",
+			"remainingIngredients": "+{count} ingrediente | +{count} ingredientes",
+			"noRatings": "Ainda sem avaliações",
+			"ratingSummaryLabelOne": "{value} de 5 estrelas, com base em 1 avaliação",
+			"ratingSummaryLabelMany": "{value} de 5 estrelas, com base em {count} avaliações"
 		},
 		"drinkForm": {
 			"title": "Drink",
@@ -97,6 +132,7 @@
 		},
 		"topBar": {
 			"categories": "categorias",
+			"units": "unidades",
 			"drinks": "drinks",
 			"ingredients": "ingredientes",
 			"signin": "entrar",
@@ -105,13 +141,36 @@
 			"primaryNav": { "label": "principal" },
 			"mobileNav": { "label": "mobile" }
 		},
-		"signinForm": {
+		"signin": {
 			"title": "Bem-vindo de volta",
+			"divider": "ou",
+			"signupPrompt": { "message": "Não tem uma conta?", "link": "Criar conta" },
+			"error": { "title": "Erro" }
+		},
+		"credentialsSignIn": {
 			"emailInput": { "label": "email" },
 			"passwordInput": { "label": "senha" },
 			"submitButton": { "value": "entrar" },
 			"forgotPasswordLink": { "value": "Esqueceu sua senha?" },
-			"signupPrompt": { "message": "Não tem uma conta?", "link": "Criar conta" }
+			"error": { "message": "Email ou senha incorretos." }
+		},
+		"completeProfileForm": {
+			"title": "Complete seu perfil",
+			"description": "Adicione seu nome para concluir a configuração da sua conta.",
+			"nameInput": { "label": "nome" },
+			"surnameInput": { "label": "sobrenome" },
+			"submitButton": { "value": "Continuar" },
+			"signoutPrompt": { "message": "Não é você?", "link": "Sair" },
+			"error": {
+				"title": "Erro",
+				"message": "Não foi possível atualizar seu perfil. Tente novamente."
+			}
+		},
+		"googleSignIn": {
+			"error": {
+				"message": "Não foi possível entrar com o Google. Tente novamente.",
+				"emailNotVerified": "O email da sua conta Google não está verificado."
+			}
 		},
 		"signupForm": {
 			"title": "Criar uma conta",
@@ -129,7 +188,7 @@
 			"submitButton": { "value": "Enviar código" },
 			"rememberPassword": { "message": "Lembrou sua senha?", "link": "Voltar para entrar" }
 		},
-		"resetPasswordForm": {
+		"confirmPasswordForm": {
 			"title": "Defina uma nova senha",
 			"passwordInput": { "label": "nova senha" },
 			"confirmPasswordInput": { "label": "confirmar senha" },
@@ -183,11 +242,21 @@
 		"categories": {
 			"name": "nome é obrigatório"
 		},
+		"units": {
+			"name": "nome é obrigatório",
+			"namePlural": "nome no plural é obrigatório",
+			"kind": "tipo deve ser selecionado"
+		},
 		"ingredients": {
 			"name": "nome é obrigatório",
-			"unit": "unidade é obrigatória",
-			"unitPlural": "unidade plural é obrigatória",
+			"unit": "unidade deve ser selecionada",
 			"category": "categoria deve ser selecionada"
+		},
+		"drinks": {
+			"name": "nome é obrigatório",
+			"method": "preparo é obrigatório",
+			"ingredients": "adicione pelo menos um ingrediente",
+			"quantity": "quantidade deve ser maior que 0"
 		}
 	},
 	"deleteModal": {
@@ -200,7 +269,25 @@
 			"title": "Ingredientes",
 			"ofPreposition": "de"
 		},
-		"instructions": "Modo de preparo"
+		"instructions": "Modo de preparo",
+		"rating": {
+			"title": "Avaliações",
+			"loading": "Carregando avaliações...",
+			"loadError": "Não foi possível carregar as avaliações.",
+			"noRatings": "Ainda sem avaliações",
+			"count": "{count} avaliação | {count} avaliações",
+			"summaryLabel": "{value} de 5 estrelas, com base em {count} avaliações",
+			"signIn": "Entrar para avaliar",
+			"rateDrink": "Avaliar este drink",
+			"myRating": "Minha avaliação · {value} ★",
+			"yourRating": "Sua avaliação",
+			"valueLabel": "{value} de 5 estrelas",
+			"remove": "Remover avaliação",
+			"saved": "Avaliação salva.",
+			"removed": "Avaliação removida.",
+			"saveError": "Não foi possível salvar sua avaliação. Tente novamente.",
+			"removeError": "Não foi possível remover sua avaliação. Tente novamente."
+		}
 	},
 	"drinkForm": {
 		"generalSection": { "label": "Geral" },

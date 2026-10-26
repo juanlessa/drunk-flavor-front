@@ -1,45 +1,65 @@
 /* Load after light color and shadow defaults. */
+:root {
+	color-scheme: light;
+}
+
 .dark {
-	--color-surface-sunken: var(--color-gray-900);
-	--color-surface: var(--color-gray-750);
-	--color-surface-overlay: var(--color-gray-700);
-	--color-surface-input: var(--color-gray-800);
-	--color-surface-hover: var(--color-gray-700);
-	--color-surface-inverse: var(--color-white);
-	--color-surface-scrim: rgb(0 0 0 / 0.6);
-	--color-loading-shimmer-base: var(--color-gray-700);
-	--color-loading-shimmer-highlight: var(--color-gray-600);
+	color-scheme: dark;
 
-	--color-content: var(--color-white);
-	--color-content-muted: var(--color-gray-400);
-	--color-content-subtle: var(--color-gray-500);
-	--color-content-inverse: var(--color-black);
+	--color-surface-sunken: var(--color-neutral-950);
+	--color-surface-chrome: var(--color-neutral-900);
+	--color-surface: var(--color-neutral-850);
+	--color-surface-elevated: var(--color-neutral-800);
+	--color-surface-overlay: var(--color-neutral-800);
+	--color-surface-hover: var(--color-neutral-750);
+	--color-surface-control: var(--color-neutral-750);
+	--color-surface-control-hover: var(--color-neutral-700);
+	--color-surface-control-active: var(--color-neutral-600);
+	--color-surface-input: var(--color-neutral-925);
+	--color-surface-inverse: var(--color-neutral-50);
+	--color-surface-scrim: rgb(2 6 23 / 0.72);
+	--color-loading-shimmer-base: var(--color-neutral-750);
+	--color-loading-shimmer-highlight: var(--color-neutral-700);
 
-	--color-stroke: var(--color-gray-700);
-	--color-stroke-muted: var(--color-gray-750);
-	--color-stroke-control: var(--color-gray-400);
-	--color-stroke-strong: var(--color-white);
+	--color-content: var(--color-neutral-50);
+	--color-content-secondary: var(--color-neutral-300);
+	--color-content-muted: var(--color-neutral-400);
+	--color-content-subtle: var(--color-neutral-500);
+	--color-content-inverse: var(--color-neutral-950);
+
+	--color-stroke: var(--color-neutral-700);
+	--color-stroke-muted: var(--color-neutral-800);
+	--color-stroke-input: var(--color-neutral-500);
+	--color-stroke-control: var(--color-neutral-500);
+	--color-stroke-strong: var(--color-neutral-300);
 
 	--color-focus-ring: var(--color-blue-300);
 
-	/* accent, accent-hover and accent-strong are deliberately NOT overridden here:
-	   the brand blue stays identical in both themes. Only accent-content, used as
-	   text/icon color on dark surfaces, is lightened for contrast. */
+	--color-rating: var(--color-amber-400);
+	--color-rating-hover: var(--color-amber-300);
+	--color-rating-empty: var(--color-neutral-700);
+
+	--color-accent: var(--color-blue-600);
+	--color-accent-hover: var(--color-blue-700);
+	--color-accent-active: var(--color-blue-800);
+	--color-accent-strong: var(--color-blue-600);
+	--color-accent-subtle: var(--color-blue-950);
 	--color-accent-content: var(--color-blue-400);
+	--color-accent-content-hover: var(--color-blue-300);
 
 	--color-success: var(--color-green-400);
+	--color-success-surface: #123322;
 	--color-danger: var(--color-red-400);
-	--color-warning: var(--color-amber-400);
-	--color-info: var(--color-blue-400);
-	--color-success-surface: var(--color-green-700);
-	--color-danger-surface: var(--color-red-600);
+	--color-danger-surface: #3b151a;
 	--color-danger-stroke: var(--color-red-400);
-	/* Pair warning-surface with content-inverse for black text in dark mode. */
-	--color-warning-surface: var(--color-amber-600);
-	--color-info-surface: var(--color-gray-750);
+	--color-warning: var(--color-amber-400);
+	--color-warning-surface: #3a2a08;
+	--color-info: var(--color-blue-400);
+	--color-info-surface: var(--color-blue-950);
 
-	--shadow-card-color: rgb(0 0 0 / 0.4);
-	--shadow-overlay-color-near: rgb(0 0 0 / 0.5);
-	--shadow-overlay-color-far: rgb(0 0 0 / 0.35);
-	--shadow-ring-color: rgb(255 255 255 / 0.08);
+	--shadow-card-color: rgb(0 0 0 / 0.32);
+	--shadow-card-ring-color: rgb(148 163 184 / 0.12);
+	--shadow-overlay-color-near: rgb(0 0 0 / 0.75);
+	--shadow-overlay-color-far: rgb(0 0 0 / 0.6);
+	--shadow-overlay-ring-color: rgb(148 163 184 / 0.16);
 }

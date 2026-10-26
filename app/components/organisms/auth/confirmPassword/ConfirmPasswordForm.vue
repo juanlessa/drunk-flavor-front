@@ -1,9 +1,9 @@
 <template>
-	<Form :title="$t('organisms.resetPasswordForm.title')" @submit="handleSubmitButton">
+	<Form :title="$t('organisms.confirmPasswordForm.title')" @submit="handleSubmitButton">
 		<InputWrapper>
 			<template #label>
 				<Label for="password">
-					{{ $t('organisms.resetPasswordForm.passwordInput.label') }}
+					{{ $t('organisms.confirmPasswordForm.passwordInput.label') }}
 				</Label>
 			</template>
 			<InputPassword
@@ -19,7 +19,7 @@
 		<InputWrapper>
 			<template #label>
 				<Label for="confirmPassword">
-					{{ $t('organisms.resetPasswordForm.confirmPasswordInput.label') }}
+					{{ $t('organisms.confirmPasswordForm.confirmPasswordInput.label') }}
 				</Label>
 			</template>
 			<InputPassword
@@ -39,15 +39,15 @@
 			<Box direction="col" class="gap-6">
 				<ButtonGroup direction="column" :has-cancel-button="false">
 					<Button variant="primary" type="submit">
-						{{ $t('organisms.resetPasswordForm.submitButton.value') }}
+						{{ $t('organisms.confirmPasswordForm.submitButton.value') }}
 					</Button>
 				</ButtonGroup>
 				<Box direction="row" class="gap-1 justify-center items-center">
 					<Text as="span" class="text-content-subtle">
-						{{ $t('organisms.resetPasswordForm.backToSignin.message') }}
+						{{ $t('organisms.confirmPasswordForm.backToSignin.message') }}
 					</Text>
 					<Anchor :to="localePath('/signin')" @click="resetFormState">
-						{{ $t('organisms.resetPasswordForm.backToSignin.link') }}
+						{{ $t('organisms.confirmPasswordForm.backToSignin.link') }}
 					</Anchor>
 				</Box>
 			</Box>
@@ -59,9 +59,9 @@
 const { $api, $router } = useNuxtApp();
 const { addToast } = useToast();
 const localePath = useLocalePath();
-const route = useRoute('reset-password-token');
+const route = useRoute('confirm-password-token');
 const { t } = useI18n();
-const { formState, resetFormState, checkError, validateForm } = useResetPasswordForm();
+const { formState, resetFormState, checkError, validateForm } = useConfirmPasswordForm();
 
 const isPasswordActive = ref(false);
 
@@ -78,7 +78,7 @@ const handleSubmitButton = async () => {
 	}
 
 	try {
-		await $api.auth.resetPassword({
+		await $api.auth.confirmPassword({
 			token: String(route.params.token),
 			password: formState.value.form.password,
 			confirmPassword: formState.value.form.confirmPassword
@@ -86,16 +86,16 @@ const handleSubmitButton = async () => {
 		resetFormState();
 		addToast({
 			type: 'success',
-			title: t('organisms.resetPasswordForm.toast.successTitle'),
-			message: t('organisms.resetPasswordForm.toast.successMessage')
+			title: t('organisms.confirmPasswordForm.toast.successTitle'),
+			message: t('organisms.confirmPasswordForm.toast.successMessage')
 		});
 		$router.push(localePath('/signin'));
 	} catch (error) {
 		console.error(error);
 		addToast({
 			type: 'error',
-			title: t('organisms.resetPasswordForm.toast.errorTitle'),
-			message: t('organisms.resetPasswordForm.toast.errorMessage')
+			title: t('organisms.confirmPasswordForm.toast.errorTitle'),
+			message: t('organisms.confirmPasswordForm.toast.errorMessage')
 		});
 	}
 };

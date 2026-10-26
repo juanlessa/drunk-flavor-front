@@ -9,6 +9,8 @@ export const initEmptyDrink = (): Drink => ({
 	ingredients: [],
 	cover: undefined,
 	thumbnail: undefined,
+	avg_rating: 0,
+	ratings_count: 0,
 	created_at: new Date(),
 	updated_at: new Date()
 });

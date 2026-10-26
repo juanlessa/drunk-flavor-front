@@ -13,25 +13,37 @@
 			@select="handleSelect" />
 
 		<Box direction="col" class="gap-2">
-			<Box v-for="sel in selected" :key="sel._id" direction="row" class="gap-6 items-center">
-				<Text class="flex-1 text-left">{{ sel.translations[$i18n.locale].name }}</Text>
+			<Box v-for="(sel, index) in selected" :key="sel._id" direction="col" class="gap-1">
+				<Box direction="row" class="gap-6 items-center">
+					<Text class="flex-1 text-left">{{ sel.translations[$i18n.locale].name }}</Text>
 
-				<InputNumber
-					:model-value="quantities[sel._id]"
-					input-width="4ch"
-					suffix-width="7ch"
-					suffix-outside
-					:suffix="sel.translations[$i18n.locale].unit"
-					@update:model-value="(val: number) => updateQuantity(sel._id, val)" />
+					<InputNumber
+						:id="`ingredient-quantity-${sel._id}`"
+						:model-value="quantities[sel._id]"
+						input-width="4ch"
+						suffix-width="7ch"
+						suffix-outside
+						:suffix="sel.unit.symbol || sel.unit.translations[$i18n.locale].name"
+						:has-error="!!props.checkError(`ingredients.${index}.quantity`)"
+						@update:model-value="(val: number) => updateQuantity(sel._id, val)"
+						@blur="emit('blur')" />
 
-				<Button
-					variant="icon"
-					:aria-label="$t('organisms.ingredientsSelection.removeButton.label')"
-					@click="handleRemove(sel._id)">
-					<TrashIcon />
-				</Button>
+					<Button
+						variant="icon"
+						:aria-label="$t('organisms.ingredientsSelection.removeButton.label')"
+						@click="handleRemove(sel._id)">
+						<TrashIcon />
+					</Button>
+				</Box>
+				<ErrorMessage
+					v-if="props.checkError(`ingredients.${index}.quantity`)"
+					class="text-right"
+					:value="props.checkError(`ingredients.${index}.quantity`)" />
 			</Box>
 		</Box>
+		<ErrorMessage
+			v-if="props.checkError('ingredients')"
+			:value="props.checkError('ingredients')" />
 	</Box>
 </template>
 <script setup lang="ts">
@@ -43,11 +55,16 @@ const props = defineProps({
 	initialIngredients: {
 		type: Array as PropType<DrinkIngredient[]>,
 		default: () => []
+	},
+	checkError: {
+		type: Function as PropType<(field: string) => string>,
+		default: () => ''
 	}
 });
 
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: DrinkIngredientRequest[]): void;
+	(e: 'blur'): void;
 }>();
 
 const {

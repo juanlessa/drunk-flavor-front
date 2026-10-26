@@ -1,24 +1,20 @@
 import { authRepository } from '~/domain/auth/auth.repository';
 import { categoriesRepository } from '~/domain/category/category.repository';
+import { commentsRepository } from '~/domain/comment/comment.repository';
 import { drinksRepository } from '~/domain/drink/drink.repository';
 import { ingredientsRepository } from '~/domain/ingredient/ingredient.repository';
 import { profileRepository } from '~/domain/profile/profile.repository';
+import { ratingsRepository } from '~/domain/rating/rating.repository';
+import { unitsRepository } from '~/domain/unit/unit.repository';
 import { usersRepository } from '~/domain/user/user.repository';
+import { COMPLETE_PROFILE_PATH, PROFILE_INCOMPLETE_LOCALE_KEY } from '~/helpers/profile.helpers';
 
 export default defineNuxtPlugin({
 	name: 'api-fetch',
 	parallel: true,
-	setup() {
+	setup(nuxtApp) {
 		const config = useRuntimeConfig();
 
-		// The auth cookies (Authorization, __Host-Refresh-Token) are HttpOnly
-		// and owned by the backend, so client-side JS cannot read them. During
-		// SSR we forward the browser's incoming Cookie header verbatim. We avoid
-		// useCookie here because its forced initial client cookie write
-		// re-serializes the __Host- prefixed cookie without the Secure
-		// attribute, which cookie-es rejects on plain-HTTP dev.
-		// useRequestHeaders must be read here in setup (inside the Nuxt
-		// instance context), not inside the async onRequest callback.
 		const incomingCookie = import.meta.server
 			? useRequestHeaders(['cookie']).cookie
 			: undefined;
@@ -31,13 +27,27 @@ export default defineNuxtPlugin({
 					options.headers = new Headers(options.headers);
 					options.headers.set('Cookie', incomingCookie);
 				}
+			},
+			onResponseError: ({ response }) => {
+				// Safety net for the route guards: a business route rejected the request because
+				// the account still has to add its name (e.g. the profile changed in another tab).
+				if (
+					import.meta.client &&
+					response._data?.localeKey === PROFILE_INCOMPLETE_LOCALE_KEY
+				) {
+					// i18n uses the `no_prefix` strategy, so the path is locale-independent.
+					void nuxtApp.runWithContext(() => navigateTo(COMPLETE_PROFILE_PATH));
+				}
 			}
 		});
 
 		const modules = {
 			categories: categoriesRepository(apiFetcher),
+			units: unitsRepository(apiFetcher),
 			ingredients: ingredientsRepository(apiFetcher),
 			drinks: drinksRepository(apiFetcher),
+			comments: commentsRepository(apiFetcher),
+			ratings: ratingsRepository(apiFetcher),
 			users: usersRepository(apiFetcher),
 			profile: profileRepository(apiFetcher),
 			auth: authRepository(apiFetcher)

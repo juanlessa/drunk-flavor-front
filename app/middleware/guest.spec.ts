@@ -79,6 +79,20 @@ describe('guest middleware', () => {
 		expect(result).toEqual({ redirect: '/' });
 	});
 
+	it('redirects an incomplete profile to the complete-profile page', async () => {
+		mockAuthState.value = {
+			isAuthenticated: true,
+			user: { status: 'incomplete_profile' } as never
+		};
+
+		const result = await guestMiddleware(
+			{ path: '/' } as RouteLocationNormalized,
+			{} as RouteLocationNormalized
+		);
+
+		expect(result).toEqual({ redirect: '/complete-profile' });
+	});
+
 	it('does not redirect when authenticate fails', async () => {
 		mockAuthenticate.mockResolvedValue(false);
 

@@ -3,9 +3,9 @@ import type { CategoryTranslation } from './category.entity';
 
 export type CreateCategory = {
 	translations: Translations<CategoryTranslation>;
+	is_alcoholic: boolean;
 };
 
-export type UpdateCategory = {
+export type UpdateCategory = CreateCategory & {
 	id: string;
-	translations: Translations<CategoryTranslation>;
 };

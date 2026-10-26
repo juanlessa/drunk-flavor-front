@@ -1,14 +1,15 @@
 import { initEmptyCategory } from '../category/category.factory';
+import { initEmptyUnit } from '../unit/unit.factory';
 import type { Ingredient } from './ingredient.entity';
 
 export const initEmptyIngredient = (): Ingredient => ({
 	_id: '',
 	translations: {
-		en: { name: '', unit: '', unit_plural: '' },
-		pt: { name: '', unit: '', unit_plural: '' }
+		en: { name: '' },
+		pt: { name: '' }
 	},
-	is_alcoholic: false,
 	category: initEmptyCategory(),
+	unit: initEmptyUnit(),
 	created_at: new Date(),
 	updated_at: new Date()
 });

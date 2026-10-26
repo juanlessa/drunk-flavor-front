@@ -8,3 +8,6 @@ export enum HeadingTypeEnum {
 }
 
 export type HeadingType = keyof typeof HeadingTypeEnum;
+
+export type HeadingSize =
+	'titleSm' | 'title' | 'titleLg' | 'headlineSm' | 'headline' | 'headlineLg';

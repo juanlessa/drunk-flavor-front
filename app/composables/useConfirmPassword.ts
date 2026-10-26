@@ -1,18 +1,18 @@
-import { initEmptyResetPasswordForm } from '~/factories/auth.factory';
+import { initEmptyConfirmPasswordForm } from '~/factories/auth.factory';
 import { checkFieldError } from '~/helpers/checkFieldError';
-import type { ResetPasswordFormState } from '~/types/auth.types';
-import { resetPasswordFormValidator } from '~/validations/authentication';
+import type { ConfirmPasswordFormState } from '~/types/auth.types';
+import { confirmPasswordFormValidator } from '~/validations/authentication';
 
-const initState = (): ResetPasswordFormState => ({
-	form: initEmptyResetPasswordForm(),
+const initState = (): ConfirmPasswordFormState => ({
+	form: initEmptyConfirmPasswordForm(),
 	errors: [],
 	displayErrors: false
 });
 
-export const useResetPasswordForm = () => {
+export const useConfirmPasswordForm = () => {
 	const { t } = useI18n();
 
-	const state = useState<ResetPasswordFormState>('resetPasswordForm', initState);
+	const state = useState<ConfirmPasswordFormState>('confirmPasswordForm', initState);
 
 	const resetFormState = () => {
 		state.value = initState();
@@ -31,7 +31,7 @@ export const useResetPasswordForm = () => {
 			return;
 		}
 		const data = state.value.form;
-		const errors = resetPasswordFormValidator(data);
+		const errors = confirmPasswordFormValidator(data);
 
 		state.value.errors = errors;
 	};

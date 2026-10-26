@@ -58,7 +58,7 @@ const togglePasswordVisibility = () => {
 };
 
 const inputPasswordContainerStyle = tv({
-	base: 'flex-1 flex items-center gap-2 px-3 rounded-control box-border control-border-width bg-surface-input border-surface-input input-container-focus-border',
+	base: 'flex-1 flex items-center gap-2 px-3 rounded-control box-border control-border-width bg-surface-input border-stroke-input input-container-focus-border',
 	variants: {
 		border: {
 			true: 'border-stroke-control'
@@ -73,6 +73,6 @@ const inputPasswordContainerStyle = tv({
 @reference "~/styles/global.css";
 
 .input-container-focus-border:has(> input:focus) {
-	@apply border-stroke-strong;
+	@apply border-focus-ring;
 }
 </style>

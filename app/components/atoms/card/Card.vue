@@ -1,5 +1,5 @@
 <template>
-	<div class="relative bg-surface shadow-card rounded-card">
+	<div class="relative bg-surface border border-stroke shadow-card rounded-card">
 		<slot></slot>
 	</div>
 </template>

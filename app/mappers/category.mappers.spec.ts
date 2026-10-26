@@ -13,6 +13,7 @@ const mockCategory: Category = {
 		en: { name: 'Juice' },
 		pt: { name: 'Suco' }
 	},
+	is_alcoholic: false,
 	created_at: new Date(),
 	updated_at: new Date()
 };
@@ -21,7 +22,8 @@ const mockCategoryForm: CategoryForm = {
 	translations: {
 		en: { name: 'Juice' },
 		pt: { name: 'Suco' }
-	}
+	},
+	is_alcoholic: false
 };
 
 describe('mapCategoryToForm', () => {
@@ -32,7 +34,8 @@ describe('mapCategoryToForm', () => {
 			translations: {
 				en: { name: 'Juice' },
 				pt: { name: 'Suco' }
-			}
+			},
+			is_alcoholic: false
 		});
 	});
 
@@ -59,7 +62,8 @@ describe('mapFormToCreateCategory', () => {
 			translations: {
 				en: { name: 'Juice' },
 				pt: { name: 'Suco' }
-			}
+			},
+			is_alcoholic: false
 		});
 	});
 
@@ -79,7 +83,8 @@ describe('mapFormToUpdateCategory', () => {
 			translations: {
 				en: { name: 'Juice' },
 				pt: { name: 'Suco' }
-			}
+			},
+			is_alcoholic: false
 		});
 	});
 

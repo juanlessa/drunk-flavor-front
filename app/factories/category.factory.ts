@@ -4,5 +4,6 @@ export const initEmptyCategoryForm = (): CategoryForm => ({
 	translations: {
 		en: { name: '' },
 		pt: { name: '' }
-	}
+	},
+	is_alcoholic: false
 });
