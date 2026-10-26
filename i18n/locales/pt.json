@@ -86,9 +86,9 @@
 			"allowDecimalInput": { "label": "permite decimal?" }
 		},
 		"footer": {
-			"author": "Juan Lessa",
-			"githubProject": "projeto no github",
-			"socialNav": { "label": "social" }
+			"privacyPolicy": "Política de Privacidade",
+			"termsOfService": "Termos de Serviço",
+			"legalNav": { "label": "documentos legais" }
 		},
 		"ingredientsControlOverview": {
 			"createButton": { "value": "Criar Ingrediente" },
