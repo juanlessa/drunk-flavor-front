@@ -20,6 +20,11 @@
 			"state": { "met": "met", "unmet": "not met" }
 		}
 	},
+	"layouts": {
+		"auth": {
+			"backButton": { "value": "back" }
+		}
+	},
 	"molecules": {
 		"buttonGroup": {
 			"cancelButton": { "value": "cancel" },
@@ -128,13 +133,18 @@
 			"primaryNav": { "label": "primary" },
 			"mobileNav": { "label": "mobile" }
 		},
-		"signinForm": {
+		"signin": {
 			"title": "Welcome back",
+			"divider": "or",
+			"signupPrompt": { "message": "Don't have an account?", "link": "Sign up" },
+			"error": { "title": "Error" }
+		},
+		"credentialsSignIn": {
 			"emailInput": { "label": "email" },
 			"passwordInput": { "label": "password" },
 			"submitButton": { "value": "sign in" },
 			"forgotPasswordLink": { "value": "Forgot your password?" },
-			"signupPrompt": { "message": "Don't have an account?", "link": "Sign up" }
+			"error": { "message": "Email or password incorrect." }
 		},
 		"completeProfileForm": {
 			"title": "Complete your profile",
@@ -149,9 +159,7 @@
 			}
 		},
 		"googleSignIn": {
-			"divider": "or",
 			"error": {
-				"title": "Error",
 				"message": "Unable to sign in with Google. Please try again.",
 				"emailNotVerified": "Your Google account email is not verified."
 			}

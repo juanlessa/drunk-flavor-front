@@ -1,6 +1,6 @@
 <template>
 	<NuxtLayout name="auth">
-		<SigninForm />
+		<Signin />
 	</NuxtLayout>
 </template>
 <script setup lang="ts">

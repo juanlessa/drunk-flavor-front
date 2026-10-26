@@ -20,6 +20,11 @@
 			"state": { "met": "atendido", "unmet": "não atendido" }
 		}
 	},
+	"layouts": {
+		"auth": {
+			"backButton": { "value": "voltar" }
+		}
+	},
 	"molecules": {
 		"buttonGroup": {
 			"cancelButton": { "value": "cancelar" },
@@ -128,13 +133,18 @@
 			"primaryNav": { "label": "principal" },
 			"mobileNav": { "label": "mobile" }
 		},
-		"signinForm": {
+		"signin": {
 			"title": "Bem-vindo de volta",
+			"divider": "ou",
+			"signupPrompt": { "message": "Não tem uma conta?", "link": "Criar conta" },
+			"error": { "title": "Erro" }
+		},
+		"credentialsSignIn": {
 			"emailInput": { "label": "email" },
 			"passwordInput": { "label": "senha" },
 			"submitButton": { "value": "entrar" },
 			"forgotPasswordLink": { "value": "Esqueceu sua senha?" },
-			"signupPrompt": { "message": "Não tem uma conta?", "link": "Criar conta" }
+			"error": { "message": "Email ou senha incorretos." }
 		},
 		"completeProfileForm": {
 			"title": "Complete seu perfil",
@@ -149,9 +159,7 @@
 			}
 		},
 		"googleSignIn": {
-			"divider": "ou",
 			"error": {
-				"title": "Erro",
 				"message": "Não foi possível entrar com o Google. Tente novamente.",
 				"emailNotVerified": "O email da sua conta Google não está verificado."
 			}

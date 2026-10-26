@@ -5,7 +5,8 @@ import type {
 	ForgotPassword,
 	ResetPassword,
 	ConfirmEmail,
-	ResendEmailVerification
+	ResendEmailVerification,
+	GoogleAuth
 } from './auth.dtos';
 import type { SignoutResponse } from './auth.types';
 
@@ -61,6 +62,12 @@ export const authRepository = ($fetch: $Fetch) => ({
 	async refreshToken() {
 		return $fetch<undefined>('/refresh-token', {
 			method: 'POST'
+		});
+	},
+	async googleAuth(body: GoogleAuth) {
+		return $fetch<undefined>('/google', {
+			method: 'POST',
+			body
 		});
 	}
 });
