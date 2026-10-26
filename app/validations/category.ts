@@ -4,10 +4,9 @@ import { validateSchema } from '~/helpers/validateSchema';
 import type { CategoryForm } from '~/types/category.types';
 
 // fields validation
-export const categoryNameValidation = z
-	.string()
-	.trim()
-	.min(1, { error: 'organisms.categoryForm.nameInput.error' });
+export const categoryNameValidation = z.string().trim().min(1, { error: 'errors.categories.name' });
+
+export const categoryIsAlcoholicValidation = z.boolean();
 
 // schemas
 export const categoryTranslationSchema = z.object({
@@ -15,7 +14,8 @@ export const categoryTranslationSchema = z.object({
 });
 
 export const categoryFormSchema = z.object({
-	translations: getZodTranslationsSchema(categoryTranslationSchema)
+	translations: getZodTranslationsSchema(categoryTranslationSchema),
+	is_alcoholic: categoryIsAlcoholicValidation
 });
 
 //validators

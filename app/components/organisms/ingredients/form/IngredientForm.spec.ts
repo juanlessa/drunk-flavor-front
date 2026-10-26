@@ -29,7 +29,7 @@ const InputTextStub = {
 	emits: ['update:modelValue', 'blur']
 };
 const InputSelectSearchableStub = {
-	template: '<div data-testid="searchable-select" />',
+	template: '<div data-testid="searchable-select" :id="id" />',
 	props: ['id', 'modelValue', 'searchTerm', 'options', 'infiniteScroll', 'loading', 'hasError'],
 	emits: ['update:modelValue', 'update:searchTerm', 'load-more', 'blur']
 };
@@ -44,15 +44,17 @@ const ErrorMessageStub = {
 };
 
 // --- Form composable mock ---
-const mockFormState = ref({
-	form: {
-		translations: {
-			en: { name: '', unit: '', unit_plural: '' },
-			pt: { name: '', unit: '', unit_plural: '' }
-		},
-		category_id: '',
-		is_alcoholic: false
+const createEmptyForm = () => ({
+	translations: {
+		en: { name: '' },
+		pt: { name: '' }
 	},
+	category_id: '',
+	unit_id: ''
+});
+
+const mockFormState = ref({
+	form: createEmptyForm(),
 	errors: [] as { field: string; message: string }[],
 	displayErrors: false
 });
@@ -68,6 +70,13 @@ const mockCategoryLoading = ref(false);
 const mockCategoryOptions = ref([]);
 const mockCategoryLoadNextPage = vi.fn();
 
+// --- Unit searchable select mock ---
+const mockUnitSelected = ref({ label: '', value: '' });
+const mockUnitSearchTerm = ref('');
+const mockUnitLoading = ref(false);
+const mockUnitOptions = ref([]);
+const mockUnitLoadNextPage = vi.fn();
+
 // --- Module mocks ---
 vi.mock('~/domain/shared/translations.constants', () => ({
 	languages: ['en', 'pt']
@@ -75,14 +84,6 @@ vi.mock('~/domain/shared/translations.constants', () => ({
 
 vi.mock('~/components/atoms/inputSelect/InputSelect.helpers', () => ({
 	mapToSelectOptions: vi.fn(() => [])
-}));
-
-vi.mock('~/domain/ingredient/ingredient.mappers', () => ({
-	mapIngredientToForm: vi.fn((ingredient) => ({
-		translations: ingredient.translations,
-		category_id: ingredient.category._id,
-		is_alcoholic: ingredient.is_alcoholic
-	}))
 }));
 
 // --- Global stubs for Nuxt auto-imports ---
@@ -100,6 +101,14 @@ vi.stubGlobal('useCategorySearchableSelect', () => ({
 	loading: computed(() => mockCategoryLoading.value),
 	selected: mockCategorySelected,
 	loadNextPage: mockCategoryLoadNextPage
+}));
+
+vi.stubGlobal('useUnitSearchableSelect', () => ({
+	options: computed(() => mockUnitOptions.value),
+	searchTerm: mockUnitSearchTerm,
+	loading: computed(() => mockUnitLoading.value),
+	selected: mockUnitSelected,
+	loadNextPage: mockUnitLoadNextPage
 }));
 
 vi.stubGlobal('useI18n', () => ({
@@ -133,16 +142,29 @@ const mountIngredientForm = (props = {}) =>
 const createIngredientProp = () => ({
 	_id: 'ing-1',
 	translations: {
-		en: { name: 'Sugar', unit: 'tsp', unit_plural: 'tsps' },
-		pt: { name: 'Açúcar', unit: 'colher', unit_plural: 'colheres' }
+		en: { name: 'Sugar' },
+		pt: { name: 'Açúcar' }
 	},
 	category: {
 		_id: 'cat-1',
 		translations: { en: { name: 'Sweetener' }, pt: { name: 'Adoçante' } },
+		is_alcoholic: false,
 		created_at: new Date(),
 		updated_at: new Date()
 	},
-	is_alcoholic: false,
+	unit: {
+		_id: 'unit-1',
+		translations: {
+			en: { name: 'teaspoon', name_plural: 'teaspoons' },
+			pt: { name: 'colher de chá', name_plural: 'colheres de chá' }
+		},
+		symbol: 'tsp',
+		space_before_symbol: true,
+		allow_decimal: true,
+		kind: 'volume',
+		created_at: new Date(),
+		updated_at: new Date()
+	},
 	created_at: new Date(),
 	updated_at: new Date()
 });
@@ -151,18 +173,12 @@ describe('IngredientForm', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		mockFormState.value = {
-			form: {
-				translations: {
-					en: { name: '', unit: '', unit_plural: '' },
-					pt: { name: '', unit: '', unit_plural: '' }
-				},
-				category_id: '',
-				is_alcoholic: false
-			},
+			form: createEmptyForm(),
 			errors: [],
 			displayErrors: false
 		};
 		mockCategorySelected.value = { label: '', value: '' };
+		mockUnitSelected.value = { label: '', value: '' };
 	});
 
 	describe('rendering', () => {
@@ -174,7 +190,7 @@ describe('IngredientForm', () => {
 			expect(form.props('title')).toBe('organisms.ingredientForm.title');
 		});
 
-		it('renders translation GroupWrappers per language', () => {
+		it('renders translation GroupWrappers per language plus the general section', () => {
 			const wrapper = mountIngredientForm();
 			const groups = wrapper.findAllComponents(GroupWrapperStub);
 
@@ -182,32 +198,28 @@ describe('IngredientForm', () => {
 			expect(groups).toHaveLength(3);
 		});
 
-		it('renders 3 text inputs per language (name, unit, unit_plural)', () => {
+		it('renders only a name text input per language', () => {
 			const wrapper = mountIngredientForm();
 			const inputs = wrapper.findAllComponents(InputTextStub);
 
-			// 3 fields × 2 languages = 6
-			expect(inputs).toHaveLength(6);
+			expect(inputs).toHaveLength(2);
 			expect(inputs.at(0)?.props('id')).toBe('en-name');
-			expect(inputs.at(1)?.props('id')).toBe('en-unit');
-			expect(inputs.at(2)?.props('id')).toBe('en-unit-plural');
-			expect(inputs.at(3)?.props('id')).toBe('pt-name');
-			expect(inputs.at(4)?.props('id')).toBe('pt-unit');
-			expect(inputs.at(5)?.props('id')).toBe('pt-unit-plural');
+			expect(inputs.at(1)?.props('id')).toBe('pt-name');
 		});
 
-		it('renders a category searchable select', () => {
+		it('renders category and unit searchable selects', () => {
 			const wrapper = mountIngredientForm();
-			const select = wrapper.findComponent(InputSelectSearchableStub);
+			const selects = wrapper.findAllComponents(InputSelectSearchableStub);
 
-			expect(select.exists()).toBe(true);
+			expect(selects).toHaveLength(2);
+			expect(selects.at(0)?.props('id')).toBe('category');
+			expect(selects.at(1)?.props('id')).toBe('unit');
 		});
 
-		it('renders an is_alcoholic switch', () => {
+		it('does not render an is_alcoholic switch (it lives on the category)', () => {
 			const wrapper = mountIngredientForm();
-			const switchInput = wrapper.find('[data-testid="switch"]');
 
-			expect(switchInput.exists()).toBe(true);
+			expect(wrapper.find('[data-testid="switch"]').exists()).toBe(false);
 		});
 	});
 
@@ -219,7 +231,7 @@ describe('IngredientForm', () => {
 			expect(mockUpdateFormState).toHaveBeenCalledWith({
 				translations: ingredient.translations,
 				category_id: 'cat-1',
-				is_alcoholic: false
+				unit_id: 'unit-1'
 			});
 		});
 
@@ -230,6 +242,16 @@ describe('IngredientForm', () => {
 			expect(mockCategorySelected.value).toEqual({
 				value: 'cat-1',
 				label: 'Sweetener'
+			});
+		});
+
+		it('sets unitSelected when ingredient prop is provided', () => {
+			const ingredient = createIngredientProp();
+			mountIngredientForm({ ingredient });
+
+			expect(mockUnitSelected.value).toEqual({
+				value: 'unit-1',
+				label: 'teaspoon'
 			});
 		});
 
@@ -258,6 +280,14 @@ describe('IngredientForm', () => {
 			expect(inputs.at(0)?.props('hasError')).toBe(true);
 		});
 
+		it('passes hasError from checkError to the unit select', () => {
+			mockCheckError.mockReturnValue('errors.ingredients.unit');
+			const wrapper = mountIngredientForm();
+			const selects = wrapper.findAllComponents(InputSelectSearchableStub);
+
+			expect(selects.at(1)?.props('hasError')).toBe(true);
+		});
+
 		it('renders error messages from checkError', () => {
 			mockCheckError.mockReturnValue('errors.ingredients.name');
 			const wrapper = mountIngredientForm();
@@ -271,11 +301,11 @@ describe('IngredientForm', () => {
 		it('emits submit with form data when validation passes', async () => {
 			mockFormState.value.form = {
 				translations: {
-					en: { name: 'Sugar', unit: 'tsp', unit_plural: 'tsps' },
-					pt: { name: 'Açúcar', unit: 'colher', unit_plural: 'colheres' }
+					en: { name: 'Sugar' },
+					pt: { name: 'Açúcar' }
 				},
 				category_id: 'cat-1',
-				is_alcoholic: false
+				unit_id: 'unit-1'
 			};
 
 			const wrapper = mountIngredientForm();

@@ -9,33 +9,21 @@ export const ingredientNameValidation = z
 	.trim()
 	.min(1, { error: 'errors.ingredients.name' });
 
-export const ingredientUnitValidation = z
-	.string()
-	.trim()
-	.min(1, { error: 'errors.ingredients.unit' });
-
-export const ingredientUnitPluralValidation = z
-	.string()
-	.trim()
-	.min(1, { error: 'errors.ingredients.unitPlural' });
-
 export const ingredientCategoryIdValidation = z
 	.string()
-	.min(1, { error: 'errors.ingredient.category' });
+	.min(1, { error: 'errors.ingredients.category' });
 
-export const ingredientIsAlcoholicValidation = z.boolean();
+export const ingredientUnitIdValidation = z.string().min(1, { error: 'errors.ingredients.unit' });
 
 // schemas
 export const ingredientTranslationSchema = z.object({
-	name: ingredientNameValidation,
-	unit: ingredientUnitValidation,
-	unit_plural: ingredientUnitPluralValidation
+	name: ingredientNameValidation
 });
 
 export const ingredientFormSchema = z.object({
 	translations: getZodTranslationsSchema(ingredientTranslationSchema),
-	is_alcoholic: ingredientIsAlcoholicValidation,
-	category_id: ingredientCategoryIdValidation
+	category_id: ingredientCategoryIdValidation,
+	unit_id: ingredientUnitIdValidation
 });
 
 //validators

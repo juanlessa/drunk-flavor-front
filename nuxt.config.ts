@@ -18,7 +18,8 @@ export default defineNuxtConfig({
 
 	runtimeConfig: {
 		public: {
-			apiBase: ''
+			apiBase: '',
+			googleClientId: ''
 		}
 	},
 

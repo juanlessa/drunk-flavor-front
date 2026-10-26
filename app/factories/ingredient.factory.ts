@@ -2,9 +2,9 @@ import type { IngredientForm } from '~/types/ingredient.types';
 
 export const initEmptyIngredientForm = (): IngredientForm => ({
 	translations: {
-		en: { name: '', unit: '', unit_plural: '' },
-		pt: { name: '', unit: '', unit_plural: '' }
+		en: { name: '' },
+		pt: { name: '' }
 	},
-	is_alcoholic: false,
-	category_id: ''
+	category_id: '',
+	unit_id: ''
 });

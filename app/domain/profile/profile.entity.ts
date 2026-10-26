@@ -1,9 +1,8 @@
-import type { DatabaseCommonInfo } from '../shared/database.types';
-import type { Role } from '../user/user.types';
+import type { User } from '../user/user.entity';
 
-export type Profile = DatabaseCommonInfo & {
-	name: string;
-	surname: string;
-	email: string;
-	role: Role;
-};
+/**
+ * Profile is the authenticated user's own account, returned by GET /me.
+ * It has the exact same shape as {@link User} (including the discriminated
+ * union on `status` for `incomplete_profile` accounts).
+ */
+export type Profile = User;

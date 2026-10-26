@@ -130,6 +130,11 @@ function getLinksBasedOnPermissions(isAuthenticated: boolean): ILink[] {
 			can: { action: 'manage', subject: 'Category' }
 		},
 		{
+			i18nKey: 'organisms.topBar.units',
+			path: '/units',
+			can: { action: 'manage', subject: 'Unit' }
+		},
+		{
 			i18nKey: 'organisms.topBar.ingredients',
 			path: '/ingredients',
 			can: { action: 'manage', subject: 'Ingredient' }

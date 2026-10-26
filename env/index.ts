@@ -26,9 +26,14 @@ export const buildEnvsSchema = (nodeEnv: NodeEnv) => {
 		? bareOriginSchema
 		: bareOriginSchema.default(DEFAULT_IMAGE_HOST);
 
+	// Public OAuth client id (not a secret). Required in production; optional elsewhere so
+	// the app still runs locally without Google sign-in configured.
+	const googleClientId = isProduction ? z.string().trim().min(1) : z.string().trim().optional();
+
 	return z.object({
 		NUXT_PUBLIC_API_BASE: apiBase,
 		NUXT_PUBLIC_IMAGE_HOST: imageHost,
+		NUXT_PUBLIC_GOOGLE_CLIENT_ID: googleClientId,
 		HISTOIRE: z.coerce.boolean().default(false)
 	});
 };

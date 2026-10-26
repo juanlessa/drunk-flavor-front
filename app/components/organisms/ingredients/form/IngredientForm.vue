@@ -30,84 +30,58 @@
 							<ErrorMessage :value="checkError(`translations.${lang}.name`)" />
 						</template>
 					</InputWrapper>
+				</GroupWrapper>
+			</Box>
+			<GroupWrapper :title="$t('organisms.ingredientForm.generalSection.title')">
+				<div class="grid grid-cols-1 tablet:grid-cols-2 gap-4 items-start">
 					<InputWrapper>
 						<template #label>
-							<Label :for="`${lang}-unit`">
+							<Label for="category">
+								{{ $t('organisms.ingredientForm.categoryInput.label') }}
+							</Label>
+						</template>
+						<InputSelectSearchable
+							id="category"
+							v-model="categorySelected"
+							v-model:search-term="categorySearchTerm"
+							:options="mapToSelectOptions(categoryOptions, $i18n.locale)"
+							infinite-scroll
+							:loading="categoryLoading"
+							:has-error="!!checkError(`category_id`)"
+							@update:model-value="(opt) => (formState.form.category_id = opt.value)"
+							@load-more="categoryLoadNextPage"
+							@blur="validateForm" />
+						<template #error>
+							<ErrorMessage :value="checkError(`category_id`)" />
+						</template>
+					</InputWrapper>
+					<InputWrapper>
+						<template #label>
+							<Label for="unit">
 								{{ $t('organisms.ingredientForm.unitInput.label') }}
 							</Label>
 						</template>
-						<InputText
-							:id="`${lang}-unit`"
-							v-model="formState.form.translations[lang].unit"
-							:name="`${lang}_unit`"
-							type="text"
-							pattern=".{1,}"
-							:placeholder="$t('organisms.ingredientForm.unitInput.placeholder')"
-							:has-error="!!checkError(`translations.${lang}.unit`)"
+						<InputSelectSearchable
+							id="unit"
+							v-model="unitSelected"
+							v-model:search-term="unitSearchTerm"
+							:options="mapToSelectOptions(unitOptions, $i18n.locale)"
+							infinite-scroll
+							:loading="unitLoading"
+							:has-error="!!checkError(`unit_id`)"
+							@update:model-value="(opt) => (formState.form.unit_id = opt.value)"
+							@load-more="unitLoadNextPage"
 							@blur="validateForm" />
 						<template #error>
-							<ErrorMessage :value="checkError(`translations.${lang}.unit`)" />
+							<ErrorMessage :value="checkError(`unit_id`)" />
 						</template>
 					</InputWrapper>
-					<InputWrapper>
-						<template #label>
-							<Label :for="`${lang}-unit-plural`">
-								{{ $t('organisms.ingredientForm.unitPluralInput.label') }}
-							</Label>
-						</template>
-						<InputText
-							:id="`${lang}-unit-plural`"
-							v-model="formState.form.translations[lang].unit_plural"
-							:name="`${lang}_unit_plural`"
-							type="text"
-							pattern=".{1,}"
-							:placeholder="
-								$t('organisms.ingredientForm.unitPluralInput.placeholder')
-							"
-							:has-error="!!checkError(`translations.${lang}.unit_plural`)"
-							@blur="validateForm" />
-						<template #error>
-							<ErrorMessage :value="checkError(`translations.${lang}.unit_plural`)" />
-						</template>
-					</InputWrapper>
-				</GroupWrapper>
-			</Box>
-			<GroupWrapper
-				:title="$t('organisms.ingredientForm.generalSection.title')"
-				class="flex gap-4">
-				<InputWrapper>
-					<template #label>
-						<Label for="category">
-							{{ $t('organisms.ingredientForm.categoryInput.label') }}
-						</Label>
-					</template>
-					<InputSelectSearchable
-						id="category"
-						v-model="categorySelected"
-						v-model:search-term="categorySearchTerm"
-						:options="mapToSelectOptions(categoryOptions, $i18n.locale)"
-						infinite-scroll
-						:loading="categoryLoading"
-						:has-error="!!checkError(`category_id`)"
-						@update:model-value="(opt) => (formState.form.category_id = opt.value)"
-						@load-more="categoryLoadNextPage"
-						@blur="validateForm" />
-					<template #error>
-						<ErrorMessage :value="checkError(`category_id`)" />
-					</template>
-				</InputWrapper>
-				<InputWrapper direction="row">
-					<template #label>
-						<Label for="is-alcoholic">
-							{{ $t('organisms.ingredientForm.isAlcoholicInput.label') }}
-						</Label>
-					</template>
-					<InputSwitch id="is-alcoholic" v-model:checked="formState.form.is_alcoholic" />
-				</InputWrapper>
+				</div>
 			</GroupWrapper>
 		</Box>
 	</Form>
 </template>
+
 <script setup lang="ts">
 import { languages } from '~/domain/shared/translations.constants';
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
@@ -118,6 +92,7 @@ import { mapIngredientToForm } from '~/mappers/ingredient.mappers';
 const props = defineProps({
 	ingredient: { type: Object as PropType<Ingredient>, default: undefined }
 });
+
 const emit = defineEmits<{
 	(e: 'submit', value: IngredientForm): void;
 	(e: 'cancel'): void;
@@ -132,6 +107,13 @@ const {
 	selected: categorySelected,
 	loadNextPage: categoryLoadNextPage
 } = useCategorySearchableSelect();
+const {
+	options: unitOptions,
+	searchTerm: unitSearchTerm,
+	loading: unitLoading,
+	selected: unitSelected,
+	loadNextPage: unitLoadNextPage
+} = useUnitSearchableSelect();
 
 if (props.ingredient) {
 	updateFormState(mapIngredientToForm(props.ingredient));
@@ -139,17 +121,24 @@ if (props.ingredient) {
 		value: props.ingredient.category._id,
 		label: props.ingredient.category.translations[locale.value].name
 	};
+	unitSelected.value = {
+		value: props.ingredient.unit._id,
+		label: props.ingredient.unit.translations[locale.value].name
+	};
 }
 
 const handleCancelButton = () => {
 	emit('cancel');
 };
+
 const handleSubmitButton = async () => {
 	formState.value.displayErrors = true;
 	validateForm();
+
 	if (formState.value.errors.length !== 0) {
 		return;
 	}
+
 	emit('submit', formState.value.form);
 };
 </script>

@@ -12,16 +12,15 @@ describe('useIngredientForm', () => {
 	describe('initial state', () => {
 		it('starts with empty translations', () => {
 			expect(form.formState.value.form.translations.en.name).toBe('');
-			expect(form.formState.value.form.translations.en.unit).toBe('');
-			expect(form.formState.value.form.translations.en.unit_plural).toBe('');
-		});
-
-		it('starts with is_alcoholic false', () => {
-			expect(form.formState.value.form.is_alcoholic).toBe(false);
+			expect(form.formState.value.form.translations.pt.name).toBe('');
 		});
 
 		it('starts with empty category_id', () => {
 			expect(form.formState.value.form.category_id).toBe('');
+		});
+
+		it('starts with empty unit_id', () => {
+			expect(form.formState.value.form.unit_id).toBe('');
 		});
 	});
 
@@ -29,16 +28,16 @@ describe('useIngredientForm', () => {
 		it('updates all form fields', () => {
 			form.updateFormState({
 				translations: {
-					en: { name: 'Rum', unit: 'ml', unit_plural: 'ml' },
-					pt: { name: 'Rum', unit: 'ml', unit_plural: 'ml' }
+					en: { name: 'Rum' },
+					pt: { name: 'Rum' }
 				},
-				is_alcoholic: true,
-				category_id: 'cat-1'
+				category_id: 'cat-1',
+				unit_id: 'unit-1'
 			});
 
 			expect(form.formState.value.form.translations.en.name).toBe('Rum');
-			expect(form.formState.value.form.is_alcoholic).toBe(true);
 			expect(form.formState.value.form.category_id).toBe('cat-1');
+			expect(form.formState.value.form.unit_id).toBe('unit-1');
 		});
 	});
 
@@ -46,18 +45,18 @@ describe('useIngredientForm', () => {
 		it('resets form and flags to initial state', () => {
 			form.updateFormState({
 				translations: {
-					en: { name: 'Rum', unit: 'ml', unit_plural: 'ml' },
-					pt: { name: 'Rum', unit: 'ml', unit_plural: 'ml' }
+					en: { name: 'Rum' },
+					pt: { name: 'Rum' }
 				},
-				is_alcoholic: true,
-				category_id: 'cat-1'
+				category_id: 'cat-1',
+				unit_id: 'unit-1'
 			});
 
 			form.resetFormState();
 
 			expect(form.formState.value.form.translations.en.name).toBe('');
-			expect(form.formState.value.form.is_alcoholic).toBe(false);
 			expect(form.formState.value.form.category_id).toBe('');
+			expect(form.formState.value.form.unit_id).toBe('');
 		});
 	});
 
@@ -88,17 +87,33 @@ describe('useIngredientForm', () => {
 			expect(form.formState.value.errors.length).toBeGreaterThan(0);
 		});
 
+		it('flags a missing unit_id', () => {
+			form.formState.value.displayErrors = true;
+			form.formState.value.form = {
+				translations: {
+					en: { name: 'Rum' },
+					pt: { name: 'Rum' }
+				},
+				category_id: 'cat-1',
+				unit_id: ''
+			};
+
+			form.validateForm();
+
+			expect(form.formState.value.errors.map(({ field }) => field)).toEqual(['unit_id']);
+		});
+
 		it('clears errors when form is valid', () => {
 			form.formState.value.displayErrors = true;
 			form.validateForm();
 
 			form.formState.value.form = {
 				translations: {
-					en: { name: 'Rum', unit: 'ml', unit_plural: 'ml' },
-					pt: { name: 'Rum', unit: 'ml', unit_plural: 'ml' }
+					en: { name: 'Rum' },
+					pt: { name: 'Rum' }
 				},
-				is_alcoholic: true,
-				category_id: 'cat-1'
+				category_id: 'cat-1',
+				unit_id: 'unit-1'
 			};
 			form.validateForm();
 

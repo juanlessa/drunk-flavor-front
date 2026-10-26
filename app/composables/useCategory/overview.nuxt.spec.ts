@@ -76,6 +76,7 @@ describe('useCategoriesOverview', () => {
 				{
 					_id: 'cat-1',
 					translations: { en: { name: 'A' }, pt: { name: 'B' } },
+					is_alcoholic: false,
 					created_at: new Date(),
 					updated_at: new Date()
 				}

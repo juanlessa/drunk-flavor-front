@@ -44,10 +44,8 @@ const props = defineProps({
 
 const formatIngredient = (ing: DrinkIngredient): string => {
 	const lang = locale.value;
-	const unit =
-		ing.quantity === 1
-			? ing.ingredient.translations[lang].unit
-			: ing.ingredient.translations[lang].unit_plural;
+	const unitTranslation = ing.ingredient.unit.translations[lang];
+	const unit = ing.quantity === 1 ? unitTranslation.name : unitTranslation.name_plural;
 
 	return `${ing.quantity} ${unit} ${t('drinkDetailPage.ingredients.ofPreposition')} ${ing.ingredient.translations[lang].name}`;
 };

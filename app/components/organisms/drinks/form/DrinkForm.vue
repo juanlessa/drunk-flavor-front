@@ -76,7 +76,10 @@
 					<Box class="gap-4 flex-1">
 						<IngredientsSelection
 							v-model="formState.form.ingredients"
-							:initial-ingredients="drinkIngredients" />
+							:initial-ingredients="drinkIngredients"
+							:check-error="checkError"
+							@update:model-value="validateForm"
+							@blur="validateForm" />
 					</Box> </Box
 			></Box>
 		</Box>

@@ -10,27 +10,40 @@ import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
 const mockIngredient: Ingredient = {
 	_id: 'ing-1',
 	translations: {
-		en: { name: 'Rum', unit: 'ml', unit_plural: 'ml' },
-		pt: { name: 'Rum', unit: 'ml', unit_plural: 'ml' }
+		en: { name: 'Rum' },
+		pt: { name: 'Rum' }
 	},
 	category: {
 		_id: 'cat-1',
 		translations: { en: { name: 'Spirits' }, pt: { name: 'Destilados' } },
+		is_alcoholic: true,
 		created_at: new Date(),
 		updated_at: new Date()
 	},
-	is_alcoholic: true,
+	unit: {
+		_id: 'unit-1',
+		translations: {
+			en: { name: 'milliliter', name_plural: 'milliliters' },
+			pt: { name: 'mililitro', name_plural: 'mililitros' }
+		},
+		symbol: 'ml',
+		space_before_symbol: false,
+		allow_decimal: true,
+		kind: 'volume',
+		created_at: new Date(),
+		updated_at: new Date()
+	},
 	created_at: new Date(),
 	updated_at: new Date()
 };
 
 const mockIngredientForm: IngredientForm = {
 	translations: {
-		en: { name: 'Rum', unit: 'ml', unit_plural: 'ml' },
-		pt: { name: 'Rum', unit: 'ml', unit_plural: 'ml' }
+		en: { name: 'Rum' },
+		pt: { name: 'Rum' }
 	},
-	is_alcoholic: true,
-	category_id: 'cat-1'
+	category_id: 'cat-1',
+	unit_id: 'unit-1'
 };
 
 describe('mapIngredientToForm', () => {
@@ -39,11 +52,11 @@ describe('mapIngredientToForm', () => {
 
 		expect(result).toEqual({
 			translations: {
-				en: { name: 'Rum', unit: 'ml', unit_plural: 'ml' },
-				pt: { name: 'Rum', unit: 'ml', unit_plural: 'ml' }
+				en: { name: 'Rum' },
+				pt: { name: 'Rum' }
 			},
-			is_alcoholic: true,
-			category_id: 'cat-1'
+			category_id: 'cat-1',
+			unit_id: 'unit-1'
 		});
 	});
 
@@ -51,6 +64,12 @@ describe('mapIngredientToForm', () => {
 		const result = mapIngredientToForm(mockIngredient);
 
 		expect(result.category_id).toBe(mockIngredient.category._id);
+	});
+
+	it('extracts unit_id from the unit object', () => {
+		const result = mapIngredientToForm(mockIngredient);
+
+		expect(result.unit_id).toBe(mockIngredient.unit._id);
 	});
 
 	it('does not include _id or date fields', () => {
@@ -67,11 +86,11 @@ describe('mapFormToCreateIngredient', () => {
 
 		expect(result).toEqual({
 			translations: {
-				en: { name: 'Rum', unit: 'ml', unit_plural: 'ml' },
-				pt: { name: 'Rum', unit: 'ml', unit_plural: 'ml' }
+				en: { name: 'Rum' },
+				pt: { name: 'Rum' }
 			},
-			is_alcoholic: true,
-			category_id: 'cat-1'
+			category_id: 'cat-1',
+			unit_id: 'unit-1'
 		});
 	});
 });
@@ -83,11 +102,11 @@ describe('mapFormToUpdateIngredient', () => {
 		expect(result).toEqual({
 			id: 'ing-1',
 			translations: {
-				en: { name: 'Rum', unit: 'ml', unit_plural: 'ml' },
-				pt: { name: 'Rum', unit: 'ml', unit_plural: 'ml' }
+				en: { name: 'Rum' },
+				pt: { name: 'Rum' }
 			},
-			is_alcoholic: true,
-			category_id: 'cat-1'
+			category_id: 'cat-1',
+			unit_id: 'unit-1'
 		});
 	});
 

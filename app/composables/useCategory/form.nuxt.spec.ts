@@ -25,26 +25,30 @@ describe('useCategoryForm', () => {
 	});
 
 	describe('updateFormState', () => {
-		it('updates the form translations', () => {
+		it('updates the form translations and is_alcoholic', () => {
 			form.updateFormState({
-				translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } }
+				translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
+				is_alcoholic: true
 			});
 
 			expect(form.formState.value.form.translations.en.name).toBe('Juice');
 			expect(form.formState.value.form.translations.pt.name).toBe('Suco');
+			expect(form.formState.value.form.is_alcoholic).toBe(true);
 		});
 	});
 
 	describe('resetFormState', () => {
 		it('resets form and flags to initial state', () => {
 			form.updateFormState({
-				translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } }
+				translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
+				is_alcoholic: true
 			});
 			form.formState.value.displayErrors = true;
 
 			form.resetFormState();
 
 			expect(form.formState.value.form.translations.en.name).toBe('');
+			expect(form.formState.value.form.is_alcoholic).toBe(false);
 			expect(form.formState.value.displayErrors).toBe(false);
 			expect(form.formState.value.errors).toEqual([]);
 		});

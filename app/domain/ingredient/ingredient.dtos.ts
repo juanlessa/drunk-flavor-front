@@ -4,12 +4,9 @@ import type { IngredientTranslation } from './ingredient.entity';
 export type CreateIngredient = {
 	translations: Translations<IngredientTranslation>;
 	category_id: string;
-	is_alcoholic: boolean;
+	unit_id: string;
 };
 
-export type UpdateIngredient = {
+export type UpdateIngredient = CreateIngredient & {
 	id: string;
-	translations: Translations<IngredientTranslation>;
-	category_id: string;
-	is_alcoholic: boolean;
 };

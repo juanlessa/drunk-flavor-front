@@ -27,3 +27,7 @@ export type ConfirmEmail = {
 export type ResendEmailVerification = {
 	email: string;
 };
+
+export type GoogleAuth = {
+	idToken: string;
+};

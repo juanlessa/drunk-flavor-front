@@ -1,8 +1,11 @@
 import { authRepository } from '~/domain/auth/auth.repository';
 import { categoriesRepository } from '~/domain/category/category.repository';
+import { commentsRepository } from '~/domain/comment/comment.repository';
 import { drinksRepository } from '~/domain/drink/drink.repository';
 import { ingredientsRepository } from '~/domain/ingredient/ingredient.repository';
 import { profileRepository } from '~/domain/profile/profile.repository';
+import { ratingsRepository } from '~/domain/rating/rating.repository';
+import { unitsRepository } from '~/domain/unit/unit.repository';
 import { usersRepository } from '~/domain/user/user.repository';
 
 export default defineNuxtPlugin({
@@ -11,14 +14,6 @@ export default defineNuxtPlugin({
 	setup() {
 		const config = useRuntimeConfig();
 
-		// The auth cookies (Authorization, __Host-Refresh-Token) are HttpOnly
-		// and owned by the backend, so client-side JS cannot read them. During
-		// SSR we forward the browser's incoming Cookie header verbatim. We avoid
-		// useCookie here because its forced initial client cookie write
-		// re-serializes the __Host- prefixed cookie without the Secure
-		// attribute, which cookie-es rejects on plain-HTTP dev.
-		// useRequestHeaders must be read here in setup (inside the Nuxt
-		// instance context), not inside the async onRequest callback.
 		const incomingCookie = import.meta.server
 			? useRequestHeaders(['cookie']).cookie
 			: undefined;
@@ -36,8 +31,11 @@ export default defineNuxtPlugin({
 
 		const modules = {
 			categories: categoriesRepository(apiFetcher),
+			units: unitsRepository(apiFetcher),
 			ingredients: ingredientsRepository(apiFetcher),
 			drinks: drinksRepository(apiFetcher),
+			comments: commentsRepository(apiFetcher),
+			ratings: ratingsRepository(apiFetcher),
 			users: usersRepository(apiFetcher),
 			profile: profileRepository(apiFetcher),
 			auth: authRepository(apiFetcher)

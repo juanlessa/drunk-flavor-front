@@ -50,7 +50,35 @@
 		},
 		"categoryForm": {
 			"title": "Categoria",
-			"nameInput": { "label": "nome", "placeholder": "" }
+			"nameInput": { "label": "nome", "placeholder": "" },
+			"generalSection": { "title": "Geral" },
+			"isAlcoholicInput": { "label": "é alcoólico?" }
+		},
+		"unitsControlOverview": {
+			"createButton": { "value": "Criar Unidade" },
+			"deleteModal": {
+				"title": "Tem certeza que deseja excluir o item",
+				"description": "Essa ação não pode ser desfeita"
+			}
+		},
+		"unitForm": {
+			"title": "Unidade",
+			"nameInput": { "label": "nome", "placeholder": "" },
+			"namePluralInput": { "label": "nome no plural", "placeholder": "" },
+			"generalSection": { "title": "Geral" },
+			"symbolInput": { "label": "símbolo", "placeholder": "ex. ml" },
+			"kindInput": {
+				"label": "tipo",
+				"placeholder": "selecione um tipo",
+				"options": {
+					"volume": "volume",
+					"mass": "massa",
+					"count": "contagem",
+					"informal": "informal"
+				}
+			},
+			"spaceBeforeSymbolInput": { "label": "espaço antes do símbolo?" },
+			"allowDecimalInput": { "label": "permite decimal?" }
 		},
 		"footer": {
 			"author": "Juan Lessa",
@@ -67,15 +95,9 @@
 		"ingredientForm": {
 			"title": "Ingrediente",
 			"nameInput": { "label": "nome", "placeholder": "" },
-			"unitInput": {
-				"error": "unidade é obrigatória",
-				"label": "unidade",
-				"placeholder": ""
-			},
-			"unitPluralInput": { "label": "unidade plural", "placeholder": "" },
 			"generalSection": { "title": "Geral" },
 			"categoryInput": { "label": "categoria" },
-			"isAlcoholicInput": { "label": "é alcoólico?" }
+			"unitInput": { "label": "unidade" }
 		},
 		"drinksControlOverview": {
 			"createButton": { "value": "Criar drink" },
@@ -97,6 +119,7 @@
 		},
 		"topBar": {
 			"categories": "categorias",
+			"units": "unidades",
 			"drinks": "drinks",
 			"ingredients": "ingredientes",
 			"signin": "entrar",
@@ -112,6 +135,14 @@
 			"submitButton": { "value": "entrar" },
 			"forgotPasswordLink": { "value": "Esqueceu sua senha?" },
 			"signupPrompt": { "message": "Não tem uma conta?", "link": "Criar conta" }
+		},
+		"googleSignIn": {
+			"divider": "ou",
+			"error": {
+				"title": "Erro",
+				"message": "Não foi possível entrar com o Google. Tente novamente.",
+				"emailNotVerified": "O email da sua conta Google não está verificado."
+			}
 		},
 		"signupForm": {
 			"title": "Criar uma conta",
@@ -183,11 +214,21 @@
 		"categories": {
 			"name": "nome é obrigatório"
 		},
+		"units": {
+			"name": "nome é obrigatório",
+			"namePlural": "nome no plural é obrigatório",
+			"kind": "tipo deve ser selecionado"
+		},
 		"ingredients": {
 			"name": "nome é obrigatório",
-			"unit": "unidade é obrigatória",
-			"unitPlural": "unidade plural é obrigatória",
+			"unit": "unidade deve ser selecionada",
 			"category": "categoria deve ser selecionada"
+		},
+		"drinks": {
+			"name": "nome é obrigatório",
+			"method": "preparo é obrigatório",
+			"ingredients": "adicione pelo menos um ingrediente",
+			"quantity": "quantidade deve ser maior que 0"
 		}
 	},
 	"deleteModal": {
