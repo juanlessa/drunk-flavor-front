@@ -9,8 +9,9 @@
 				{{ drink.translations[$i18n.locale].name }}
 			</Heading>
 
-			<Box direction="col" class="gap-6 @detail-layout:flex-row">
-				<Box direction="col" class="flex-1 gap-4">
+			<div
+				class="grid grid-cols-1 gap-6 @detail-layout:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+				<Box direction="col" class="gap-4">
 					<Heading size="titleSm" class="text-center">
 						{{ $t('drinkDetailPage.ingredients.title') }}
 					</Heading>
@@ -20,7 +21,7 @@
 						gap="none" />
 				</Box>
 
-				<Box direction="col" class="flex-2 gap-4">
+				<Box direction="col" class="gap-4">
 					<Heading size="titleSm" class="text-center">
 						{{ $t('drinkDetailPage.instructions') }}
 					</Heading>
@@ -28,7 +29,10 @@
 						{{ drink.translations[$i18n.locale].method }}
 					</Text>
 				</Box>
-			</Box>
+
+				<slot name="rating"></slot>
+				<slot name="comments"></slot>
+			</div>
 		</Box>
 	</Box>
 </template>

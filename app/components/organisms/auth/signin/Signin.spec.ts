@@ -5,12 +5,14 @@ import Signin from './Signin.vue';
 const mockAuthenticate = vi.fn();
 const mockRouterPush = vi.fn();
 const mockAddToast = vi.fn();
+const mockRoute = { query: {} as Record<string, string>, fullPath: '/signin' };
 
 vi.stubGlobal('useNuxtApp', () => ({
 	$auth: { authenticate: mockAuthenticate },
 	$router: { push: mockRouterPush }
 }));
 vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
+vi.stubGlobal('useRoute', () => mockRoute);
 vi.stubGlobal('useLocalePath', () => (path: string) => path);
 vi.stubGlobal('useToast', () => ({ addToast: mockAddToast }));
 

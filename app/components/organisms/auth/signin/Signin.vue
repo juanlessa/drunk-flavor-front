@@ -35,6 +35,7 @@
 <script setup lang="ts">
 const { $auth, $router } = useNuxtApp();
 const { t } = useI18n();
+const route = useRoute();
 const localePath = useLocalePath();
 const { addToast } = useToast();
 
@@ -49,9 +50,29 @@ const setProviderAvailability = (provider: Provider, isAvailable: boolean) => {
 	providerAvailability.value[provider] = isAvailable;
 };
 
+const getPostSigninTarget = (): string => {
+	const fallback = localePath('/').toString();
+	const redirect = route.query.redirect;
+	if (typeof redirect !== 'string' || !redirect.startsWith('/')) return fallback;
+
+	try {
+		const baseUrl = new URL('https://drunk-flavor.local');
+		const targetUrl = new URL(redirect, baseUrl);
+		if (targetUrl.origin !== baseUrl.origin) return fallback;
+
+		if (route.query.intent === 'rate') {
+			targetUrl.searchParams.set('intent', 'rate');
+		}
+
+		return `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
+	} catch {
+		return fallback;
+	}
+};
+
 const handleSuccess = async () => {
 	await $auth.authenticate();
-	$router.push(localePath('/'));
+	await $router.push(getPostSigninTarget());
 };
 
 const handleError = (message: string) => {

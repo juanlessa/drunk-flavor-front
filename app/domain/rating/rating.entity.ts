@@ -14,3 +14,8 @@ export type Rating = DatabaseCommonInfo & {
 	user_id: string;
 	value: number;
 };
+
+export type RatingSummary = {
+	average: number;
+	count: number;
+};

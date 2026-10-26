@@ -100,6 +100,10 @@
 
 	--color-focus-ring: var(--color-blue-600);
 
+	--color-rating: var(--color-amber-500);
+	--color-rating-hover: var(--color-amber-400);
+	--color-rating-empty: var(--color-neutral-300);
+
 	--color-accent: var(--color-blue-700);
 	--color-accent-hover: var(--color-blue-800);
 	--color-accent-active: var(--color-blue-900);

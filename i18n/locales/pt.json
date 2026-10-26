@@ -261,7 +261,25 @@
 			"title": "Ingredientes",
 			"ofPreposition": "de"
 		},
-		"instructions": "Modo de preparo"
+		"instructions": "Modo de preparo",
+		"rating": {
+			"title": "Avaliações",
+			"loading": "Carregando avaliações...",
+			"loadError": "Não foi possível carregar as avaliações.",
+			"noRatings": "Ainda sem avaliações",
+			"count": "{count} avaliação | {count} avaliações",
+			"summaryLabel": "{value} de 5 estrelas, com base em {count} avaliações",
+			"signIn": "Entrar para avaliar",
+			"rateDrink": "Avaliar este drink",
+			"myRating": "Minha avaliação · {value} ★",
+			"yourRating": "Sua avaliação",
+			"valueLabel": "{value} de 5 estrelas",
+			"remove": "Remover avaliação",
+			"saved": "Avaliação salva.",
+			"removed": "Avaliação removida.",
+			"saveError": "Não foi possível salvar sua avaliação. Tente novamente.",
+			"removeError": "Não foi possível remover sua avaliação. Tente novamente."
+		}
 	},
 	"drinkForm": {
 		"generalSection": { "label": "Geral" },

@@ -2,7 +2,7 @@ import type { $Fetch } from 'nitropack';
 import type { PaginatedQueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
 import type { CreateRating, CreateRatingResponse, UpdateRating } from './rating.dtos';
-import type { Rating } from './rating.entity';
+import type { Rating, RatingSummary } from './rating.entity';
 
 const path = '/ratings';
 
@@ -26,6 +26,12 @@ export const ratingsRepository = ($fetch: $Fetch) => ({
 	},
 	async get(id: string) {
 		return $fetch<Rating>(`${path}/${id}`);
+	},
+	async getSummaryByDrink(drinkId: string) {
+		return $fetch<RatingSummary>(`/drinks/${drinkId}/ratings/summary`);
+	},
+	async getMineByDrink(drinkId: string) {
+		return $fetch<Rating | null>(`/drinks/${drinkId}/ratings/me`);
 	},
 	async list(query: PaginatedQueryParams) {
 		return $fetch<Rating[]>(path, { query: serializeListQuery(query) });

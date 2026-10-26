@@ -261,7 +261,25 @@
 			"title": "Ingredients",
 			"ofPreposition": "of"
 		},
-		"instructions": "Preparation Instructions"
+		"instructions": "Preparation Instructions",
+		"rating": {
+			"title": "Ratings",
+			"loading": "Loading ratings...",
+			"loadError": "Unable to load ratings.",
+			"noRatings": "No ratings yet",
+			"count": "{count} rating | {count} ratings",
+			"summaryLabel": "{value} out of 5 stars, based on {count} ratings",
+			"signIn": "Sign in to rate",
+			"rateDrink": "Rate this drink",
+			"myRating": "My rating · {value} ★",
+			"yourRating": "Your rating",
+			"valueLabel": "{value} out of 5 stars",
+			"remove": "Remove rating",
+			"saved": "Rating saved.",
+			"removed": "Rating removed.",
+			"saveError": "Unable to save your rating. Please try again.",
+			"removeError": "Unable to remove your rating. Please try again."
+		}
 	},
 	"drinkForm": {
 		"generalSection": { "label": "General" },
