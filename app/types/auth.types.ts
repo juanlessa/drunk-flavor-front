@@ -36,13 +36,13 @@ export type ForgotPasswordFormState = {
 	displayErrors: boolean;
 };
 
-export type ResetPasswordForm = {
+export type ConfirmPasswordForm = {
 	password: string;
 	confirmPassword: string;
 };
 
-export type ResetPasswordFormState = {
-	form: ResetPasswordForm;
+export type ConfirmPasswordFormState = {
+	form: ConfirmPasswordForm;
 	errors: FieldError[];
 	displayErrors: boolean;
 };

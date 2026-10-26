@@ -180,7 +180,7 @@
 			"submitButton": { "value": "Send Code" },
 			"rememberPassword": { "message": "Remember your password?", "link": "Back to sign in" }
 		},
-		"resetPasswordForm": {
+		"confirmPasswordForm": {
 			"title": "Set a new password",
 			"passwordInput": { "label": "new password" },
 			"confirmPasswordInput": { "label": "confirm password" },

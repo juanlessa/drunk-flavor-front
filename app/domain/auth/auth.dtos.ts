@@ -10,11 +10,11 @@ export type Signin = {
 	password: string;
 };
 
-export type ForgotPassword = {
+export type RequestPasswordReset = {
 	email: string;
 };
 
-export type ResetPassword = {
+export type ConfirmPassword = {
 	token: string;
 	password: string;
 	confirmPassword: string;

@@ -53,7 +53,7 @@ const handleSubmitButton = async () => {
 	}
 
 	try {
-		await $api.auth.forgotPassword(formState.value.form);
+		await $api.auth.requestPasswordReset(formState.value.form);
 		addToast({ type: 'success', title: 'Success', message: 'Recovery email sent' });
 		$router.push(localePath('/signin'));
 	} catch (error) {

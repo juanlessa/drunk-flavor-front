@@ -2,8 +2,8 @@ import type { $Fetch } from 'nitropack';
 import type {
 	Signup,
 	Signin,
-	ForgotPassword,
-	ResetPassword,
+	RequestPasswordReset,
+	ConfirmPassword,
 	ConfirmEmail,
 	ResendEmailVerification,
 	GoogleAuth
@@ -31,14 +31,14 @@ export const authRepository = ($fetch: $Fetch) => ({
 		});
 	},
 
-	async forgotPassword(body: ForgotPassword) {
+	async requestPasswordReset(body: RequestPasswordReset) {
 		return $fetch<undefined>('/password-reset/request', {
 			method: 'POST',
 			body
 		});
 	},
 
-	async resetPassword(body: ResetPassword) {
+	async confirmPassword(body: ConfirmPassword) {
 		return $fetch<undefined>('/password-reset/confirm', {
 			method: 'POST',
 			body

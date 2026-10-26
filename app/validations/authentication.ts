@@ -9,7 +9,7 @@ import {
 import type {
 	CompleteProfileForm,
 	ForgotPasswordForm,
-	ResetPasswordForm,
+	ConfirmPasswordForm,
 	SigninForm,
 	SignupForm
 } from '~/types/auth.types';
@@ -42,7 +42,7 @@ export const forgotPasswordFormSchema = z.object({
 	email: userEmailValidation
 });
 
-export const resetPasswordFormSchema = z
+export const confirmPasswordFormSchema = z
 	.object({
 		password: userPasswordValidation,
 		confirmPassword: z.string()
@@ -59,5 +59,5 @@ export const completeProfileFormValidator =
 	validateSchema<CompleteProfileForm>(completeProfileFormSchema);
 export const forgotPasswordFormValidator =
 	validateSchema<ForgotPasswordForm>(forgotPasswordFormSchema);
-export const resetPasswordFormValidator =
-	validateSchema<ResetPasswordForm>(resetPasswordFormSchema);
+export const confirmPasswordFormValidator =
+	validateSchema<ConfirmPasswordForm>(confirmPasswordFormSchema);

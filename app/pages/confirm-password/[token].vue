@@ -1,6 +1,6 @@
 <template>
 	<NuxtLayout name="auth">
-		<ResetPasswordForm />
+		<ConfirmPasswordForm />
 	</NuxtLayout>
 </template>
 <script setup lang="ts">
