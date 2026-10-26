@@ -1,11 +1,14 @@
 <template>
-	<Box direction="col" class="bg-surface w-screen items-center">
+	<Box
+		direction="col"
+		class="bg-surface-chrome w-screen items-center border-b border-stroke-muted">
 		<Box
 			as="header"
 			direction="row"
 			class="h-20 w-full max-w-screen-desktop px-4 desktop:px-0 items-center justify-between">
 			<Anchor :to="localePath('/')">
-				<Image :src="'/logo.png'" alt="DrunkFlavor" class="h-12" />
+				<Image src="/logo.png" alt="DrunkFlavor" class="h-12 dark:hidden" />
+				<Image src="/dark-wordmark.png" alt="DrunkFlavor" class="h-12 hidden dark:block" />
 			</Anchor>
 			<Box direction="row" class="hidden desktop:flex gap-8">
 				<Box direction="row" class="gap-8 items-center">

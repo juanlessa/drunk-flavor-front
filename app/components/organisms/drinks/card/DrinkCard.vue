@@ -2,7 +2,7 @@
 	<HoverCard side="right" :side-offset="-8" :align="'start'" :align-offset="8">
 		<template #trigger>
 			<Card
-				class="w-full h-full p-2 flex gap-4 cursor-pointer focus-visible:outline-2 focus-visible:outline-focus-ring focus-visible:-outline-offset-2"
+				class="w-full h-full p-2 flex gap-4 cursor-pointer hover:bg-surface-hover transition-colors duration-short focus-visible:outline-2 focus-visible:outline-focus-ring focus-visible:-outline-offset-2"
 				tabindex="0"
 				role="button"
 				@click="emit('click')"

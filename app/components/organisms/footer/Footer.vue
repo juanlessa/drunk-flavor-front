@@ -1,5 +1,7 @@
 <template>
-	<Box direction="col" class="bg-surface w-screen items-center">
+	<Box
+		direction="col"
+		class="bg-surface-chrome w-screen items-center border-t border-stroke-muted">
 		<Box as="footer" direction="row" class="h-12 w-full max-w-screen-desktop px-6 items-center">
 			<Box
 				as="nav"

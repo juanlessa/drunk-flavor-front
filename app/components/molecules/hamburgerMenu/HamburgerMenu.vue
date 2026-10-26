@@ -12,7 +12,7 @@
 				side="bottom"
 				:trap-focus="true"
 				:side-offset="FLOATING_POSITION_PX.mobileMenuSideOffset"
-				class="absolute mobile-menu-envelope bg-surface shadow-card will-change-[transform,opacity]">
+				class="absolute mobile-menu-envelope bg-surface-overlay border border-stroke shadow-overlay will-change-[transform,opacity]">
 				<slot></slot>
 			</Popover.Content>
 		</Popover.Portal>

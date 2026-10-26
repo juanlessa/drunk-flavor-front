@@ -52,7 +52,7 @@ describe('Button', () => {
 		it('applies secondary variant classes', () => {
 			const wrapper = mount(Button, { props: { variant: 'secondary' } });
 
-			expect(wrapper.find('button').classes()).toContain('bg-surface-input');
+			expect(wrapper.find('button').classes()).toContain('bg-surface-control');
 		});
 
 		it('applies delete variant classes', () => {

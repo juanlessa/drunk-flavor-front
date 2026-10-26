@@ -4,7 +4,7 @@
 			<AlertDialog.Overlay
 				class="bg-surface-scrim data-[state=open]:animate-overlay-enter fixed inset-0 z-overlay" />
 			<AlertDialog.Content
-				class="p-6 z-modal flex flex-col gap-8 data-[state=open]:animate-dialog-enter fixed dialog-envelope rounded-overlay bg-surface shadow-overlay focus:outline-hidden">
+				class="p-6 z-modal flex flex-col gap-8 data-[state=open]:animate-dialog-enter fixed dialog-envelope rounded-overlay bg-surface-elevated border border-stroke shadow-overlay focus-visible:outline-hidden focus-visible:shadow-focus-ring">
 				<Box direction="col">
 					<AlertDialog.Title as-child>
 						<Heading as="h2" class="text-title-sm">
@@ -12,7 +12,7 @@
 						</Heading>
 					</AlertDialog.Title>
 					<AlertDialog.Description as-child>
-						<Text>
+						<Text class="text-content-secondary">
 							<slot name="description">{{ props.description }}</slot>
 						</Text>
 					</AlertDialog.Description>

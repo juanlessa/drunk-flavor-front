@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-surface-input w-16 h-8 rounded-full">
+	<div class="bg-surface-input border border-stroke-input w-16 h-8 rounded-full">
 		<ClientOnly>
 			<Switch.Root
 				id="themeMode"

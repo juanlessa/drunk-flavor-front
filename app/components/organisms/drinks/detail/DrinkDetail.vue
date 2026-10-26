@@ -14,14 +14,17 @@
 					<Heading class="text-center">
 						{{ $t('drinkDetailPage.ingredients.title') }}
 					</Heading>
-					<TextList :items="ingredientItems" class="text-body-lg" gap="none" />
+					<TextList
+						:items="ingredientItems"
+						class="text-body-lg text-content-secondary"
+						gap="none" />
 				</Box>
 
 				<Box direction="col" class="flex-2 gap-4">
 					<Heading class="text-center">
 						{{ $t('drinkDetailPage.instructions') }}
 					</Heading>
-					<Text class="text-body-lg">
+					<Text class="text-body-lg text-content-secondary">
 						{{ drink.translations[$i18n.locale].method }}
 					</Text>
 				</Box>

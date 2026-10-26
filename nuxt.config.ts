@@ -10,12 +10,6 @@ export default defineNuxtConfig({
 
 	compatibilityDate: '2026-07-15',
 
-	app: {
-		head: {
-			meta: [{ name: 'theme-color', content: '#1D4ED8' }]
-		}
-	},
-
 	runtimeConfig: {
 		public: {
 			apiBase: '',

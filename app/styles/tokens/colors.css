@@ -52,52 +52,61 @@
 	--color-amber-900: #78350f;
 	--color-amber-950: #451a03;
 
-	--color-gray-50: #f9fafb;
-	--color-gray-100: #f3f4f6;
-	--color-gray-200: #e5e7eb;
-	--color-gray-300: #d1d5db;
-	--color-gray-400: #9ca3af;
-	--color-gray-500: #6b7280;
-	--color-gray-600: #4b5563;
-	--color-gray-700: #374151;
-	--color-gray-750: #2b3544;
-	--color-gray-800: #1f2937;
-	--color-gray-850: #18212f;
-	--color-gray-900: #111827;
-	--color-gray-950: #0f172a;
+	/* Unified cool-neutral scale shared by light and dark themes. */
+	--color-neutral-50: #f8fafc;
+	--color-neutral-100: #f1f5f9;
+	--color-neutral-200: #e2e8f0;
+	--color-neutral-300: #cbd5e1;
+	--color-neutral-400: #94a3b8;
+	--color-neutral-500: #64748b;
+	--color-neutral-600: #475569;
+	--color-neutral-700: #33445c;
+	--color-neutral-750: #1d2d45;
+	--color-neutral-800: #18263b;
+	--color-neutral-850: #131e30;
+	--color-neutral-900: #0f172a;
+	--color-neutral-925: #0e1a2b;
+	--color-neutral-950: #0b1220;
 
 	/* Light defaults; themes.css must load later. */
 	--color-surface: var(--color-white);
 	--color-surface-transparent: var(--color-transparent);
-	--color-surface-sunken: var(--color-gray-100);
-	--color-surface-hover: var(--color-gray-200);
-	--color-surface-input: var(--color-gray-200);
+	--color-surface-sunken: var(--color-neutral-100);
+	--color-surface-chrome: var(--color-white);
+	--color-surface-hover: var(--color-neutral-200);
+	--color-surface-control: var(--color-neutral-200);
+	--color-surface-control-hover: var(--color-neutral-300);
+	--color-surface-control-active: var(--color-neutral-400);
+	--color-surface-input: var(--color-neutral-200);
 	--color-surface-overlay: var(--color-white);
-	--color-surface-inverse: var(--color-black);
+	--color-surface-elevated: var(--color-white);
+	--color-surface-inverse: var(--color-neutral-950);
 	--color-surface-scrim: rgb(0 0 0 / 0.7);
-	--color-loading-shimmer-base: var(--color-gray-300);
-	--color-loading-shimmer-highlight: var(--color-gray-200);
+	--color-loading-shimmer-base: var(--color-neutral-300);
+	--color-loading-shimmer-highlight: var(--color-neutral-200);
 
-	--color-content: var(--color-black);
-	--color-content-muted: var(--color-gray-600);
-	--color-content-subtle: var(--color-gray-400);
+	--color-content: var(--color-neutral-950);
+	--color-content-secondary: var(--color-neutral-700);
+	--color-content-muted: var(--color-neutral-600);
+	--color-content-subtle: var(--color-neutral-400);
 	--color-content-inverse: var(--color-white);
 	--color-content-on-accent: var(--color-white);
 
-	--color-stroke: var(--color-gray-200);
-	--color-stroke-muted: var(--color-gray-100);
-	--color-stroke-control: var(--color-gray-500);
-	--color-stroke-strong: var(--color-black);
+	--color-stroke: var(--color-neutral-200);
+	--color-stroke-muted: var(--color-neutral-100);
+	--color-stroke-input: var(--color-neutral-300);
+	--color-stroke-control: var(--color-neutral-500);
+	--color-stroke-strong: var(--color-neutral-950);
 
 	--color-focus-ring: var(--color-blue-600);
 
-	/* Accent is the brand blue from the logo assets (#1d4ed8 = blue-700) and is
-	   intentionally theme-invariant; themes.css must not override it. Paired with
-	   content-on-accent (white) it yields 6.70:1, above the WCAG AA 4.5:1 floor. */
 	--color-accent: var(--color-blue-700);
 	--color-accent-hover: var(--color-blue-800);
+	--color-accent-active: var(--color-blue-900);
 	--color-accent-strong: var(--color-blue-700);
+	--color-accent-subtle: var(--color-blue-50);
 	--color-accent-content: var(--color-blue-600);
+	--color-accent-content-hover: var(--color-blue-700);
 
 	--color-success: var(--color-green-700);
 	--color-success-surface: var(--color-green-300);
@@ -106,6 +115,7 @@
 	--color-danger-stroke: var(--color-red-600);
 	--color-danger-emphasis: var(--color-red-600);
 	--color-danger-emphasis-hover: var(--color-red-700);
+	--color-danger-emphasis-active: var(--color-red-800);
 	--color-warning: var(--color-amber-700);
 	--color-warning-surface: var(--color-amber-300);
 	--color-info: var(--color-blue-600);
