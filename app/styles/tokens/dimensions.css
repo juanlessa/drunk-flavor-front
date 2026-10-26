@@ -12,6 +12,8 @@
 	--spacing-form-page-inset: 1.5rem;
 	--size-auth-logo-block: 6.5rem;
 	--size-control-card-max-inline: 45%;
+	--size-drink-card-tablet-max-inline: 45%;
+	--size-drink-card-desktop-max-inline: 30%;
 }
 
 @utility h-option-control {
@@ -51,6 +53,14 @@
 
 @utility max-w-control-card {
 	max-width: var(--size-control-card-max-inline);
+}
+
+@utility max-w-drink-card-tablet {
+	max-width: var(--size-drink-card-tablet-max-inline);
+}
+
+@utility max-w-drink-card-desktop {
+	max-width: var(--size-drink-card-desktop-max-inline);
 }
 
 @utility h-drink-cover {
