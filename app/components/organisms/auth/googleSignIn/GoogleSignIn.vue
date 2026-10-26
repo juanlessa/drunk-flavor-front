@@ -5,7 +5,10 @@
 		<div
 			ref="containerRef"
 			class="w-full max-w-80 tablet:max-w-64 min-h-10 flex justify-center">
-			<div ref="buttonRef" data-testid="google-signin-button"></div>
+			<div
+				ref="buttonRef"
+				data-testid="google-signin-button"
+				class="overflow-hidden rounded-full"></div>
 		</div>
 	</div>
 </template>
