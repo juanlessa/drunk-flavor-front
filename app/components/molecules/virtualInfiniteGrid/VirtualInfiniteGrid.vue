@@ -2,7 +2,7 @@
 	<div v-bind="containerProps" :style="virtualGridStyle">
 		<div
 			v-bind="wrapperProps"
-			class="flex flex-col"
+			class="flex flex-col px-4"
 			:style="{ gap: 'var(--virtual-grid-items-gap)' }">
 			<slot :list="list"></slot>
 			<slot v-if="props.loading" name="loading"></slot>
