@@ -111,6 +111,14 @@
 				"description": "This action cannot be undo"
 			}
 		},
+		"drinkCard": {
+			"ingredientsLabel": "INGREDIENTS",
+			"ingredientsCount": "{count} ingredient | {count} ingredients",
+			"remainingIngredients": "+{count} ingredient | +{count} ingredients",
+			"noRatings": "No ratings yet",
+			"ratingSummaryLabelOne": "{value} out of 5 stars, based on 1 rating",
+			"ratingSummaryLabelMany": "{value} out of 5 stars, based on {count} ratings"
+		},
 		"drinkForm": {
 			"title": "Drink",
 			"nameInput": { "label": "name", "placeholder": "" },

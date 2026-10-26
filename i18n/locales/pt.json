@@ -111,6 +111,14 @@
 				"description": "Essa ação não pode ser desfeita"
 			}
 		},
+		"drinkCard": {
+			"ingredientsLabel": "INGREDIENTES",
+			"ingredientsCount": "{count} ingrediente | {count} ingredientes",
+			"remainingIngredients": "+{count} ingrediente | +{count} ingredientes",
+			"noRatings": "Ainda sem avaliações",
+			"ratingSummaryLabelOne": "{value} de 5 estrelas, com base em 1 avaliação",
+			"ratingSummaryLabelMany": "{value} de 5 estrelas, com base em {count} avaliações"
+		},
 		"drinkForm": {
 			"title": "Drink",
 			"nameInput": { "label": "nome", "placeholder": "" },
