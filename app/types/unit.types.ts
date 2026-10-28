@@ -15,8 +15,8 @@ export type UnitForm = {
 	translations: Translations<UnitTranslation>;
 	// An empty string means "no symbol"; the mapper omits it from the request.
 	symbol: string;
-	space_before_symbol: boolean;
-	allow_decimal: boolean;
+	spaceBeforeSymbol: boolean;
+	allowDecimal: boolean;
 	// An empty string means "not selected yet"; validation rejects it.
 	kind: UnitKind | '';
 };

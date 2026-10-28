@@ -2,7 +2,7 @@
 	<NuxtLayout name="primary">
 		<DrinkDetail :drink="drink">
 			<template #rating>
-				<DrinkRatingSection v-if="drink._id" :drink-id="drink._id" />
+				<DrinkRatingSection v-if="drink.id" :drink-id="drink.id" />
 			</template>
 		</DrinkDetail>
 	</NuxtLayout>

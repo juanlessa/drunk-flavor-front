@@ -13,7 +13,6 @@ export type UpdatePassword = {
 };
 
 export type LinkGoogleIdentity = {
-	currentPassword: string;
 	idToken: string;
 };
 

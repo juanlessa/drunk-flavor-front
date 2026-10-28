@@ -77,7 +77,7 @@ export const useUnitSearchableSelect = () => {
 
 	watch(locale, (newLocale) => {
 		const selectedUnit = state.value.options.find(
-			(opt) => opt._id === state.value.selected.value
+			(opt) => opt.id === state.value.selected.value
 		);
 		const name = selectedUnit?.translations[newLocale]?.name || '';
 		const id = state.value.selected.value;

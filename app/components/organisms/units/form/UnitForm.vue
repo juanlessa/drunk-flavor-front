@@ -38,15 +38,15 @@
 						</template>
 						<InputText
 							:id="`${lang}-name-plural`"
-							v-model="formState.form.translations[lang].name_plural"
-							:name="`${lang}_name_plural`"
+							v-model="formState.form.translations[lang].namePlural"
+							:name="`${lang}_namePlural`"
 							type="text"
 							pattern=".{1,}"
 							:placeholder="$t('organisms.unitForm.namePluralInput.placeholder')"
-							:has-error="!!checkError(`translations.${lang}.name_plural`)"
+							:has-error="!!checkError(`translations.${lang}.namePlural`)"
 							@blur="validateForm" />
 						<template #error>
-							<ErrorMessage :value="checkError(`translations.${lang}.name_plural`)" />
+							<ErrorMessage :value="checkError(`translations.${lang}.namePlural`)" />
 						</template>
 					</InputWrapper>
 				</GroupWrapper>
@@ -98,7 +98,7 @@
 						</template>
 						<InputSwitch
 							id="space-before-symbol"
-							v-model:checked="formState.form.space_before_symbol" />
+							v-model:checked="formState.form.spaceBeforeSymbol" />
 					</InputWrapper>
 					<InputWrapper direction="row">
 						<template #label>
@@ -108,7 +108,7 @@
 						</template>
 						<InputSwitch
 							id="allow-decimal"
-							v-model:checked="formState.form.allow_decimal" />
+							v-model:checked="formState.form.allowDecimal" />
 					</InputWrapper>
 				</div>
 			</GroupWrapper>

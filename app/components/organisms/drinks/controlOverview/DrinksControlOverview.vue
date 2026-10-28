@@ -23,10 +23,10 @@
 						:class="virtualGridRowStyle({ fixedHeight: true })">
 						<ItemControlCard
 							v-for="drink in drinkRow"
-							:key="drink._id"
+							:key="drink.id"
 							ref="itemControlCard"
 							:content="drink.translations[$i18n.locale].name"
-							@click="() => handleEditDrink(drink._id)"
+							@click="() => handleEditDrink(drink.id)"
 							@action="() => triggerDeleteModal(drink)" />
 					</Box>
 				</template>
@@ -122,7 +122,7 @@ function useDrinkDeleteModal() {
 
 	const handleDelete = async () => {
 		try {
-			await deleteDrink(drinkToDelete.value._id);
+			await deleteDrink(drinkToDelete.value.id);
 			addToast({ type: 'success', title: 'SUCCESS!', message: 'drink deleted' });
 		} catch (error) {
 			addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete drink' });

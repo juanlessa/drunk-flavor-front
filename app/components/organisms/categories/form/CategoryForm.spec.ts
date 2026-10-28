@@ -44,7 +44,7 @@ const mockFormState = ref({
 			en: { name: '' },
 			pt: { name: '' }
 		},
-		is_alcoholic: false
+		isAlcoholic: false
 	},
 	errors: [] as { field: string; message: string }[],
 	displayErrors: false
@@ -98,7 +98,7 @@ describe('CategoryForm', () => {
 					en: { name: '' },
 					pt: { name: '' }
 				},
-				is_alcoholic: false
+				isAlcoholic: false
 			},
 			errors: [],
 			displayErrors: false
@@ -122,7 +122,7 @@ describe('CategoryForm', () => {
 			expect(groups).toHaveLength(3);
 		});
 
-		it('renders an is_alcoholic switch in the general section', () => {
+		it('renders an isAlcoholic switch in the general section', () => {
 			const wrapper = mountCategoryForm();
 
 			expect(wrapper.find('[data-testid="switch"]').exists()).toBe(true);
@@ -199,7 +199,7 @@ describe('CategoryForm', () => {
 			expect(wrapper.emitted('submit')![0]).toEqual([
 				{
 					translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
-					is_alcoholic: false
+					isAlcoholic: false
 				}
 			]);
 		});

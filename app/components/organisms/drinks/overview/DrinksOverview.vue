@@ -17,9 +17,9 @@
 						:class="virtualGridRowStyle({ fixedHeight: true })">
 						<DrinkCard
 							v-for="drink in drinkRow"
-							:key="drink._id"
+							:key="drink.id"
 							:drink="drink"
-							@click="() => handleDrinkClick(drink._id)" />
+							@click="() => handleDrinkClick(drink.id)" />
 					</Box>
 				</template>
 				<template #loading>

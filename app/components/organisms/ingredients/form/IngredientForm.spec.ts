@@ -49,8 +49,8 @@ const createEmptyForm = () => ({
 		en: { name: '' },
 		pt: { name: '' }
 	},
-	category_id: '',
-	unit_id: ''
+	categoryId: '',
+	unitId: ''
 });
 
 const mockFormState = ref({
@@ -140,33 +140,33 @@ const mountIngredientForm = (props = {}) =>
 	});
 
 const createIngredientProp = () => ({
-	_id: 'ing-1',
+	id: 'ing-1',
 	translations: {
 		en: { name: 'Sugar' },
 		pt: { name: 'Açúcar' }
 	},
 	category: {
-		_id: 'cat-1',
+		id: 'cat-1',
 		translations: { en: { name: 'Sweetener' }, pt: { name: 'Adoçante' } },
-		is_alcoholic: false,
-		created_at: new Date(),
-		updated_at: new Date()
+		isAlcoholic: false,
+		createdAt: new Date(),
+		updatedAt: new Date()
 	},
 	unit: {
-		_id: 'unit-1',
+		id: 'unit-1',
 		translations: {
-			en: { name: 'teaspoon', name_plural: 'teaspoons' },
-			pt: { name: 'colher de chá', name_plural: 'colheres de chá' }
+			en: { name: 'teaspoon', namePlural: 'teaspoons' },
+			pt: { name: 'colher de chá', namePlural: 'colheres de chá' }
 		},
 		symbol: 'tsp',
-		space_before_symbol: true,
-		allow_decimal: true,
+		spaceBeforeSymbol: true,
+		allowDecimal: true,
 		kind: 'volume',
-		created_at: new Date(),
-		updated_at: new Date()
+		createdAt: new Date(),
+		updatedAt: new Date()
 	},
-	created_at: new Date(),
-	updated_at: new Date()
+	createdAt: new Date(),
+	updatedAt: new Date()
 });
 
 describe('IngredientForm', () => {
@@ -216,7 +216,7 @@ describe('IngredientForm', () => {
 			expect(selects.at(1)?.props('id')).toBe('unit');
 		});
 
-		it('does not render an is_alcoholic switch (it lives on the category)', () => {
+		it('does not render an isAlcoholic switch (it lives on the category)', () => {
 			const wrapper = mountIngredientForm();
 
 			expect(wrapper.find('[data-testid="switch"]').exists()).toBe(false);
@@ -230,8 +230,8 @@ describe('IngredientForm', () => {
 
 			expect(mockUpdateFormState).toHaveBeenCalledWith({
 				translations: ingredient.translations,
-				category_id: 'cat-1',
-				unit_id: 'unit-1'
+				categoryId: 'cat-1',
+				unitId: 'unit-1'
 			});
 		});
 
@@ -304,8 +304,8 @@ describe('IngredientForm', () => {
 					en: { name: 'Sugar' },
 					pt: { name: 'Açúcar' }
 				},
-				category_id: 'cat-1',
-				unit_id: 'unit-1'
+				categoryId: 'cat-1',
+				unitId: 'unit-1'
 			};
 
 			const wrapper = mountIngredientForm();

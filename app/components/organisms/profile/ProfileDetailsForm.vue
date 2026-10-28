@@ -9,7 +9,7 @@
 					<AvatarInput
 						id="profile-avatar"
 						v-model="avatarFile"
-						:src="props.profile.avatar_url"
+						:src="props.profile.avatarUrl"
 						:alt="$t('organisms.profile.avatar.alt')"
 						:button-label="$t('organisms.profile.avatar.changeButton')"
 						:help-text="$t('organisms.profile.avatar.help')"

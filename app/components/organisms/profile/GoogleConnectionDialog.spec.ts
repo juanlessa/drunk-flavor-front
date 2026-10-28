@@ -17,6 +17,7 @@ vi.mock('radix-vue/namespaced', () => {
 		}
 	};
 });
+
 const linkGoogleIdentity = vi.fn();
 const authenticate = vi.fn();
 const addToast = vi.fn();
@@ -25,18 +26,14 @@ vi.stubGlobal('useNuxtApp', () => ({
 	$auth: { authenticate }
 }));
 vi.stubGlobal('useToast', () => ({ addToast }));
+
 const GoogleIdentityButtonStub = {
 	name: 'GoogleIdentityButton',
 	emits: ['credential', 'error'],
 	template:
 		'<button data-testid="google" @click="$emit(\'credential\', \'google-token\')">Google</button>'
 };
-const InputPasswordStub = {
-	props: ['modelValue', 'id'],
-	emits: ['update:modelValue', 'blur'],
-	template:
-		'<input :id="id" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />'
-};
+
 const mountDialog = () =>
 	mount(GoogleConnectionDialog, {
 		props: { open: true },
@@ -44,12 +41,6 @@ const mountDialog = () =>
 			stubs: {
 				Heading: { template: '<h2><slot /></h2>' },
 				Text: { template: '<p><slot /></p>' },
-				InputWrapper: {
-					template: '<div><slot name="label"/><slot/><slot name="error"/></div>'
-				},
-				Label: { template: '<label><slot /></label>' },
-				InputPassword: InputPasswordStub,
-				ErrorMessage: true,
 				GoogleIdentityButton: GoogleIdentityButtonStub,
 				Button: { template: '<button><slot /></button>' }
 			},
@@ -64,21 +55,16 @@ describe('GoogleConnectionDialog', () => {
 		authenticate.mockResolvedValue(true);
 	});
 
-	it('does not expose Google linking before the current password is entered', () => {
-		const wrapper = mountDialog();
-		expect(wrapper.find('[data-testid="google"]').exists()).toBe(false);
+	it('shows the Google linking action without collecting a password', () => {
+		expect(mountDialog().find('[data-testid="google"]').exists()).toBe(true);
 	});
 
-	it('links both proven identities and refreshes the profile', async () => {
+	it('links the Google identity and refreshes the profile', async () => {
 		const wrapper = mountDialog();
-		await wrapper.find('#google-link-current-password').setValue('Current-password-123');
 		await wrapper.find('[data-testid="google"]').trigger('click');
 		await flushPromises();
 
-		expect(linkGoogleIdentity).toHaveBeenCalledWith({
-			currentPassword: 'Current-password-123',
-			idToken: 'google-token'
-		});
+		expect(linkGoogleIdentity).toHaveBeenCalledWith({ idToken: 'google-token' });
 		expect(wrapper.emitted('update:open')).toContainEqual([false]);
 		expect(authenticate).toHaveBeenCalledOnce();
 	});
@@ -87,7 +73,6 @@ describe('GoogleConnectionDialog', () => {
 		vi.spyOn(console, 'error').mockImplementation(() => {});
 		linkGoogleIdentity.mockRejectedValue(new Error('invalid'));
 		const wrapper = mountDialog();
-		await wrapper.find('#google-link-current-password').setValue('Wrong-password-123');
 		await wrapper.find('[data-testid="google"]').trigger('click');
 		await flushPromises();
 

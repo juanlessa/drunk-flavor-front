@@ -96,21 +96,21 @@ const ingredientCountLabel = computed(() => {
 });
 
 const numberLocale = computed(() => (locale.value === 'pt' ? 'pt-BR' : 'en-US'));
-const hasRatings = computed(() => props.drink.ratings_count > 0);
+const hasRatings = computed(() => props.drink.ratingsCount > 0);
 const formattedAverage = computed(() =>
 	new Intl.NumberFormat(numberLocale.value, {
 		minimumFractionDigits: 1,
 		maximumFractionDigits: 1
-	}).format(props.drink.avg_rating)
+	}).format(props.drink.avgRating)
 );
 const formattedRatingsCount = computed(() =>
-	new Intl.NumberFormat(numberLocale.value).format(props.drink.ratings_count)
+	new Intl.NumberFormat(numberLocale.value).format(props.drink.ratingsCount)
 );
 const ratingAriaLabel = computed(() => {
 	if (!hasRatings.value) return t('organisms.drinkCard.noRatings');
 
 	return t(
-		props.drink.ratings_count === 1
+		props.drink.ratingsCount === 1
 			? 'organisms.drinkCard.ratingSummaryLabelOne'
 			: 'organisms.drinkCard.ratingSummaryLabelMany',
 		{ value: formattedAverage.value, count: formattedRatingsCount.value }

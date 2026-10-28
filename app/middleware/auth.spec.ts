@@ -23,27 +23,27 @@ const { mockAuthenticate, mockAuthState } = vi.hoisted(() => {
 });
 
 const buildIncompleteProfile = (): Profile => ({
-	_id: 'user-2',
-	created_at: new Date(),
-	updated_at: new Date(),
+	id: 'user-2',
+	createdAt: new Date(),
+	updatedAt: new Date(),
 	email: 'google@example.com',
-	email_verified: true,
+	emailVerified: true,
 	status: 'incomplete_profile',
 	role: 'member',
-	authentication_methods: { password: { enabled: false }, providers: ['google'] }
+	authenticationMethods: { password: { enabled: false }, providers: ['google'] }
 });
 
 const buildProfile = (overrides: Partial<CompleteUser>): Profile => ({
-	_id: 'user-1',
-	created_at: new Date(),
-	updated_at: new Date(),
+	id: 'user-1',
+	createdAt: new Date(),
+	updatedAt: new Date(),
 	name: 'Test',
 	surname: 'User',
 	email: 'test@example.com',
-	email_verified: true,
+	emailVerified: true,
 	status: 'active',
 	role: 'member',
-	authentication_methods: { password: { enabled: true }, providers: [] },
+	authenticationMethods: { password: { enabled: true }, providers: [] },
 	...overrides
 });
 

@@ -15,12 +15,12 @@ describe('useIngredientForm', () => {
 			expect(form.formState.value.form.translations.pt.name).toBe('');
 		});
 
-		it('starts with empty category_id', () => {
-			expect(form.formState.value.form.category_id).toBe('');
+		it('starts with empty categoryId', () => {
+			expect(form.formState.value.form.categoryId).toBe('');
 		});
 
-		it('starts with empty unit_id', () => {
-			expect(form.formState.value.form.unit_id).toBe('');
+		it('starts with empty unitId', () => {
+			expect(form.formState.value.form.unitId).toBe('');
 		});
 	});
 
@@ -31,13 +31,13 @@ describe('useIngredientForm', () => {
 					en: { name: 'Rum' },
 					pt: { name: 'Rum' }
 				},
-				category_id: 'cat-1',
-				unit_id: 'unit-1'
+				categoryId: 'cat-1',
+				unitId: 'unit-1'
 			});
 
 			expect(form.formState.value.form.translations.en.name).toBe('Rum');
-			expect(form.formState.value.form.category_id).toBe('cat-1');
-			expect(form.formState.value.form.unit_id).toBe('unit-1');
+			expect(form.formState.value.form.categoryId).toBe('cat-1');
+			expect(form.formState.value.form.unitId).toBe('unit-1');
 		});
 	});
 
@@ -48,15 +48,15 @@ describe('useIngredientForm', () => {
 					en: { name: 'Rum' },
 					pt: { name: 'Rum' }
 				},
-				category_id: 'cat-1',
-				unit_id: 'unit-1'
+				categoryId: 'cat-1',
+				unitId: 'unit-1'
 			});
 
 			form.resetFormState();
 
 			expect(form.formState.value.form.translations.en.name).toBe('');
-			expect(form.formState.value.form.category_id).toBe('');
-			expect(form.formState.value.form.unit_id).toBe('');
+			expect(form.formState.value.form.categoryId).toBe('');
+			expect(form.formState.value.form.unitId).toBe('');
 		});
 	});
 
@@ -87,20 +87,20 @@ describe('useIngredientForm', () => {
 			expect(form.formState.value.errors.length).toBeGreaterThan(0);
 		});
 
-		it('flags a missing unit_id', () => {
+		it('flags a missing unitId', () => {
 			form.formState.value.displayErrors = true;
 			form.formState.value.form = {
 				translations: {
 					en: { name: 'Rum' },
 					pt: { name: 'Rum' }
 				},
-				category_id: 'cat-1',
-				unit_id: ''
+				categoryId: 'cat-1',
+				unitId: ''
 			};
 
 			form.validateForm();
 
-			expect(form.formState.value.errors.map(({ field }) => field)).toEqual(['unit_id']);
+			expect(form.formState.value.errors.map(({ field }) => field)).toEqual(['unitId']);
 		});
 
 		it('clears errors when form is valid', () => {
@@ -112,8 +112,8 @@ describe('useIngredientForm', () => {
 					en: { name: 'Rum' },
 					pt: { name: 'Rum' }
 				},
-				category_id: 'cat-1',
-				unit_id: 'unit-1'
+				categoryId: 'cat-1',
+				unitId: 'unit-1'
 			};
 			form.validateForm();
 

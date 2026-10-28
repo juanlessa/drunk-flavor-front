@@ -42,8 +42,8 @@ const ingredientFormPayload = {
 		en: { name: 'Sugar' },
 		pt: { name: 'Açúcar' }
 	},
-	category_id: 'cat-1',
-	unit_id: 'unit-1'
+	categoryId: 'cat-1',
+	unitId: 'unit-1'
 };
 
 describe('CreateIngredient', () => {
@@ -92,8 +92,8 @@ describe('CreateIngredient', () => {
 
 			expect(mockApiCreate).toHaveBeenCalledWith({
 				translations: ingredientFormPayload.translations,
-				category_id: 'cat-1',
-				unit_id: 'unit-1'
+				categoryId: 'cat-1',
+				unitId: 'unit-1'
 			});
 		});
 

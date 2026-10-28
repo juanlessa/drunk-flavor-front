@@ -14,8 +14,8 @@ describe('drinkFormValidator', () => {
 	it('flags a zero quantity at the ingredient index with a translatable key', () => {
 		const errors = drinkFormValidator(
 			buildForm([
-				{ ingredient_id: 'ing-1', quantity: 0 },
-				{ ingredient_id: 'ing-2', quantity: 30 }
+				{ ingredientId: 'ing-1', quantity: 0 },
+				{ ingredientId: 'ing-2', quantity: 30 }
 			])
 		);
 
@@ -31,7 +31,7 @@ describe('drinkFormValidator', () => {
 	});
 
 	it('passes when every ingredient has a positive quantity', () => {
-		expect(drinkFormValidator(buildForm([{ ingredient_id: 'ing-1', quantity: 60 }]))).toEqual(
+		expect(drinkFormValidator(buildForm([{ ingredientId: 'ing-1', quantity: 60 }]))).toEqual(
 			[]
 		);
 	});

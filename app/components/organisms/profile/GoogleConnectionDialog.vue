@@ -19,37 +19,13 @@
 						>
 					</div>
 
-					<InputWrapper>
-						<template #label
-							><Label for="google-link-current-password">{{
-								$t('organisms.profile.password.currentPassword')
-							}}</Label></template
-						>
-						<InputPassword
-							id="google-link-current-password"
-							v-model="currentPassword"
-							name="currentPassword"
-							:disabled="isSubmitting"
-							:has-error="displayPasswordError"
-							@blur="hasBlurred = true" />
-						<template #error
-							><ErrorMessage
-								:value="
-									displayPasswordError ? $t('errors.users.currentPassword') : ''
-								"
-						/></template>
-					</InputWrapper>
-
 					<div class="flex min-h-10 flex-col gap-2">
 						<GoogleIdentityButton
-							v-if="canContinue"
+							v-if="!isSubmitting"
 							context="use"
 							test-id="google-account-link-button"
 							@credential="handleCredential"
 							@error="handleGoogleError" />
-						<Text v-else class="text-center text-body-sm text-content-muted">{{
-							$t('organisms.profile.google.passwordPrompt')
-						}}</Text>
 					</div>
 
 					<div class="flex justify-center">
@@ -73,23 +49,13 @@ const isOpen = defineModel<boolean>('open', { default: false });
 const { $api, $auth } = useNuxtApp();
 const { t } = useI18n();
 const { addToast } = useToast();
-const currentPassword = ref('');
-const hasBlurred = ref(false);
 const isSubmitting = ref(false);
-const canContinue = computed(() => currentPassword.value.length > 0 && !isSubmitting.value);
-const displayPasswordError = computed(() => hasBlurred.value && currentPassword.value.length === 0);
-
-const reset = () => {
-	currentPassword.value = '';
-	hasBlurred.value = false;
-};
 
 const handleCredential = async (idToken: string) => {
-	if (!canContinue.value) return;
+	if (isSubmitting.value) return;
 	isSubmitting.value = true;
 	try {
-		await $api.profile.linkGoogleIdentity({ currentPassword: currentPassword.value, idToken });
-		reset();
+		await $api.profile.linkGoogleIdentity({ idToken });
 		isOpen.value = false;
 		await $auth.authenticate();
 		addToast({
@@ -108,14 +74,11 @@ const handleCredential = async (idToken: string) => {
 		isSubmitting.value = false;
 	}
 };
+
 const handleGoogleError = () =>
 	addToast({
 		type: 'error',
 		title: t('organisms.profile.toast.errorTitle'),
 		message: t('organisms.profile.google.googleErrorMessage')
 	});
-
-watch(isOpen, (open) => {
-	if (!open && !isSubmitting.value) reset();
-});
 </script>

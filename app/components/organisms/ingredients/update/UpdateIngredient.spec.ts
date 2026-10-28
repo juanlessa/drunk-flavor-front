@@ -33,33 +33,33 @@ vi.stubGlobal('useToast', () => ({
 }));
 
 const ingredientData = {
-	_id: 'ing-1',
+	id: 'ing-1',
 	translations: {
 		en: { name: 'Sugar' },
 		pt: { name: 'Açúcar' }
 	},
 	category: {
-		_id: 'cat-1',
+		id: 'cat-1',
 		translations: { en: { name: 'Sweetener' }, pt: { name: 'Adoçante' } },
-		is_alcoholic: false,
-		created_at: new Date(),
-		updated_at: new Date()
+		isAlcoholic: false,
+		createdAt: new Date(),
+		updatedAt: new Date()
 	},
 	unit: {
-		_id: 'unit-1',
+		id: 'unit-1',
 		translations: {
-			en: { name: 'teaspoon', name_plural: 'teaspoons' },
-			pt: { name: 'colher de chá', name_plural: 'colheres de chá' }
+			en: { name: 'teaspoon', namePlural: 'teaspoons' },
+			pt: { name: 'colher de chá', namePlural: 'colheres de chá' }
 		},
 		symbol: 'tsp',
-		space_before_symbol: true,
-		allow_decimal: true,
+		spaceBeforeSymbol: true,
+		allowDecimal: true,
 		kind: 'volume',
-		created_at: new Date(),
-		updated_at: new Date()
+		createdAt: new Date(),
+		updatedAt: new Date()
 	},
-	created_at: new Date(),
-	updated_at: new Date()
+	createdAt: new Date(),
+	updatedAt: new Date()
 };
 
 vi.stubGlobal('useAsyncData', () => ({
@@ -72,8 +72,8 @@ const ingredientFormPayload = {
 		en: { name: 'Sugar' },
 		pt: { name: 'Açúcar' }
 	},
-	category_id: 'cat-1',
-	unit_id: 'unit-1'
+	categoryId: 'cat-1',
+	unitId: 'unit-1'
 };
 
 const mountUpdateIngredient = async () => {
@@ -149,8 +149,8 @@ describe('UpdateIngredient', () => {
 			expect(mockApiUpdate).toHaveBeenCalledWith({
 				id: 'ing-1',
 				translations: ingredientFormPayload.translations,
-				category_id: 'cat-1',
-				unit_id: 'unit-1'
+				categoryId: 'cat-1',
+				unitId: 'unit-1'
 			});
 		});
 

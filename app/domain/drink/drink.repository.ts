@@ -1,58 +1,36 @@
 import type { $Fetch } from 'nitropack';
 import type { QueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
+import { mapDrinkResponse, type DrinkResponse } from './drink.api';
 import type { CreateDrink, UpdateDrink } from './drink.dtos';
-import type { Drink } from './drink.entity';
 
 const path = '/drinks';
 
 export const drinksRepository = ($fetch: $Fetch) => ({
 	async create(body: CreateDrink) {
-		return $fetch<{ id: string }>(path, {
-			method: 'POST',
-			body
-		});
+		return $fetch<{ id: string }>(path, { method: 'POST', body });
 	},
-
 	async update(body: UpdateDrink) {
-		return $fetch<undefined>(path, {
-			method: 'PATCH',
-			body
-		});
+		return $fetch<undefined>(path, { method: 'PATCH', body });
 	},
-
 	async updateCover(id: string, file: File) {
-		const formData = new FormData();
-		formData.append('cover', file);
-
-		return $fetch<undefined>(`${path}/${id}/cover`, {
-			method: 'PATCH',
-			body: formData
-		});
+		const body = new FormData();
+		body.append('cover', file);
+		return $fetch<undefined>(`${path}/${id}/cover`, { method: 'PATCH', body });
 	},
-
 	async updateThumbnail(id: string, file: File) {
-		const formData = new FormData();
-		formData.append('thumbnail', file);
-
-		return $fetch<undefined>(`${path}/${id}/thumbnail`, {
-			method: 'PATCH',
-			body: formData
-		});
+		const body = new FormData();
+		body.append('thumbnail', file);
+		return $fetch<undefined>(`${path}/${id}/thumbnail`, { method: 'PATCH', body });
 	},
-
 	async delete(id: string) {
-		return $fetch<undefined>(path, {
-			method: 'DELETE',
-			body: { id }
-		});
+		return $fetch<undefined>(path, { method: 'DELETE', body: { id } });
 	},
-
 	async list(query: QueryParams) {
-		return $fetch<Drink[]>(path, { query: serializeListQuery(query) });
+		const response = await $fetch<DrinkResponse[]>(path, { query: serializeListQuery(query) });
+		return response.map(mapDrinkResponse);
 	},
-
 	async get(id: string) {
-		return $fetch<Drink>(`${path}/${id}`);
+		return mapDrinkResponse(await $fetch<DrinkResponse>(`${path}/${id}`));
 	}
 });

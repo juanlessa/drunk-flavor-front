@@ -33,10 +33,10 @@ vi.stubGlobal('useToast', () => ({
 }));
 
 const categoryData = {
-	_id: 'cat-1',
+	id: 'cat-1',
 	translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
-	created_at: new Date(),
-	updated_at: new Date()
+	createdAt: new Date(),
+	updatedAt: new Date()
 };
 
 vi.stubGlobal('useAsyncData', () => ({

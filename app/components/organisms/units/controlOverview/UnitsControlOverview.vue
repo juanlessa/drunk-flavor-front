@@ -22,10 +22,10 @@
 						:class="virtualGridRowStyle({ fixedHeight: true })">
 						<ItemControlCard
 							v-for="unit in unitRow"
-							:key="unit._id"
+							:key="unit.id"
 							ref="itemControlCard"
 							:content="unit.translations[$i18n.locale].name"
-							@click="() => handleEditUnit(unit._id)"
+							@click="() => handleEditUnit(unit.id)"
 							@action="() => triggerDeleteModal(unit)" />
 					</Box>
 				</template>
@@ -122,7 +122,7 @@ function useUnitDeleteModal() {
 
 	const handleDelete = async () => {
 		try {
-			await deleteUnit(unitToDelete.value._id);
+			await deleteUnit(unitToDelete.value.id);
 			addToast({ type: 'success', title: 'SUCCESS!', message: 'unit deleted' });
 		} catch {
 			addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete unit' });

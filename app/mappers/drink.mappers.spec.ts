@@ -5,21 +5,21 @@ import type { Drink } from '~/domain/drink/drink.entity';
 import type { Unit } from '~/domain/unit/unit.entity';
 
 const mockMilliliterUnit: Unit = {
-	_id: 'unit-1',
+	id: 'unit-1',
 	translations: {
-		en: { name: 'milliliter', name_plural: 'milliliters' },
-		pt: { name: 'mililitro', name_plural: 'mililitros' }
+		en: { name: 'milliliter', namePlural: 'milliliters' },
+		pt: { name: 'mililitro', namePlural: 'mililitros' }
 	},
 	symbol: 'ml',
-	space_before_symbol: false,
-	allow_decimal: true,
+	spaceBeforeSymbol: false,
+	allowDecimal: true,
 	kind: 'volume',
-	created_at: new Date(),
-	updated_at: new Date()
+	createdAt: new Date(),
+	updatedAt: new Date()
 };
 
 const mockDrink: Drink = {
-	_id: 'drink-1',
+	id: 'drink-1',
 	translations: {
 		en: { name: 'Piña Colada', method: 'Blend everything' },
 		pt: { name: 'Piña Colada', method: 'Bata tudo' }
@@ -30,48 +30,48 @@ const mockDrink: Drink = {
 		{
 			quantity: 60,
 			ingredient: {
-				_id: 'ing-1',
+				id: 'ing-1',
 				translations: {
 					en: { name: 'Rum' },
 					pt: { name: 'Rum' }
 				},
 				category: {
-					_id: 'cat-1',
+					id: 'cat-1',
 					translations: { en: { name: 'Spirits' }, pt: { name: 'Destilados' } },
-					is_alcoholic: true,
-					created_at: new Date(),
-					updated_at: new Date()
+					isAlcoholic: true,
+					createdAt: new Date(),
+					updatedAt: new Date()
 				},
 				unit: mockMilliliterUnit,
-				created_at: new Date(),
-				updated_at: new Date()
+				createdAt: new Date(),
+				updatedAt: new Date()
 			}
 		},
 		{
 			quantity: 90,
 			ingredient: {
-				_id: 'ing-2',
+				id: 'ing-2',
 				translations: {
 					en: { name: 'Pineapple Juice' },
 					pt: { name: 'Suco de abacaxi' }
 				},
 				category: {
-					_id: 'cat-2',
+					id: 'cat-2',
 					translations: { en: { name: 'Juices' }, pt: { name: 'Sucos' } },
-					is_alcoholic: false,
-					created_at: new Date(),
-					updated_at: new Date()
+					isAlcoholic: false,
+					createdAt: new Date(),
+					updatedAt: new Date()
 				},
 				unit: mockMilliliterUnit,
-				created_at: new Date(),
-				updated_at: new Date()
+				createdAt: new Date(),
+				updatedAt: new Date()
 			}
 		}
 	],
-	avg_rating: 0,
-	ratings_count: 0,
-	created_at: new Date(),
-	updated_at: new Date()
+	avgRating: 0,
+	ratingsCount: 0,
+	createdAt: new Date(),
+	updatedAt: new Date()
 };
 
 const mockDrinkForm: DrinkForm = {
@@ -80,8 +80,8 @@ const mockDrinkForm: DrinkForm = {
 		pt: { name: 'Piña Colada', method: 'Bata tudo' }
 	},
 	ingredients: [
-		{ ingredient_id: 'ing-1', quantity: 60 },
-		{ ingredient_id: 'ing-2', quantity: 90 }
+		{ ingredientId: 'ing-1', quantity: 60 },
+		{ ingredientId: 'ing-2', quantity: 90 }
 	]
 };
 
@@ -99,18 +99,18 @@ describe('mapDrinkToForm', () => {
 		const result = mapDrinkToForm(mockDrink);
 
 		expect(result.ingredients).toEqual([
-			{ ingredient_id: 'ing-1', quantity: 60 },
-			{ ingredient_id: 'ing-2', quantity: 90 }
+			{ ingredientId: 'ing-1', quantity: 60 },
+			{ ingredientId: 'ing-2', quantity: 90 }
 		]);
 	});
 
 	it('does not include cover, thumbnail, or date fields', () => {
 		const result = mapDrinkToForm(mockDrink);
 
-		expect(result).not.toHaveProperty('_id');
+		expect(result).not.toHaveProperty('id');
 		expect(result).not.toHaveProperty('cover');
 		expect(result).not.toHaveProperty('thumbnail');
-		expect(result).not.toHaveProperty('created_at');
+		expect(result).not.toHaveProperty('createdAt');
 	});
 
 	it('handles empty ingredients array', () => {
@@ -131,8 +131,8 @@ describe('mapFormToCreateDrink', () => {
 				pt: { name: 'Piña Colada', method: 'Bata tudo' }
 			},
 			ingredients: [
-				{ ingredient_id: 'ing-1', quantity: 60 },
-				{ ingredient_id: 'ing-2', quantity: 90 }
+				{ ingredientId: 'ing-1', quantity: 60 },
+				{ ingredientId: 'ing-2', quantity: 90 }
 			]
 		});
 	});
@@ -149,8 +149,8 @@ describe('mapFormToUpdateDrink', () => {
 				pt: { name: 'Piña Colada', method: 'Bata tudo' }
 			},
 			ingredients: [
-				{ ingredient_id: 'ing-1', quantity: 60 },
-				{ ingredient_id: 'ing-2', quantity: 90 }
+				{ ingredientId: 'ing-1', quantity: 60 },
+				{ ingredientId: 'ing-2', quantity: 90 }
 			]
 		});
 	});

@@ -22,26 +22,26 @@
 import type { Profile } from '~/domain/profile/profile.entity';
 
 const baseProfile = {
-	_id: 'story-user',
+	id: 'story-user',
 	name: 'Juan',
 	surname: 'Lessa',
 	email: 'juan@example.com',
-	email_verified: true,
+	emailVerified: true,
 	role: 'member',
 	status: 'active',
-	created_at: new Date(),
-	updated_at: new Date()
+	createdAt: new Date(),
+	updatedAt: new Date()
 } as const;
 const hybridProfile: Profile = {
 	...baseProfile,
-	authentication_methods: { password: { enabled: true }, providers: ['google'] }
+	authenticationMethods: { password: { enabled: true }, providers: ['google'] }
 };
 const providerOnlyProfile: Profile = {
 	...baseProfile,
-	authentication_methods: { password: { enabled: false }, providers: ['google'] }
+	authenticationMethods: { password: { enabled: false }, providers: ['google'] }
 };
 const localProfile: Profile = {
 	...baseProfile,
-	authentication_methods: { password: { enabled: true }, providers: [] }
+	authenticationMethods: { password: { enabled: true }, providers: [] }
 };
 </script>

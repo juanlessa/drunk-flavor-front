@@ -18,16 +18,16 @@ vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 vi.stubGlobal('useToast', () => ({ addToast }));
 
 const profile: Profile = {
-	_id: 'user-1',
+	id: 'user-1',
 	name: 'Juan',
 	surname: 'Lessa',
 	email: 'juan@example.com',
-	email_verified: true,
+	emailVerified: true,
 	role: 'member',
 	status: 'active',
-	created_at: new Date(),
-	updated_at: new Date(),
-	authentication_methods: { password: { enabled: true }, providers: [] }
+	createdAt: new Date(),
+	updatedAt: new Date(),
+	authenticationMethods: { password: { enabled: true }, providers: [] }
 };
 
 const FieldStub = {

@@ -4,16 +4,16 @@ import ProfileOverview from './ProfileOverview.vue';
 import type { Profile } from '~/domain/profile/profile.entity';
 
 const profile: Profile = {
-	_id: 'user-1',
+	id: 'user-1',
 	name: 'Juan',
 	surname: 'Lessa',
 	email: 'juan@example.com',
-	email_verified: true,
+	emailVerified: true,
 	role: 'member',
 	status: 'active',
-	created_at: new Date(),
-	updated_at: new Date(),
-	authentication_methods: { password: { enabled: true }, providers: ['google'] }
+	createdAt: new Date(),
+	updatedAt: new Date(),
+	authenticationMethods: { password: { enabled: true }, providers: ['google'] }
 };
 
 const mountOverview = () =>

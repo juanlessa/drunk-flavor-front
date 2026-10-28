@@ -55,11 +55,11 @@ const formatIngredient = (ingredient: DrinkIngredient): string => {
 	const symbol = unit.symbol?.trim();
 
 	const measurement = symbol
-		? `${ingredient.quantity}${unit.space_before_symbol ? ' ' : ''}${symbol}`
+		? `${ingredient.quantity}${unit.spaceBeforeSymbol ? ' ' : ''}${symbol}`
 		: `${ingredient.quantity} ${
 				ingredient.quantity === 1
 					? unit.translations[lang].name
-					: unit.translations[lang].name_plural
+					: unit.translations[lang].namePlural
 			}`;
 
 	return `${measurement} ${t('drinkDetailPage.ingredients.ofPreposition')} ${ingredient.ingredient.translations[lang].name}`;

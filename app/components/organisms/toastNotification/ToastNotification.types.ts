@@ -4,8 +4,8 @@ export type Toast = {
 	title: string;
 	message: string;
 	duration?: number;
-	created_at: Date;
-	displayed_at?: Date;
+	createdAt: Date;
+	displayedAt?: Date;
 };
 
 export type ICreateToast = {

@@ -13,8 +13,8 @@ const copyTranslations = (source: Translations<UnitTranslation>) =>
 export const mapUnitToForm = (unit: Unit): UnitForm => ({
 	translations: copyTranslations(unit.translations),
 	symbol: unit.symbol ?? '',
-	space_before_symbol: unit.space_before_symbol ?? false,
-	allow_decimal: unit.allow_decimal,
+	spaceBeforeSymbol: unit.spaceBeforeSymbol ?? false,
+	allowDecimal: unit.allowDecimal,
 	kind: unit.kind
 });
 
@@ -25,8 +25,8 @@ export const mapFormToCreateUnit = (unitForm: UnitForm): CreateUnit => {
 		translations: copyTranslations(unitForm.translations),
 		// The backend rejects an empty symbol, so "no symbol" is sent as an omitted field.
 		symbol: symbol.length > 0 ? symbol : undefined,
-		space_before_symbol: unitForm.space_before_symbol,
-		allow_decimal: unitForm.allow_decimal,
+		spaceBeforeSymbol: unitForm.spaceBeforeSymbol,
+		allowDecimal: unitForm.allowDecimal,
 		// The form is only submitted after validation, which rejects an unselected kind.
 		kind: unitForm.kind as UnitKind
 	};

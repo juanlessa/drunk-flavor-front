@@ -7,10 +7,10 @@
 
 		<ProfileDetailsForm :profile="props.profile" />
 		<PasswordSection
-			:has-password="props.profile.authentication_methods.password.enabled"
-			:providers="props.profile.authentication_methods.providers" />
+			:has-password="props.profile.authenticationMethods.password.enabled"
+			:providers="props.profile.authenticationMethods.providers" />
 		<GoogleConnectionSection
-			:connected="props.profile.authentication_methods.providers.includes('google')" />
+			:connected="props.profile.authenticationMethods.providers.includes('google')" />
 		<DeleteAccountSection />
 	</div>
 </template>

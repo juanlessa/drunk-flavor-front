@@ -47,16 +47,16 @@ const mockLocalePath = vi.fn((path: string) => path);
 const mockOverviewState = ref({
 	categories: [
 		{
-			_id: 'cat-1',
+			id: 'cat-1',
 			translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
-			created_at: new Date(),
-			updated_at: new Date()
+			createdAt: new Date(),
+			updatedAt: new Date()
 		},
 		{
-			_id: 'cat-2',
+			id: 'cat-2',
 			translations: { en: { name: 'Syrup' }, pt: { name: 'Xarope' } },
-			created_at: new Date(),
-			updated_at: new Date()
+			createdAt: new Date(),
+			updatedAt: new Date()
 		}
 	],
 	filter: { page: 1, limit: 30, isLastPage: false },
@@ -116,16 +116,16 @@ describe('CategoriesControlOverview', () => {
 		mockOverviewState.value = {
 			categories: [
 				{
-					_id: 'cat-1',
+					id: 'cat-1',
 					translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
-					created_at: new Date(),
-					updated_at: new Date()
+					createdAt: new Date(),
+					updatedAt: new Date()
 				},
 				{
-					_id: 'cat-2',
+					id: 'cat-2',
 					translations: { en: { name: 'Syrup' }, pt: { name: 'Xarope' } },
-					created_at: new Date(),
-					updated_at: new Date()
+					createdAt: new Date(),
+					updatedAt: new Date()
 				}
 			],
 			filter: { page: 1, limit: 30, isLastPage: false },

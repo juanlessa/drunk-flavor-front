@@ -5,12 +5,12 @@ import type { Unit } from '~/domain/unit/unit.entity';
 
 const buildForm = (overrides: Partial<UnitForm> = {}): UnitForm => ({
 	translations: {
-		en: { name: 'milliliter', name_plural: 'milliliters' },
-		pt: { name: 'mililitro', name_plural: 'mililitros' }
+		en: { name: 'milliliter', namePlural: 'milliliters' },
+		pt: { name: 'mililitro', namePlural: 'mililitros' }
 	},
 	symbol: 'ml',
-	space_before_symbol: false,
-	allow_decimal: true,
+	spaceBeforeSymbol: false,
+	allowDecimal: true,
 	kind: 'volume',
 	...overrides
 });
@@ -18,12 +18,12 @@ const buildForm = (overrides: Partial<UnitForm> = {}): UnitForm => ({
 describe('mapUnitToForm', () => {
 	it('maps a missing symbol to an empty string', () => {
 		const unit: Unit = {
-			_id: 'unit-1',
+			id: 'unit-1',
 			translations: buildForm().translations,
-			allow_decimal: false,
+			allowDecimal: false,
 			kind: 'count',
-			created_at: new Date(),
-			updated_at: new Date()
+			createdAt: new Date(),
+			updatedAt: new Date()
 		};
 
 		expect(mapUnitToForm(unit).symbol).toBe('');

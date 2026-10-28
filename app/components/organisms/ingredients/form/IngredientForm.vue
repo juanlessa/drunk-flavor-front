@@ -47,12 +47,12 @@
 							:options="mapToSelectOptions(categoryOptions, $i18n.locale)"
 							infinite-scroll
 							:loading="categoryLoading"
-							:has-error="!!checkError(`category_id`)"
-							@update:model-value="(opt) => (formState.form.category_id = opt.value)"
+							:has-error="!!checkError(`categoryId`)"
+							@update:model-value="(opt) => (formState.form.categoryId = opt.value)"
 							@load-more="categoryLoadNextPage"
 							@blur="validateForm" />
 						<template #error>
-							<ErrorMessage :value="checkError(`category_id`)" />
+							<ErrorMessage :value="checkError(`categoryId`)" />
 						</template>
 					</InputWrapper>
 					<InputWrapper>
@@ -68,12 +68,12 @@
 							:options="mapToSelectOptions(unitOptions, $i18n.locale)"
 							infinite-scroll
 							:loading="unitLoading"
-							:has-error="!!checkError(`unit_id`)"
-							@update:model-value="(opt) => (formState.form.unit_id = opt.value)"
+							:has-error="!!checkError(`unitId`)"
+							@update:model-value="(opt) => (formState.form.unitId = opt.value)"
 							@load-more="unitLoadNextPage"
 							@blur="validateForm" />
 						<template #error>
-							<ErrorMessage :value="checkError(`unit_id`)" />
+							<ErrorMessage :value="checkError(`unitId`)" />
 						</template>
 					</InputWrapper>
 				</div>
@@ -118,11 +118,11 @@ const {
 if (props.ingredient) {
 	updateFormState(mapIngredientToForm(props.ingredient));
 	categorySelected.value = {
-		value: props.ingredient.category._id,
+		value: props.ingredient.category.id,
 		label: props.ingredient.category.translations[locale.value].name
 	};
 	unitSelected.value = {
-		value: props.ingredient.unit._id,
+		value: props.ingredient.unit.id,
 		label: props.ingredient.unit.translations[locale.value].name
 	};
 }

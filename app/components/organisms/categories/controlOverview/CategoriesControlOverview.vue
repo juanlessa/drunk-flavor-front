@@ -23,10 +23,10 @@
 						:class="virtualGridRowStyle({ fixedHeight: true })">
 						<ItemControlCard
 							v-for="category in categoryRow"
-							:key="category._id"
+							:key="category.id"
 							ref="itemControlCard"
 							:content="category.translations[$i18n.locale].name"
-							@click="() => handleEditCategory(category._id)"
+							@click="() => handleEditCategory(category.id)"
 							@action="() => triggerDeleteModal(category)" />
 					</Box>
 				</template>
@@ -122,7 +122,7 @@ function useCategoryDeleteModal() {
 
 	const handleDelete = async () => {
 		try {
-			await deleteCategory(categoryToDelete.value._id);
+			await deleteCategory(categoryToDelete.value.id);
 			addToast({ type: 'success', title: 'SUCCESS!', message: 'category deleted' });
 		} catch {
 			addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete category' });

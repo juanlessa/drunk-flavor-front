@@ -3,7 +3,7 @@ import type { CategoryTranslation } from './category.entity';
 
 export type CreateCategory = {
 	translations: Translations<CategoryTranslation>;
-	is_alcoholic: boolean;
+	isAlcoholic: boolean;
 };
 
 export type UpdateCategory = CreateCategory & {

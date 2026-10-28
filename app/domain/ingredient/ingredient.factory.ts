@@ -3,13 +3,13 @@ import { initEmptyUnit } from '../unit/unit.factory';
 import type { Ingredient } from './ingredient.entity';
 
 export const initEmptyIngredient = (): Ingredient => ({
-	_id: '',
+	id: '',
 	translations: {
 		en: { name: '' },
 		pt: { name: '' }
 	},
 	category: initEmptyCategory(),
 	unit: initEmptyUnit(),
-	created_at: new Date(),
-	updated_at: new Date()
+	createdAt: new Date(),
+	updatedAt: new Date()
 });

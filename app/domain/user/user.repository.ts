@@ -1,40 +1,23 @@
 import type { $Fetch } from 'nitropack';
-import type { CreateUser, UpdateRole } from './user.dtos';
-import type { User } from './user.entity';
 import type { QueryParams } from '~/domain/shared/query.types';
 import { serializeListQuery } from '~/domain/shared/query.helpers';
+import { mapUserResponse, type UserResponse } from './user.api';
+import type { CreateUser, UpdateRole } from './user.dtos';
 
 const path = '/users';
 
 export const usersRepository = ($fetch: $Fetch) => ({
 	async create(body: CreateUser) {
-		return $fetch<undefined>(path, {
-			method: 'POST',
-			body
-		});
+		return $fetch<undefined>(path, { method: 'POST', body });
 	},
-
 	async updateRole(body: UpdateRole) {
-		return $fetch<undefined>(`${path}/role`, {
-			method: 'PATCH',
-			body
-		});
+		return $fetch<undefined>(`${path}/role`, { method: 'PATCH', body });
 	},
-
-	async delete(id: string) {
-		return $fetch<undefined>(path, {
-			method: 'DELETE',
-			body: { id }
-		});
-	},
-
 	async list(query: QueryParams) {
-		return $fetch<User[]>(path, {
-			query: serializeListQuery(query)
-		});
+		const response = await $fetch<UserResponse[]>(path, { query: serializeListQuery(query) });
+		return response.map(mapUserResponse);
 	},
-
 	async get(id: string) {
-		return $fetch<User>(`${path}/${id}`);
+		return mapUserResponse(await $fetch<UserResponse>(`${path}/${id}`));
 	}
 });

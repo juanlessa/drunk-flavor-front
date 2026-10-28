@@ -42,7 +42,7 @@
 						</template>
 						<InputSwitch
 							id="is-alcoholic"
-							v-model:checked="formState.form.is_alcoholic" />
+							v-model:checked="formState.form.isAlcoholic" />
 					</InputWrapper>
 				</div>
 			</GroupWrapper>

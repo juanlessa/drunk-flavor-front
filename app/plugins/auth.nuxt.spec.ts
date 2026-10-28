@@ -1,6 +1,25 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { registerEndpoint } from '@nuxt/test-utils/runtime';
 
+const profileResponse = {
+	id: 'user-1',
+	name: 'John',
+	surname: 'Doe',
+	email: 'john@test.com',
+	emailVerified: true,
+	role: 'admin' as const,
+	status: 'active' as const,
+	createdAt: '2025-01-01T00:00:00.000Z',
+	updatedAt: '2025-01-02T00:00:00.000Z',
+	authenticationMethods: { password: { enabled: true }, providers: [] }
+};
+
+const mappedProfile = {
+	...profileResponse,
+	createdAt: new Date(profileResponse.createdAt),
+	updatedAt: new Date(profileResponse.updatedAt)
+};
+
 describe('auth plugin', () => {
 	beforeEach(() => {
 		vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -34,14 +53,7 @@ describe('auth plugin', () => {
 
 	describe('authenticate', () => {
 		it('sets isAuthenticated true when profile endpoint succeeds', async () => {
-			const profile = {
-				_id: 'user-1',
-				name: 'John',
-				surname: 'Doe',
-				email: 'john@test.com',
-				role: 'admin'
-			};
-			registerEndpoint('/me', { method: 'GET', handler: () => profile });
+			registerEndpoint('/me', { method: 'GET', handler: () => profileResponse });
 
 			const { $auth } = useNuxtApp();
 			$auth.state.value = { isAuthenticated: false, user: undefined };
@@ -53,21 +65,14 @@ describe('auth plugin', () => {
 		});
 
 		it('sets user from profile response', async () => {
-			const profile = {
-				_id: 'user-1',
-				name: 'John',
-				surname: 'Doe',
-				email: 'john@test.com',
-				role: 'admin'
-			};
-			registerEndpoint('/me', { method: 'GET', handler: () => profile });
+			registerEndpoint('/me', { method: 'GET', handler: () => profileResponse });
 
 			const { $auth } = useNuxtApp();
 			$auth.state.value = { isAuthenticated: false, user: undefined };
 
 			await $auth.authenticate();
 
-			expect($auth.state.value.user).toEqual(profile);
+			expect($auth.state.value.user).toEqual(mappedProfile);
 		});
 
 		it('returns false when profile endpoint throws', async () => {
@@ -110,7 +115,7 @@ describe('auth plugin', () => {
 			$auth.state.value = {
 				isAuthenticated: true,
 				user: {
-					_id: 'user-1',
+					id: 'user-1',
 					name: 'John',
 					surname: 'Doe',
 					email: 'john@test.com',

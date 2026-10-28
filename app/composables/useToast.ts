@@ -23,10 +23,10 @@ export const useToast = () => {
 		const displayingToastsLength = state.value.displayingToasts.length;
 
 		if (displayingToastsLength >= maxToastsOnScreen) {
-			state.value.awaitingToasts.push({ ...toast, id, created_at: currentTimestamp });
+			state.value.awaitingToasts.push({ ...toast, id, createdAt: currentTimestamp });
 		} else {
 			state.value.displayingToasts = [
-				{ ...toast, id, displayed_at: currentTimestamp, created_at: currentTimestamp },
+				{ ...toast, id, displayedAt: currentTimestamp, createdAt: currentTimestamp },
 				...state.value.displayingToasts
 			];
 		}

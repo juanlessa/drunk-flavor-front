@@ -13,7 +13,7 @@ export type CategoriesOverviewState = {
 
 export type CategoryForm = {
 	translations: Translations<CategoryTranslation>;
-	is_alcoholic: boolean;
+	isAlcoholic: boolean;
 };
 
 export type CategoryFormState = {

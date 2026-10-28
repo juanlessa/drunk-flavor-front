@@ -35,11 +35,11 @@ describe('useToast', () => {
 			expect(toast.state.value.displayingToasts[0]!.type).toBe('success');
 		});
 
-		it('assigns an id and created_at', () => {
+		it('assigns an id and createdAt', () => {
 			toast.addToast({ type: 'info', title: 'Info', message: 'Hello' });
 
 			expect(toast.state.value.displayingToasts[0]!.id).toBeTruthy();
-			expect(toast.state.value.displayingToasts[0]!.created_at).toBeInstanceOf(Date);
+			expect(toast.state.value.displayingToasts[0]!.createdAt).toBeInstanceOf(Date);
 		});
 
 		it('prepends new toasts (most recent first)', () => {

@@ -74,11 +74,11 @@ describe('useCategoriesOverview', () => {
 		it('resets state to initial values', () => {
 			overview.overviewState.value.categories = [
 				{
-					_id: 'cat-1',
+					id: 'cat-1',
 					translations: { en: { name: 'A' }, pt: { name: 'B' } },
-					is_alcoholic: false,
-					created_at: new Date(),
-					updated_at: new Date()
+					isAlcoholic: false,
+					createdAt: new Date(),
+					updatedAt: new Date()
 				}
 			];
 			overview.overviewState.value.filter.page = 3;

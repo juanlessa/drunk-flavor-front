@@ -12,8 +12,8 @@ export type IngredientsOverviewState = {
 
 export type IngredientForm = {
 	translations: Translations<IngredientTranslation>;
-	category_id: string;
-	unit_id: string;
+	categoryId: string;
+	unitId: string;
 };
 
 export type IngredientFormState = {

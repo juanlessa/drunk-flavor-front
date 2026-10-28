@@ -8,18 +8,7 @@ export type CreateUser = {
 	role: Role;
 };
 
-export type UpdateUser = {
-	name: string;
-	surname: string;
-	email: string;
-	password: string;
-};
-
-export type IDeleteUser = {
-	id: string;
-};
-
 export type UpdateRole = {
-	user_id: string;
+	userId: string;
 	role: Role;
 };

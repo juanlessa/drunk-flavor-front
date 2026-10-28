@@ -201,10 +201,9 @@
 				"connectButton": "Connect Google",
 				"connectedLabel": "Connected",
 				"dialogTitle": "Connect Google",
-				"dialogDescription": "Confirm your current password, then choose the Google account you want to connect.",
-				"passwordPrompt": "Enter your current password to continue with Google.",
+				"dialogDescription": "Choose the Google account you want to connect.",
 				"successMessage": "Google was connected to your account.",
-				"errorMessage": "Unable to connect Google. Check your password and Google account, then try again.",
+				"errorMessage": "Unable to connect Google. Check the Google account and try again.",
 				"googleErrorMessage": "Unable to open Google authentication. Please try again."
 			},
 			"deletion": {

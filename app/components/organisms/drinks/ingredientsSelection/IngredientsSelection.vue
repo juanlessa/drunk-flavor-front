@@ -13,25 +13,25 @@
 			@select="handleSelect" />
 
 		<Box direction="col" class="gap-2">
-			<Box v-for="(sel, index) in selected" :key="sel._id" direction="col" class="gap-1">
+			<Box v-for="(sel, index) in selected" :key="sel.id" direction="col" class="gap-1">
 				<Box direction="row" class="gap-6 items-center">
 					<Text class="flex-1 text-left">{{ sel.translations[$i18n.locale].name }}</Text>
 
 					<InputNumber
-						:id="`ingredient-quantity-${sel._id}`"
-						:model-value="quantities[sel._id]"
+						:id="`ingredient-quantity-${sel.id}`"
+						:model-value="quantities[sel.id]"
 						input-width="4ch"
 						suffix-width="7ch"
 						suffix-outside
 						:suffix="sel.unit.symbol || sel.unit.translations[$i18n.locale].name"
 						:has-error="!!props.checkError(`ingredients.${index}.quantity`)"
-						@update:model-value="(val: number) => updateQuantity(sel._id, val)"
+						@update:model-value="(val: number) => updateQuantity(sel.id, val)"
 						@blur="emit('blur')" />
 
 					<Button
 						variant="icon"
 						:aria-label="$t('organisms.ingredientsSelection.removeButton.label')"
-						@click="handleRemove(sel._id)">
+						@click="handleRemove(sel.id)">
 						<TrashIcon />
 					</Button>
 				</Box>
@@ -83,7 +83,7 @@ const quantities = ref<Record<string, number>>({});
 if (props.initialIngredients.length > 0) {
 	initSelected(props.initialIngredients.map((di) => di.ingredient));
 	props.initialIngredients.forEach((di) => {
-		quantities.value[di.ingredient._id] = di.quantity;
+		quantities.value[di.ingredient.id] = di.quantity;
 	});
 }
 
@@ -101,8 +101,8 @@ const handleRemove = (ingredientId: string) => {
 
 const emitIngredients = () => {
 	const ingredients: DrinkIngredientRequest[] = selected.value.map((sel) => ({
-		ingredient_id: sel._id,
-		quantity: quantities.value[sel._id] || 0
+		ingredientId: sel.id,
+		quantity: quantities.value[sel.id] || 0
 	}));
 	emit('update:modelValue', ingredients);
 };
@@ -111,8 +111,8 @@ watch(
 	selected,
 	() => {
 		selected.value.forEach((sel) => {
-			if (!(sel._id in quantities.value)) {
-				quantities.value[sel._id] = 0;
+			if (!(sel.id in quantities.value)) {
+				quantities.value[sel.id] = 0;
 			}
 		});
 		emitIngredients();

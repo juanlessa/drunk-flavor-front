@@ -11,5 +11,5 @@ export type ProfileAuthenticationMethods = {
 
 /** Authenticated account view returned by GET /me. */
 export type Profile = User & {
-	authentication_methods: ProfileAuthenticationMethods;
+	authenticationMethods: ProfileAuthenticationMethods;
 };

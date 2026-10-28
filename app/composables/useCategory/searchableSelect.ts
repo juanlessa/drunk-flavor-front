@@ -76,7 +76,7 @@ export const useCategorySearchableSelect = () => {
 
 	watch(locale, (newLocale) => {
 		const selectedCategory = state.value.options.find(
-			(opt) => opt._id === state.value.selected.value
+			(opt) => opt.id === state.value.selected.value
 		);
 		const name = selectedCategory?.translations[newLocale]?.name || '';
 		const id = state.value.selected.value;
