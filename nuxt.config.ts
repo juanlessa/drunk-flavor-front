@@ -13,7 +13,8 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {
 			apiBase: '',
-			googleClientId: ''
+			googleClientId: '',
+			histoire: HISTOIRE
 		}
 	},
 

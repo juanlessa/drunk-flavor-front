@@ -1,9 +1,9 @@
 import type { AbilityBuilder } from '@casl/ability';
 import type { Role } from '~/domain/user/user.types';
-import type { Profile } from '~/domain/profile/profile.entity';
+import type { User } from '~/domain/user/user.entity';
 import type { AppAbility } from './accessControl.types';
 
-type PermissionsByRole = (user: Profile, builder: AbilityBuilder<AppAbility>) => void;
+type PermissionsByRole = (user: User, builder: AbilityBuilder<AppAbility>) => void;
 
 // Mirrors the backend `shared/accessControl/permissions.ts`. The frontend has no separate
 // `id`; the profile `_id` maps to the backend `user.id` in ownership conditions.

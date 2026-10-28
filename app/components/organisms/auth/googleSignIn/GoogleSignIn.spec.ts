@@ -1,155 +1,73 @@
-import { mount, flushPromises, enableAutoUnmount } from '@vue/test-utils';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { ref } from 'vue';
+import { flushPromises, mount } from '@vue/test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import GoogleSignIn from './GoogleSignIn.vue';
-import type { GoogleCredentialResponse, GoogleIdConfiguration } from '~/types/googleIdentity.types';
 
-const mockInitialize = vi.fn();
-const mockRenderButton = vi.fn();
-const mockLoadScript = vi.fn();
-const mockGoogleAuth = vi.fn();
-const mockIsDark = ref(false);
-const mockLocale = ref('en');
-const mockRuntimeConfig = { public: { googleClientId: 'client-id.apps.googleusercontent.com' } };
+vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }));
+const googleAuth = vi.fn();
+vi.stubGlobal('useNuxtApp', () => ({ $api: { auth: { googleAuth } } }));
+vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 
-vi.mock('~/helpers/loadGoogleIdentityScript', () => ({
-	loadGoogleIdentityScript: (language: string) => mockLoadScript(language)
-}));
-
-vi.stubGlobal('useRuntimeConfig', () => mockRuntimeConfig);
-vi.stubGlobal('useNuxtApp', () => ({
-	$api: { auth: { googleAuth: mockGoogleAuth } },
-	$theme: { isDark: mockIsDark }
-}));
-vi.stubGlobal('useI18n', () => ({ t: (key: string) => key, locale: mockLocale }));
-
-const globalStubs = {
-	Box: { template: '<div><slot /></div>' },
-	Text: { template: '<span><slot /></span>' }
+const GoogleIdentityButtonStub = {
+	name: 'GoogleIdentityButton',
+	emits: ['credential', 'available', 'error'],
+	template:
+		'<button data-testid="google" @click="$emit(\'credential\', \'id-token\')">Google</button>'
 };
-
-const mountGoogleSignIn = async () => {
-	const wrapper = mount(GoogleSignIn, {
-		global: { stubs: globalStubs, mocks: { $t: (key: string) => key } }
+const mountSignIn = () =>
+	mount(GoogleSignIn, {
+		global: {
+			stubs: { GoogleIdentityButton: GoogleIdentityButtonStub },
+			mocks: { $t: (key: string) => key }
+		}
 	});
-	await flushPromises();
-	return wrapper;
-};
-
-const getCredentialCallback = () => {
-	const config = mockInitialize.mock.calls[0]?.[0] as GoogleIdConfiguration;
-	return config.callback as (response: GoogleCredentialResponse) => Promise<void>;
-};
-
-// Unmount after each test so earlier instances stop watching the shared locale mock.
-enableAutoUnmount(afterEach);
 
 describe('GoogleSignIn', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		mockRuntimeConfig.public.googleClientId = 'client-id.apps.googleusercontent.com';
-		mockIsDark.value = false;
-		mockLocale.value = 'en';
-		mockLoadScript.mockResolvedValue({
-			initialize: mockInitialize,
-			renderButton: mockRenderButton
-		});
-		mockGoogleAuth.mockResolvedValue(undefined);
+		googleAuth.mockResolvedValue(undefined);
 	});
 
-	it('renders nothing when no client id is configured', async () => {
-		mockRuntimeConfig.public.googleClientId = '';
-		const wrapper = await mountGoogleSignIn();
-
-		expect(wrapper.find('[data-testid="google-signin-button"]').exists()).toBe(false);
-		expect(mockLoadScript).not.toHaveBeenCalled();
-	});
-
-	it('hides itself when the Google script fails to load', async () => {
-		vi.spyOn(console, 'error').mockImplementation(() => {});
-		mockLoadScript.mockRejectedValue(new Error('blocked'));
-		const wrapper = await mountGoogleSignIn();
-
-		expect(wrapper.find('[data-testid="google-signin-button"]').exists()).toBe(false);
-	});
-
-	it('loads the Google library in the current app language', async () => {
-		mockLocale.value = 'pt';
-		await mountGoogleSignIn();
-
-		expect(mockLoadScript).toHaveBeenCalledWith('pt_BR');
-	});
-
-	it('reloads the library and re-renders the button when the app language changes', async () => {
-		await mountGoogleSignIn();
-		expect(mockLoadScript).toHaveBeenLastCalledWith('en');
-
-		mockLocale.value = 'pt';
+	it('posts credentials emitted by the generic identity button', async () => {
+		const wrapper = mountSignIn();
+		await wrapper.find('[data-testid="google"]').trigger('click');
 		await flushPromises();
 
-		expect(mockLoadScript).toHaveBeenLastCalledWith('pt_BR');
-		// The reloaded library must be initialized again before the button is re-rendered.
-		expect(mockInitialize).toHaveBeenCalledTimes(2);
-	});
-
-	it('initializes GIS with the client id and the FedCM button flow', async () => {
-		await mountGoogleSignIn();
-
-		expect(mockInitialize).toHaveBeenCalledWith(
-			expect.objectContaining({
-				client_id: 'client-id.apps.googleusercontent.com',
-				ux_mode: 'popup',
-				use_fedcm_for_button: true
-			})
-		);
-	});
-
-	it('reports availability once the button can be shown', async () => {
-		const wrapper = await mountGoogleSignIn();
-
-		expect(wrapper.emitted('available')).toEqual([[true]]);
-	});
-
-	it('reports it is unavailable when the script fails to load', async () => {
-		vi.spyOn(console, 'error').mockImplementation(() => {});
-		mockLoadScript.mockRejectedValue(new Error('blocked'));
-		const wrapper = await mountGoogleSignIn();
-
-		expect(wrapper.emitted('available')).toEqual([[false]]);
-	});
-
-	it('posts the credential and emits success', async () => {
-		const wrapper = await mountGoogleSignIn();
-
-		await getCredentialCallback()({ credential: 'google-id-token' });
-
-		expect(mockGoogleAuth).toHaveBeenCalledWith({ idToken: 'google-id-token' });
+		expect(googleAuth).toHaveBeenCalledWith({ idToken: 'id-token' });
 		expect(wrapper.emitted('success')).toHaveLength(1);
-		expect(wrapper.emitted('error')).toBeUndefined();
 	});
 
-	it('emits the email-not-verified message when the backend rejects an unverified email', async () => {
+	it('maps an unverified-email response to its specific message', async () => {
 		vi.spyOn(console, 'error').mockImplementation(() => {});
-		mockGoogleAuth.mockRejectedValue({
+		googleAuth.mockRejectedValue({
 			data: { localeKey: 'apiResponses.auth.googleEmailNotVerified' }
 		});
-		const wrapper = await mountGoogleSignIn();
+		const wrapper = mountSignIn();
+		await wrapper.find('[data-testid="google"]').trigger('click');
+		await flushPromises();
 
-		await getCredentialCallback()({ credential: 'google-id-token' });
-
-		expect(wrapper.emitted('success')).toBeUndefined();
 		expect(wrapper.emitted('error')).toEqual([
 			['organisms.googleSignIn.error.emailNotVerified']
 		]);
 	});
 
-	it('emits a generic error message for other failures', async () => {
+	it('maps an existing-account response to the profile-linking guidance', async () => {
 		vi.spyOn(console, 'error').mockImplementation(() => {});
-		mockGoogleAuth.mockRejectedValue(new Error('network'));
-		const wrapper = await mountGoogleSignIn();
+		googleAuth.mockRejectedValue({
+			data: { localeKey: 'apiResponses.auth.accountLinkRequired' }
+		});
+		const wrapper = mountSignIn();
+		await wrapper.find('[data-testid="google"]').trigger('click');
+		await flushPromises();
 
-		await getCredentialCallback()({ credential: 'google-id-token' });
+		expect(wrapper.emitted('error')).toEqual([
+			['organisms.googleSignIn.error.accountLinkRequired']
+		]);
+	});
 
-		expect(wrapper.emitted('error')).toEqual([['organisms.googleSignIn.error.message']]);
+	it('forwards availability from the generic identity button', () => {
+		const wrapper = mountSignIn();
+		wrapper.findComponent(GoogleIdentityButtonStub).vm.$emit('available', true);
+
+		expect(wrapper.emitted('available')).toEqual([[true]]);
 	});
 });

@@ -24,6 +24,12 @@ describe('auth plugin', () => {
 
 			expect(typeof $auth.authenticate).toBe('function');
 		});
+
+		it('exposes clear as a function', () => {
+			const { $auth } = useNuxtApp();
+
+			expect(typeof $auth.clear).toBe('function');
+		});
 	});
 
 	describe('authenticate', () => {
@@ -95,6 +101,26 @@ describe('auth plugin', () => {
 
 			expect($auth.state.value.isAuthenticated).toBe(false);
 			expect($auth.state.value.user).toBeUndefined();
+		});
+	});
+
+	describe('clear', () => {
+		it('resets the local authentication state without an API call', () => {
+			const { $auth } = useNuxtApp();
+			$auth.state.value = {
+				isAuthenticated: true,
+				user: {
+					_id: 'user-1',
+					name: 'John',
+					surname: 'Doe',
+					email: 'john@test.com',
+					role: 'member'
+				} as never
+			};
+
+			$auth.clear();
+
+			expect($auth.state.value).toEqual({ isAuthenticated: false, user: undefined });
 		});
 	});
 });

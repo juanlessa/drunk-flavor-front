@@ -131,6 +131,7 @@
 			"removeButton": { "label": "remover ingrediente" }
 		},
 		"topBar": {
+			"profile": "perfil",
 			"categories": "categorias",
 			"units": "unidades",
 			"drinks": "drinks",
@@ -140,6 +141,81 @@
 			"logoutError": "Não foi possível sair. Tente novamente.",
 			"primaryNav": { "label": "principal" },
 			"mobileNav": { "label": "mobile" }
+		},
+		"profile": {
+			"title": "Perfil",
+			"description": "Gerencie suas informações pessoais e a segurança da conta.",
+			"avatar": {
+				"alt": "Avatar do perfil",
+				"changeButton": "Alterar foto",
+				"help": "JPG, PNG ou WebP · máximo de 3 MB",
+				"errors": {
+					"file-too-large": "A imagem deve ter no máximo 3 MB.",
+					"unsupported-file-type": "Escolha uma imagem JPG, PNG ou WebP."
+				}
+			},
+			"details": {
+				"title": "Informações pessoais",
+				"description": "Atualize sua foto e o nome exibido no DrunkFlavor.",
+				"name": "Nome",
+				"surname": "Sobrenome",
+				"email": "Email",
+				"emailLocked": "Bloqueado",
+				"saveButton": "Salvar alterações",
+				"successMessage": "Seu perfil foi atualizado.",
+				"errorMessage": "Não foi possível atualizar seu perfil. Tente novamente."
+			},
+			"password": {
+				"currentPassword": "Senha atual",
+				"newPassword": "Nova senha",
+				"confirmPassword": "Confirmar nova senha",
+				"cancelButton": "Cancelar",
+				"create": {
+					"title": "Senha",
+					"description": "Crie uma senha para entrar com seu email ou com o Google.",
+					"openButton": "Criar senha",
+					"dialogTitle": "Criar uma senha",
+					"dialogDescription": "Adicione email e senha como outra forma segura de acessar sua conta.",
+					"saveButton": "Criar senha",
+					"successMessage": "Sua senha foi criada. Agora você pode entrar com email ou Google.",
+					"errorMessage": "Não foi possível criar sua senha. Tente novamente.",
+					"reauthenticationMessage": "Para sua segurança, verifique sua conta Google vinculada antes de criar uma senha.",
+					"reauthenticationError": "Não foi possível verificar sua conta Google. Tente novamente.",
+					"noReauthenticationMethod": "Nenhum método de autenticação compatível está disponível."
+				},
+				"update": {
+					"title": "Senha",
+					"description": "Use uma senha forte e exclusiva para proteger sua conta.",
+					"openButton": "Atualizar senha",
+					"dialogTitle": "Atualizar senha",
+					"dialogDescription": "Informe sua senha atual e escolha uma nova senha.",
+					"saveButton": "Atualizar senha",
+					"successMessage": "Sua senha foi atualizada.",
+					"errorMessage": "Não foi possível atualizar sua senha. Verifique a senha atual e tente novamente."
+				}
+			},
+			"google": {
+				"title": "Google",
+				"description": "Conecte o Google como outra forma segura de entrar.",
+				"connectedDescription": "O Google está conectado e disponível como método de acesso.",
+				"connectButton": "Conectar Google",
+				"connectedLabel": "Conectado",
+				"dialogTitle": "Conectar Google",
+				"dialogDescription": "Confirme sua senha atual e escolha a conta Google que deseja conectar.",
+				"passwordPrompt": "Informe sua senha atual para continuar com o Google.",
+				"successMessage": "O Google foi conectado à sua conta.",
+				"errorMessage": "Não foi possível conectar o Google. Verifique sua senha e conta Google e tente novamente.",
+				"googleErrorMessage": "Não foi possível abrir a autenticação Google. Tente novamente."
+			},
+			"deletion": {
+				"title": "Excluir conta",
+				"description": "Exclua permanentemente sua conta. Esta ação não pode ser desfeita.",
+				"openButton": "Excluir conta",
+				"dialogTitle": "Excluir sua conta?",
+				"dialogDescription": "Seu perfil e dados de acesso serão excluídos permanentemente. Esta ação não pode ser desfeita.",
+				"errorMessage": "Não foi possível excluir sua conta. Tente novamente."
+			},
+			"toast": { "successTitle": "Sucesso", "errorTitle": "Erro" }
 		},
 		"signin": {
 			"title": "Bem-vindo de volta",
@@ -169,7 +245,8 @@
 		"googleSignIn": {
 			"error": {
 				"message": "Não foi possível entrar com o Google. Tente novamente.",
-				"emailNotVerified": "O email da sua conta Google não está verificado."
+				"emailNotVerified": "O email da sua conta Google não está verificado.",
+				"accountLinkRequired": "Já existe uma conta com este email. Entre primeiro e conecte o Google pelo seu perfil."
 			}
 		},
 		"signupForm": {
@@ -232,6 +309,7 @@
 			"surname": "sobrenome é obrigatório",
 			"email": "email inválido",
 			"password": "senha inválida",
+			"currentPassword": "senha atual é obrigatória",
 			"passwordMinSize": "senha deve ter no mínimo 8 caracteres",
 			"passwordMaxSize": "senha deve ter no máximo 64 caracteres",
 			"weakPassword": "senha deve conter maiúscula, minúscula, número e caractere especial"

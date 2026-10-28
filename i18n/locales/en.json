@@ -131,6 +131,7 @@
 			"removeButton": { "label": "remove ingredient" }
 		},
 		"topBar": {
+			"profile": "profile",
 			"categories": "categories",
 			"units": "units",
 			"drinks": "drinks",
@@ -140,6 +141,81 @@
 			"logoutError": "Unable to sign out. Please try again.",
 			"primaryNav": { "label": "primary" },
 			"mobileNav": { "label": "mobile" }
+		},
+		"profile": {
+			"title": "Profile",
+			"description": "Manage your personal information and account security.",
+			"avatar": {
+				"alt": "Profile avatar",
+				"changeButton": "Change photo",
+				"help": "JPG, PNG or WebP · max 3 MB",
+				"errors": {
+					"file-too-large": "The image must be 3 MB or smaller.",
+					"unsupported-file-type": "Choose a JPG, PNG or WebP image."
+				}
+			},
+			"details": {
+				"title": "Personal information",
+				"description": "Update your photo and the name shown across DrunkFlavor.",
+				"name": "First name",
+				"surname": "Last name",
+				"email": "Email",
+				"emailLocked": "Locked",
+				"saveButton": "Save changes",
+				"successMessage": "Your profile was updated.",
+				"errorMessage": "Unable to update your profile. Please try again."
+			},
+			"password": {
+				"currentPassword": "Current password",
+				"newPassword": "New password",
+				"confirmPassword": "Confirm new password",
+				"cancelButton": "Cancel",
+				"create": {
+					"title": "Password",
+					"description": "Create a password to sign in with your email as well as Google.",
+					"openButton": "Create password",
+					"dialogTitle": "Create a password",
+					"dialogDescription": "Add email and password as another secure way to access your account.",
+					"saveButton": "Create password",
+					"successMessage": "Your password was created. You can now sign in with email or Google.",
+					"errorMessage": "Unable to create your password. Please try again.",
+					"reauthenticationMessage": "For your security, verify your linked Google account before creating a password.",
+					"reauthenticationError": "Unable to verify your Google account. Please try again.",
+					"noReauthenticationMethod": "No supported authentication method is available."
+				},
+				"update": {
+					"title": "Password",
+					"description": "Use a strong, unique password to protect your account.",
+					"openButton": "Update password",
+					"dialogTitle": "Update password",
+					"dialogDescription": "Enter your current password and choose a new one.",
+					"saveButton": "Update password",
+					"successMessage": "Your password was updated.",
+					"errorMessage": "Unable to update your password. Check your current password and try again."
+				}
+			},
+			"google": {
+				"title": "Google",
+				"description": "Connect Google as another secure way to sign in.",
+				"connectedDescription": "Google is connected and available as a sign-in method.",
+				"connectButton": "Connect Google",
+				"connectedLabel": "Connected",
+				"dialogTitle": "Connect Google",
+				"dialogDescription": "Confirm your current password, then choose the Google account you want to connect.",
+				"passwordPrompt": "Enter your current password to continue with Google.",
+				"successMessage": "Google was connected to your account.",
+				"errorMessage": "Unable to connect Google. Check your password and Google account, then try again.",
+				"googleErrorMessage": "Unable to open Google authentication. Please try again."
+			},
+			"deletion": {
+				"title": "Delete account",
+				"description": "Permanently delete your account. This action cannot be undone.",
+				"openButton": "Delete account",
+				"dialogTitle": "Delete your account?",
+				"dialogDescription": "Your profile and sign-in data will be permanently deleted. This action cannot be undone.",
+				"errorMessage": "Unable to delete your account. Please try again."
+			},
+			"toast": { "successTitle": "Success", "errorTitle": "Error" }
 		},
 		"signin": {
 			"title": "Welcome back",
@@ -169,7 +245,8 @@
 		"googleSignIn": {
 			"error": {
 				"message": "Unable to sign in with Google. Please try again.",
-				"emailNotVerified": "Your Google account email is not verified."
+				"emailNotVerified": "Your Google account email is not verified.",
+				"accountLinkRequired": "This email already has an account. Sign in first, then connect Google from your profile."
 			}
 		},
 		"signupForm": {
@@ -232,6 +309,7 @@
 			"surname": "surname is required",
 			"email": "invalid email",
 			"password": "invalid password",
+			"currentPassword": "current password is required",
 			"passwordMinSize": "password must have at least 8 characters",
 			"passwordMaxSize": "password must have at most 64 characters",
 			"weakPassword": "password must contain uppercase, lowercase, number and special character"

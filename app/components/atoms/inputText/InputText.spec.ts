@@ -39,6 +39,21 @@ describe('InputText', () => {
 
 			expect(wrapper.find('input').element.value).toBe('Hello');
 		});
+
+		it('forwards readonly to the native input', () => {
+			const wrapper = mount(InputText, { props: { readonly: true } });
+
+			expect(wrapper.find('input').attributes('readonly')).toBeDefined();
+		});
+
+		it('forwards disabled to the native input', () => {
+			const wrapper = mount(InputText, { props: { disabled: true } });
+
+			expect(wrapper.find('input').attributes('disabled')).toBeDefined();
+			expect(wrapper.find('input').classes()).toContain('disabled:cursor-not-allowed');
+			expect(wrapper.find('.cursor-not-allowed').exists()).toBe(true);
+			expect(wrapper.find('.bg-surface-control').exists()).toBe(true);
+		});
 	});
 
 	describe('suffix', () => {

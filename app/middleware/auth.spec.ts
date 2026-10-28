@@ -29,10 +29,11 @@ const buildIncompleteProfile = (): Profile => ({
 	email: 'google@example.com',
 	email_verified: true,
 	status: 'incomplete_profile',
-	role: 'member'
+	role: 'member',
+	authentication_methods: { password: { enabled: false }, providers: ['google'] }
 });
 
-const buildProfile = (overrides: Partial<CompleteUser>): CompleteUser => ({
+const buildProfile = (overrides: Partial<CompleteUser>): Profile => ({
 	_id: 'user-1',
 	created_at: new Date(),
 	updated_at: new Date(),
@@ -42,6 +43,7 @@ const buildProfile = (overrides: Partial<CompleteUser>): CompleteUser => ({
 	email_verified: true,
 	status: 'active',
 	role: 'member',
+	authentication_methods: { password: { enabled: true }, providers: [] },
 	...overrides
 });
 
