@@ -35,7 +35,7 @@
 	},
 	"dependencies": {
 		"@casl/ability": "7.0.2",
-		"@casl/vue": "3.0.1",
+		"@casl/vue": "3.1.0",
 		"@fontsource/roboto": "5.3.0",
 		"nanoid": "6.0.2",
 		"nuxt": "4.4.8",
