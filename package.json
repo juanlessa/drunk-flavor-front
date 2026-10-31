@@ -34,7 +34,7 @@
 		"format:staged": "pretty-quick --staged"
 	},
 	"dependencies": {
-		"@casl/ability": "7.0.2",
+		"@casl/ability": "7.1.1",
 		"@casl/vue": "3.0.1",
 		"@fontsource/roboto": "5.3.0",
 		"nanoid": "6.0.2",
