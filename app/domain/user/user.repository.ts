@@ -3,7 +3,6 @@ import type { QueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
 import type {
 	CloseUser,
-	CreateUser,
 	ReactivateUser,
 	RevokeUserSessions,
 	SuspendUser,
@@ -15,9 +14,6 @@ import type { User } from './user.entity';
 const path = '/users';
 
 export const usersRepository = ($fetch: $Fetch) => ({
-	async create(body: CreateUser) {
-		return $fetch<undefined>(path, { method: 'POST', body });
-	},
 	async updateRole(body: UpdateRole) {
 		return $fetch<undefined>(`${path}/role`, { method: 'PATCH', body });
 	},

@@ -1,12 +1,4 @@
-import type { NonOwnerRole, Role, UserAdministrativeCapabilityAction } from './user.types';
-
-export type CreateUser = {
-	name: string;
-	surname: string;
-	email: string;
-	password: string;
-	role: Role;
-};
+import type { NonOwnerRole, UserAdministrativeCapabilityAction } from './user.types';
 
 export type UpdateRole = {
 	userId: string;

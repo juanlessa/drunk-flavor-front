@@ -362,6 +362,7 @@
 				"confirmButton": "Accept ownership",
 				"successMessage": "You are now the owner. Sign in again to continue.",
 				"invalidMessage": "This invitation is invalid or has expired. Ask the current owner to send a new one.",
+				"errorMessage": "Unable to accept the invitation. Please try again.",
 				"homeLink": "Go to the home page"
 			},
 			"toast": { "successTitle": "Success", "errorTitle": "Error" }

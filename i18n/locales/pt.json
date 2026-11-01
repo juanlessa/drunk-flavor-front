@@ -362,6 +362,7 @@
 				"confirmButton": "Aceitar a propriedade",
 				"successMessage": "Agora você é o proprietário. Entre novamente para continuar.",
 				"invalidMessage": "Este convite é inválido ou expirou. Peça ao proprietário atual para enviar um novo.",
+				"errorMessage": "Não foi possível aceitar o convite. Tente novamente.",
 				"homeLink": "Ir para a página inicial"
 			},
 			"toast": { "successTitle": "Sucesso", "errorTitle": "Erro" }
