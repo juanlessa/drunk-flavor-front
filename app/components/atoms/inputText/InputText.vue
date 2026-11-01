@@ -8,6 +8,7 @@
 					disabled: props.disabled
 				})
 			">
+			<slot name="prefix"></slot>
 			<input
 				:id="props.id"
 				:value="props.modelValue"
