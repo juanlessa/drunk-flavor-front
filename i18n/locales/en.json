@@ -263,6 +263,7 @@
 			"searchLabel": "Search users",
 			"searchPlaceholder": "Search by email",
 			"emptyMessage": "No users found.",
+			"noName": "No name yet",
 			"errorTitle": "Error",
 			"errorMessage": "Unable to load users. Please try again."
 		},

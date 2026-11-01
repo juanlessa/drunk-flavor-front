@@ -263,6 +263,7 @@
 			"searchLabel": "Buscar usuários",
 			"searchPlaceholder": "Buscar por email",
 			"emptyMessage": "Nenhum usuário encontrado.",
+			"noName": "Sem nome ainda",
 			"errorTitle": "Erro",
 			"errorMessage": "Não foi possível carregar os usuários. Tente novamente."
 		},

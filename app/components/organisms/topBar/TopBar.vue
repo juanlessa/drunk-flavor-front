@@ -148,6 +148,11 @@ function getLinksBasedOnPermissions(isAuthenticated: boolean): ILink[] {
 			can: { action: 'manage', subject: 'Drink' }
 		},
 		{
+			i18nKey: 'organisms.topBar.users',
+			path: '/users',
+			can: { action: 'manage', subject: 'User' }
+		},
+		{
 			i18nKey: 'organisms.topBar.profile',
 			path: '/profile'
 		}
