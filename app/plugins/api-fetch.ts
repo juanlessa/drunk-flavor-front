@@ -4,6 +4,7 @@ import { categoriesRepository } from '~/domain/category/category.repository';
 import { commentsRepository } from '~/domain/comment/comment.repository';
 import { drinksRepository } from '~/domain/drink/drink.repository';
 import { ingredientsRepository } from '~/domain/ingredient/ingredient.repository';
+import { ownershipTransferRepository } from '~/domain/ownershipTransfer/ownershipTransfer.repository';
 import { profileRepository } from '~/domain/profile/profile.repository';
 import { ratingsRepository } from '~/domain/rating/rating.repository';
 import { unitsRepository } from '~/domain/unit/unit.repository';
@@ -76,6 +77,7 @@ export default defineNuxtPlugin({
 			comments: commentsRepository(apiFetcher),
 			ratings: ratingsRepository(apiFetcher),
 			users: usersRepository(apiFetcher),
+			ownershipTransfer: ownershipTransferRepository(apiFetcher),
 			profile: profileRepository(apiFetcher),
 			auth: authRepository(apiFetcher)
 		};

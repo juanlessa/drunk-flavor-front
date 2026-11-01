@@ -136,6 +136,7 @@
 			"units": "units",
 			"drinks": "drinks",
 			"ingredients": "ingredients",
+			"users": "users",
 			"signin": "signin",
 			"logout": "signout",
 			"logoutError": "Unable to sign out. Please try again.",
@@ -256,6 +257,115 @@
 			"errorMessage": "Unable to confirm your identity. Please try again.",
 			"googleErrorMessage": "Unable to open Google authentication. Please try again."
 		},
+		"usersControlOverview": {
+			"title": "Users",
+			"description": "Manage accounts, roles and access.",
+			"searchLabel": "Search users",
+			"searchPlaceholder": "Search by email",
+			"emptyMessage": "No users found.",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load users. Please try again."
+		},
+		"userAdministration": {
+			"title": "User details",
+			"backLink": "Back to users",
+			"loadErrorMessage": "Unable to load this user. Please try again.",
+			"fields": {
+				"name": "Name",
+				"email": "Email",
+				"role": "Role",
+				"status": "Status",
+				"emailVerified": "Email verification",
+				"verified": "Verified",
+				"notVerified": "Not verified"
+			},
+			"actions": {
+				"title": "Account actions",
+				"changeRole": "Change role",
+				"suspend": "Suspend",
+				"reactivate": "Reactivate",
+				"close": "Close account",
+				"revokeSessions": "Sign out everywhere",
+				"requestOwnershipTransfer": "Transfer ownership",
+				"none": "No administrative actions are available for this user."
+			},
+			"reasonDialog": {
+				"reasonLabel": "Reason",
+				"reasonHelp": "Between 10 and 500 characters. It is recorded in the audit log.",
+				"cancelButton": "Cancel",
+				"suspend": {
+					"title": "Suspend user",
+					"description": "The user is signed out and cannot sign in until the account is reactivated.",
+					"confirmButton": "Suspend user",
+					"successMessage": "The user was suspended.",
+					"errorMessage": "Unable to suspend the user. Please try again."
+				},
+				"reactivate": {
+					"title": "Reactivate user",
+					"description": "The user can sign in again with their existing sign-in methods.",
+					"confirmButton": "Reactivate user",
+					"successMessage": "The user was reactivated.",
+					"errorMessage": "Unable to reactivate the user. Please try again."
+				},
+				"close": {
+					"title": "Close account",
+					"description": "The account is permanently closed and its comments are deleted. This action cannot be undone.",
+					"confirmButton": "Close account",
+					"successMessage": "The account was closed.",
+					"errorMessage": "Unable to close the account. Please try again."
+				},
+				"revokeSessions": {
+					"title": "Sign out everywhere",
+					"description": "Every active session of this user ends. They can sign in again right away.",
+					"confirmButton": "Sign out everywhere",
+					"successMessage": "All sessions of the user were ended.",
+					"errorMessage": "Unable to end the user's sessions. Please try again."
+				}
+			},
+			"roleDialog": {
+				"title": "Change role",
+				"description": "The new role applies on the user's next request.",
+				"roleLabel": "New role",
+				"rolePlaceholder": "Select a role",
+				"cancelButton": "Cancel",
+				"confirmButton": "Change role",
+				"successMessage": "The role was changed.",
+				"errorMessage": "Unable to change the role. Please try again."
+			},
+			"toast": { "successTitle": "Success", "errorTitle": "Error" }
+		},
+		"ownershipTransfer": {
+			"request": {
+				"title": "Transfer ownership",
+				"description": "This administrator receives an email invitation. You remain the owner until they accept it.",
+				"reasonLabel": "Reason",
+				"reasonHelp": "Between 10 and 500 characters. It is recorded in the audit log.",
+				"cancelButton": "Cancel",
+				"confirmButton": "Send invitation",
+				"successMessage": "The ownership transfer invitation was sent.",
+				"errorMessage": "Unable to send the invitation. Please try again."
+			},
+			"pending": {
+				"title": "Ownership transfer pending",
+				"description": "An invitation was sent to {email}. It expires on {date}.",
+				"expiredDescription": "The invitation sent to {email} expired on {date}.",
+				"resendButton": "Resend invitation",
+				"cancelButton": "Cancel transfer",
+				"resendSuccessMessage": "The invitation was sent again.",
+				"resendErrorMessage": "Unable to resend the invitation. Please try again.",
+				"cancelSuccessMessage": "The ownership transfer was cancelled.",
+				"cancelErrorMessage": "Unable to cancel the ownership transfer. Please try again."
+			},
+			"acceptance": {
+				"title": "Accept ownership",
+				"description": "You were invited to become the owner of DrunkFlavor. The current owner becomes an administrator.",
+				"confirmButton": "Accept ownership",
+				"successMessage": "You are now the owner. Sign in again to continue.",
+				"invalidMessage": "This invitation is invalid or has expired. Ask the current owner to send a new one.",
+				"homeLink": "Go to the home page"
+			},
+			"toast": { "successTitle": "Success", "errorTitle": "Error" }
+		},
 		"signupForm": {
 			"title": "Create an account",
 			"nameInput": { "label": "name" },
@@ -310,6 +420,21 @@
 			"label": "Notification"
 		}
 	},
+	"users": {
+		"roles": {
+			"owner": "Owner",
+			"admin": "Admin",
+			"partner": "Partner",
+			"member": "Member"
+		},
+		"statuses": {
+			"idle": "Idle",
+			"pending": "Pending verification",
+			"active": "Active",
+			"suspended": "Suspended",
+			"incomplete_profile": "Incomplete profile"
+		}
+	},
 	"errors": {
 		"users": {
 			"name": "name is required",
@@ -319,7 +444,10 @@
 			"currentPassword": "current password is required",
 			"passwordMinSize": "password must have at least 8 characters",
 			"passwordMaxSize": "password must have at most 64 characters",
-			"weakPassword": "password must contain uppercase, lowercase, number and special character"
+			"weakPassword": "password must contain uppercase, lowercase, number and special character",
+			"role": "role must be selected",
+			"administrationReasonMinSize": "reason must have at least 10 characters",
+			"administrationReasonMaxSize": "reason must have at most 500 characters"
 		},
 		"auth": {
 			"passwordsMismatch": "passwords do not match"

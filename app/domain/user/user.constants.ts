@@ -5,6 +5,9 @@ export const Roles = {
 	member: 'member'
 } as const;
 
+/** Roles an administrator can assign; ownership only changes through the ownership-transfer flow. */
+export const nonOwnerRoles = [Roles.admin, Roles.partner, Roles.member] as const;
+
 export const UserStatuses = {
 	idle: 'idle',
 	pending: 'pending',

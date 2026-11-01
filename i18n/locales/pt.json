@@ -136,6 +136,7 @@
 			"units": "unidades",
 			"drinks": "drinks",
 			"ingredients": "ingredientes",
+			"users": "usuários",
 			"signin": "entrar",
 			"logout": "sair",
 			"logoutError": "Não foi possível sair. Tente novamente.",
@@ -256,6 +257,115 @@
 			"errorMessage": "Não foi possível confirmar sua identidade. Tente novamente.",
 			"googleErrorMessage": "Não foi possível abrir a autenticação do Google. Tente novamente."
 		},
+		"usersControlOverview": {
+			"title": "Usuários",
+			"description": "Gerencie contas, papéis e acessos.",
+			"searchLabel": "Buscar usuários",
+			"searchPlaceholder": "Buscar por email",
+			"emptyMessage": "Nenhum usuário encontrado.",
+			"errorTitle": "Erro",
+			"errorMessage": "Não foi possível carregar os usuários. Tente novamente."
+		},
+		"userAdministration": {
+			"title": "Detalhes do usuário",
+			"backLink": "Voltar para usuários",
+			"loadErrorMessage": "Não foi possível carregar este usuário. Tente novamente.",
+			"fields": {
+				"name": "Nome",
+				"email": "Email",
+				"role": "Papel",
+				"status": "Status",
+				"emailVerified": "Verificação de email",
+				"verified": "Verificado",
+				"notVerified": "Não verificado"
+			},
+			"actions": {
+				"title": "Ações da conta",
+				"changeRole": "Alterar papel",
+				"suspend": "Suspender",
+				"reactivate": "Reativar",
+				"close": "Encerrar conta",
+				"revokeSessions": "Encerrar todas as sessões",
+				"requestOwnershipTransfer": "Transferir propriedade",
+				"none": "Nenhuma ação administrativa está disponível para este usuário."
+			},
+			"reasonDialog": {
+				"reasonLabel": "Motivo",
+				"reasonHelp": "Entre 10 e 500 caracteres. Fica registrado no histórico de auditoria.",
+				"cancelButton": "Cancelar",
+				"suspend": {
+					"title": "Suspender usuário",
+					"description": "O usuário é desconectado e não consegue entrar até que a conta seja reativada.",
+					"confirmButton": "Suspender usuário",
+					"successMessage": "O usuário foi suspenso.",
+					"errorMessage": "Não foi possível suspender o usuário. Tente novamente."
+				},
+				"reactivate": {
+					"title": "Reativar usuário",
+					"description": "O usuário volta a entrar com os métodos de acesso que já tinha.",
+					"confirmButton": "Reativar usuário",
+					"successMessage": "O usuário foi reativado.",
+					"errorMessage": "Não foi possível reativar o usuário. Tente novamente."
+				},
+				"close": {
+					"title": "Encerrar conta",
+					"description": "A conta é encerrada de forma permanente e os comentários dela são excluídos. Esta ação não pode ser desfeita.",
+					"confirmButton": "Encerrar conta",
+					"successMessage": "A conta foi encerrada.",
+					"errorMessage": "Não foi possível encerrar a conta. Tente novamente."
+				},
+				"revokeSessions": {
+					"title": "Encerrar todas as sessões",
+					"description": "Todas as sessões ativas deste usuário são encerradas. Ele pode entrar de novo em seguida.",
+					"confirmButton": "Encerrar todas as sessões",
+					"successMessage": "Todas as sessões do usuário foram encerradas.",
+					"errorMessage": "Não foi possível encerrar as sessões do usuário. Tente novamente."
+				}
+			},
+			"roleDialog": {
+				"title": "Alterar papel",
+				"description": "O novo papel vale a partir da próxima requisição do usuário.",
+				"roleLabel": "Novo papel",
+				"rolePlaceholder": "Selecione um papel",
+				"cancelButton": "Cancelar",
+				"confirmButton": "Alterar papel",
+				"successMessage": "O papel foi alterado.",
+				"errorMessage": "Não foi possível alterar o papel. Tente novamente."
+			},
+			"toast": { "successTitle": "Sucesso", "errorTitle": "Erro" }
+		},
+		"ownershipTransfer": {
+			"request": {
+				"title": "Transferir propriedade",
+				"description": "Este administrador recebe um convite por email. Você continua sendo o proprietário até ele aceitar.",
+				"reasonLabel": "Motivo",
+				"reasonHelp": "Entre 10 e 500 caracteres. Fica registrado no histórico de auditoria.",
+				"cancelButton": "Cancelar",
+				"confirmButton": "Enviar convite",
+				"successMessage": "O convite de transferência de propriedade foi enviado.",
+				"errorMessage": "Não foi possível enviar o convite. Tente novamente."
+			},
+			"pending": {
+				"title": "Transferência de propriedade pendente",
+				"description": "Um convite foi enviado para {email}. Ele expira em {date}.",
+				"expiredDescription": "O convite enviado para {email} expirou em {date}.",
+				"resendButton": "Reenviar convite",
+				"cancelButton": "Cancelar transferência",
+				"resendSuccessMessage": "O convite foi enviado novamente.",
+				"resendErrorMessage": "Não foi possível reenviar o convite. Tente novamente.",
+				"cancelSuccessMessage": "A transferência de propriedade foi cancelada.",
+				"cancelErrorMessage": "Não foi possível cancelar a transferência de propriedade. Tente novamente."
+			},
+			"acceptance": {
+				"title": "Aceitar a propriedade",
+				"description": "Você foi convidado para ser o proprietário do DrunkFlavor. O proprietário atual passa a ser administrador.",
+				"confirmButton": "Aceitar a propriedade",
+				"successMessage": "Agora você é o proprietário. Entre novamente para continuar.",
+				"invalidMessage": "Este convite é inválido ou expirou. Peça ao proprietário atual para enviar um novo.",
+				"homeLink": "Ir para a página inicial"
+			},
+			"toast": { "successTitle": "Sucesso", "errorTitle": "Erro" }
+		},
 		"signupForm": {
 			"title": "Criar uma conta",
 			"nameInput": { "label": "nome" },
@@ -310,6 +420,21 @@
 			"label": "Notificação"
 		}
 	},
+	"users": {
+		"roles": {
+			"owner": "Proprietário",
+			"admin": "Administrador",
+			"partner": "Parceiro",
+			"member": "Membro"
+		},
+		"statuses": {
+			"idle": "Inativo",
+			"pending": "Aguardando verificação",
+			"active": "Ativo",
+			"suspended": "Suspenso",
+			"incomplete_profile": "Perfil incompleto"
+		}
+	},
 	"errors": {
 		"users": {
 			"name": "nome é obrigatório",
@@ -319,7 +444,10 @@
 			"currentPassword": "senha atual é obrigatória",
 			"passwordMinSize": "senha deve ter no mínimo 8 caracteres",
 			"passwordMaxSize": "senha deve ter no máximo 64 caracteres",
-			"weakPassword": "senha deve conter maiúscula, minúscula, número e caractere especial"
+			"weakPassword": "senha deve conter maiúscula, minúscula, número e caractere especial",
+			"role": "papel deve ser selecionado",
+			"administrationReasonMinSize": "motivo deve ter no mínimo 10 caracteres",
+			"administrationReasonMaxSize": "motivo deve ter no máximo 500 caracteres"
 		},
 		"auth": {
 			"passwordsMismatch": "as senhas não coincidem"
