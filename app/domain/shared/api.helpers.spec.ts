@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { ApiErrorCodes, hasApiErrorCode, normalizeApiError, readApiErrorCode } from './api.errors';
+import { ApiErrorCodes } from './api.constants';
+import { hasApiErrorCode, normalizeApiError, readApiErrorCode } from './api.helpers';
 
 const recentCode = ApiErrorCodes.recentAuthenticationRequired;
 

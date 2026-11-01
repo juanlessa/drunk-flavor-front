@@ -9,7 +9,8 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import { ApiErrorCodes, readApiErrorCode } from '~/domain/shared/api.errors';
+import { ApiErrorCodes } from '~/domain/shared/api.constants';
+import { readApiErrorCode } from '~/domain/shared/api.helpers';
 
 const emit = defineEmits<{
 	(e: 'available', value: boolean): void;

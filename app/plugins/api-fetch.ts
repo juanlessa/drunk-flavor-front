@@ -8,7 +8,8 @@ import { profileRepository } from '~/domain/profile/profile.repository';
 import { ratingsRepository } from '~/domain/rating/rating.repository';
 import { unitsRepository } from '~/domain/unit/unit.repository';
 import { usersRepository } from '~/domain/user/user.repository';
-import { ApiErrorCodes, hasApiErrorCode } from '~/domain/shared/api.errors';
+import { ApiErrorCodes } from '~/domain/shared/api.constants';
+import { hasApiErrorCode } from '~/domain/shared/api.helpers';
 import { COMPLETE_PROFILE_PATH } from '~/helpers/profile.helpers';
 
 const ACCEPT_LANGUAGE_HEADER = 'Accept-Language';

@@ -1,4 +1,5 @@
-import { ApiErrorCodes, hasApiErrorCode } from '~/domain/shared/api.errors';
+import { ApiErrorCodes } from '~/domain/shared/api.constants';
+import { hasApiErrorCode } from '~/domain/shared/api.helpers';
 
 type SensitiveAction = () => Promise<void>;
 
