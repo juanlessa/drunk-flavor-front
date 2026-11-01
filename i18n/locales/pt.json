@@ -178,10 +178,7 @@
 					"dialogDescription": "Adicione email e senha como outra forma segura de acessar sua conta.",
 					"saveButton": "Criar senha",
 					"successMessage": "Sua senha foi criada. Agora você pode entrar com email ou Google.",
-					"errorMessage": "Não foi possível criar sua senha. Tente novamente.",
-					"reauthenticationMessage": "Para sua segurança, verifique sua conta Google vinculada antes de criar uma senha.",
-					"reauthenticationError": "Não foi possível verificar sua conta Google. Tente novamente.",
-					"noReauthenticationMethod": "Nenhum método de autenticação compatível está disponível."
+					"errorMessage": "Não foi possível criar sua senha. Tente novamente."
 				},
 				"update": {
 					"title": "Senha",
@@ -247,6 +244,17 @@
 				"emailNotVerified": "O email da sua conta Google não está verificado.",
 				"accountLinkRequired": "Já existe uma conta com este email. Entre primeiro e conecte o Google pelo seu perfil."
 			}
+		},
+		"reauthenticationDialog": {
+			"title": "Confirme que é você",
+			"description": "Para sua segurança, confirme sua identidade para continuar com esta ação.",
+			"passwordLabel": "Senha",
+			"confirmButton": "Confirmar",
+			"cancelButton": "Cancelar",
+			"noMethod": "Nenhum método de autenticação compatível está disponível.",
+			"errorTitle": "Erro",
+			"errorMessage": "Não foi possível confirmar sua identidade. Tente novamente.",
+			"googleErrorMessage": "Não foi possível abrir a autenticação do Google. Tente novamente."
 		},
 		"signupForm": {
 			"title": "Criar uma conta",

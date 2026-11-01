@@ -1,7 +1,6 @@
 <template>
 	<Story title="Organisms/Profile/CreatePasswordDialog"
-		><Variant title="Open"
-			><CreatePasswordDialog v-model:open="open" :providers="['google']" /></Variant
+		><Variant title="Open"><CreatePasswordDialog v-model:open="open" /></Variant
 	></Story>
 </template>
 <script setup lang="ts">

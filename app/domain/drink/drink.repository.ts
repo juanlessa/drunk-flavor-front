@@ -1,8 +1,8 @@
 import type { $Fetch } from 'nitropack';
 import type { QueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
-import { mapDrinkResponse, type DrinkResponse } from './drink.api';
 import type { CreateDrink, UpdateDrink } from './drink.dtos';
+import type { Drink } from './drink.entity';
 
 const path = '/drinks';
 
@@ -27,10 +27,9 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 		return $fetch<undefined>(path, { method: 'DELETE', body: { id } });
 	},
 	async list(query: QueryParams) {
-		const response = await $fetch<DrinkResponse[]>(path, { query: serializeListQuery(query) });
-		return response.map(mapDrinkResponse);
+		return $fetch<Drink[]>(path, { query: serializeListQuery(query) });
 	},
 	async get(id: string) {
-		return mapDrinkResponse(await $fetch<DrinkResponse>(`${path}/${id}`));
+		return $fetch<Drink>(`${path}/${id}`);
 	}
 });

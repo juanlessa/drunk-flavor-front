@@ -14,12 +14,6 @@ const profileResponse = {
 	authenticationMethods: { password: { enabled: true }, providers: [] }
 };
 
-const mappedProfile = {
-	...profileResponse,
-	createdAt: new Date(profileResponse.createdAt),
-	updatedAt: new Date(profileResponse.updatedAt)
-};
-
 describe('auth plugin', () => {
 	beforeEach(() => {
 		vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -72,7 +66,7 @@ describe('auth plugin', () => {
 
 			await $auth.authenticate();
 
-			expect($auth.state.value.user).toEqual(mappedProfile);
+			expect($auth.state.value.user).toEqual(profileResponse);
 		});
 
 		it('returns false when profile endpoint throws', async () => {

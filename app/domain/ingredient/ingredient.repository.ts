@@ -1,8 +1,8 @@
 import type { $Fetch } from 'nitropack';
 import type { QueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
-import { mapIngredientResponse, type IngredientResponse } from './ingredient.api';
 import type { CreateIngredient, UpdateIngredient } from './ingredient.dtos';
+import type { Ingredient } from './ingredient.entity';
 
 const path = '/ingredients';
 
@@ -17,12 +17,9 @@ export const ingredientsRepository = ($fetch: $Fetch) => ({
 		return $fetch<undefined>(path, { method: 'DELETE', body: { id } });
 	},
 	async list(query: QueryParams) {
-		const response = await $fetch<IngredientResponse[]>(path, {
-			query: serializeListQuery(query)
-		});
-		return response.map(mapIngredientResponse);
+		return $fetch<Ingredient[]>(path, { query: serializeListQuery(query) });
 	},
 	async get(id: string) {
-		return mapIngredientResponse(await $fetch<IngredientResponse>(`${path}/${id}`));
+		return $fetch<Ingredient>(`${path}/${id}`);
 	}
 });

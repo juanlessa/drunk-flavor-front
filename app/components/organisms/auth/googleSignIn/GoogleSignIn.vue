@@ -9,9 +9,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-
-const EMAIL_NOT_VERIFIED_LOCALE_KEY = 'apiResponses.auth.googleEmailNotVerified';
-const ACCOUNT_LINK_REQUIRED_LOCALE_KEY = 'apiResponses.auth.accountLinkRequired';
+import { ApiErrorCodes, readApiErrorCode } from '~/domain/shared/api.errors';
 
 const emit = defineEmits<{
 	(e: 'available', value: boolean): void;
@@ -23,9 +21,6 @@ const { $api } = useNuxtApp();
 const { t } = useI18n();
 const isSubmitting = ref(false);
 
-const getErrorLocaleKey = (error: unknown): string | undefined =>
-	(error as { data?: { localeKey?: string } })?.data?.localeKey;
-
 const handleCredential = async (credential: string) => {
 	if (isSubmitting.value) return;
 	isSubmitting.value = true;
@@ -34,11 +29,11 @@ const handleCredential = async (credential: string) => {
 		emit('success');
 	} catch (error) {
 		console.error(error);
-		const localeKey = getErrorLocaleKey(error);
+		const code = readApiErrorCode(error);
 		const message =
-			localeKey === EMAIL_NOT_VERIFIED_LOCALE_KEY
+			code === ApiErrorCodes.googleEmailNotVerified
 				? t('organisms.googleSignIn.error.emailNotVerified')
-				: localeKey === ACCOUNT_LINK_REQUIRED_LOCALE_KEY
+				: code === ApiErrorCodes.accountLinkRequired
 					? t('organisms.googleSignIn.error.accountLinkRequired')
 					: t('organisms.googleSignIn.error.message');
 		emit('error', message);

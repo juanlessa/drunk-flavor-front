@@ -22,8 +22,10 @@ export default defineNuxtPlugin({
 			try {
 				const userProfile = await $api.profile.get();
 
-				state.value.isAuthenticated = true;
-				state.value.user = userProfile;
+				state.value = {
+					isAuthenticated: true,
+					user: userProfile
+				};
 				return true;
 			} catch (error) {
 				console.error(error);

@@ -1,19 +1,20 @@
 import type { $Fetch } from 'nitropack';
-import { mapProfileResponse, type ProfileResponse } from './profile.api';
 import type {
 	CreatePassword,
 	LinkGoogleIdentity,
 	ReauthenticateGoogle,
+	ReauthenticatePassword,
 	UpdatePassword,
 	UpdateProfile
 } from './profile.dtos';
+import type { Profile } from './profile.entity';
 
 export const profileRepository = ($fetch: $Fetch) => ({
 	async delete() {
 		return $fetch<undefined>('/me', { method: 'DELETE' });
 	},
 	async get() {
-		return mapProfileResponse(await $fetch<ProfileResponse>('/me'));
+		return $fetch<Profile>('/me');
 	},
 	async update(body: UpdateProfile) {
 		return $fetch<undefined>('/me', { method: 'PATCH', body });
@@ -29,6 +30,9 @@ export const profileRepository = ($fetch: $Fetch) => ({
 	},
 	async reauthenticateGoogle(body: ReauthenticateGoogle) {
 		return $fetch<undefined>('/me/reauthentication/google', { method: 'POST', body });
+	},
+	async reauthenticatePassword(body: ReauthenticatePassword) {
+		return $fetch<undefined>('/me/reauthentication/password', { method: 'POST', body });
 	},
 	async updateAvatar(file: File) {
 		const body = new FormData();

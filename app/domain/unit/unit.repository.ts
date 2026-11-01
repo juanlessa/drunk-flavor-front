@@ -1,8 +1,8 @@
 import type { $Fetch } from 'nitropack';
 import type { QueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
-import { mapUnitResponse, type UnitResponse } from './unit.api';
 import type { CreateUnit, UpdateUnit } from './unit.dtos';
+import type { Unit } from './unit.entity';
 
 const path = '/units';
 
@@ -17,10 +17,9 @@ export const unitsRepository = ($fetch: $Fetch) => ({
 		return $fetch<undefined>(path, { method: 'DELETE', body: { id } });
 	},
 	async list(query: QueryParams) {
-		const response = await $fetch<UnitResponse[]>(path, { query: serializeListQuery(query) });
-		return response.map(mapUnitResponse);
+		return $fetch<Unit[]>(path, { query: serializeListQuery(query) });
 	},
 	async get(id: string) {
-		return mapUnitResponse(await $fetch<UnitResponse>(`${path}/${id}`));
+		return $fetch<Unit>(`${path}/${id}`);
 	}
 });

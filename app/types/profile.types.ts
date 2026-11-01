@@ -33,3 +33,7 @@ export type UpdatePasswordFormState = {
 	errors: FieldError[];
 	displayErrors: boolean;
 };
+
+export type ReauthenticatePasswordForm = {
+	password: string;
+};

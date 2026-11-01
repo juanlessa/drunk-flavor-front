@@ -5,7 +5,7 @@ import PasswordSection from './PasswordSection.vue';
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }));
 const mountSection = (hasPassword: boolean) =>
 	mount(PasswordSection, {
-		props: { hasPassword, providers: ['google'] },
+		props: { hasPassword },
 		global: {
 			stubs: {
 				ProfileSection: {
@@ -23,7 +23,7 @@ const mountSection = (hasPassword: boolean) =>
 					template: '<div data-testid="update-dialog" />'
 				},
 				CreatePasswordDialog: {
-					props: ['open', 'providers'],
+					props: ['open'],
 					template: '<div data-testid="create-dialog" />'
 				}
 			}

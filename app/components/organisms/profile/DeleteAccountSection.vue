@@ -20,6 +20,11 @@
 		:title="$t('organisms.profile.deletion.dialogTitle')"
 		:description="$t('organisms.profile.deletion.dialogDescription')"
 		@delete="handleDelete" />
+
+	<ReauthenticationDialog
+		:open="requiresReauthentication"
+		@reauthenticated="handleReauthenticated"
+		@cancel="cancelReauthentication" />
 </template>
 
 <script setup lang="ts">
@@ -29,16 +34,26 @@ import TrashIcon from '~/components/icons/TrashIcon.vue';
 const { $api, $auth } = useNuxtApp();
 const { t } = useI18n();
 const { addToast } = useToast();
+const {
+	isRequired: requiresReauthentication,
+	run,
+	confirm,
+	cancel: cancelReauthentication
+} = useReauthentication();
 const isOpen = ref(false);
 const isDeleting = ref(false);
 
-const handleDelete = async () => {
+const deleteAccount = async () => {
+	await $api.profile.delete();
+	$auth.clear();
+	await navigateTo('/');
+};
+
+const submit = async (execute: () => Promise<void>) => {
 	if (isDeleting.value) return;
 	isDeleting.value = true;
 	try {
-		await $api.profile.delete();
-		$auth.clear();
-		await navigateTo('/');
+		await execute();
 	} catch (error) {
 		console.error(error);
 		isOpen.value = true;
@@ -51,4 +66,7 @@ const handleDelete = async () => {
 		isDeleting.value = false;
 	}
 };
+
+const handleDelete = () => submit(() => run(deleteAccount));
+const handleReauthenticated = () => submit(confirm);
 </script>

@@ -36,6 +36,11 @@
 						>
 					</div>
 				</div>
+
+				<ReauthenticationDialog
+					:open="requiresReauthentication"
+					@reauthenticated="handleReauthenticated"
+					@cancel="cancelReauthentication" />
 			</Dialog.Content>
 		</Dialog.Portal>
 	</Dialog.Root>
@@ -49,20 +54,30 @@ const isOpen = defineModel<boolean>('open', { default: false });
 const { $api, $auth } = useNuxtApp();
 const { t } = useI18n();
 const { addToast } = useToast();
+const {
+	isRequired: requiresReauthentication,
+	run,
+	confirm,
+	cancel: cancelReauthentication
+} = useReauthentication();
 const isSubmitting = ref(false);
 
-const handleCredential = async (idToken: string) => {
+const linkGoogle = async (idToken: string) => {
+	await $api.profile.linkGoogleIdentity({ idToken });
+	isOpen.value = false;
+	await $auth.authenticate();
+	addToast({
+		type: 'success',
+		title: t('organisms.profile.toast.successTitle'),
+		message: t('organisms.profile.google.successMessage')
+	});
+};
+
+const submit = async (execute: () => Promise<void>) => {
 	if (isSubmitting.value) return;
 	isSubmitting.value = true;
 	try {
-		await $api.profile.linkGoogleIdentity({ idToken });
-		isOpen.value = false;
-		await $auth.authenticate();
-		addToast({
-			type: 'success',
-			title: t('organisms.profile.toast.successTitle'),
-			message: t('organisms.profile.google.successMessage')
-		});
+		await execute();
 	} catch (error) {
 		console.error(error);
 		addToast({
@@ -74,6 +89,9 @@ const handleCredential = async (idToken: string) => {
 		isSubmitting.value = false;
 	}
 };
+
+const handleCredential = (idToken: string) => submit(() => run(() => linkGoogle(idToken)));
+const handleReauthenticated = () => submit(confirm);
 
 const handleGoogleError = () =>
 	addToast({

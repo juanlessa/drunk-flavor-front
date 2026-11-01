@@ -6,9 +6,7 @@
 		</header>
 
 		<ProfileDetailsForm :profile="props.profile" />
-		<PasswordSection
-			:has-password="props.profile.authenticationMethods.password.enabled"
-			:providers="props.profile.authenticationMethods.providers" />
+		<PasswordSection :has-password="props.profile.authenticationMethods.password.enabled" />
 		<GoogleConnectionSection
 			:connected="props.profile.authenticationMethods.providers.includes('google')" />
 		<DeleteAccountSection />

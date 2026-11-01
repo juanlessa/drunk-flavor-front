@@ -61,38 +61,22 @@
 							:active="isPasswordFocused" />
 					</div>
 
-					<div
-						v-if="requiresReauthentication"
-						class="flex flex-col gap-3 rounded-card border border-stroke bg-surface-sunken p-4">
-						<Text class="text-body-sm text-content-secondary">{{
-							$t('organisms.profile.password.create.reauthenticationMessage')
-						}}</Text>
-						<GoogleIdentityButton
-							v-if="hasGoogle"
-							context="use"
-							test-id="google-password-reauthentication"
-							@credential="handleGoogleCredential"
-							@error="handleGoogleError" />
-						<ErrorMessage
-							v-else
-							:value="
-								$t('organisms.profile.password.create.noReauthenticationMethod')
-							" />
-					</div>
-
 					<ButtonGroup>
 						<Dialog.Close as-child
 							><Button variant="secondary" :disabled="isSubmitting">{{
 								$t('organisms.profile.password.cancelButton')
 							}}</Button></Dialog.Close
 						>
-						<Button
-							type="submit"
-							:disabled="isSubmitting || requiresReauthentication"
-							>{{ $t('organisms.profile.password.create.saveButton') }}</Button
-						>
+						<Button type="submit" :disabled="isSubmitting">{{
+							$t('organisms.profile.password.create.saveButton')
+						}}</Button>
 					</ButtonGroup>
 				</form>
+
+				<ReauthenticationDialog
+					:open="requiresReauthentication"
+					@reauthenticated="handleReauthenticated"
+					@cancel="cancelReauthentication" />
 			</Dialog.Content>
 		</Dialog.Portal>
 	</Dialog.Root>
@@ -101,28 +85,25 @@
 <script setup lang="ts">
 import { Dialog } from 'radix-vue/namespaced';
 import { useI18n } from 'vue-i18n';
-import type { AuthenticationProvider } from '~/domain/profile/profile.entity';
 import { checkFieldError } from '~/helpers/checkFieldError';
 import { createPasswordFormValidator } from '~/validations/profile';
 
-const RECENT_AUTHENTICATION_REQUIRED = 'apiResponses.profile.recentAuthenticationRequired';
-const props = defineProps({
-	providers: { type: Array as PropType<AuthenticationProvider[]>, default: () => [] }
-});
 const isOpen = defineModel<boolean>('open', { default: false });
 const { $api, $auth } = useNuxtApp();
 const { t } = useI18n();
 const { addToast } = useToast();
+const {
+	isRequired: requiresReauthentication,
+	run,
+	confirm,
+	cancel: cancelReauthentication
+} = useReauthentication();
 const form = reactive({ newPassword: '', confirmPassword: '' });
 const errors = ref(createPasswordFormValidator(form));
 const displayErrors = ref(false);
 const isSubmitting = ref(false);
 const isPasswordFocused = ref(false);
-const requiresReauthentication = ref(false);
-const hasGoogle = computed(() => props.providers.includes('google'));
 
-const getErrorLocaleKey = (error: unknown): string | undefined =>
-	(error as { data?: { localeKey?: string } })?.data?.localeKey;
 const validate = () => {
 	if (displayErrors.value) errors.value = createPasswordFormValidator(form);
 };
@@ -140,7 +121,7 @@ const reset = () => {
 	errors.value = [];
 	displayErrors.value = false;
 	isPasswordFocused.value = false;
-	requiresReauthentication.value = false;
+	cancelReauthentication();
 };
 
 const createPassword = async () => {
@@ -155,19 +136,11 @@ const createPassword = async () => {
 	});
 };
 
-const handleSubmit = async () => {
-	displayErrors.value = true;
-	errors.value = createPasswordFormValidator(form);
-	if (errors.value.length || isSubmitting.value || requiresReauthentication.value) return;
-
+const submit = async (execute: () => Promise<void>) => {
 	isSubmitting.value = true;
 	try {
-		await createPassword();
+		await execute();
 	} catch (error) {
-		if (getErrorLocaleKey(error) === RECENT_AUTHENTICATION_REQUIRED) {
-			requiresReauthentication.value = true;
-			return;
-		}
 		console.error(error);
 		addToast({
 			type: 'error',
@@ -179,31 +152,14 @@ const handleSubmit = async () => {
 	}
 };
 
-const handleGoogleCredential = async (idToken: string) => {
-	if (isSubmitting.value) return;
-	isSubmitting.value = true;
-	try {
-		await $api.profile.reauthenticateGoogle({ idToken });
-		requiresReauthentication.value = false;
-		await createPassword();
-	} catch (error) {
-		console.error(error);
-		requiresReauthentication.value = true;
-		addToast({
-			type: 'error',
-			title: t('organisms.profile.toast.errorTitle'),
-			message: t('organisms.profile.password.create.reauthenticationError')
-		});
-	} finally {
-		isSubmitting.value = false;
-	}
+const handleSubmit = async () => {
+	displayErrors.value = true;
+	errors.value = createPasswordFormValidator(form);
+	if (errors.value.length || isSubmitting.value) return;
+	await submit(() => run(createPassword));
 };
-const handleGoogleError = () =>
-	addToast({
-		type: 'error',
-		title: t('organisms.profile.toast.errorTitle'),
-		message: t('organisms.profile.password.create.reauthenticationError')
-	});
+
+const handleReauthenticated = () => submit(confirm);
 
 watch(isOpen, (open) => {
 	if (!open && !isSubmitting.value) reset();

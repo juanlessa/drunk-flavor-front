@@ -1,5 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { useReauthentication } from '~/composables/useReauthentication';
 import DeleteAccountSection from './DeleteAccountSection.vue';
 
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }));
@@ -17,6 +18,15 @@ vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 vi.stubGlobal('useToast', () => ({ addToast }));
 vi.stubGlobal('useLocalePath', () => (path: string) => path);
 vi.stubGlobal('navigateTo', navigateTo);
+vi.stubGlobal('useReauthentication', useReauthentication);
+
+const ReauthenticationDialogStub = {
+	name: 'ReauthenticationDialog',
+	props: ['open'],
+	emits: ['reauthenticated', 'cancel'],
+	template:
+		'<button v-if="open" type="button" data-testid="reauth" @click="$emit(\'reauthenticated\')">reauth</button>'
+};
 
 const DeleteModalStub = {
 	name: 'DeleteModal',
@@ -37,7 +47,8 @@ const mountSection = () =>
 					template: '<button type="button" @click="$emit(\'click\')"><slot /></button>',
 					emits: ['click']
 				},
-				DeleteModal: DeleteModalStub
+				DeleteModal: DeleteModalStub,
+				ReauthenticationDialog: ReauthenticationDialogStub
 			},
 			mocks: { $t: (key: string) => key }
 		}
@@ -58,6 +69,22 @@ describe('DeleteAccountSection', () => {
 		expect(deleteProfile).toHaveBeenCalledOnce();
 		expect(clear).toHaveBeenCalledOnce();
 		expect(navigateTo).toHaveBeenCalledWith('/');
+	});
+
+	it('asks for reauthentication and retries the deletion after a stale-session response', async () => {
+		deleteProfile
+			.mockRejectedValueOnce({ data: { code: 'RECENT_AUTHENTICATION_REQUIRED' } })
+			.mockResolvedValue(undefined);
+		const wrapper = mountSection();
+		await wrapper.find('[data-testid="confirm-delete"]').trigger('click');
+		await flushPromises();
+
+		await wrapper.find('[data-testid="reauth"]').trigger('click');
+		await flushPromises();
+
+		expect(deleteProfile).toHaveBeenCalledTimes(2);
+		expect(clear).toHaveBeenCalledOnce();
+		expect(addToast).not.toHaveBeenCalled();
 	});
 
 	it('keeps auth state and reports an API failure', async () => {

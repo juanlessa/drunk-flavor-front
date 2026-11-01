@@ -1,8 +1,16 @@
 import type { $Fetch } from 'nitropack';
-import type { QueryParams } from '~/domain/shared/query.types';
-import { serializeListQuery } from '~/domain/shared/query.helpers';
-import { mapUserResponse, type UserResponse } from './user.api';
-import type { CreateUser, UpdateRole } from './user.dtos';
+import type { QueryParams } from '../shared/query.types';
+import { serializeListQuery } from '../shared/query.helpers';
+import type {
+	CloseUser,
+	CreateUser,
+	ReactivateUser,
+	RevokeUserSessions,
+	SuspendUser,
+	UpdateRole,
+	UserAdministrativeCapabilities
+} from './user.dtos';
+import type { User } from './user.entity';
 
 const path = '/users';
 
@@ -14,10 +22,24 @@ export const usersRepository = ($fetch: $Fetch) => ({
 		return $fetch<undefined>(`${path}/role`, { method: 'PATCH', body });
 	},
 	async list(query: QueryParams) {
-		const response = await $fetch<UserResponse[]>(path, { query: serializeListQuery(query) });
-		return response.map(mapUserResponse);
+		return $fetch<User[]>(path, { query: serializeListQuery(query) });
 	},
 	async get(id: string) {
-		return mapUserResponse(await $fetch<UserResponse>(`${path}/${id}`));
+		return $fetch<User>(`${path}/${id}`);
+	},
+	async getAdministrativeCapabilities(id: string) {
+		return $fetch<UserAdministrativeCapabilities>(`${path}/${id}/administrative-capabilities`);
+	},
+	async suspend(id: string, body: SuspendUser) {
+		return $fetch<undefined>(`${path}/${id}/suspension`, { method: 'POST', body });
+	},
+	async reactivate(id: string, body: ReactivateUser) {
+		return $fetch<undefined>(`${path}/${id}/reactivation`, { method: 'POST', body });
+	},
+	async close(id: string, body: CloseUser) {
+		return $fetch<undefined>(`${path}/${id}/closure`, { method: 'POST', body });
+	},
+	async revokeSessions(id: string, body: RevokeUserSessions) {
+		return $fetch<undefined>(`${path}/${id}/session-revocation`, { method: 'POST', body });
 	}
 });

@@ -1,5 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { useReauthentication } from '~/composables/useReauthentication';
 import CreatePasswordDialog from './CreatePasswordDialog.vue';
 
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }));
@@ -19,14 +20,14 @@ vi.mock('radix-vue/namespaced', () => {
 });
 
 const createPassword = vi.fn();
-const reauthenticateGoogle = vi.fn();
 const authenticate = vi.fn();
 const addToast = vi.fn();
 vi.stubGlobal('useNuxtApp', () => ({
-	$api: { profile: { createPassword, reauthenticateGoogle } },
+	$api: { profile: { createPassword } },
 	$auth: { authenticate }
 }));
 vi.stubGlobal('useToast', () => ({ addToast }));
+vi.stubGlobal('useReauthentication', useReauthentication);
 
 const InputPasswordStub = {
 	props: ['modelValue', 'id'],
@@ -34,15 +35,16 @@ const InputPasswordStub = {
 	template:
 		'<input :id="id" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />'
 };
-const GoogleIdentityButtonStub = {
-	name: 'GoogleIdentityButton',
-	emits: ['credential', 'error'],
+const ReauthenticationDialogStub = {
+	name: 'ReauthenticationDialog',
+	props: ['open'],
+	emits: ['reauthenticated', 'cancel'],
 	template:
-		'<button type="button" data-testid="reauth" @click="$emit(\'credential\', \'google-token\')">Google</button>'
+		'<button v-if="open" type="button" data-testid="reauth" @click="$emit(\'reauthenticated\')">reauth</button>'
 };
 const mountDialog = () =>
 	mount(CreatePasswordDialog, {
-		props: { open: true, providers: ['google'] },
+		props: { open: true },
 		global: {
 			stubs: {
 				Heading: { template: '<h2><slot /></h2>' },
@@ -60,7 +62,7 @@ const mountDialog = () =>
 					template:
 						'<button :type="type || \'button\'" :disabled="disabled"><slot /></button>'
 				},
-				GoogleIdentityButton: GoogleIdentityButtonStub
+				ReauthenticationDialog: ReauthenticationDialogStub
 			},
 			mocks: { $t: (key: string) => key }
 		}
@@ -74,7 +76,6 @@ describe('CreatePasswordDialog', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		createPassword.mockResolvedValue(undefined);
-		reauthenticateGoogle.mockResolvedValue(undefined);
 		authenticate.mockResolvedValue(true);
 	});
 
@@ -89,23 +90,20 @@ describe('CreatePasswordDialog', () => {
 		expect(authenticate).toHaveBeenCalledOnce();
 	});
 
-	it('requests Google step-up and retries after a stale-session response', async () => {
+	it('asks for reauthentication and retries after a stale-session response', async () => {
 		createPassword
-			.mockRejectedValueOnce({
-				data: { localeKey: 'apiResponses.profile.recentAuthenticationRequired' }
-			})
+			.mockRejectedValueOnce({ data: { code: 'RECENT_AUTHENTICATION_REQUIRED' } })
 			.mockResolvedValue(undefined);
 		const wrapper = mountDialog();
 		await fill(wrapper);
 		await wrapper.find('form').trigger('submit');
 		await flushPromises();
-		expect(wrapper.find('[data-testid="reauth"]').exists()).toBe(true);
 
 		await wrapper.find('[data-testid="reauth"]').trigger('click');
 		await flushPromises();
 
-		expect(reauthenticateGoogle).toHaveBeenCalledWith({ idToken: 'google-token' });
 		expect(createPassword).toHaveBeenCalledTimes(2);
+		expect(wrapper.emitted('update:open')).toContainEqual([false]);
 	});
 
 	it('never asks for a current password', () => {

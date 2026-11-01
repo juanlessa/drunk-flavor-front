@@ -7,17 +7,15 @@
 	</ProfileSection>
 
 	<UpdatePasswordDialog v-if="props.hasPassword" v-model:open="isOpen" />
-	<CreatePasswordDialog v-else v-model:open="isOpen" :providers="props.providers" />
+	<CreatePasswordDialog v-else v-model:open="isOpen" />
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import LockIcon from '~/components/icons/LockIcon.vue';
-import type { AuthenticationProvider } from '~/domain/profile/profile.entity';
 
 const props = defineProps({
-	hasPassword: { type: Boolean, required: true },
-	providers: { type: Array as PropType<AuthenticationProvider[]>, default: () => [] }
+	hasPassword: { type: Boolean, required: true }
 });
 const { t } = useI18n();
 const isOpen = ref(false);

@@ -178,10 +178,7 @@
 					"dialogDescription": "Add email and password as another secure way to access your account.",
 					"saveButton": "Create password",
 					"successMessage": "Your password was created. You can now sign in with email or Google.",
-					"errorMessage": "Unable to create your password. Please try again.",
-					"reauthenticationMessage": "For your security, verify your linked Google account before creating a password.",
-					"reauthenticationError": "Unable to verify your Google account. Please try again.",
-					"noReauthenticationMethod": "No supported authentication method is available."
+					"errorMessage": "Unable to create your password. Please try again."
 				},
 				"update": {
 					"title": "Password",
@@ -247,6 +244,17 @@
 				"emailNotVerified": "Your Google account email is not verified.",
 				"accountLinkRequired": "This email already has an account. Sign in first, then connect Google from your profile."
 			}
+		},
+		"reauthenticationDialog": {
+			"title": "Confirm it's you",
+			"description": "For your security, confirm your identity to continue with this action.",
+			"passwordLabel": "Password",
+			"confirmButton": "Confirm",
+			"cancelButton": "Cancel",
+			"noMethod": "No supported authentication method is available.",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to confirm your identity. Please try again.",
+			"googleErrorMessage": "Unable to open Google authentication. Please try again."
 		},
 		"signupForm": {
 			"title": "Create an account",

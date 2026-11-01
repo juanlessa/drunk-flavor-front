@@ -1,17 +1,15 @@
 import type { $Fetch } from 'nitropack';
 import type { PaginatedQueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
-import { mapRatingResponse, type RatingResponse } from './rating.api';
 import type {
 	CreateRating,
 	CreateRatingResponse,
 	RatingMutationResponse,
 	UpdateRating
 } from './rating.dtos';
-import type { RatingSummary } from './rating.entity';
+import type { Rating, RatingSummary } from './rating.entity';
 
 const path = '/ratings';
-const mapList = (response: RatingResponse[]) => response.map(mapRatingResponse);
 
 export const ratingsRepository = ($fetch: $Fetch) => ({
 	async create(body: CreateRating) {
@@ -24,28 +22,23 @@ export const ratingsRepository = ($fetch: $Fetch) => ({
 		return $fetch<RatingMutationResponse>(`${path}/${id}`, { method: 'DELETE' });
 	},
 	async get(id: string) {
-		return mapRatingResponse(await $fetch<RatingResponse>(`${path}/${id}`));
+		return $fetch<Rating>(`${path}/${id}`);
 	},
 	async getSummaryByDrink(drinkId: string) {
 		return $fetch<RatingSummary>(`/drinks/${drinkId}/ratings/summary`);
 	},
 	async getMineByDrink(drinkId: string) {
-		const response = await $fetch<RatingResponse | null>(`/drinks/${drinkId}/ratings/me`);
-		return response ? mapRatingResponse(response) : null;
+		return $fetch<Rating | null>(`/drinks/${drinkId}/ratings/me`);
 	},
 	async list(query: PaginatedQueryParams) {
-		return mapList(await $fetch<RatingResponse[]>(path, { query: serializeListQuery(query) }));
+		return $fetch<Rating[]>(path, { query: serializeListQuery(query) });
 	},
 	async listByDrink(drinkId: string, query: PaginatedQueryParams) {
-		return mapList(
-			await $fetch<RatingResponse[]>(`/drinks/${drinkId}/ratings`, {
-				query: serializeListQuery(query)
-			})
-		);
+		return $fetch<Rating[]>(`/drinks/${drinkId}/ratings`, {
+			query: serializeListQuery(query)
+		});
 	},
 	async listMine(query: PaginatedQueryParams) {
-		return mapList(
-			await $fetch<RatingResponse[]>('/me/ratings', { query: serializeListQuery(query) })
-		);
+		return $fetch<Rating[]>('/me/ratings', { query: serializeListQuery(query) });
 	}
 });

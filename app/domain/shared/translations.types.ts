@@ -1,9 +1,6 @@
-export enum LanguagesEnum {
-	en = 'en',
-	pt = 'pt'
-}
+import type { Languages } from './translations.constants';
 
-export type Language = keyof typeof LanguagesEnum;
+export type Language = (typeof Languages)[keyof typeof Languages];
 
 export type Translations<T> = {
 	[key in Language]: T;

@@ -1,8 +1,8 @@
 import type { $Fetch } from 'nitropack';
 import type { QueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
-import { mapCategoryResponse, type CategoryResponse } from './category.api';
 import type { CreateCategory, UpdateCategory } from './category.dtos';
+import type { Category } from './category.entity';
 
 const path = '/categories';
 
@@ -17,12 +17,9 @@ export const categoriesRepository = ($fetch: $Fetch) => ({
 		return $fetch<undefined>(path, { method: 'DELETE', body: { id } });
 	},
 	async list(query: QueryParams) {
-		const response = await $fetch<CategoryResponse[]>(path, {
-			query: serializeListQuery(query)
-		});
-		return response.map(mapCategoryResponse);
+		return $fetch<Category[]>(path, { query: serializeListQuery(query) });
 	},
 	async get(id: string) {
-		return mapCategoryResponse(await $fetch<CategoryResponse>(`${path}/${id}`));
+		return $fetch<Category>(`${path}/${id}`);
 	}
 });

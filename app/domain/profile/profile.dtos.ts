@@ -19,3 +19,7 @@ export type LinkGoogleIdentity = {
 export type ReauthenticateGoogle = {
 	idToken: string;
 };
+
+export type ReauthenticatePassword = {
+	password: string;
+};

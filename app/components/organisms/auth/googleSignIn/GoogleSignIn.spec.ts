@@ -39,7 +39,7 @@ describe('GoogleSignIn', () => {
 	it('maps an unverified-email response to its specific message', async () => {
 		vi.spyOn(console, 'error').mockImplementation(() => {});
 		googleAuth.mockRejectedValue({
-			data: { localeKey: 'apiResponses.auth.googleEmailNotVerified' }
+			data: { code: 'GOOGLE_EMAIL_NOT_VERIFIED' }
 		});
 		const wrapper = mountSignIn();
 		await wrapper.find('[data-testid="google"]').trigger('click');
@@ -53,7 +53,7 @@ describe('GoogleSignIn', () => {
 	it('maps an existing-account response to the profile-linking guidance', async () => {
 		vi.spyOn(console, 'error').mockImplementation(() => {});
 		googleAuth.mockRejectedValue({
-			data: { localeKey: 'apiResponses.auth.accountLinkRequired' }
+			data: { code: 'ACCOUNT_LINK_REQUIRED' }
 		});
 		const wrapper = mountSignIn();
 		await wrapper.find('[data-testid="google"]').trigger('click');
