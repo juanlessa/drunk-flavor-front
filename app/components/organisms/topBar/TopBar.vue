@@ -20,13 +20,20 @@
 					direction="row"
 					class="gap-2 items-center"
 					:aria-label="$t('organisms.topBar.primaryNav.label')">
-					<Anchor
-						v-for="link in links"
-						:key="link.path"
-						:to="localePath(link.path)"
-						class="px-2 inline-flex justify-between items-center">
-						<Text as="span">{{ $t(link.i18nKey) }}</Text>
-					</Anchor>
+					<template v-for="link in links" :key="link.path">
+						<span
+							v-if="isCurrentPage(link)"
+							aria-current="page"
+							class="relative h-20 px-2 inline-flex items-center text-body font-medium text-accent-content after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:rounded-full after:bg-accent-content">
+							{{ $t(link.i18nKey) }}
+						</span>
+						<Anchor
+							v-else
+							:to="localePath(link.path)"
+							class="px-2 inline-flex justify-between items-center">
+							<Text as="span">{{ $t(link.i18nKey) }}</Text>
+						</Anchor>
+					</template>
 					<Button
 						v-if="isAuthenticated"
 						variant="plain"
@@ -49,16 +56,23 @@
 							direction="col"
 							class="gap-2"
 							:aria-label="$t('organisms.topBar.mobileNav.label')">
-							<Anchor
-								v-for="link in links"
-								:key="link.path"
-								:to="localePath(link.path)"
-								class="px-2 inline-flex justify-between items-center">
-								<Text as="span">{{ $t(link.i18nKey) }}</Text>
-								<component
-									:is="link.path === '/signin' ? SigninIcon : ArrowRightIcon"
-									class="size-4" />
-							</Anchor>
+							<template v-for="link in links" :key="link.path">
+								<span
+									v-if="isCurrentPage(link)"
+									aria-current="page"
+									class="relative px-2 inline-flex items-center text-body font-medium text-accent-content before:absolute before:-left-1 before:inset-y-0 before:w-[3px] before:rounded-full before:bg-accent-content">
+									{{ $t(link.i18nKey) }}
+								</span>
+								<Anchor
+									v-else
+									:to="localePath(link.path)"
+									class="px-2 inline-flex justify-between items-center">
+									<Text as="span">{{ $t(link.i18nKey) }}</Text>
+									<component
+										:is="link.path === '/signin' ? SigninIcon : ArrowRightIcon"
+										class="size-4" />
+								</Anchor>
+							</template>
 							<Button
 								v-if="isAuthenticated"
 								variant="plain"
@@ -96,11 +110,15 @@ const { $auth } = useNuxtApp();
 const { t } = useI18n();
 const { addToast } = useToast();
 const localePath = useLocalePath();
+const route = useRoute();
 const { can } = useAppAbility();
 const isSigningOut = ref(false);
 
 const isAuthenticated = computed(() => $auth.state.value.isAuthenticated);
 const links = computed<ILink[]>(() => getLinksBasedOnPermissions(isAuthenticated.value));
+
+// Only the exact page is "current": from /users/:id the users link still leads back to the list.
+const isCurrentPage = (link: ILink) => route.path === localePath(link.path).toString();
 
 const handleSignout = async () => {
 	if (isSigningOut.value) return;
