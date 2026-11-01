@@ -43,6 +43,9 @@
 		},
 		"itemControlCard": {
 			"deleteButton": { "label": "delete item" }
+		},
+		"managementItemCard": {
+			"deleteButton": { "label": "Delete {name}" }
 		}
 	},
 	"organisms": {
@@ -91,11 +94,21 @@
 			"legalNav": { "label": "legal" }
 		},
 		"ingredientsControlOverview": {
-			"createButton": { "value": "Create Ingredient" },
+			"searchLabel": "Search ingredients",
+			"searchPlaceholder": "Search ingredients by name",
+			"createButton": { "value": "New ingredient" },
+			"emptyMessage": "No ingredients found.",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load the ingredients.",
 			"deleteModal": {
-				"title": "Are you sure you want to delete the item",
-				"description": "This action cannot be undo"
-			}
+				"title": "Delete {name}?",
+				"description": "This action cannot be undone."
+			},
+			"deleteSuccess": {
+				"title": "Ingredient deleted",
+				"message": "The ingredient was deleted."
+			},
+			"deleteError": { "title": "Error", "message": "Unable to delete the ingredient." }
 		},
 		"ingredientForm": {
 			"title": "Ingredient",

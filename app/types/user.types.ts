@@ -11,6 +11,9 @@ export type UsersOverviewState = {
 	loading: boolean;
 };
 
+/** Administrative actions that require an audit reason and share the same dialog. */
+export type UserReasonAction = 'suspend' | 'reactivate' | 'close' | 'revokeSessions';
+
 export type UserAdministrationReasonForm = {
 	reason: string;
 };

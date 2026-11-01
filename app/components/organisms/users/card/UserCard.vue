@@ -17,7 +17,7 @@
 			<div class="flex flex-wrap gap-2 tablet:shrink-0 tablet:flex-nowrap">
 				<Badge tone="accent" :value="$t(`users.roles.${props.user.role}`)" />
 				<Badge
-					:tone="statusTones[props.user.status]"
+					:tone="getUserStatusBadgeTone(props.user.status)"
 					:value="$t(`users.statuses.${props.user.status}`)" />
 			</div>
 		</div>
@@ -26,8 +26,8 @@
 </template>
 <script setup lang="ts">
 import ArrowRightIcon from '~/components/icons/ArrowRightIcon.vue';
-import type { BadgeTone } from '~/components/atoms/badge/Badge.types';
-import type { User, UserStatus } from '~/domain/user/user.entity';
+import type { User } from '~/domain/user/user.entity';
+import { getUserFullName, getUserStatusBadgeTone } from '~/helpers/user.helpers';
 
 const props = defineProps({
 	user: { type: Object as PropType<User>, required: true }
@@ -39,18 +39,8 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const statusTones: Record<UserStatus, BadgeTone> = {
-	active: 'success',
-	suspended: 'warning',
-	pending: 'neutral',
-	idle: 'neutral',
-	incomplete_profile: 'neutral'
-};
-
 // An incomplete profile has no name yet, so the email becomes the primary line.
-const fullName = computed(() =>
-	[props.user.name, props.user.surname].filter(Boolean).join(' ').trim()
-);
+const fullName = computed(() => getUserFullName(props.user));
 const displayName = computed(() => fullName.value || props.user.email);
 const secondaryLine = computed(() =>
 	fullName.value ? props.user.email : t('organisms.usersControlOverview.noName')
