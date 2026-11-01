@@ -70,6 +70,17 @@ describe('InputText', () => {
 		});
 	});
 
+	describe('prefix', () => {
+		it('renders the prefix slot before the native input', () => {
+			const wrapper = mount(InputText, {
+				slots: { prefix: '<svg data-testid="prefix-icon" />' }
+			});
+			const container = wrapper.find('input').element.parentElement!;
+
+			expect(container.firstElementChild?.getAttribute('data-testid')).toBe('prefix-icon');
+		});
+	});
+
 	describe('events', () => {
 		it('emits update:modelValue on input', async () => {
 			const wrapper = mount(InputText);
