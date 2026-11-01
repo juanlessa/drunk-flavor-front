@@ -10,6 +10,11 @@ export type DrinksOverviewState = {
 	loading: boolean;
 };
 
+export type DrinksControlOverviewState = DrinksOverviewState & {
+	/** Raw input; applied to `filter.search` after the debounce. */
+	searchTerm: string;
+};
+
 export type DrinkForm = {
 	translations: Translations<DrinkTranslation>;
 	ingredients: DrinkIngredientRequest[];

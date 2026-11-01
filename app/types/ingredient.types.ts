@@ -7,6 +7,8 @@ import type { Ingredient, IngredientTranslation } from '~/domain/ingredient/ingr
 export type IngredientsOverviewState = {
 	ingredients: Ingredient[];
 	filter: Filter;
+	/** Raw input; applied to `filter.search` after the debounce. */
+	searchTerm: string;
 	loading: boolean;
 };
 

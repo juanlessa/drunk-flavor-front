@@ -40,9 +40,10 @@ const mountDetail = () =>
 				Anchor: { template: '<a><slot /></a>' },
 				Heading: { template: '<h1><slot /></h1>' },
 				Text: { template: '<p><slot /></p>' },
-				Card: { template: '<div><slot /></div>' },
-				AnimatedPlaceHolder: true,
 				UserAdministrationSummary: { template: '<div data-testid="summary" />' },
+				UserAdministrationSummarySkeleton: {
+					template: '<div data-testid="summary-skeleton" />'
+				},
 				ProfileSection: ProfileSectionStub,
 				Button: {
 					emits: ['click'],
@@ -72,6 +73,14 @@ describe('UserAdministrationDetail', () => {
 		expect(wrapper.findAll('[data-testid="action-section"]')).toHaveLength(3);
 		expect(wrapper.text()).toContain('organisms.userAdministration.actions.suspend');
 		expect(wrapper.text()).not.toContain('organisms.userAdministration.actions.close');
+	});
+
+	it('shows the summary skeleton instead of the summary while loading', () => {
+		mockIsLoading.value = true;
+		const wrapper = mountDetail();
+
+		expect(wrapper.find('[data-testid="summary-skeleton"]').exists()).toBe(true);
+		expect(wrapper.find('[data-testid="summary"]').exists()).toBe(false);
 	});
 
 	it('explains when no administrative action is available', () => {

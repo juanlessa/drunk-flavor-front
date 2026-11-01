@@ -10,13 +10,7 @@
 			</Heading>
 		</header>
 
-		<Card v-if="isLoading" class="flex items-center gap-4 p-6" aria-hidden="true">
-			<AnimatedPlaceHolder class="size-16 rounded-full" />
-			<div class="flex-1 flex flex-col gap-2">
-				<AnimatedPlaceHolder class="w-48 h-5 rounded-xs" />
-				<AnimatedPlaceHolder class="w-64 h-4 rounded-xs" />
-			</div>
-		</Card>
+		<UserAdministrationSummarySkeleton v-if="isLoading" />
 
 		<Text v-else-if="hasError || !user" class="text-content-muted">
 			{{ $t('organisms.userAdministration.loadErrorMessage') }}

@@ -26,6 +26,14 @@
 		}
 	},
 	"molecules": {
+		"googleIdentityButton": {
+			"text": {
+				"continue_with": "Continuar com o Google",
+				"signin_with": "Fazer login com o Google",
+				"signup_with": "Inscrever-se com o Google",
+				"signin": "Fazer login"
+			}
+		},
 		"buttonGroup": {
 			"cancelButton": { "value": "cancelar" },
 			"actionButton": { "value": "concluído" }
@@ -41,20 +49,29 @@
 			"selectFile": { "message": "selecione o arquivo" },
 			"clearButton": { "label": "limpar arquivo" }
 		},
-		"itemControlCard": {
-			"deleteButton": { "label": "excluir item" }
-		},
 		"managementItemCard": {
 			"deleteButton": { "label": "Excluir {name}" }
 		}
 	},
 	"organisms": {
 		"categoriesControlOverview": {
-			"createButton": { "value": "Criar Categoria" },
+			"searchLabel": "Buscar categorias",
+			"searchPlaceholder": "Buscar categorias por nome",
+			"createButton": { "value": "Nova categoria" },
+			"emptyMessage": "Nenhuma categoria encontrada.",
+			"alcoholic": "Alcoólica",
+			"nonAlcoholic": "Não alcoólica",
+			"errorTitle": "Erro",
+			"errorMessage": "Não foi possível carregar as categorias.",
 			"deleteModal": {
-				"title": "Tem certeza que deseja excluir o item",
-				"description": "Essa ação não pode ser desfeita"
-			}
+				"title": "Excluir {name}?",
+				"description": "Essa ação não pode ser desfeita."
+			},
+			"deleteSuccess": {
+				"title": "Categoria excluída",
+				"message": "A categoria foi excluída."
+			},
+			"deleteError": { "title": "Erro", "message": "Não foi possível excluir a categoria." }
 		},
 		"categoryForm": {
 			"title": "Categoria",
@@ -63,11 +80,24 @@
 			"isAlcoholicInput": { "label": "é alcoólico?" }
 		},
 		"unitsControlOverview": {
-			"createButton": { "value": "Criar Unidade" },
+			"searchLabel": "Buscar unidades",
+			"searchPlaceholder": "Buscar unidades por nome",
+			"createButton": { "value": "Nova unidade" },
+			"emptyMessage": "Nenhuma unidade encontrada.",
+			"kinds": {
+				"volume": "Volume",
+				"mass": "Massa",
+				"count": "Contagem",
+				"informal": "Informal"
+			},
+			"errorTitle": "Erro",
+			"errorMessage": "Não foi possível carregar as unidades.",
 			"deleteModal": {
-				"title": "Tem certeza que deseja excluir o item",
-				"description": "Essa ação não pode ser desfeita"
-			}
+				"title": "Excluir {name}?",
+				"description": "Essa ação não pode ser desfeita."
+			},
+			"deleteSuccess": { "title": "Unidade excluída", "message": "A unidade foi excluída." },
+			"deleteError": { "title": "Erro", "message": "Não foi possível excluir a unidade." }
 		},
 		"unitForm": {
 			"title": "Unidade",
@@ -118,11 +148,19 @@
 			"unitInput": { "label": "unidade" }
 		},
 		"drinksControlOverview": {
-			"createButton": { "value": "Criar drink" },
+			"searchLabel": "Buscar drinks",
+			"searchPlaceholder": "Buscar drinks por nome",
+			"createButton": { "value": "Novo drink" },
+			"emptyMessage": "Nenhum drink encontrado.",
+			"ingredientsCount": "{count} ingrediente | {count} ingredientes",
+			"errorTitle": "Erro",
+			"errorMessage": "Não foi possível carregar os drinks.",
 			"deleteModal": {
-				"title": "Tem certeza que deseja excluir o item",
-				"description": "Essa ação não pode ser desfeita"
-			}
+				"title": "Excluir {name}?",
+				"description": "Essa ação não pode ser desfeita."
+			},
+			"deleteSuccess": { "title": "Drink excluído", "message": "O drink foi excluído." },
+			"deleteError": { "title": "Erro", "message": "Não foi possível excluir o drink." }
 		},
 		"drinkCard": {
 			"ingredientsLabel": "INGREDIENTES",
@@ -271,8 +309,6 @@
 			"googleErrorMessage": "Não foi possível abrir a autenticação do Google. Tente novamente."
 		},
 		"usersControlOverview": {
-			"title": "Usuários",
-			"description": "Gerencie contas, papéis e acessos.",
 			"searchLabel": "Buscar usuários",
 			"searchPlaceholder": "Buscar por email",
 			"emptyMessage": "Nenhum usuário encontrado.",

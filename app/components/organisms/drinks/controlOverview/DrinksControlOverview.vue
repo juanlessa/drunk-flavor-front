@@ -1,43 +1,62 @@
 <template>
-	<ButtonGroup class="p-4">
-		<Button @click="handleCreateDrink">
-			{{ $t('organisms.drinksControlOverview.createButton.value') }}
-		</Button>
-	</ButtonGroup>
+	<ManagementToolbar
+		v-model:search-term="searchTerm"
+		search-id="drinks-search"
+		:search-label="$t('organisms.drinksControlOverview.searchLabel')"
+		:search-placeholder="$t('organisms.drinksControlOverview.searchPlaceholder')"
+		:create-label="$t('organisms.drinksControlOverview.createButton.value')"
+		@create="handleCreateDrink" />
+
+	<Text v-if="isEmpty" class="px-4 py-8 text-center text-content-muted">
+		{{ $t('organisms.drinksControlOverview.emptyMessage') }}
+	</Text>
 
 	<div ref="containerRef" class="flex-1">
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:items="overviewState.drinks"
 				:height="containerHeight"
-				:item-height="CARD_GRID_METRICS_PX.controlRowHeight"
+				:item-height="CARD_GRID_METRICS_PX.managementRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
 				@load-more="loadNextPage">
 				<template #default="{ list }">
-					<Box
+					<div
 						v-for="{ data: drinkRow, index } in list"
 						:key="index"
-						direction="row"
-						:class="virtualGridRowStyle({ fixedHeight: true })">
-						<ItemControlCard
+						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
+						<ManagementItemCard
 							v-for="drink in drinkRow"
 							:key="drink.id"
-							ref="itemControlCard"
-							:content="drink.translations[$i18n.locale].name"
-							@click="() => handleEditDrink(drink.id)"
-							@action="() => triggerDeleteModal(drink)" />
-					</Box>
+							:title="drink.translations[locale].name"
+							:description="
+								$t(
+									'organisms.drinksControlOverview.ingredientsCount',
+									drink.ingredients.length
+								)
+							"
+							@select="handleEditDrink(drink.id)"
+							@delete="triggerDeleteModal(drink)">
+							<template #media>
+								<!-- Decorative: the drink name is right next to it. -->
+								<ImageThumbnail
+									class="size-11 shrink-0 rounded-control"
+									:src="drink.thumbnail?.url ?? ''"
+									alt=""
+									src-fallback="/thumbnail-placeholder.png"
+									src-fallback-dark="/thumbnail-placeholder-dark.png" />
+							</template>
+						</ManagementItemCard>
+					</div>
 				</template>
 				<template #loading>
-					<Box
+					<div
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
-						direction="row"
-						:class="virtualGridRowStyle()">
-						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
-					</Box>
+						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
+						<ManagementItemCardSkeleton v-for="i in gridColumns" :key="i" media />
+					</div>
 				</template>
 			</VirtualInfiniteGrid>
 		</ClientOnly>
@@ -60,7 +79,8 @@ const { $router } = useNuxtApp();
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const { addToast } = useToast();
-const { overviewState, deleteDrink, loadNextPage } = useDrinksOverview();
+const { overviewState, searchTerm, isEmpty, deleteDrink, loadNextPage } =
+	useDrinksControlOverview();
 const { screenType } = useScreenType();
 
 const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
@@ -77,7 +97,11 @@ const handleEditDrink = (id: string) => {
 function useVirtualInfiniteGrid() {
 	const containerRef = ref<HTMLDivElement | null>(null);
 	const containerHeight = ref(0);
-	const gridColumns = computed(() => (screenType.value === 'mobile' ? 1 : 2));
+	const gridColumns = computed(() => {
+		if (screenType.value === 'mobile') return 1;
+		if (screenType.value === 'tablet') return 2;
+		return 3;
+	});
 
 	const updateContainerHeight = () => {
 		if (containerRef.value) {
@@ -107,8 +131,10 @@ function useDrinkDeleteModal() {
 	const drinkToDelete = ref(initEmptyDrink());
 
 	const modalContent = computed(() => ({
-		title: `${t('organisms.drinksControlOverview.deleteModal.title')} ${drinkToDelete.value.translations[locale.value].name}`,
-		description: `${t('organisms.drinksControlOverview.deleteModal.description')}`
+		title: t('organisms.drinksControlOverview.deleteModal.title', {
+			name: drinkToDelete.value.translations[locale.value].name
+		}),
+		description: t('organisms.drinksControlOverview.deleteModal.description')
 	}));
 
 	const triggerDeleteModal = (drink: Drink) => {
@@ -123,10 +149,17 @@ function useDrinkDeleteModal() {
 	const handleDelete = async () => {
 		try {
 			await deleteDrink(drinkToDelete.value.id);
-			addToast({ type: 'success', title: 'SUCCESS!', message: 'drink deleted' });
-		} catch (error) {
-			addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete drink' });
-			console.error(error);
+			addToast({
+				type: 'success',
+				title: t('organisms.drinksControlOverview.deleteSuccess.title'),
+				message: t('organisms.drinksControlOverview.deleteSuccess.message')
+			});
+		} catch {
+			addToast({
+				type: 'error',
+				title: t('organisms.drinksControlOverview.deleteError.title'),
+				message: t('organisms.drinksControlOverview.deleteError.message')
+			});
 		} finally {
 			drinkToDelete.value = initEmptyDrink();
 		}

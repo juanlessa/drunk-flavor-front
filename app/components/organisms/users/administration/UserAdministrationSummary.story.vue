@@ -11,6 +11,12 @@
 					:user="{ ...user, status: 'suspended', emailVerified: false }" />
 			</div>
 		</Variant>
+		<Variant title="With skeleton">
+			<div class="max-w-3xl p-4 flex flex-col gap-4">
+				<UserAdministrationSummary :user="user" />
+				<UserAdministrationSummarySkeleton />
+			</div>
+		</Variant>
 	</Story>
 </template>
 <script setup lang="ts">

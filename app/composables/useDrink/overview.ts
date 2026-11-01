@@ -55,10 +55,6 @@ export const useDrinksOverview = () => {
 
 	onBeforeUnmount(() => resetOverviewState());
 
-	const deleteDrink = async (drinkId: string) => {
-		await $api.drinks.delete(drinkId);
-	};
-
 	const loadNextPage = () => {
 		if (state.value.loading || state.value.filter.isLastPage) return;
 		state.value.filter = { ...state.value.filter, page: state.value.filter.page + 1 };
@@ -67,7 +63,6 @@ export const useDrinksOverview = () => {
 	return {
 		overviewState: state,
 		resetOverviewState,
-		deleteDrink,
 		loadNextPage
 	};
 };

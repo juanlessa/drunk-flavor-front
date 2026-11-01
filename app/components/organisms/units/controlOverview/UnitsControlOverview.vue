@@ -1,55 +1,66 @@
 <template>
-	<ButtonGroup class="p-4">
-		<Button @click="handleCreateUnit">
-			{{ $t('organisms.unitsControlOverview.createButton.value') }}
-		</Button>
-	</ButtonGroup>
+	<ManagementToolbar
+		v-model:search-term="searchTerm"
+		search-id="units-search"
+		:search-label="$t('organisms.unitsControlOverview.searchLabel')"
+		:search-placeholder="$t('organisms.unitsControlOverview.searchPlaceholder')"
+		:create-label="$t('organisms.unitsControlOverview.createButton.value')"
+		@create="handleCreateUnit" />
+
+	<Text v-if="isEmpty" class="px-4 py-8 text-center text-content-muted">
+		{{ $t('organisms.unitsControlOverview.emptyMessage') }}
+	</Text>
+
 	<div ref="containerRef" class="flex-1">
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:items="overviewState.units"
 				:height="containerHeight"
-				:item-height="CARD_GRID_METRICS_PX.controlRowHeight"
+				:item-height="CARD_GRID_METRICS_PX.managementRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
 				@load-more="loadNextPage">
 				<template #default="{ list }">
-					<Box
+					<div
 						v-for="{ data: unitRow, index } in list"
 						:key="index"
-						direction="row"
-						:class="virtualGridRowStyle({ fixedHeight: true })">
-						<ItemControlCard
+						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
+						<ManagementItemCard
 							v-for="unit in unitRow"
 							:key="unit.id"
-							ref="itemControlCard"
-							:content="unit.translations[$i18n.locale].name"
-							@click="() => handleEditUnit(unit.id)"
-							@action="() => triggerDeleteModal(unit)" />
-					</Box>
+							:title="unit.translations[locale].name"
+							:description="
+								getUnitSummary(
+									unit,
+									$t(`organisms.unitsControlOverview.kinds.${unit.kind}`)
+								)
+							"
+							@select="handleEditUnit(unit.id)"
+							@delete="triggerDeleteModal(unit)" />
+					</div>
 				</template>
 				<template #loading>
-					<Box
+					<div
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
-						direction="row"
-						:class="virtualGridRowStyle()">
-						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
-					</Box>
+						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
+						<ManagementItemCardSkeleton v-for="i in gridColumns" :key="i" />
+					</div>
 				</template>
 			</VirtualInfiniteGrid>
 		</ClientOnly>
 	</div>
+
 	<DeleteModal v-model:open="isOpen" @cancel="handleCancel" @delete="handleDelete">
 		<template #title>{{ modalContent.title }}</template>
 		<template #description>{{ modalContent.description }}</template>
 	</DeleteModal>
 </template>
-
 <script setup lang="ts">
 import { initEmptyUnit } from '~/domain/unit/unit.factory';
 import type { Unit } from '~/domain/unit/unit.entity';
+import { getUnitSummary } from '~/helpers/unit.helpers';
 import {
 	CARD_GRID_METRICS_PX,
 	virtualGridRowStyle
@@ -59,8 +70,9 @@ const { $router } = useNuxtApp();
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const { addToast } = useToast();
-const { overviewState, deleteUnit, loadNextPage } = useUnitsOverview();
+const { overviewState, searchTerm, isEmpty, deleteUnit, loadNextPage } = useUnitsOverview();
 const { screenType } = useScreenType();
+
 const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
 const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } =
 	useUnitDeleteModal();
@@ -68,7 +80,6 @@ const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } =
 const handleCreateUnit = () => {
 	$router.push(localePath('/units/new'));
 };
-
 const handleEditUnit = (id: string) => {
 	$router.push(localePath(`/units/${id}/edit`));
 };
@@ -76,7 +87,11 @@ const handleEditUnit = (id: string) => {
 function useVirtualInfiniteGrid() {
 	const containerRef = ref<HTMLDivElement | null>(null);
 	const containerHeight = ref(0);
-	const gridColumns = computed(() => (screenType.value === 'mobile' ? 1 : 2));
+	const gridColumns = computed(() => {
+		if (screenType.value === 'mobile') return 1;
+		if (screenType.value === 'tablet') return 2;
+		return 3;
+	});
 
 	const updateContainerHeight = () => {
 		if (containerRef.value) {
@@ -91,7 +106,6 @@ function useVirtualInfiniteGrid() {
 			resizeObserver.observe(containerRef.value);
 		}
 	});
-
 	onBeforeUnmount(() => {
 		if (containerRef.value) {
 			resizeObserver.unobserve(containerRef.value);
@@ -107,8 +121,10 @@ function useUnitDeleteModal() {
 	const unitToDelete = ref(initEmptyUnit());
 
 	const modalContent = computed(() => ({
-		title: `${t('organisms.unitsControlOverview.deleteModal.title')} ${unitToDelete.value.translations[locale.value].name}`,
-		description: `${t('organisms.unitsControlOverview.deleteModal.description')}`
+		title: t('organisms.unitsControlOverview.deleteModal.title', {
+			name: unitToDelete.value.translations[locale.value].name
+		}),
+		description: t('organisms.unitsControlOverview.deleteModal.description')
 	}));
 
 	const triggerDeleteModal = (unit: Unit) => {
@@ -123,9 +139,17 @@ function useUnitDeleteModal() {
 	const handleDelete = async () => {
 		try {
 			await deleteUnit(unitToDelete.value.id);
-			addToast({ type: 'success', title: 'SUCCESS!', message: 'unit deleted' });
+			addToast({
+				type: 'success',
+				title: t('organisms.unitsControlOverview.deleteSuccess.title'),
+				message: t('organisms.unitsControlOverview.deleteSuccess.message')
+			});
 		} catch {
-			addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete unit' });
+			addToast({
+				type: 'error',
+				title: t('organisms.unitsControlOverview.deleteError.title'),
+				message: t('organisms.unitsControlOverview.deleteError.message')
+			});
 		} finally {
 			unitToDelete.value = initEmptyUnit();
 		}

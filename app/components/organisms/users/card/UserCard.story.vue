@@ -15,6 +15,12 @@
 				<UserCard :user="incompleteUser" />
 			</div>
 		</Variant>
+		<Variant title="With skeleton">
+			<div class="max-w-3xl p-4 flex flex-col gap-3">
+				<UserCard :user="activeUser" />
+				<UserCardSkeleton />
+			</div>
+		</Variant>
 	</Story>
 </template>
 <script setup lang="ts">

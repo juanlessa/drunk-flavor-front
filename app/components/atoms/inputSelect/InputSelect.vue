@@ -16,7 +16,7 @@
 
 		<Select.Portal>
 			<Select.Content
-				class="w-full bg-surface-overlay rounded-overlay shadow-overlay will-change-[opacity,transform] data-[side=top]:animate-floating-enter-from-top data-[side=right]:animate-floating-enter-from-right data-[side=bottom]:animate-floating-enter-from-bottom data-[side=left]:animate-floating-enter-from-left z-dropdown"
+				class="w-full bg-surface-overlay rounded-overlay shadow-overlay will-change-[opacity,transform] data-[side=top]:animate-floating-enter-from-top data-[side=right]:animate-floating-enter-from-right data-[side=bottom]:animate-floating-enter-from-bottom data-[side=left]:animate-floating-enter-from-left z-popover"
 				:style="{ width: 'var(--radix-select-trigger-width)' }"
 				side="bottom"
 				:side-offset="FLOATING_POSITION_PX.selectSideOffset"

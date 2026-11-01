@@ -8,6 +8,8 @@ import type { Category, CategoryTranslation } from '~/domain/category/category.e
 export type CategoriesOverviewState = {
 	categories: Category[];
 	filter: Filter;
+	/** Raw input; applied to `filter.search` after the debounce. */
+	searchTerm: string;
 	loading: boolean;
 };
 

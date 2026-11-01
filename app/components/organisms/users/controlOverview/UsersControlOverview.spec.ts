@@ -33,7 +33,6 @@ const mountOverview = () =>
 	mount(UsersControlOverview, {
 		global: {
 			stubs: {
-				Heading: { template: '<h1><slot /></h1>' },
 				Text: { template: '<p><slot /></p>' },
 				Label: { template: '<label><slot /></label>' },
 				InputText: {
@@ -42,7 +41,7 @@ const mountOverview = () =>
 					template:
 						'<input :id="id" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />'
 				},
-				AnimatedPlaceHolder: { template: '<div data-testid="skeleton" />' },
+				UserCardSkeleton: { template: '<div data-testid="skeleton" />' },
 				UserCard: UserCardStub
 			},
 			mocks: { $t: (key: string) => key }

@@ -26,6 +26,14 @@
 		}
 	},
 	"molecules": {
+		"googleIdentityButton": {
+			"text": {
+				"continue_with": "Continue with Google",
+				"signin_with": "Sign in with Google",
+				"signup_with": "Sign up with Google",
+				"signin": "Sign in"
+			}
+		},
 		"buttonGroup": {
 			"cancelButton": { "value": "cancel" },
 			"actionButton": { "value": "done" }
@@ -41,20 +49,29 @@
 			"selectFile": { "message": "select file" },
 			"clearButton": { "label": "clear file" }
 		},
-		"itemControlCard": {
-			"deleteButton": { "label": "delete item" }
-		},
 		"managementItemCard": {
 			"deleteButton": { "label": "Delete {name}" }
 		}
 	},
 	"organisms": {
 		"categoriesControlOverview": {
-			"createButton": { "value": "Create Category" },
+			"searchLabel": "Search categories",
+			"searchPlaceholder": "Search categories by name",
+			"createButton": { "value": "New category" },
+			"emptyMessage": "No categories found.",
+			"alcoholic": "Alcoholic",
+			"nonAlcoholic": "Non-alcoholic",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load the categories.",
 			"deleteModal": {
-				"title": "Are you sure you want to delete the item",
-				"description": "This action cannot be undo"
-			}
+				"title": "Delete {name}?",
+				"description": "This action cannot be undone."
+			},
+			"deleteSuccess": {
+				"title": "Category deleted",
+				"message": "The category was deleted."
+			},
+			"deleteError": { "title": "Error", "message": "Unable to delete the category." }
 		},
 		"categoryForm": {
 			"title": "Category",
@@ -63,11 +80,24 @@
 			"isAlcoholicInput": { "label": "is alcoholic?" }
 		},
 		"unitsControlOverview": {
-			"createButton": { "value": "Create Unit" },
+			"searchLabel": "Search units",
+			"searchPlaceholder": "Search units by name",
+			"createButton": { "value": "New unit" },
+			"emptyMessage": "No units found.",
+			"kinds": {
+				"volume": "Volume",
+				"mass": "Mass",
+				"count": "Count",
+				"informal": "Informal"
+			},
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load the units.",
 			"deleteModal": {
-				"title": "Are you sure you want to delete the item",
-				"description": "This action cannot be undo"
-			}
+				"title": "Delete {name}?",
+				"description": "This action cannot be undone."
+			},
+			"deleteSuccess": { "title": "Unit deleted", "message": "The unit was deleted." },
+			"deleteError": { "title": "Error", "message": "Unable to delete the unit." }
 		},
 		"unitForm": {
 			"title": "Unit",
@@ -118,11 +148,19 @@
 			"unitInput": { "label": "unit" }
 		},
 		"drinksControlOverview": {
-			"createButton": { "value": "Create drink" },
+			"searchLabel": "Search drinks",
+			"searchPlaceholder": "Search drinks by name",
+			"createButton": { "value": "New drink" },
+			"emptyMessage": "No drinks found.",
+			"ingredientsCount": "{count} ingredient | {count} ingredients",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load the drinks.",
 			"deleteModal": {
-				"title": "Are you sure you want to delete the item",
-				"description": "This action cannot be undo"
-			}
+				"title": "Delete {name}?",
+				"description": "This action cannot be undone."
+			},
+			"deleteSuccess": { "title": "Drink deleted", "message": "The drink was deleted." },
+			"deleteError": { "title": "Error", "message": "Unable to delete the drink." }
 		},
 		"drinkCard": {
 			"ingredientsLabel": "INGREDIENTS",
@@ -271,8 +309,6 @@
 			"googleErrorMessage": "Unable to open Google authentication. Please try again."
 		},
 		"usersControlOverview": {
-			"title": "Users",
-			"description": "Manage accounts, roles and access.",
 			"searchLabel": "Search users",
 			"searchPlaceholder": "Search by email",
 			"emptyMessage": "No users found.",

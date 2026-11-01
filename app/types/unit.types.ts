@@ -8,6 +8,8 @@ import type { Unit, UnitKind, UnitTranslation } from '~/domain/unit/unit.entity'
 export type UnitsOverviewState = {
 	units: Unit[];
 	filter: Filter;
+	/** Raw input; applied to `filter.search` after the debounce. */
+	searchTerm: string;
 	loading: boolean;
 };
 

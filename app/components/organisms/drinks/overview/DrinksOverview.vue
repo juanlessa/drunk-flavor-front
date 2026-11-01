@@ -27,8 +27,8 @@
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
 						direction="row"
-						:class="virtualGridRowStyle()">
-						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
+						:class="virtualGridRowStyle({ fixedHeight: true })">
+						<DrinkCardSkeleton v-for="i in gridColumns" :key="i" />
 					</Box>
 				</template>
 			</VirtualInfiniteGrid>
