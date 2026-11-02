@@ -1,21 +1,24 @@
-import type { DatabaseCommonInfo } from '../shared/database.types';
+import type { EntityMetadata } from '../shared/entity.types';
 import type { CommentStatuses } from './comment.constants';
 
 export type CommentStatus = (typeof CommentStatuses)[keyof typeof CommentStatuses];
 
-/**
- * Comment =
- *     _id: string
- *     drink_id: string (references Drink._id)
- *     user_id: string (references User._id; the author)
- *     content: string (1..2000 characters)
- *     status: CommentStatus ("visible" | "hidden" | "flagged")
- *     created_at: Date
- *     updated_at: Date
- */
-export type Comment = DatabaseCommonInfo & {
-	drink_id: string;
-	user_id: string;
+export type Comment = EntityMetadata & {
+	drinkId: string;
+	userId: string;
 	content: string;
 	status: CommentStatus;
+};
+
+/** Public identity of a comment's author, as returned by the drink comments list. */
+export type CommentAuthor = {
+	id: string;
+	name?: string;
+	surname?: string;
+	avatarUrl?: string;
+};
+
+/** A comment of a drink thread; `author` is `null` when the account no longer exists. */
+export type CommentWithAuthor = Comment & {
+	author: CommentAuthor | null;
 };

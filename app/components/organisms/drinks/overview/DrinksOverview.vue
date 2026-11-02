@@ -17,9 +17,9 @@
 						:class="virtualGridRowStyle({ fixedHeight: true })">
 						<DrinkCard
 							v-for="drink in drinkRow"
-							:key="drink._id"
+							:key="drink.id"
 							:drink="drink"
-							@click="() => handleDrinkClick(drink._id)" />
+							@click="() => handleDrinkClick(drink.id)" />
 					</Box>
 				</template>
 				<template #loading>
@@ -27,8 +27,8 @@
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
 						direction="row"
-						:class="virtualGridRowStyle()">
-						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
+						:class="virtualGridRowStyle({ fixedHeight: true })">
+						<DrinkCardSkeleton v-for="i in gridColumns" :key="i" />
 					</Box>
 				</template>
 			</VirtualInfiniteGrid>

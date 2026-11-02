@@ -4,11 +4,8 @@ export type AppActions = 'manage' | 'create' | 'list' | 'get' | 'update' | 'dele
 export type AppSubjects =
 	'User' | 'Category' | 'Unit' | 'Ingredient' | 'Drink' | 'Comment' | 'Rating' | 'all';
 
-// Comment and Rating carry an ownership field so a user's update/delete can be scoped by
-// owner. They mirror the backend permission models' ownership condition `{ user_id: { $eq } }`.
-export type CommentSubject = { __typename: 'Comment'; user_id: string };
-export type RatingSubject = { __typename: 'Rating'; user_id: string };
-
+export type CommentSubject = { __typename: 'Comment'; userId: string };
+export type RatingSubject = { __typename: 'Rating'; userId: string };
 type OwnedSubjectName = 'Comment' | 'Rating';
 
 export type AppAbilities =
@@ -18,5 +15,4 @@ export type AppAbilities =
 	| ['manage', 'all'];
 
 export type AppAbility = MongoAbility<AppAbilities>;
-
 export type AppCanParameters = CanParameters<AppAbilities>;

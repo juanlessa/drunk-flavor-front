@@ -3,7 +3,7 @@ import type { DrinkTranslation } from './drink.entity';
 
 export type DrinkIngredientRequest = {
 	quantity: number;
-	ingredient_id: string;
+	ingredientId: string;
 };
 
 export type CreateDrink = {

@@ -1,10 +1,11 @@
 <template>
-	<Box direction="col" class="gap-6">
-		<Form :title="$t('organisms.completeProfileForm.title')" @submit="handleSubmitButton">
-			<Box direction="col" class="gap-4">
-				<Text class="text-center text-content-subtle">
-					{{ $t('organisms.completeProfileForm.description') }}
-				</Text>
+	<div class="flex flex-col gap-6">
+		<AuthPageHeader
+			:title="$t('organisms.completeProfileForm.title')"
+			:description="$t('organisms.completeProfileForm.description')" />
+		<form class="flex flex-col gap-6" novalidate @submit.prevent="handleSubmitButton">
+			<!-- Name and surname share a row from tablet up. -->
+			<div class="grid grid-cols-1 gap-4 tablet:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
 				<InputWrapper>
 					<template #label>
 						<Label for="name">
@@ -39,30 +40,26 @@
 						<ErrorMessage :value="checkError('surname')" />
 					</template>
 				</InputWrapper>
-			</Box>
-			<template #buttons>
-				<ButtonGroup
-					:has-cancel-button="false"
-					:action-button-props="{
-						variant: 'primary',
-						type: 'submit',
-						disabled: isSubmitting,
-						value: $t('organisms.completeProfileForm.submitButton.value')
-					}" />
-			</template>
-		</Form>
-		<Box direction="row" class="gap-1 items-center justify-center">
-			<Text as="span" class="text-content-subtle">
-				{{ $t('organisms.completeProfileForm.signoutPrompt.message') }}
-			</Text>
-			<Button variant="plain" :disabled="isSubmitting" @click="handleSignout">
-				{{ $t('organisms.completeProfileForm.signoutPrompt.link') }}
+			</div>
+			<Button type="submit" class="max-w-none!" :disabled="isSubmitting">
+				{{ $t('organisms.completeProfileForm.submitButton.value') }}
 			</Button>
-		</Box>
-	</Box>
+		</form>
+		<AuthPrompt :message="$t('organisms.completeProfileForm.signoutPrompt.message')">
+			<button
+				type="button"
+				:class="AUTH_PROMPT_ACTION_CLASS"
+				:disabled="isSubmitting"
+				@click="handleSignout">
+				{{ $t('organisms.completeProfileForm.signoutPrompt.link') }}
+			</button>
+		</AuthPrompt>
+	</div>
 </template>
 
 <script setup lang="ts">
+import { AUTH_PROMPT_ACTION_CLASS } from '~/components/organisms/auth/prompt/AuthPrompt.constants';
+
 const { $api, $auth, $router } = useNuxtApp();
 const { t } = useI18n();
 const { addToast } = useToast();

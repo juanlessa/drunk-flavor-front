@@ -34,12 +34,14 @@
 		"format:staged": "pretty-quick --staged"
 	},
 	"dependencies": {
-		"@casl/ability": "7.0.2",
-		"@casl/vue": "3.0.1",
+		"@casl/ability": "7.1.1",
+		"@casl/vue": "3.1.0",
 		"@fontsource/roboto": "5.3.0",
+		"@vueuse/integrations": "15.0.0",
 		"nanoid": "6.0.2",
 		"nuxt": "4.4.8",
 		"radix-vue": "1.9.17",
+		"sortablejs": "1.15.7",
 		"tailwind-merge": "3.7.0",
 		"tailwind-variants": "3.3.1",
 		"vue": "3.5.44",
@@ -57,17 +59,18 @@
 		"@tailwindcss/vite": "4.3.3",
 		"@testing-library/vue": "8.1.0",
 		"@types/eslint-config-prettier": "6.11.3",
+		"@types/sortablejs": "1.15.9",
 		"@vue/test-utils": "2.5.1",
 		"@vueuse/core": "15.0.0",
 		"@vueuse/nuxt": "15.0.0",
-		"eslint": "10.13.0",
+		"eslint": "10.14.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-prettier": "5.5.7",
-		"happy-dom": "21.0.3",
+		"happy-dom": "21.0.4",
 		"histoire": "1.0.0-beta.1",
 		"husky": "9.1.7",
 		"lint-staged": "17.6.0",
-		"nuxt-security": "2.6.0",
+		"nuxt-security": "2.7.0",
 		"nuxt-typed-router": "4.0.10",
 		"playwright-core": "1.64.1",
 		"prettier": "3.9.10",
@@ -75,6 +78,6 @@
 		"tailwindcss": "4.3.3",
 		"typescript": "6.0.3",
 		"vitest": "5.0.5",
-		"vue-tsc": "3.3.13"
+		"vue-tsc": "3.3.14"
 	}
 }

@@ -1,7 +1,7 @@
 import type { RatingSummary } from './rating.entity';
 
 export type CreateRating = {
-	drink_id: string;
+	drinkId: string;
 	value: number;
 };
 

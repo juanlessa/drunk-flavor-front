@@ -111,7 +111,7 @@ export const useIngredientSearch = () => {
 	});
 	const options = computed(() =>
 		state.value.options.filter(
-			(opt) => !state.value.selected.some((selectedItem) => selectedItem._id === opt._id)
+			(opt) => !state.value.selected.some((selectedItem) => selectedItem.id === opt.id)
 		)
 	);
 
@@ -124,7 +124,7 @@ export const useIngredientSearch = () => {
 	};
 
 	const handleSelect = (newSelected: InputSelectOption) => {
-		const newSelectedOption = state.value.options.find((opt) => opt._id === newSelected.value);
+		const newSelectedOption = state.value.options.find((opt) => opt.id === newSelected.value);
 		if (!newSelectedOption) {
 			return;
 		}
@@ -132,14 +132,24 @@ export const useIngredientSearch = () => {
 	};
 
 	const handleRemoveSelected = (selected: InputSelectOption) => {
-		state.value.selected = state.value.selected.filter((sel) => sel._id !== selected.value);
+		state.value.selected = state.value.selected.filter((sel) => sel.id !== selected.value);
 	};
 
 	const initSelected = (ingredients: IngredientSearchState['selected']) => {
 		state.value.selected = [...ingredients];
 	};
 
+	/** Moves a selected ingredient to another position; out-of-range moves are ignored. */
+	const moveSelected = (from: number, to: number) => {
+		const list = [...state.value.selected];
+		if (from === to || from < 0 || to < 0 || from >= list.length || to >= list.length) return;
+		const [moved] = list.splice(from, 1);
+		list.splice(to, 0, moved!);
+		state.value.selected = list;
+	};
+
 	return {
+		moveSelected,
 		loading,
 		options,
 		selected,

@@ -1,5 +1,10 @@
 <template>
-	<DrinkForm :drink="drink" @cancel="handleCancel" @submit="handleSubmit" />
+	<DrinkForm
+		:drink="drink"
+		:title="$t('organisms.drinkForm.editTitle')"
+		:submit-label="$t('organisms.drinkForm.saveButton')"
+		@cancel="handleCancel"
+		@submit="handleSubmit" />
 </template>
 <script setup lang="ts">
 import { mapFormToUpdateDrink } from '~/mappers/drink.mappers';
@@ -11,6 +16,7 @@ const props = defineProps({
 });
 
 const { $api, $router } = useNuxtApp();
+const { t } = useI18n();
 const { resetFormState } = useDrinkForm();
 const { addToast } = useToast();
 
@@ -21,6 +27,7 @@ const { data, error } = await useAsyncData(() => $api.drinks.get(props.drinkId))
 if (error.value) {
 	console.error('Failed to fetch drink:', error.value);
 }
+
 if (data.value) {
 	drink.value = data.value;
 }
@@ -30,14 +37,20 @@ const handleCancel = () => {
 	$router.back();
 };
 
+const reportError = (key: string, error: unknown) => {
+	addToast({
+		type: 'error',
+		title: t('organisms.drinkForm.errorTitle'),
+		message: t(`organisms.drinkForm.${key}`)
+	});
+	console.error(error);
+};
+
 const handleSubmit = async ({ form, cover, thumbnail }: DrinkFormAndMedia) => {
-	const updateDrink = mapFormToUpdateDrink(props.drinkId, form);
 	try {
-		await $api.drinks.update(updateDrink);
-		addToast({ type: 'success', title: 'Success', message: 'drink has been updated' });
+		await $api.drinks.update(mapFormToUpdateDrink(props.drinkId, form));
 	} catch (error) {
-		addToast({ type: 'error', title: 'Error', message: 'drink has not been updated' });
-		console.error(error);
+		reportError('updateError', error);
 		return;
 	}
 
@@ -45,28 +58,22 @@ const handleSubmit = async ({ form, cover, thumbnail }: DrinkFormAndMedia) => {
 		try {
 			await $api.drinks.updateCover(props.drinkId, cover);
 		} catch (error) {
-			addToast({
-				type: 'error',
-				title: 'Error',
-				message: 'drink cover has not been updated'
-			});
-			console.error(error);
+			reportError('coverError', error);
 		}
 	}
-
 	if (thumbnail) {
 		try {
 			await $api.drinks.updateThumbnail(props.drinkId, thumbnail);
 		} catch (error) {
-			addToast({
-				type: 'error',
-				title: 'Error',
-				message: 'drink thumbnail has not been updated'
-			});
-			console.error(error);
+			reportError('thumbnailError', error);
 		}
 	}
 
+	addToast({
+		type: 'success',
+		title: t('organisms.drinkForm.updateSuccess.title'),
+		message: t('organisms.drinkForm.updateSuccess.message')
+	});
 	resetFormState();
 	$router.back();
 };

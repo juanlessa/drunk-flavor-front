@@ -1,7 +1,7 @@
 import type { Drink } from './drink.entity';
 
 export const initEmptyDrink = (): Drink => ({
-	_id: '',
+	id: '',
 	translations: {
 		en: { name: '', method: '' },
 		pt: { name: '', method: '' }
@@ -9,8 +9,8 @@ export const initEmptyDrink = (): Drink => ({
 	ingredients: [],
 	cover: undefined,
 	thumbnail: undefined,
-	avg_rating: 0,
-	ratings_count: 0,
-	created_at: new Date(),
-	updated_at: new Date()
+	avgRating: 0,
+	ratingsCount: 0,
+	createdAt: new Date(),
+	updatedAt: new Date()
 });

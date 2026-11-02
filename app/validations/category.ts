@@ -15,7 +15,7 @@ export const categoryTranslationSchema = z.object({
 
 export const categoryFormSchema = z.object({
 	translations: getZodTranslationsSchema(categoryTranslationSchema),
-	is_alcoholic: categoryIsAlcoholicValidation
+	isAlcoholic: categoryIsAlcoholicValidation
 });
 
 //validators

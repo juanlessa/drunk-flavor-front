@@ -15,38 +15,40 @@ const { mockAuthenticate, mockAuthState } = vi.hoisted(() => {
 	(globalThis as unknown as Record<string, unknown>).useNuxtApp = () => ({
 		$auth: { state: mockAuthState, authenticate: mockAuthenticate }
 	});
-	(globalThis as unknown as Record<string, unknown>).navigateTo = (path: string) => ({
-		redirect: path
+	(globalThis as unknown as Record<string, unknown>).navigateTo = (target: unknown) => ({
+		redirect: target
 	});
 	(globalThis as unknown as Record<string, unknown>).useLocalePath = () => (path: string) => path;
 	return { mockAuthenticate, mockAuthState };
 });
 
 const buildIncompleteProfile = (): Profile => ({
-	_id: 'user-2',
-	created_at: new Date(),
-	updated_at: new Date(),
+	id: 'user-2',
+	createdAt: new Date(),
+	updatedAt: new Date(),
 	email: 'google@example.com',
-	email_verified: true,
+	emailVerified: true,
 	status: 'incomplete_profile',
-	role: 'member'
+	role: 'member',
+	authenticationMethods: { password: { enabled: false }, providers: ['google'] }
 });
 
-const buildProfile = (overrides: Partial<CompleteUser>): CompleteUser => ({
-	_id: 'user-1',
-	created_at: new Date(),
-	updated_at: new Date(),
+const buildProfile = (overrides: Partial<CompleteUser>): Profile => ({
+	id: 'user-1',
+	createdAt: new Date(),
+	updatedAt: new Date(),
 	name: 'Test',
 	surname: 'User',
 	email: 'test@example.com',
-	email_verified: true,
+	emailVerified: true,
 	status: 'active',
 	role: 'member',
+	authenticationMethods: { password: { enabled: true }, providers: [] },
 	...overrides
 });
 
-const route = (meta: Record<string, unknown> = {}, path = '/drinks') =>
-	({ meta, path }) as unknown as RouteLocationNormalized;
+const route = (meta: Record<string, unknown> = {}, path = '/drinks', fullPath = path) =>
+	({ meta, path, fullPath }) as unknown as RouteLocationNormalized;
 
 describe('auth middleware', () => {
 	beforeEach(() => {
@@ -79,12 +81,20 @@ describe('auth middleware', () => {
 		expect(result).toBeUndefined();
 	});
 
-	it('redirects to / when authentication fails', async () => {
+	it('redirects to sign-in with the requested page when authentication fails', async () => {
 		mockAuthenticate.mockResolvedValue(false);
 
-		const result = await authMiddleware(route(), {} as RouteLocationNormalized);
+		const result = await authMiddleware(
+			route({}, '/ownership-transfer/token', '/ownership-transfer/token?source=email'),
+			{} as RouteLocationNormalized
+		);
 
-		expect(result).toEqual({ redirect: '/' });
+		expect(result).toEqual({
+			redirect: {
+				path: '/signin',
+				query: { redirect: '/ownership-transfer/token?source=email' }
+			}
+		});
 	});
 
 	it('does not redirect an authenticated user on a route without a can requirement', async () => {

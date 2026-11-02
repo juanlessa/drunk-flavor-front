@@ -1,55 +1,74 @@
 <template>
-	<Box direction="col" class="gap-4 flex-1">
-		<Label class="text-center">
-			{{ $t('drinkForm.ingredients.label') }}
-		</Label>
-		<Search
-			id="search-ingredients"
-			v-model:search-term="searchTerm"
-			:options="mapToSelectOptions(options, $i18n.locale)"
-			infinite-scroll
-			:loading="loading"
-			@load-more="loadNextPage"
-			@select="handleSelect" />
+	<div class="flex flex-col gap-5">
+		<div class="flex flex-col gap-2">
+			<Label for="search-ingredients">
+				{{ $t('organisms.ingredientsSelection.searchInput.label') }}
+			</Label>
+			<Search
+				id="search-ingredients"
+				v-model:search-term="searchTerm"
+				:options="searchOptions"
+				:placeholder="$t('organisms.ingredientsSelection.searchInput.placeholder')"
+				:no-result="$t('organisms.ingredientsSelection.searchInput.noResult')"
+				infinite-scroll
+				:loading="loading"
+				@load-more="loadNextPage"
+				@select="handleAdd">
+				<template #prefix>
+					<SearchIcon
+						class="shrink-0 fill-current text-content-muted"
+						aria-hidden="true" />
+				</template>
+			</Search>
+		</div>
 
-		<Box direction="col" class="gap-2">
-			<Box v-for="(sel, index) in selected" :key="sel._id" direction="col" class="gap-1">
-				<Box direction="row" class="gap-6 items-center">
-					<Text class="flex-1 text-left">{{ sel.translations[$i18n.locale].name }}</Text>
+		<p :id="instructionsId" class="sr-only">
+			{{ $t('organisms.ingredientsSelection.reorderInstructions') }}
+		</p>
 
-					<InputNumber
-						:id="`ingredient-quantity-${sel._id}`"
-						:model-value="quantities[sel._id]"
-						input-width="4ch"
-						suffix-width="7ch"
-						suffix-outside
-						:suffix="sel.unit.symbol || sel.unit.translations[$i18n.locale].name"
-						:has-error="!!props.checkError(`ingredients.${index}.quantity`)"
-						@update:model-value="(val: number) => updateQuantity(sel._id, val)"
-						@blur="emit('blur')" />
+		<!-- Sortable drives the drag; `moveArrayElement` undoes its DOM move so Vue keeps owning the list. -->
+		<ol v-if="selected.length" ref="sortableList" class="flex flex-col gap-2">
+			<IngredientsSelectionItem
+				v-for="(ingredient, index) in selected"
+				:key="ingredient.id"
+				:ingredient="ingredient"
+				:index="index"
+				:total="selected.length"
+				:quantity="quantities[ingredient.id] ?? 0"
+				:error="props.checkError(`ingredients.${index}.quantity`)"
+				:instructions-id="instructionsId"
+				@update:quantity="(value) => updateQuantity(ingredient.id, value)"
+				@move-up="move(index, index - 1)"
+				@move-down="move(index, index + 1)"
+				@remove="handleRemove(ingredient)"
+				@blur="emit('blur')" />
+		</ol>
+		<p
+			v-else
+			class="rounded-md border border-dashed border-stroke-input px-4 py-6 text-center text-body-sm text-content-muted">
+			{{ $t('organisms.ingredientsSelection.empty') }}
+		</p>
 
-					<Button
-						variant="icon"
-						:aria-label="$t('organisms.ingredientsSelection.removeButton.label')"
-						@click="handleRemove(sel._id)">
-						<TrashIcon />
-					</Button>
-				</Box>
-				<ErrorMessage
-					v-if="props.checkError(`ingredients.${index}.quantity`)"
-					class="text-right"
-					:value="props.checkError(`ingredients.${index}.quantity`)" />
-			</Box>
-		</Box>
 		<ErrorMessage
 			v-if="props.checkError('ingredients')"
 			:value="props.checkError('ingredients')" />
-	</Box>
+
+		<!-- Announces adds, removals and moves to screen readers. -->
+		<p class="sr-only" aria-live="polite" data-testid="ingredients-announcement">
+			{{ announcement }}
+		</p>
+	</div>
 </template>
 <script setup lang="ts">
-import { mapToSelectOptions } from '~/components/atoms/inputSelect/InputSelect.helpers';
+import { moveArrayElement, useSortable } from '@vueuse/integrations/useSortable';
+import type { SortableEvent } from 'sortablejs';
+import { nextTick, useId, useTemplateRef } from 'vue';
+import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
 import type { DrinkIngredient } from '~/domain/drink/drink.entity';
 import type { DrinkIngredientRequest } from '~/domain/drink/drink.dtos';
+import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
+import { getIngredientSummary } from '~/helpers/ingredient.helpers';
+import IngredientsSelectionItem from './IngredientsSelectionItem.vue';
 
 const props = defineProps({
 	initialIngredients: {
@@ -67,6 +86,8 @@ const emit = defineEmits<{
 	(e: 'blur'): void;
 }>();
 
+const { t, locale } = useI18n();
+const instructionsId = useId();
 const {
 	options,
 	searchTerm,
@@ -75,44 +96,109 @@ const {
 	handleSelect,
 	handleRemoveSelected,
 	initSelected,
+	moveSelected,
 	loadNextPage
 } = useIngredientSearch();
 
 const quantities = ref<Record<string, number>>({});
+const announcement = ref('');
 
 if (props.initialIngredients.length > 0) {
 	initSelected(props.initialIngredients.map((di) => di.ingredient));
 	props.initialIngredients.forEach((di) => {
-		quantities.value[di.ingredient._id] = di.quantity;
+		quantities.value[di.ingredient.id] = di.quantity;
 	});
 }
+
+// Ingredients already in the list are filtered out by the search composable.
+const searchOptions = computed<InputSelectOption[]>(() =>
+	options.value.map((ingredient) => ({
+		label: ingredient.translations[locale.value].name,
+		value: ingredient.id,
+		description: getIngredientSummary(ingredient, locale.value)
+	}))
+);
+
+const nameOf = (ingredient: Ingredient) => ingredient.translations[locale.value].name;
+
+const emitIngredients = () => {
+	const ingredients: DrinkIngredientRequest[] = selected.value.map((sel) => ({
+		ingredientId: sel.id,
+		quantity: quantities.value[sel.id] || 0
+	}));
+	emit('update:modelValue', ingredients);
+};
 
 const updateQuantity = (ingredientId: string, value: number) => {
 	quantities.value[ingredientId] = value;
 	emitIngredients();
 };
 
-const handleRemove = (ingredientId: string) => {
-	handleRemoveSelected({ label: '', value: ingredientId });
-	const { [ingredientId]: _, ...rest } = quantities.value;
+const handleAdd = (option: InputSelectOption) => {
+	handleSelect(option);
+	announcement.value = t('organisms.ingredientsSelection.announcements.added', {
+		name: option.label,
+		total: selected.value.length
+	});
+};
+
+const handleRemove = (ingredient: Ingredient) => {
+	handleRemoveSelected({ label: '', value: ingredient.id });
+	const { [ingredient.id]: _, ...rest } = quantities.value;
 	quantities.value = rest;
+	announcement.value = t('organisms.ingredientsSelection.announcements.removed', {
+		name: nameOf(ingredient)
+	});
 	emitIngredients();
 };
 
-const emitIngredients = () => {
-	const ingredients: DrinkIngredientRequest[] = selected.value.map((sel) => ({
-		ingredient_id: sel._id,
-		quantity: quantities.value[sel._id] || 0
-	}));
-	emit('update:modelValue', ingredients);
+const announceMove = (ingredient: Ingredient, position: number) => {
+	announcement.value = t('organisms.ingredientsSelection.announcements.moved', {
+		name: nameOf(ingredient),
+		position: position + 1,
+		total: selected.value.length
+	});
 };
+
+// The up/down buttons; dragging goes through `handleSortUpdate` below.
+const move = (from: number, to: number) => {
+	const ingredient = selected.value[from];
+	if (!ingredient || to < 0 || to >= selected.value.length) return;
+	moveSelected(from, to);
+	announceMove(ingredient, to);
+};
+
+/**
+ * Drop handler (VueUse "custom update handler" pattern): `moveArrayElement` puts the dragged
+ * node back where Vue rendered it and reorders `selected` in a microtask, so the move is
+ * announced on the next tick, once the list holds the new order.
+ */
+const handleSortUpdate = (event: SortableEvent) => {
+	const { oldIndex, newIndex } = event;
+	if (oldIndex === undefined || newIndex === undefined || oldIndex === newIndex) return;
+	moveArrayElement(selected, oldIndex, newIndex, event);
+	void nextTick(() => {
+		const ingredient = selected.value[newIndex];
+		if (ingredient) announceMove(ingredient, newIndex);
+	});
+};
+
+// The list only renders with at least one ingredient, so Sortable follows the element.
+useSortable(useTemplateRef<HTMLElement>('sortableList'), selected, {
+	watchElement: true,
+	handle: '[data-drag-handle]',
+	animation: 150,
+	ghostClass: 'ingredients-selection-ghost',
+	chosenClass: 'ingredients-selection-chosen',
+	onUpdate: handleSortUpdate
+});
 
 watch(
 	selected,
 	() => {
 		selected.value.forEach((sel) => {
-			if (!(sel._id in quantities.value)) {
-				quantities.value[sel._id] = 0;
+			if (!(sel.id in quantities.value)) {
+				quantities.value[sel.id] = 0;
 			}
 		});
 		emitIngredients();
@@ -120,3 +206,16 @@ watch(
 	{ deep: true }
 );
 </script>
+<style scoped>
+@reference "~/styles/global.css";
+
+/* Where the dragged ingredient will land. */
+:deep(.ingredients-selection-ghost) {
+	@apply border-dashed border-accent-content bg-accent-subtle opacity-70;
+}
+
+/* The ingredient being dragged. */
+:deep(.ingredients-selection-chosen) {
+	@apply border-focus-ring shadow-overlay;
+}
+</style>

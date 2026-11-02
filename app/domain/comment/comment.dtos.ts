@@ -1,7 +1,7 @@
 import type { CommentStatus } from './comment.entity';
 
 export type CreateComment = {
-	drink_id: string;
+	drinkId: string;
 	content: string;
 };
 

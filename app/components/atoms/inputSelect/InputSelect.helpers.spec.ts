@@ -3,9 +3,9 @@ import { mapToSelectOptions } from './InputSelect.helpers';
 
 describe('mapToSelectOptions', () => {
 	const entities = [
-		{ _id: '1', translations: { en: { name: 'Apple' }, pt: { name: 'Maçã' } } },
-		{ _id: '2', translations: { en: { name: 'Banana' }, pt: { name: 'Banana' } } },
-		{ _id: '3', translations: { en: { name: 'Cherry' }, pt: { name: 'Cereja' } } }
+		{ id: '1', translations: { en: { name: 'Apple' }, pt: { name: 'Maçã' } } },
+		{ id: '2', translations: { en: { name: 'Banana' }, pt: { name: 'Banana' } } },
+		{ id: '3', translations: { en: { name: 'Cherry' }, pt: { name: 'Cereja' } } }
 	];
 
 	it('maps entities to select options with correct label and value', () => {
@@ -34,11 +34,11 @@ describe('mapToSelectOptions', () => {
 		expect(result).toEqual([]);
 	});
 
-	it('preserves entity _id as option value', () => {
+	it('preserves entity id as option value', () => {
 		const result = mapToSelectOptions(entities, 'en');
 
 		result.forEach((option, index) => {
-			expect(option.value).toBe(entities[index]!._id);
+			expect(option.value).toBe(entities[index]!.id);
 		});
 	});
 });

@@ -1,25 +1,17 @@
-import type { Role } from './user.types';
-
-export type CreateUser = {
-	name: string;
-	surname: string;
-	email: string;
-	password: string;
-	role: Role;
-};
-
-export type UpdateUser = {
-	name: string;
-	surname: string;
-	email: string;
-	password: string;
-};
-
-export type IDeleteUser = {
-	id: string;
-};
+import type { NonOwnerRole, UserAdministrativeCapabilityAction } from './user.types';
 
 export type UpdateRole = {
-	user_id: string;
-	role: Role;
+	userId: string;
+	role: NonOwnerRole;
+};
+
+export type UserAdministrationReason = { reason: string };
+export type SuspendUser = UserAdministrationReason;
+export type ReactivateUser = UserAdministrationReason;
+export type CloseUser = UserAdministrationReason;
+export type RevokeUserSessions = UserAdministrationReason;
+
+export type UserAdministrativeCapabilities = {
+	actions: UserAdministrativeCapabilityAction[];
+	roleTransitions: NonOwnerRole[];
 };

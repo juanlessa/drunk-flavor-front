@@ -13,21 +13,13 @@ const path = '/ratings';
 
 export const ratingsRepository = ($fetch: $Fetch) => ({
 	async create(body: CreateRating) {
-		return $fetch<CreateRatingResponse>(path, {
-			method: 'POST',
-			body
-		});
+		return $fetch<CreateRatingResponse>(path, { method: 'POST', body });
 	},
 	async update({ id, ...body }: UpdateRating) {
-		return $fetch<RatingMutationResponse>(`${path}/${id}`, {
-			method: 'PATCH',
-			body
-		});
+		return $fetch<RatingMutationResponse>(`${path}/${id}`, { method: 'PATCH', body });
 	},
 	async delete(id: string) {
-		return $fetch<RatingMutationResponse>(`${path}/${id}`, {
-			method: 'DELETE'
-		});
+		return $fetch<RatingMutationResponse>(`${path}/${id}`, { method: 'DELETE' });
 	},
 	async get(id: string) {
 		return $fetch<Rating>(`${path}/${id}`);

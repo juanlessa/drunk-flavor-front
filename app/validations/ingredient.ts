@@ -22,8 +22,8 @@ export const ingredientTranslationSchema = z.object({
 
 export const ingredientFormSchema = z.object({
 	translations: getZodTranslationsSchema(ingredientTranslationSchema),
-	category_id: ingredientCategoryIdValidation,
-	unit_id: ingredientUnitIdValidation
+	categoryId: ingredientCategoryIdValidation,
+	unitId: ingredientUnitIdValidation
 });
 
 //validators

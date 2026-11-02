@@ -1,81 +1,99 @@
 <template>
-	<section
-		class="pt-6 border-t border-stroke flex flex-col items-center @detail-layout:items-start gap-4">
-		<Heading as="h2" size="titleSm" class="text-center @detail-layout:text-left">
-			{{ $t('drinkDetailPage.rating.title') }}
-		</Heading>
+	<!-- The card is the query container: centered while narrow (mobile), left-aligned once it widens. -->
+	<Card class="@container">
+		<section
+			id="ratings"
+			class="p-5 tablet:p-6 scroll-mt-4 flex flex-col items-center @detail-layout:items-start gap-4"
+			:aria-labelledby="headingId">
+			<Heading
+				:id="headingId"
+				as="h2"
+				size="titleSm"
+				class="self-stretch text-center @detail-layout:text-left">
+				{{ $t('drinkDetailPage.rating.title') }}
+			</Heading>
 
-		<Text v-if="isLoading" class="text-body-sm text-content-muted">
-			{{ $t('drinkDetailPage.rating.loading') }}
-		</Text>
-		<Text v-else-if="hasLoadError" class="text-body-sm text-danger">
-			{{ $t('drinkDetailPage.rating.loadError') }}
-		</Text>
-		<div v-else class="w-fit flex flex-col items-start gap-1">
-			<div class="flex items-center gap-2">
-				<Text v-if="summary.count" as="span" class="text-title font-bold">
-					{{ formattedAverage }}
-				</Text>
-				<RatingStars :value="summary.average" :label="summaryAriaLabel" />
-			</div>
-			<Text class="text-body-sm text-content-muted whitespace-nowrap">
-				{{ summary.count ? ratingCountLabel : $t('drinkDetailPage.rating.noRatings') }}
+			<Text v-if="isLoading" class="text-body-sm text-content-muted">
+				{{ $t('drinkDetailPage.rating.loading') }}
 			</Text>
-		</div>
+			<Text v-else-if="hasLoadError" class="text-body-sm text-danger">
+				{{ $t('drinkDetailPage.rating.loadError') }}
+			</Text>
+			<div v-else class="w-fit flex flex-col items-start gap-1">
+				<div class="flex items-center gap-2">
+					<Text v-if="summary.count" as="span" class="text-title font-bold">
+						{{ formattedAverage }}
+					</Text>
+					<RatingStars :value="summary.average" :label="summaryAriaLabel" />
+				</div>
+				<Text class="text-body-sm text-content-muted whitespace-nowrap">
+					{{ summary.count ? ratingCountLabel : $t('drinkDetailPage.rating.noRatings') }}
+				</Text>
+			</div>
 
-		<Collapsible.Root v-if="isAuthenticated" v-model:open="isEditorOpen">
-			<Collapsible.Trigger as-child>
-				<Button
-					variant="outline"
-					size="sm"
-					:disabled="isLoading || hasLoadError"
-					:aria-label="editorTriggerLabel">
-					{{ editorTriggerLabel }}
-				</Button>
-			</Collapsible.Trigger>
-			<Collapsible.Content
-				class="pt-4 flex flex-col items-center @detail-layout:items-start gap-3">
-				<RatingInput
-					:model-value="selectedValue"
-					name="drink-rating"
-					:label="$t('drinkDetailPage.rating.yourRating')"
-					:value-labels="ratingValueLabels"
-					:disabled="isSaving"
-					@update:model-value="handleSave" />
-				<Button
-					v-if="myRating"
-					variant="plain"
-					size="sm"
-					class="min-h-11 px-3 !text-danger hover:bg-danger-surface"
-					:disabled="isSaving"
-					@click="handleRemove">
-					{{ $t('drinkDetailPage.rating.remove') }}
-				</Button>
-			</Collapsible.Content>
-		</Collapsible.Root>
-		<Button v-else variant="outline" size="sm" @click="handleSignIn">
-			{{ $t('drinkDetailPage.rating.signIn') }}
-		</Button>
+			<Collapsible.Root v-if="isAuthenticated" v-model:open="isEditorOpen">
+				<Collapsible.Trigger as-child>
+					<Button
+						variant="outline"
+						size="sm"
+						:disabled="isLoading || hasLoadError"
+						:aria-label="editorTriggerLabel">
+						{{ editorTriggerLabel }}
+					</Button>
+				</Collapsible.Trigger>
+				<Collapsible.Content
+					class="pt-4 flex flex-col items-center @detail-layout:items-start gap-3">
+					<RatingInput
+						:model-value="selectedValue"
+						name="drink-rating"
+						:label="$t('drinkDetailPage.rating.yourRating')"
+						:value-labels="ratingValueLabels"
+						:disabled="isSaving"
+						@update:model-value="handleSave" />
+					<Button
+						v-if="myRating"
+						variant="plain"
+						size="sm"
+						class="min-h-11 px-3 !text-danger hover:bg-danger-surface"
+						:disabled="isSaving"
+						@click="handleRemove">
+						{{ $t('drinkDetailPage.rating.remove') }}
+					</Button>
+				</Collapsible.Content>
+			</Collapsible.Root>
+			<Button v-else variant="outline" size="sm" @click="handleSignIn">
+				{{ $t('drinkDetailPage.rating.signIn') }}
+			</Button>
 
-		<Text
-			v-if="statusMessage"
-			class="text-body-sm text-center @detail-layout:text-left"
-			:class="hasMutationError ? 'text-danger' : 'text-content-muted'"
-			aria-live="polite">
-			{{ statusMessage }}
-		</Text>
-	</section>
+			<Text
+				v-if="statusMessage"
+				class="text-body-sm text-center @detail-layout:text-left"
+				:class="hasMutationError ? 'text-danger' : 'text-content-muted'"
+				aria-live="polite">
+				{{ statusMessage }}
+			</Text>
+		</section>
+	</Card>
 </template>
 
 <script setup lang="ts">
 import { Collapsible } from 'radix-vue/namespaced';
+import { useId } from 'vue';
 import { RATING_MAX_VALUE, RATING_MIN_VALUE } from '~/domain/rating/rating.constants';
+
+import type { RatingSummary } from '~/domain/rating/rating.entity';
 
 const props = defineProps({
 	drinkId: { type: String, required: true }
 });
 
+const emit = defineEmits<{
+	/** Fires whenever the summary is loaded or changes, so the page header stays in sync. */
+	(e: 'summary-change', summary: RatingSummary): void;
+}>();
+
 const { $router } = useNuxtApp();
+const headingId = useId();
 const route = useRoute();
 const localePath = useLocalePath();
 const { t, locale } = useI18n();
@@ -90,6 +108,8 @@ const {
 	save,
 	remove
 } = useDrinkRating(() => props.drinkId);
+
+watch(summary, (value) => emit('summary-change', { ...value }));
 
 const isEditorOpen = ref(false);
 const hasLoadError = ref(false);

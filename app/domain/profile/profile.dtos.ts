@@ -3,7 +3,23 @@ export type UpdateProfile = {
 	surname: string;
 };
 
+export type CreatePassword = {
+	password: string;
+};
+
 export type UpdatePassword = {
 	currentPassword: string;
 	newPassword: string;
+};
+
+export type LinkGoogleIdentity = {
+	idToken: string;
+};
+
+export type ReauthenticateGoogle = {
+	idToken: string;
+};
+
+export type ReauthenticatePassword = {
+	password: string;
 };

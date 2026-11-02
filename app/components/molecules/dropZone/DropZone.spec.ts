@@ -174,6 +174,54 @@ describe('DropZone', () => {
 		});
 	});
 
+	describe('preview', () => {
+		it('shows the stored image instead of the prompt and stays reachable by keyboard', () => {
+			const wrapper = mountDropZone({ previewUrl: '/mojito.png', previewAlt: 'Mojito' });
+			const area = wrapper.find('[data-testid="drop-zone-area"]');
+			const preview = wrapper.find('[data-testid="drop-zone-preview"]');
+
+			expect(preview.attributes('src')).toBe('/mojito.png');
+			expect(preview.attributes('alt')).toBe('Mojito');
+			expect(wrapper.text()).not.toContain('molecules.dropZone.drag.message');
+			expect(area.attributes('tabindex')).toBe('0');
+			expect(area.attributes('aria-label')).toBe('molecules.dropZone.replace.label');
+		});
+
+		it('previews the chosen file over the stored image', () => {
+			URL.createObjectURL = () => 'blob:chosen';
+			URL.revokeObjectURL = () => {};
+			const file = createFile('photo.png', 1024, 'image/png');
+			const wrapper = mountDropZone({ modelValue: file, previewUrl: '/mojito.png' });
+
+			expect(wrapper.find('[data-testid="drop-zone-preview"]').attributes('src')).toBe(
+				'blob:chosen'
+			);
+		});
+
+		it('keeps the area out of the tab order while it shows the prompt', () => {
+			const area = mountDropZone().find('[data-testid="drop-zone-area"]');
+
+			expect(area.attributes('tabindex')).toBeUndefined();
+		});
+
+		it('fills the available space when no aspect is given', () => {
+			const area = mountDropZone().find('[data-testid="drop-zone-area"]');
+
+			expect(area.classes()).toContain('flex-1');
+			expect(area.classes()).not.toContain('aspect-square');
+		});
+
+		it('shapes the area as a square or a wide frame', () => {
+			const square = mountDropZone({ aspect: 'square' }).find(
+				'[data-testid="drop-zone-area"]'
+			);
+			const wide = mountDropZone({ aspect: 'wide' }).find('[data-testid="drop-zone-area"]');
+
+			expect(square.classes()).toContain('aspect-square');
+			expect(wide.classes()).toContain('aspect-video');
+		});
+	});
+
 	describe('props reactivity', () => {
 		it('updates internal state when modelValue prop changes', async () => {
 			const wrapper = mountDropZone();

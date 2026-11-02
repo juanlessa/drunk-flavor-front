@@ -5,6 +5,6 @@ export const initEmptyIngredientForm = (): IngredientForm => ({
 		en: { name: '' },
 		pt: { name: '' }
 	},
-	category_id: '',
-	unit_id: ''
+	categoryId: '',
+	unitId: ''
 });

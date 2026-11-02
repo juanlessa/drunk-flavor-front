@@ -1,3 +1,6 @@
-import { LanguagesEnum, type Language } from './translations.types';
+export const Languages = {
+	en: 'en',
+	pt: 'pt'
+} as const;
 
-export const languages = Object.keys(LanguagesEnum) as Language[];
+export const languages = Object.values(Languages);

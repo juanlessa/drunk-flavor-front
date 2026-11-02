@@ -2,15 +2,15 @@ import { UnitKinds } from './unit.constants';
 import type { Unit } from './unit.entity';
 
 export const initEmptyUnit = (): Unit => ({
-	_id: '',
+	id: '',
 	translations: {
-		en: { name: '', name_plural: '' },
-		pt: { name: '', name_plural: '' }
+		en: { name: '', namePlural: '' },
+		pt: { name: '', namePlural: '' }
 	},
 	symbol: undefined,
-	space_before_symbol: false,
-	allow_decimal: false,
+	spaceBeforeSymbol: false,
+	allowDecimal: false,
 	kind: UnitKinds.volume,
-	created_at: new Date(),
-	updated_at: new Date()
+	createdAt: new Date(),
+	updatedAt: new Date()
 });

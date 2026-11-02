@@ -36,6 +36,25 @@
 			</div>
 		</Variant>
 
+		<Variant title="prefix">
+			<div class="p-4">
+				<InputText
+					:id="state.id"
+					v-model="state.modelValue"
+					:type="state.type"
+					:name="state.name"
+					:has-error="state.hasError"
+					:border="state.border"
+					:placeholder="state.placeholder">
+					<template #prefix>
+						<SearchIcon
+							class="shrink-0 fill-current text-content-muted"
+							aria-hidden="true" />
+					</template>
+				</InputText>
+			</div>
+		</Variant>
+
 		<Variant title="suffix-outside">
 			<div class="p-4">
 				<InputText

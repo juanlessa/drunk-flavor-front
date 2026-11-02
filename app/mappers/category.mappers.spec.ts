@@ -8,14 +8,14 @@ import type { Category } from '~/domain/category/category.entity';
 import type { CategoryForm } from '~/types/category.types';
 
 const mockCategory: Category = {
-	_id: 'cat-1',
+	id: 'cat-1',
 	translations: {
 		en: { name: 'Juice' },
 		pt: { name: 'Suco' }
 	},
-	is_alcoholic: false,
-	created_at: new Date(),
-	updated_at: new Date()
+	isAlcoholic: false,
+	createdAt: new Date(),
+	updatedAt: new Date()
 };
 
 const mockCategoryForm: CategoryForm = {
@@ -23,7 +23,7 @@ const mockCategoryForm: CategoryForm = {
 		en: { name: 'Juice' },
 		pt: { name: 'Suco' }
 	},
-	is_alcoholic: false
+	isAlcoholic: false
 };
 
 describe('mapCategoryToForm', () => {
@@ -35,16 +35,16 @@ describe('mapCategoryToForm', () => {
 				en: { name: 'Juice' },
 				pt: { name: 'Suco' }
 			},
-			is_alcoholic: false
+			isAlcoholic: false
 		});
 	});
 
-	it('does not include _id or date fields', () => {
+	it('does not include id or date fields', () => {
 		const result = mapCategoryToForm(mockCategory);
 
-		expect(result).not.toHaveProperty('_id');
-		expect(result).not.toHaveProperty('created_at');
-		expect(result).not.toHaveProperty('updated_at');
+		expect(result).not.toHaveProperty('id');
+		expect(result).not.toHaveProperty('createdAt');
+		expect(result).not.toHaveProperty('updatedAt');
 	});
 
 	it('creates a new object (not a reference)', () => {
@@ -63,7 +63,7 @@ describe('mapFormToCreateCategory', () => {
 				en: { name: 'Juice' },
 				pt: { name: 'Suco' }
 			},
-			is_alcoholic: false
+			isAlcoholic: false
 		});
 	});
 
@@ -84,7 +84,7 @@ describe('mapFormToUpdateCategory', () => {
 				en: { name: 'Juice' },
 				pt: { name: 'Suco' }
 			},
-			is_alcoholic: false
+			isAlcoholic: false
 		});
 	});
 

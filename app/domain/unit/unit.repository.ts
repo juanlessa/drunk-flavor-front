@@ -8,22 +8,13 @@ const path = '/units';
 
 export const unitsRepository = ($fetch: $Fetch) => ({
 	async create(body: CreateUnit) {
-		return $fetch<undefined>(path, {
-			method: 'POST',
-			body
-		});
+		return $fetch<undefined>(path, { method: 'POST', body });
 	},
 	async update(body: UpdateUnit) {
-		return $fetch<undefined>(path, {
-			method: 'PATCH',
-			body
-		});
+		return $fetch<undefined>(path, { method: 'PATCH', body });
 	},
 	async delete(id: string) {
-		return $fetch<undefined>(path, {
-			method: 'DELETE',
-			body: { id }
-		});
+		return $fetch<undefined>(path, { method: 'DELETE', body: { id } });
 	},
 	async list(query: QueryParams) {
 		return $fetch<Unit[]>(path, { query: serializeListQuery(query) });

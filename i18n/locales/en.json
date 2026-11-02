@@ -22,10 +22,18 @@
 	},
 	"layouts": {
 		"auth": {
-			"backButton": { "value": "back" }
+			"backButton": { "value": "Back" }
 		}
 	},
 	"molecules": {
+		"googleIdentityButton": {
+			"text": {
+				"continue_with": "Continue with Google",
+				"signin_with": "Sign in with Google",
+				"signup_with": "Sign up with Google",
+				"signin": "Sign in"
+			}
+		},
 		"buttonGroup": {
 			"cancelButton": { "value": "cancel" },
 			"actionButton": { "value": "done" }
@@ -39,51 +47,130 @@
 			"drop": { "message": "Drop the file here" },
 			"or": { "message": "OR" },
 			"selectFile": { "message": "select file" },
+			"replace": { "label": "replace image" },
 			"clearButton": { "label": "clear file" }
 		},
-		"itemControlCard": {
-			"deleteButton": { "label": "delete item" }
+		"managementItemCard": {
+			"deleteButton": { "label": "Delete {name}" }
 		}
 	},
 	"organisms": {
 		"categoriesControlOverview": {
-			"createButton": { "value": "Create Category" },
+			"searchLabel": "Search categories",
+			"searchPlaceholder": "Search categories by name",
+			"createButton": { "value": "New category" },
+			"emptyMessage": "No categories found.",
+			"alcoholic": "Alcoholic",
+			"nonAlcoholic": "Non-alcoholic",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load the categories.",
 			"deleteModal": {
-				"title": "Are you sure you want to delete the item",
-				"description": "This action cannot be undo"
-			}
+				"title": "Delete {name}?",
+				"description": "This action cannot be undone."
+			},
+			"deleteSuccess": {
+				"title": "Category deleted",
+				"message": "The category was deleted."
+			},
+			"deleteError": { "title": "Error", "message": "Unable to delete the category." }
 		},
 		"categoryForm": {
-			"title": "Category",
-			"nameInput": { "label": "name", "placeholder": "" },
-			"generalSection": { "title": "General" },
-			"isAlcoholicInput": { "label": "is alcoholic?" }
+			"backLink": "Categories",
+			"createTitle": "New category",
+			"editTitle": "Edit category",
+			"description": "Categories group ingredients and tell whether they contain alcohol.",
+			"namesSection": {
+				"title": "Names",
+				"description": "Saved with only the first letter capitalized, e.g. \"Triple sec\"."
+			},
+			"classificationSection": {
+				"title": "Classification",
+				"description": "Shown next to the category in the categories list."
+			},
+			"nameInput": { "label": "name" },
+			"isAlcoholicInput": {
+				"label": "alcoholic",
+				"help": "Ingredients in this category contain alcohol."
+			},
+			"cancelButton": "Cancel",
+			"createButton": "Create category",
+			"saveButton": "Save changes",
+			"createSuccess": {
+				"title": "Category created",
+				"message": "The category was created."
+			},
+			"createError": { "title": "Error", "message": "Unable to create the category." },
+			"updateSuccess": {
+				"title": "Category updated",
+				"message": "The category was updated."
+			},
+			"updateError": { "title": "Error", "message": "Unable to update the category." }
 		},
 		"unitsControlOverview": {
-			"createButton": { "value": "Create Unit" },
+			"searchLabel": "Search units",
+			"searchPlaceholder": "Search units by name",
+			"createButton": { "value": "New unit" },
+			"emptyMessage": "No units found.",
+			"kinds": {
+				"volume": "Volume",
+				"mass": "Mass",
+				"count": "Count",
+				"informal": "Informal"
+			},
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load the units.",
 			"deleteModal": {
-				"title": "Are you sure you want to delete the item",
-				"description": "This action cannot be undo"
-			}
+				"title": "Delete {name}?",
+				"description": "This action cannot be undone."
+			},
+			"deleteSuccess": { "title": "Unit deleted", "message": "The unit was deleted." },
+			"deleteError": { "title": "Error", "message": "Unable to delete the unit." }
 		},
 		"unitForm": {
-			"title": "Unit",
-			"nameInput": { "label": "name", "placeholder": "" },
-			"namePluralInput": { "label": "name plural", "placeholder": "" },
-			"generalSection": { "title": "General" },
+			"backLink": "Units",
+			"createTitle": "New unit",
+			"editTitle": "Edit unit",
+			"description": "Units measure ingredient quantities and define how they are written.",
+			"namesSection": {
+				"title": "Names",
+				"description": "Singular and plural, as shown next to a quantity."
+			},
+			"formatSection": {
+				"title": "Format",
+				"description": "Symbol, kind and how quantities are written."
+			},
+			"nameInput": { "label": "name" },
+			"namePluralInput": { "label": "plural name" },
 			"symbolInput": { "label": "symbol", "placeholder": "e.g. ml" },
 			"kindInput": {
 				"label": "kind",
 				"placeholder": "select a kind",
 				"options": {
-					"volume": "volume",
-					"mass": "mass",
-					"count": "count",
-					"informal": "informal"
+					"volume": "Volume",
+					"mass": "Mass",
+					"count": "Count",
+					"informal": "Informal"
 				}
 			},
-			"spaceBeforeSymbolInput": { "label": "space before symbol?" },
-			"allowDecimalInput": { "label": "allow decimal?" }
+			"spaceBeforeSymbolInput": {
+				"label": "space before symbol",
+				"help": "Writes \"60 ml\" instead of \"60ml\"."
+			},
+			"allowDecimalInput": {
+				"label": "allow decimals",
+				"help": "Accepts quantities like 1.5; off for whole units only."
+			},
+			"preview": {
+				"label": "Preview",
+				"empty": "Fill in the names or the symbol to see how quantities will read."
+			},
+			"cancelButton": "Cancel",
+			"createButton": "Create unit",
+			"saveButton": "Save changes",
+			"createSuccess": { "title": "Unit created", "message": "The unit was created." },
+			"createError": { "title": "Error", "message": "Unable to create the unit." },
+			"updateSuccess": { "title": "Unit updated", "message": "The unit was updated." },
+			"updateError": { "title": "Error", "message": "Unable to update the unit." }
 		},
 		"footer": {
 			"privacyPolicy": "Privacy Policy",
@@ -91,25 +178,70 @@
 			"legalNav": { "label": "legal" }
 		},
 		"ingredientsControlOverview": {
-			"createButton": { "value": "Create Ingredient" },
+			"searchLabel": "Search ingredients",
+			"searchPlaceholder": "Search ingredients by name",
+			"createButton": { "value": "New ingredient" },
+			"emptyMessage": "No ingredients found.",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load the ingredients.",
 			"deleteModal": {
-				"title": "Are you sure you want to delete the item",
-				"description": "This action cannot be undo"
-			}
+				"title": "Delete {name}?",
+				"description": "This action cannot be undone."
+			},
+			"deleteSuccess": {
+				"title": "Ingredient deleted",
+				"message": "The ingredient was deleted."
+			},
+			"deleteError": { "title": "Error", "message": "Unable to delete the ingredient." }
 		},
 		"ingredientForm": {
-			"title": "Ingredient",
-			"nameInput": { "label": "name", "placeholder": "" },
-			"generalSection": { "title": "General" },
+			"backLink": "Ingredients",
+			"createTitle": "New ingredient",
+			"editTitle": "Edit ingredient",
+			"description": "What drinks are made of: each one has a category and a unit.",
+			"namesSection": {
+				"title": "Names",
+				"description": "Saved with only the first letter capitalized, e.g. \"Lime juice\"."
+			},
+			"classificationSection": {
+				"title": "Category and unit",
+				"description": "Where it is grouped and how its quantity is measured in drinks."
+			},
+			"nameInput": { "label": "name" },
 			"categoryInput": { "label": "category" },
-			"unitInput": { "label": "unit" }
+			"unitInput": { "label": "unit" },
+			"preview": {
+				"label": "In a drink",
+				"empty": "Fill in the name and pick a unit to see how it reads in a drink."
+			},
+			"cancelButton": "Cancel",
+			"createButton": "Create ingredient",
+			"saveButton": "Save changes",
+			"createSuccess": {
+				"title": "Ingredient created",
+				"message": "The ingredient was created."
+			},
+			"createError": { "title": "Error", "message": "Unable to create the ingredient." },
+			"updateSuccess": {
+				"title": "Ingredient updated",
+				"message": "The ingredient was updated."
+			},
+			"updateError": { "title": "Error", "message": "Unable to update the ingredient." }
 		},
 		"drinksControlOverview": {
-			"createButton": { "value": "Create drink" },
+			"searchLabel": "Search drinks",
+			"searchPlaceholder": "Search drinks by name",
+			"createButton": { "value": "New drink" },
+			"emptyMessage": "No drinks found.",
+			"ingredientsCount": "{count} ingredient | {count} ingredients",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load the drinks.",
 			"deleteModal": {
-				"title": "Are you sure you want to delete the item",
-				"description": "This action cannot be undo"
-			}
+				"title": "Delete {name}?",
+				"description": "This action cannot be undone."
+			},
+			"deleteSuccess": { "title": "Drink deleted", "message": "The drink was deleted." },
+			"deleteError": { "title": "Error", "message": "Unable to delete the drink." }
 		},
 		"drinkCard": {
 			"ingredientsLabel": "INGREDIENTS",
@@ -120,45 +252,169 @@
 			"ratingSummaryLabelMany": "{value} out of 5 stars, based on {count} ratings"
 		},
 		"drinkForm": {
-			"title": "Drink",
-			"nameInput": { "label": "name", "placeholder": "" },
-			"methodInput": { "label": "method", "placeholder": "" },
-			"generalSection": { "title": "General" },
-			"coverInput": { "label": "cover" },
-			"thumbnailInput": { "label": "thumbnail" }
+			"backLink": "Drinks",
+			"createTitle": "New drink",
+			"editTitle": "Edit drink",
+			"description": "The recipe in both languages, its ingredients and its images.",
+			"recipeSection": {
+				"title": "Recipe",
+				"description": "Name and method in each language. Names keep only the first letter capitalized."
+			},
+			"ingredientsSection": {
+				"title": "Ingredients",
+				"description": "Listed on the drink in this order. Drag the handle or use the arrows to reorder."
+			},
+			"imagesSection": {
+				"title": "Images",
+				"description": "Optional. PNG, JPG or WebP; they can be added later."
+			},
+			"nameInput": { "label": "name" },
+			"methodInput": { "label": "method" },
+			"thumbnailInput": { "label": "thumbnail", "help": "Square, shown on the cards." },
+			"coverInput": { "label": "cover", "help": "Wide, shown on top of the drink page." },
+			"cancelButton": "Cancel",
+			"createButton": "Create drink",
+			"saveButton": "Save changes",
+			"errorTitle": "Error",
+			"createSuccess": { "title": "Drink created", "message": "The drink was created." },
+			"updateSuccess": { "title": "Drink updated", "message": "The drink was updated." },
+			"createError": "Unable to create the drink.",
+			"updateError": "Unable to update the drink.",
+			"coverError": "The drink was saved, but the cover could not be uploaded.",
+			"thumbnailError": "The drink was saved, but the thumbnail could not be uploaded."
 		},
 		"ingredientsSelection": {
-			"removeButton": { "label": "remove ingredient" }
+			"searchInput": {
+				"label": "add ingredient",
+				"placeholder": "Search ingredients to add",
+				"noResult": "No ingredients found"
+			},
+			"empty": "No ingredients yet. Search above to add the first one.",
+			"reorderInstructions": "Drag the handle to reorder, or use the move up and move down buttons.",
+			"dragHandle": { "label": "Reorder {name}" },
+			"quantity": { "label": "Quantity of {name}" },
+			"moveUp": { "label": "Move {name} up" },
+			"moveDown": { "label": "Move {name} down" },
+			"removeButton": { "label": "Remove {name}" },
+			"announcements": {
+				"added": "{name} added, {total} ingredients.",
+				"removed": "{name} removed.",
+				"moved": "{name} moved to position {position} of {total}."
+			}
 		},
 		"topBar": {
-			"categories": "categories",
-			"units": "units",
-			"drinks": "drinks",
-			"ingredients": "ingredients",
-			"signin": "signin",
-			"logout": "signout",
+			"profile": "Profile",
+			"categories": "Categories",
+			"units": "Units",
+			"drinks": "Drinks",
+			"ingredients": "Ingredients",
+			"users": "Users",
+			"signin": "Sign in",
+			"logout": "Sign out",
 			"logoutError": "Unable to sign out. Please try again.",
-			"primaryNav": { "label": "primary" },
-			"mobileNav": { "label": "mobile" }
+			"primaryNav": { "label": "Management" },
+			"mobileNav": { "label": "Menu" },
+			"manageSection": "Manage",
+			"accountSection": "Account",
+			"profileShortcut": "Open your profile",
+			"userMenu": { "label": "Account menu" },
+			"menu": { "title": "Menu", "open": "Open menu", "close": "Close menu" }
+		},
+		"profile": {
+			"title": "Profile",
+			"description": "Manage your personal information and account security.",
+			"avatar": {
+				"alt": "Profile avatar",
+				"changeButton": "Change photo",
+				"help": "JPG, PNG or WebP · max 3 MB",
+				"errors": {
+					"file-too-large": "The image must be 3 MB or smaller.",
+					"unsupported-file-type": "Choose a JPG, PNG or WebP image."
+				}
+			},
+			"details": {
+				"title": "Personal information",
+				"description": "Update your photo and the name shown across DrunkFlavor.",
+				"name": "First name",
+				"surname": "Last name",
+				"email": "Email",
+				"emailLocked": "Locked",
+				"saveButton": "Save changes",
+				"successMessage": "Your profile was updated.",
+				"errorMessage": "Unable to update your profile. Please try again."
+			},
+			"password": {
+				"currentPassword": "Current password",
+				"newPassword": "New password",
+				"confirmPassword": "Confirm new password",
+				"cancelButton": "Cancel",
+				"create": {
+					"title": "Password",
+					"description": "Create a password to sign in with your email as well as Google.",
+					"openButton": "Create password",
+					"dialogTitle": "Create a password",
+					"dialogDescription": "Add email and password as another secure way to access your account.",
+					"saveButton": "Create password",
+					"successMessage": "Your password was created. You can now sign in with email or Google.",
+					"errorMessage": "Unable to create your password. Please try again."
+				},
+				"update": {
+					"title": "Password",
+					"description": "Use a strong, unique password to protect your account.",
+					"openButton": "Update password",
+					"dialogTitle": "Update password",
+					"dialogDescription": "Enter your current password and choose a new one.",
+					"saveButton": "Update password",
+					"successMessage": "Your password was updated.",
+					"errorMessage": "Unable to update your password. Check your current password and try again."
+				}
+			},
+			"google": {
+				"title": "Google",
+				"description": "Connect Google as another secure way to sign in.",
+				"connectedDescription": "Google is connected and available as a sign-in method.",
+				"connectButton": "Connect Google",
+				"connectedLabel": "Connected",
+				"dialogTitle": "Connect Google",
+				"dialogDescription": "Choose the Google account you want to connect.",
+				"successMessage": "Google was connected to your account.",
+				"errorMessage": "Unable to connect Google. Check the Google account and try again.",
+				"googleErrorMessage": "Unable to open Google authentication. Please try again."
+			},
+			"deletion": {
+				"title": "Delete account",
+				"description": "Permanently delete your account. This action cannot be undone.",
+				"openButton": "Delete account",
+				"dialogTitle": "Delete your account?",
+				"dialogDescription": "Your profile and sign-in data will be permanently deleted. This action cannot be undone.",
+				"errorMessage": "Unable to delete your account. Please try again."
+			},
+			"toast": { "successTitle": "Success", "errorTitle": "Error" }
+		},
+		"authLegalNotice": {
+			"message": "By continuing, you agree to the {terms} and the {privacy}.",
+			"terms": "Terms of Service",
+			"privacy": "Privacy Policy"
 		},
 		"signin": {
 			"title": "Welcome back",
+			"subtitle": "Sign in to rate and comment on your favorite drinks.",
 			"divider": "or",
 			"signupPrompt": { "message": "Don't have an account?", "link": "Sign up" },
 			"error": { "title": "Error" }
 		},
 		"credentialsSignIn": {
-			"emailInput": { "label": "email" },
-			"passwordInput": { "label": "password" },
-			"submitButton": { "value": "sign in" },
-			"forgotPasswordLink": { "value": "Forgot your password?" },
+			"emailInput": { "label": "Email", "placeholder": "you{'@'}example.com" },
+			"passwordInput": { "label": "Password" },
+			"submitButton": { "value": "Sign in" },
+			"forgotPasswordLink": { "value": "Forgot password?" },
 			"error": { "message": "Email or password incorrect." }
 		},
 		"completeProfileForm": {
 			"title": "Complete your profile",
 			"description": "Add your name to finish setting up your account.",
-			"nameInput": { "label": "name" },
-			"surnameInput": { "label": "surname" },
+			"nameInput": { "label": "First name" },
+			"surnameInput": { "label": "Last name" },
 			"submitButton": { "value": "Continue" },
 			"signoutPrompt": { "message": "Not you?", "link": "Sign out" },
 			"error": {
@@ -169,29 +425,184 @@
 		"googleSignIn": {
 			"error": {
 				"message": "Unable to sign in with Google. Please try again.",
-				"emailNotVerified": "Your Google account email is not verified."
+				"emailNotVerified": "Your Google account email is not verified.",
+				"accountLinkRequired": "This email already has an account. Sign in first, then connect Google from your profile."
 			}
+		},
+		"reauthenticationDialog": {
+			"title": "Confirm it's you",
+			"description": "For your security, confirm your identity to continue with this action.",
+			"passwordLabel": "Password",
+			"confirmButton": "Confirm",
+			"cancelButton": "Cancel",
+			"noMethod": "No supported authentication method is available.",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to confirm your identity. Please try again.",
+			"googleErrorMessage": "Unable to open Google authentication. Please try again."
+		},
+		"usersControlOverview": {
+			"searchLabel": "Search users",
+			"searchPlaceholder": "Search by email",
+			"emptyMessage": "No users found.",
+			"noName": "No name yet",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load users. Please try again."
+		},
+		"userAdministration": {
+			"title": "User details",
+			"backLink": "Back to users",
+			"loadErrorMessage": "Unable to load this user. Please try again.",
+			"fields": {
+				"name": "Name",
+				"email": "Email",
+				"role": "Role",
+				"status": "Status",
+				"emailVerified": "Email verification",
+				"verified": "Verified",
+				"notVerified": "Not verified"
+			},
+			"actions": {
+				"title": "Account actions",
+				"changeRole": "Change role",
+				"suspend": "Suspend",
+				"reactivate": "Reactivate",
+				"close": "Close account",
+				"revokeSessions": "Sign out everywhere",
+				"requestOwnershipTransfer": "Transfer ownership",
+				"none": "No administrative actions are available for this user."
+			},
+			"reasonDialog": {
+				"reasonLabel": "Reason",
+				"reasonHelp": "Between 10 and 500 characters. It is recorded in the audit log.",
+				"cancelButton": "Cancel",
+				"suspend": {
+					"title": "Suspend user",
+					"description": "The user is signed out and cannot sign in until the account is reactivated.",
+					"confirmButton": "Suspend user",
+					"successMessage": "The user was suspended.",
+					"errorMessage": "Unable to suspend the user. Please try again."
+				},
+				"reactivate": {
+					"title": "Reactivate user",
+					"description": "The user can sign in again with their existing sign-in methods.",
+					"confirmButton": "Reactivate user",
+					"successMessage": "The user was reactivated.",
+					"errorMessage": "Unable to reactivate the user. Please try again."
+				},
+				"close": {
+					"title": "Close account",
+					"description": "The account is permanently closed and its comments are deleted. This action cannot be undone.",
+					"confirmButton": "Close account",
+					"successMessage": "The account was closed.",
+					"errorMessage": "Unable to close the account. Please try again."
+				},
+				"revokeSessions": {
+					"title": "Sign out everywhere",
+					"description": "Every active session of this user ends. They can sign in again right away.",
+					"confirmButton": "Sign out everywhere",
+					"successMessage": "All sessions of the user were ended.",
+					"errorMessage": "Unable to end the user's sessions. Please try again."
+				}
+			},
+			"roleDialog": {
+				"title": "Change role",
+				"description": "The new role applies on the user's next request.",
+				"roleLabel": "New role",
+				"rolePlaceholder": "Select a role",
+				"cancelButton": "Cancel",
+				"confirmButton": "Change role",
+				"successMessage": "The role was changed.",
+				"errorMessage": "Unable to change the role. Please try again."
+			},
+			"toast": { "successTitle": "Success", "errorTitle": "Error" }
+		},
+		"ownershipTransfer": {
+			"request": {
+				"title": "Transfer ownership",
+				"description": "This administrator receives an email invitation. You remain the owner until they accept it.",
+				"reasonLabel": "Reason",
+				"reasonHelp": "Between 10 and 500 characters. It is recorded in the audit log.",
+				"cancelButton": "Cancel",
+				"confirmButton": "Send invitation",
+				"successMessage": "The ownership transfer invitation was sent.",
+				"errorMessage": "Unable to send the invitation. Please try again."
+			},
+			"pending": {
+				"title": "Ownership transfer pending",
+				"description": "An invitation was sent to {email}. It expires on {date}.",
+				"expiredDescription": "The invitation sent to {email} expired on {date}.",
+				"resendButton": "Resend invitation",
+				"cancelButton": "Cancel transfer",
+				"resendSuccessMessage": "The invitation was sent again.",
+				"resendErrorMessage": "Unable to resend the invitation. Please try again.",
+				"cancelSuccessMessage": "The ownership transfer was cancelled.",
+				"cancelErrorMessage": "Unable to cancel the ownership transfer. Please try again.",
+				"reasonLabel": "Reason",
+				"expiresBadge": "Expires {time}",
+				"expiredBadge": "Expired",
+				"expiresAt": "Expires on {date}.",
+				"expiredAt": "Expired on {date}. Resend it to create a new link valid for 24 hours.",
+				"unknownInvitee": "the invited administrator",
+				"loadError": "Unable to load the ownership transfer. Please reload the page.",
+				"thisUserDescription": "{name} received the invitation by email. You remain the owner until it is accepted.",
+				"otherPending": "There is already a pending invitation for {name}.",
+				"otherPendingHint": "Cancel it before inviting someone else.",
+				"viewInvitation": "View invitation",
+				"listBadge": "Ownership invitation",
+				"cancelDialog": {
+					"title": "Cancel the transfer?",
+					"description": "The link sent to {name} stops working. You can send a new invitation later.",
+					"keepButton": "Keep invitation"
+				}
+			},
+			"section": {
+				"title": "Application ownership",
+				"description": "You are the owner of DrunkFlavor. Ownership only changes when the invited administrator accepts the invitation.",
+				"noneMessage": "No ownership transfer pending.",
+				"startLink": "To transfer it, open an administrator in Users"
+			},
+			"acceptance": {
+				"title": "Accept ownership",
+				"description": "You were invited to become the owner of DrunkFlavor. The current owner becomes an administrator.",
+				"confirmButton": "Accept ownership",
+				"successMessage": "You are now the owner. Sign in again to continue.",
+				"invalidMessage": "This invitation is invalid or has expired. Ask the current owner to send a new one.",
+				"errorMessage": "Unable to accept the invitation. Please try again.",
+				"homeLink": "Go to the home page",
+				"invitedMessage": "You were invited to become the owner of DrunkFlavor.",
+				"changesTitle": "What changes",
+				"changes": {
+					"newOwner": "You become the owner.",
+					"previousOwner": "The current owner becomes an administrator.",
+					"signInAgain": "Both of you need to sign in again."
+				},
+				"reauthenticationHint": "You may be asked for your password or Google before finishing.",
+				"invalidTitle": "Invitation unavailable"
+			},
+			"toast": { "successTitle": "Success", "errorTitle": "Error" }
 		},
 		"signupForm": {
 			"title": "Create an account",
-			"nameInput": { "label": "name" },
-			"surnameInput": { "label": "surname" },
-			"emailInput": { "label": "email" },
-			"passwordInput": { "label": "password" },
-			"confirmPasswordInput": { "label": "confirm password" },
-			"submitButton": { "value": "Create Account" },
-			"hasAccount": { "message": "Already have an account?", "link": "Sign in" }
+			"nameInput": { "label": "First name" },
+			"surnameInput": { "label": "Last name" },
+			"emailInput": { "label": "Email", "placeholder": "you{'@'}example.com" },
+			"passwordInput": { "label": "Password" },
+			"confirmPasswordInput": { "label": "Confirm password" },
+			"submitButton": { "value": "Create account" },
+			"hasAccount": { "message": "Already have an account?", "link": "Sign in" },
+			"subtitle": "Rate drinks and join the conversation in under a minute."
 		},
 		"forgotPasswordForm": {
-			"title": "Reset Password",
-			"emailInput": { "label": "email" },
-			"submitButton": { "value": "Send Code" },
-			"rememberPassword": { "message": "Remember your password?", "link": "Back to sign in" }
+			"title": "Forgot your password?",
+			"emailInput": { "label": "Email", "placeholder": "you{'@'}example.com" },
+			"submitButton": { "value": "Send link" },
+			"rememberPassword": { "message": "Remember your password?", "link": "Back to sign in" },
+			"description": "Enter your email and we will send you a link to choose a new password."
 		},
 		"confirmPasswordForm": {
 			"title": "Set a new password",
-			"passwordInput": { "label": "new password" },
-			"confirmPasswordInput": { "label": "confirm password" },
+			"passwordInput": { "label": "New password" },
+			"confirmPasswordInput": { "label": "Confirm password" },
 			"submitButton": { "value": "Reset password" },
 			"backToSignin": { "message": "Remember your password?", "link": "Back to sign in" },
 			"success": {
@@ -204,7 +615,8 @@
 				"successMessage": "Password reset successfully",
 				"errorTitle": "Error",
 				"errorMessage": "Unable to reset password. The link may be invalid or expired."
-			}
+			},
+			"description": "Choose a strong password you do not use on other sites."
 		},
 		"verifyEmail": {
 			"pending": {
@@ -224,6 +636,23 @@
 		},
 		"toastNotification": {
 			"label": "Notification"
+		},
+		"languageSwitcher": { "label": "Language" },
+		"themeSwitcher": { "label": "Dark theme", "on": "On", "off": "Off" }
+	},
+	"users": {
+		"roles": {
+			"owner": "Owner",
+			"admin": "Admin",
+			"partner": "Partner",
+			"member": "Member"
+		},
+		"statuses": {
+			"idle": "Idle",
+			"pending": "Pending verification",
+			"active": "Active",
+			"suspended": "Suspended",
+			"incomplete_profile": "Incomplete profile"
 		}
 	},
 	"errors": {
@@ -232,9 +661,13 @@
 			"surname": "surname is required",
 			"email": "invalid email",
 			"password": "invalid password",
+			"currentPassword": "current password is required",
 			"passwordMinSize": "password must have at least 8 characters",
 			"passwordMaxSize": "password must have at most 64 characters",
-			"weakPassword": "password must contain uppercase, lowercase, number and special character"
+			"weakPassword": "password must contain uppercase, lowercase, number and special character",
+			"role": "role must be selected",
+			"administrationReasonMinSize": "reason must have at least 10 characters",
+			"administrationReasonMaxSize": "reason must have at most 500 characters"
 		},
 		"auth": {
 			"passwordsMismatch": "passwords do not match"
@@ -265,9 +698,16 @@
 		"message": "Are you sure you want to delete the item"
 	},
 	"drinkDetailPage": {
+		"backLink": "All drinks",
+		"loading": "Loading drink...",
+		"loadError": {
+			"title": "Drink unavailable",
+			"message": "We couldn't load this drink. It may have been removed."
+		},
 		"ingredients": {
 			"title": "Ingredients",
-			"ofPreposition": "of"
+			"ofPreposition": "of",
+			"count": "{count} ingredient | {count} ingredients"
 		},
 		"instructions": "Preparation Instructions",
 		"rating": {
@@ -287,6 +727,64 @@
 			"removed": "Rating removed.",
 			"saveError": "Unable to save your rating. Please try again.",
 			"removeError": "Unable to remove your rating. Please try again."
+		},
+		"comments": {
+			"title": "Comments",
+			"composerLabel": "Write a comment",
+			"editLabel": "Edit your comment",
+			"placeholder": "Share what you think about this drink...",
+			"publish": "Post comment",
+			"save": "Save",
+			"saving": "Saving...",
+			"cancel": "Cancel",
+			"counter": "{count} / {max}",
+			"signInPrompt": "Join the conversation about this drink.",
+			"signIn": "Sign in to comment",
+			"loading": "Loading comments...",
+			"loadError": "Unable to load the comments.",
+			"retry": "Try again",
+			"empty": "No comments yet. Be the first to share your take.",
+			"loadMore": "Load more comments",
+			"loadingMore": "Loading...",
+			"you": "You",
+			"edited": "edited",
+			"unknownAuthor": "Former member",
+			"actions": "Actions for the comment by {name}",
+			"edit": "Edit",
+			"hide": "Hide comment",
+			"delete": "Delete",
+			"deleteDialog": {
+				"title": "Delete this comment?",
+				"description": "The comment will be removed permanently. This action cannot be undone."
+			},
+			"createError": {
+				"title": "Comment not posted",
+				"message": "Unable to post your comment. Please try again."
+			},
+			"updateError": {
+				"title": "Comment not saved",
+				"message": "Unable to save your changes. Please try again."
+			},
+			"deleteSuccess": {
+				"title": "Comment deleted",
+				"message": "The comment was removed."
+			},
+			"deleteError": {
+				"title": "Comment not deleted",
+				"message": "Unable to delete the comment. Please try again."
+			},
+			"hideSuccess": {
+				"title": "Comment hidden",
+				"message": "The comment is no longer visible to visitors."
+			},
+			"hideError": {
+				"title": "Comment not hidden",
+				"message": "Unable to hide the comment. Please try again."
+			},
+			"loadMoreError": {
+				"title": "Comments not loaded",
+				"message": "Unable to load more comments. Please try again."
+			}
 		}
 	},
 	"drinkForm": {

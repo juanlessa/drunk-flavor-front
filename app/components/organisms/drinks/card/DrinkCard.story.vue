@@ -10,6 +10,20 @@
 				<DrinkCard :drink="(state as State).drink" />
 			</template>
 		</Variant>
+
+		<Variant title="with skeleton" :init-state="initState">
+			<template #default="{ state }">
+				<!-- Same 152px row height as the overview grid, to compare the card and its skeleton. -->
+				<div class="p-4 flex flex-col gap-4">
+					<div class="h-38 flex justify-center">
+						<DrinkCard :drink="(state as State).drink" />
+					</div>
+					<div class="h-38 flex justify-center">
+						<DrinkCardSkeleton />
+					</div>
+				</div>
+			</template>
+		</Variant>
 	</Story>
 </template>
 <script lang="ts" setup>

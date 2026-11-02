@@ -1,58 +1,56 @@
 <template>
-	<Form :title="$t('organisms.confirmPasswordForm.title')" @submit="handleSubmitButton">
-		<InputWrapper>
-			<template #label>
-				<Label for="password">
-					{{ $t('organisms.confirmPasswordForm.passwordInput.label') }}
-				</Label>
-			</template>
-			<InputPassword
-				id="password"
-				v-model="formState.form.password"
-				name="password"
-				placeholder=""
-				:has-error="!!checkError('password')"
-				:error-message="checkError('password')"
-				@focus="isPasswordActive = true"
-				@blur="handlePasswordBlur" />
-		</InputWrapper>
-		<InputWrapper>
-			<template #label>
-				<Label for="confirmPassword">
-					{{ $t('organisms.confirmPasswordForm.confirmPasswordInput.label') }}
-				</Label>
-			</template>
-			<InputPassword
-				id="confirmPassword"
-				v-model="formState.form.confirmPassword"
-				name="confirmPassword"
-				placeholder=""
-				:has-error="!!checkError('confirmPassword')"
-				:error-message="checkError('confirmPassword')"
-				@blur="validateForm" />
-		</InputWrapper>
-		<PasswordStrength
-			:password="formState.form.password"
-			:confirm-password="formState.form.confirmPassword"
-			:active="isPasswordActive" />
-		<template #buttons>
-			<Box direction="col" class="gap-6">
-				<ButtonGroup direction="column" :has-cancel-button="false">
-					<Button variant="primary" type="submit">
-						{{ $t('organisms.confirmPasswordForm.submitButton.value') }}
-					</Button>
-				</ButtonGroup>
-				<Box direction="row" class="gap-1 justify-center items-center">
-					<Text as="span" class="text-content-subtle">
-						{{ $t('organisms.confirmPasswordForm.backToSignin.message') }}
-					</Text>
-					<Anchor :to="localePath('/signin')" @click="resetFormState">
-						{{ $t('organisms.confirmPasswordForm.backToSignin.link') }}
-					</Anchor>
-				</Box>
-			</Box>
-		</template>
-	</Form>
+	<div class="flex flex-col gap-6">
+		<AuthPageHeader
+			:title="$t('organisms.confirmPasswordForm.title')"
+			:description="$t('organisms.confirmPasswordForm.description')" />
+		<form class="flex flex-col gap-6" novalidate @submit.prevent="handleSubmitButton">
+			<div class="flex flex-col gap-4">
+				<InputWrapper>
+					<template #label>
+						<Label for="password">
+							{{ $t('organisms.confirmPasswordForm.passwordInput.label') }}
+						</Label>
+					</template>
+					<InputPassword
+						id="password"
+						v-model="formState.form.password"
+						name="password"
+						placeholder=""
+						:has-error="!!checkError('password')"
+						:error-message="checkError('password')"
+						@focus="isPasswordActive = true"
+						@blur="handlePasswordBlur" />
+				</InputWrapper>
+				<InputWrapper>
+					<template #label>
+						<Label for="confirmPassword">
+							{{ $t('organisms.confirmPasswordForm.confirmPasswordInput.label') }}
+						</Label>
+					</template>
+					<InputPassword
+						id="confirmPassword"
+						v-model="formState.form.confirmPassword"
+						name="confirmPassword"
+						placeholder=""
+						:has-error="!!checkError('confirmPassword')"
+						:error-message="checkError('confirmPassword')"
+						@blur="validateForm" />
+				</InputWrapper>
+				<PasswordStrength
+					:password="formState.form.password"
+					:confirm-password="formState.form.confirmPassword"
+					:active="isPasswordActive" />
+			</div>
+			<Button type="submit" class="max-w-none!">
+				{{ $t('organisms.confirmPasswordForm.submitButton.value') }}
+			</Button>
+		</form>
+		<AuthPrompt
+			:message="$t('organisms.confirmPasswordForm.backToSignin.message')"
+			:link-label="$t('organisms.confirmPasswordForm.backToSignin.link')"
+			:to="localePath('/signin')"
+			@navigate="resetFormState" />
+	</div>
 </template>
 
 <script setup lang="ts">

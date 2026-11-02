@@ -5,7 +5,7 @@ import UpdateIngredient from './UpdateIngredient.vue';
 
 const IngredientFormStub = {
 	template: '<div data-testid="ingredient-form" />',
-	props: ['ingredient'],
+	props: ['ingredient', 'title', 'submitLabel'],
 	emits: ['submit', 'cancel']
 };
 
@@ -32,34 +32,36 @@ vi.stubGlobal('useToast', () => ({
 	addToast: mockAddToast
 }));
 
+vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
+
 const ingredientData = {
-	_id: 'ing-1',
+	id: 'ing-1',
 	translations: {
 		en: { name: 'Sugar' },
 		pt: { name: 'Açúcar' }
 	},
 	category: {
-		_id: 'cat-1',
+		id: 'cat-1',
 		translations: { en: { name: 'Sweetener' }, pt: { name: 'Adoçante' } },
-		is_alcoholic: false,
-		created_at: new Date(),
-		updated_at: new Date()
+		isAlcoholic: false,
+		createdAt: new Date(),
+		updatedAt: new Date()
 	},
 	unit: {
-		_id: 'unit-1',
+		id: 'unit-1',
 		translations: {
-			en: { name: 'teaspoon', name_plural: 'teaspoons' },
-			pt: { name: 'colher de chá', name_plural: 'colheres de chá' }
+			en: { name: 'teaspoon', namePlural: 'teaspoons' },
+			pt: { name: 'colher de chá', namePlural: 'colheres de chá' }
 		},
 		symbol: 'tsp',
-		space_before_symbol: true,
-		allow_decimal: true,
+		spaceBeforeSymbol: true,
+		allowDecimal: true,
 		kind: 'volume',
-		created_at: new Date(),
-		updated_at: new Date()
+		createdAt: new Date(),
+		updatedAt: new Date()
 	},
-	created_at: new Date(),
-	updated_at: new Date()
+	createdAt: new Date(),
+	updatedAt: new Date()
 };
 
 vi.stubGlobal('useAsyncData', () => ({
@@ -72,8 +74,8 @@ const ingredientFormPayload = {
 		en: { name: 'Sugar' },
 		pt: { name: 'Açúcar' }
 	},
-	category_id: 'cat-1',
-	unit_id: 'unit-1'
+	categoryId: 'cat-1',
+	unitId: 'unit-1'
 };
 
 const mountUpdateIngredient = async () => {
@@ -102,6 +104,13 @@ describe('UpdateIngredient', () => {
 	});
 
 	describe('rendering', () => {
+		it('passes the edit title and submit label to the form', async () => {
+			const form = (await mountUpdateIngredient()).findComponent(IngredientFormStub);
+
+			expect(form.props('title')).toBe('organisms.ingredientForm.editTitle');
+			expect(form.props('submitLabel')).toBe('organisms.ingredientForm.saveButton');
+		});
+
 		it('renders IngredientForm', async () => {
 			const wrapper = await mountUpdateIngredient();
 
@@ -149,8 +158,8 @@ describe('UpdateIngredient', () => {
 			expect(mockApiUpdate).toHaveBeenCalledWith({
 				id: 'ing-1',
 				translations: ingredientFormPayload.translations,
-				category_id: 'cat-1',
-				unit_id: 'unit-1'
+				categoryId: 'cat-1',
+				unitId: 'unit-1'
 			});
 		});
 

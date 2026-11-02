@@ -28,3 +28,6 @@ export enum DropZoneAcceptEnum {
 }
 
 export type DropZoneAccept = keyof typeof DropZoneAcceptEnum;
+
+/** `square` for thumbnails, `wide` for covers. */
+export type DropZoneAspect = 'square' | 'wide';

@@ -1,205 +1,216 @@
-import { mount, flushPromises } from '@vue/test-utils';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { mount } from '@vue/test-utils';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ref } from 'vue';
 import CategoriesControlOverview from './CategoriesControlOverview.vue';
 
-// --- Stubs ---
-const ButtonGroupStub = {
-	template: '<div data-testid="button-group"><slot /></div>'
-};
-const ButtonStub = {
-	template: '<button data-testid="create-btn" @click="$emit(\'click\')"><slot /></button>',
-	emits: ['click']
-};
-const VirtualInfiniteGridStub = {
-	template: '<div data-testid="grid"><slot :list="items" /><slot name="loading" /></div>',
-	props: ['items', 'height', 'itemHeight', 'itemsGap', 'gridColumns', 'loading'],
-	emits: ['load-more']
-};
-const ItemControlCardStub = {
-	template:
-		'<div data-testid="item-card" @click="$emit(\'click\')">' +
-		'<button data-testid="action-btn" @click.stop="$emit(\'action\')" /></div>',
-	props: ['content'],
-	emits: ['click', 'action']
-};
-const ItemControlCardSkeletonStub = {
-	template: '<div data-testid="skeleton" />'
-};
-const DeleteModalStub = {
-	template:
-		'<div data-testid="delete-modal">' +
-		'<slot name="title" /><slot name="description" /></div>',
-	props: ['open'],
-	emits: ['update:open', 'cancel', 'delete']
-};
-const ClientOnlyStub = {
-	template: '<div><slot /></div>'
-};
-
-// --- Mocks ---
 const mockRouterPush = vi.fn();
-const mockDeleteCategory = vi.fn().mockResolvedValue({});
 const mockLoadNextPage = vi.fn();
+const mockDeleteCategory = vi.fn();
 const mockAddToast = vi.fn();
-const mockLocalePath = vi.fn((path: string) => path);
+const mockSearchTerm = ref('');
+const mockIsEmpty = ref(false);
+const mockScreenType = ref<'mobile' | 'tablet' | 'desktop'>('desktop');
+
+const buildCategory = (id: string, name: string, isAlcoholic: boolean) => ({
+	id,
+	translations: { en: { name }, pt: { name } },
+	isAlcoholic
+});
 
 const mockOverviewState = ref({
-	categories: [
-		{
-			_id: 'cat-1',
-			translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
-			created_at: new Date(),
-			updated_at: new Date()
-		},
-		{
-			_id: 'cat-2',
-			translations: { en: { name: 'Syrup' }, pt: { name: 'Xarope' } },
-			created_at: new Date(),
-			updated_at: new Date()
-		}
-	],
+	categories: [] as ReturnType<typeof buildCategory>[],
 	filter: { page: 1, limit: 30, isLastPage: false },
+	searchTerm: '',
 	loading: false
 });
 
-vi.stubGlobal('useNuxtApp', () => ({
-	$router: { push: mockRouterPush }
-}));
-
+vi.stubGlobal('useNuxtApp', () => ({ $router: { push: mockRouterPush } }));
+vi.stubGlobal('useLocalePath', () => (path: string) => path);
 vi.stubGlobal('useI18n', () => ({
-	t: (key: string) => key,
+	t: (key: string, params?: { name?: string }) => (params?.name ? `${key}:${params.name}` : key),
 	locale: ref('en')
 }));
-
-vi.stubGlobal('useLocalePath', () => mockLocalePath);
-
-vi.stubGlobal('useToast', () => ({
-	addToast: mockAddToast
-}));
-
+vi.stubGlobal('useToast', () => ({ addToast: mockAddToast }));
+vi.stubGlobal('useScreenType', () => ({ screenType: mockScreenType }));
 vi.stubGlobal('useCategoriesOverview', () => ({
 	overviewState: mockOverviewState,
+	searchTerm: mockSearchTerm,
+	isEmpty: mockIsEmpty,
 	deleteCategory: mockDeleteCategory,
 	loadNextPage: mockLoadNextPage
 }));
+vi.stubGlobal(
+	'ResizeObserver',
+	class {
+		observe() {}
+		unobserve() {}
+		disconnect() {}
+	}
+);
 
-vi.stubGlobal('useScreenType', () => ({
-	screenType: ref('desktop')
-}));
+// Renders every item in a single row and exposes the configured column count.
+const VirtualInfiniteGridStub = {
+	props: ['items', 'gridColumns', 'loading'],
+	template: `
+		<div data-testid="grid" :data-columns="gridColumns">
+			<slot :list="[{ data: items, index: 0 }]" />
+			<slot v-if="loading" name="loading" />
+		</div>
+	`
+};
 
-const globalStubs = {
-	ButtonGroup: ButtonGroupStub,
-	Button: ButtonStub,
-	VirtualInfiniteGrid: VirtualInfiniteGridStub,
-	ItemControlCard: ItemControlCardStub,
-	ItemControlCardSkeleton: ItemControlCardSkeletonStub,
-	DeleteModal: DeleteModalStub,
-	ClientOnly: ClientOnlyStub
+const ManagementItemCardStub = {
+	props: ['title', 'description'],
+	emits: ['select', 'delete'],
+	template: `
+		<div data-testid="card">
+			<button data-testid="card-select" @click="$emit('select')">{{ title }} | {{ description }}</button>
+			<button data-testid="card-delete" @click="$emit('delete')" />
+		</div>
+	`
+};
+
+const ManagementToolbarStub = {
+	props: ['searchTerm', 'searchId', 'createLabel'],
+	emits: ['update:searchTerm', 'create'],
+	template: `
+		<div>
+			<input :id="searchId" :value="searchTerm" @input="$emit('update:searchTerm', $event.target.value)" />
+			<button data-testid="toolbar-create" @click="$emit('create')">{{ createLabel }}</button>
+		</div>
+	`
+};
+
+const DeleteModalStub = {
+	props: ['open'],
+	emits: ['update:open', 'cancel', 'delete'],
+	template: `
+		<div v-if="open" data-testid="delete-modal">
+			<slot name="title" />
+			<button data-testid="confirm-delete" @click="$emit('delete')" />
+		</div>
+	`
 };
 
 const mountOverview = () =>
 	mount(CategoriesControlOverview, {
 		global: {
-			stubs: globalStubs,
-			mocks: {
-				$t: (key: string) => key,
-				$i18n: { locale: 'en' }
-			}
+			stubs: {
+				ClientOnly: { template: '<div><slot /></div>' },
+				VirtualInfiniteGrid: VirtualInfiniteGridStub,
+				ManagementItemCard: ManagementItemCardStub,
+				ManagementItemCardSkeleton: { template: '<div data-testid="skeleton" />' },
+				ManagementToolbar: ManagementToolbarStub,
+				DeleteModal: DeleteModalStub,
+				Text: { template: '<p><slot /></p>' }
+			},
+			mocks: { $t: (key: string) => key }
 		}
 	});
 
 describe('CategoriesControlOverview', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		mockDeleteCategory.mockResolvedValue({});
+		mockSearchTerm.value = '';
+		mockIsEmpty.value = false;
+		mockScreenType.value = 'desktop';
+		mockDeleteCategory.mockResolvedValue(undefined);
 		mockOverviewState.value = {
 			categories: [
-				{
-					_id: 'cat-1',
-					translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
-					created_at: new Date(),
-					updated_at: new Date()
-				},
-				{
-					_id: 'cat-2',
-					translations: { en: { name: 'Syrup' }, pt: { name: 'Xarope' } },
-					created_at: new Date(),
-					updated_at: new Date()
-				}
+				buildCategory('spirit', 'Spirit', true),
+				buildCategory('juice', 'Juice', false)
 			],
 			filter: { page: 1, limit: 30, isLastPage: false },
+			searchTerm: '',
 			loading: false
 		};
 	});
 
-	describe('rendering', () => {
-		it('renders a create button', () => {
-			const wrapper = mountOverview();
+	it('renders one card per category with its alcoholic label', () => {
+		const cards = mountOverview().findAll('[data-testid="card-select"]');
 
-			expect(wrapper.find('[data-testid="create-btn"]').exists()).toBe(true);
-		});
-
-		it('renders the virtual grid', () => {
-			const wrapper = mountOverview();
-
-			expect(wrapper.find('[data-testid="grid"]').exists()).toBe(true);
-		});
-
-		it('renders the delete modal', () => {
-			const wrapper = mountOverview();
-
-			expect(wrapper.find('[data-testid="delete-modal"]').exists()).toBe(true);
-		});
+		expect(cards).toHaveLength(2);
+		expect(cards[0]!.text()).toBe('Spirit | organisms.categoriesControlOverview.alcoholic');
+		expect(cards[1]!.text()).toBe('Juice | organisms.categoriesControlOverview.nonAlcoholic');
 	});
 
-	describe('navigation', () => {
-		it('navigates to create page on create button click', async () => {
-			const wrapper = mountOverview();
-			const btn = wrapper.find('[data-testid="create-btn"]');
+	it('opens the edit form of the selected category', async () => {
+		const wrapper = mountOverview();
 
-			await btn.trigger('click');
+		await wrapper.findAll('[data-testid="card-select"]')[1]!.trigger('click');
 
-			expect(mockRouterPush).toHaveBeenCalledWith('/categories/new');
-		});
+		expect(mockRouterPush).toHaveBeenCalledWith('/categories/juice/edit');
 	});
 
-	describe('delete flow', () => {
-		it('calls deleteCategory on delete confirmation', async () => {
-			const wrapper = mountOverview();
-			const modal = wrapper.findComponent(DeleteModalStub);
+	it.each([
+		['desktop', '3'],
+		['tablet', '2'],
+		['mobile', '1']
+	] as const)('uses the %s column count', (screenType, columns) => {
+		mockScreenType.value = screenType;
 
-			// Simulate triggerDeleteModal by emitting action from the card
-			// The VirtualInfiniteGrid stub passes items in slot,
-			// but the real iteration happens in the component template.
-			// We test the modal interaction directly.
-			await modal.vm.$emit('delete');
-			await flushPromises();
+		expect(mountOverview().find('[data-testid="grid"]').attributes('data-columns')).toBe(
+			columns
+		);
+	});
 
-			// Called with empty id because no category was selected via triggerDeleteModal
-			// This validates the wiring: modal delete → deleteCategory call
-			expect(mockDeleteCategory).toHaveBeenCalled();
-		});
+	it('binds the toolbar search to the overview search term', async () => {
+		const wrapper = mountOverview();
 
-		it('shows success toast after successful delete', async () => {
-			const wrapper = mountOverview();
-			const modal = wrapper.findComponent(DeleteModalStub);
+		await wrapper.find('#categories-search').setValue('spi');
 
-			await modal.vm.$emit('delete');
-			await flushPromises();
+		expect(mockSearchTerm.value).toBe('spi');
+	});
 
-			expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'success' }));
-		});
+	it('opens the create form from the toolbar', async () => {
+		const wrapper = mountOverview();
 
-		it('shows error toast after failed delete', async () => {
-			mockDeleteCategory.mockRejectedValue(new Error('fail'));
-			const wrapper = mountOverview();
-			const modal = wrapper.findComponent(DeleteModalStub);
+		await wrapper.find('[data-testid="toolbar-create"]').trigger('click');
 
-			await modal.vm.$emit('delete');
-			await flushPromises();
+		expect(wrapper.find('[data-testid="toolbar-create"]').text()).toBe(
+			'organisms.categoriesControlOverview.createButton.value'
+		);
+		expect(mockRouterPush).toHaveBeenCalledWith('/categories/new');
+	});
 
-			expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'error' }));
-		});
+	it('confirms and deletes the chosen category', async () => {
+		const wrapper = mountOverview();
+
+		await wrapper.findAll('[data-testid="card-delete"]')[0]!.trigger('click');
+		expect(wrapper.find('[data-testid="delete-modal"]').text()).toContain(
+			'organisms.categoriesControlOverview.deleteModal.title:Spirit'
+		);
+
+		await wrapper.find('[data-testid="confirm-delete"]').trigger('click');
+		await vi.waitFor(() => expect(mockAddToast).toHaveBeenCalled());
+
+		expect(mockDeleteCategory).toHaveBeenCalledWith('spirit');
+		expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'success' }));
+	});
+
+	it('reports a failed deletion', async () => {
+		mockDeleteCategory.mockRejectedValue(new Error('boom'));
+		const wrapper = mountOverview();
+
+		await wrapper.findAll('[data-testid="card-delete"]')[0]!.trigger('click');
+		await wrapper.find('[data-testid="confirm-delete"]').trigger('click');
+		await vi.waitFor(() => expect(mockAddToast).toHaveBeenCalled());
+
+		expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'error' }));
+	});
+
+	it('shows skeleton cards while loading', () => {
+		mockOverviewState.value.loading = true;
+
+		expect(mountOverview().findAll('[data-testid="skeleton"]').length).toBeGreaterThan(0);
+	});
+
+	it('shows the empty message when no category matches', () => {
+		mockOverviewState.value.categories = [];
+		mockIsEmpty.value = true;
+
+		expect(mountOverview().text()).toContain(
+			'organisms.categoriesControlOverview.emptyMessage'
+		);
 	});
 });

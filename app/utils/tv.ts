@@ -28,6 +28,27 @@ const FONT_SIZE_CLASSES = [
 ];
 
 /**
+ * Design-system radius names declared in `styles/tokens/radius.css`.
+ *
+ * Same problem as the font sizes: tailwind-merge does not recognise a custom
+ * `rounded-control` as a radius, so it keeps a base `rounded-none` next to it and
+ * the stylesheet order decides which one wins. Declaring them lets the later
+ * class replace the earlier one, as with any built-in radius.
+ */
+const RADIUS_TOKENS = [
+	'skeleton-block',
+	'control',
+	'option',
+	'overlay',
+	'card',
+	'control-card',
+	'dropzone',
+	'auth-panel',
+	'media',
+	'icon-action'
+];
+
+/**
  * The project's `tv`. Every recipe must import it from here.
  *
  * Importing `tv` straight from `tailwind-variants` yields an instance that does
@@ -37,6 +58,9 @@ const FONT_SIZE_CLASSES = [
 export const tv = createTV({
 	twMergeConfig: {
 		extend: {
+			theme: {
+				radius: RADIUS_TOKENS
+			},
 			classGroups: {
 				'font-size': FONT_SIZE_CLASSES
 			}

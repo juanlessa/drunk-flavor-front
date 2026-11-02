@@ -11,7 +11,7 @@ export const mapDrinkToForm = (drink: Drink): DrinkForm => {
 	}, {} as Translations<DrinkTranslation>);
 
 	const ingredients = drink.ingredients.map<DrinkIngredientRequest>((d) => ({
-		ingredient_id: d.ingredient._id,
+		ingredientId: d.ingredient.id,
 		quantity: d.quantity
 	}));
 

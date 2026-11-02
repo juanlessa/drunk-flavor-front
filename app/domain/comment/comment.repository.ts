@@ -7,33 +7,22 @@ import type {
 	ModerateComment,
 	UpdateComment
 } from './comment.dtos';
-import type { Comment } from './comment.entity';
+import type { Comment, CommentWithAuthor } from './comment.entity';
 
 const path = '/comments';
 
 export const commentsRepository = ($fetch: $Fetch) => ({
 	async create(body: CreateComment) {
-		return $fetch<CreateCommentResponse>(path, {
-			method: 'POST',
-			body
-		});
+		return $fetch<CreateCommentResponse>(path, { method: 'POST', body });
 	},
 	async update({ id, ...body }: UpdateComment) {
-		return $fetch<undefined>(`${path}/${id}`, {
-			method: 'PATCH',
-			body
-		});
+		return $fetch<undefined>(`${path}/${id}`, { method: 'PATCH', body });
 	},
 	async moderate({ id, ...body }: ModerateComment) {
-		return $fetch<undefined>(`${path}/${id}/status`, {
-			method: 'PATCH',
-			body
-		});
+		return $fetch<undefined>(`${path}/${id}/status`, { method: 'PATCH', body });
 	},
 	async delete(id: string) {
-		return $fetch<undefined>(`${path}/${id}`, {
-			method: 'DELETE'
-		});
+		return $fetch<undefined>(`${path}/${id}`, { method: 'DELETE' });
 	},
 	async get(id: string) {
 		return $fetch<Comment>(`${path}/${id}`);
@@ -42,7 +31,7 @@ export const commentsRepository = ($fetch: $Fetch) => ({
 		return $fetch<Comment[]>(path, { query: serializeListQuery(query) });
 	},
 	async listByDrink(drinkId: string, query: PaginatedQueryParams) {
-		return $fetch<Comment[]>(`/drinks/${drinkId}/comments`, {
+		return $fetch<CommentWithAuthor[]>(`/drinks/${drinkId}/comments`, {
 			query: serializeListQuery(query)
 		});
 	},

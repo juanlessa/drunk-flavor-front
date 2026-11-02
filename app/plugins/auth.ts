@@ -12,16 +12,20 @@ export default defineNuxtPlugin({
 	dependsOn: ['api-fetch'],
 	parallel: true,
 	setup() {
+		const isHistoire = useRuntimeConfig().public.histoire;
 		const { $api } = useNuxtApp();
 
 		const state = useState<AuthState>('auth', initState);
 
 		const authenticate = async () => {
+			if (isHistoire) return false;
 			try {
 				const userProfile = await $api.profile.get();
 
-				state.value.isAuthenticated = true;
-				state.value.user = userProfile;
+				state.value = {
+					isAuthenticated: true,
+					user: userProfile
+				};
 				return true;
 			} catch (error) {
 				console.error(error);
@@ -29,9 +33,13 @@ export default defineNuxtPlugin({
 			}
 		};
 
-		const signout = async () => {
-			await $api.auth.signout();
+		const clear = () => {
 			state.value = initState();
+		};
+
+		const signout = async () => {
+			if (!isHistoire) await $api.auth.signout();
+			clear();
 		};
 
 		return {
@@ -39,6 +47,7 @@ export default defineNuxtPlugin({
 				auth: {
 					state,
 					authenticate,
+					clear,
 					signout
 				}
 			}

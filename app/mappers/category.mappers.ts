@@ -12,12 +12,12 @@ const copyTranslations = (source: Translations<CategoryTranslation>) =>
 
 export const mapCategoryToForm = (category: Category): CategoryForm => ({
 	translations: copyTranslations(category.translations),
-	is_alcoholic: category.is_alcoholic
+	isAlcoholic: category.isAlcoholic
 });
 
 export const mapFormToCreateCategory = (categoryForm: CategoryForm): CreateCategory => ({
 	translations: copyTranslations(categoryForm.translations),
-	is_alcoholic: categoryForm.is_alcoholic
+	isAlcoholic: categoryForm.isAlcoholic
 });
 
 export const mapFormToUpdateCategory = (

@@ -16,7 +16,7 @@
 	--radius-card: var(--radius-md);
 	--radius-control-card: var(--radius-lg);
 	--radius-dropzone: var(--radius-md);
-	--radius-auth-panel: var(--radius-md);
+	--radius-auth-panel: var(--radius-lg);
 	--radius-media: var(--radius-md);
 	--radius-icon-action: var(--radius-md);
 }

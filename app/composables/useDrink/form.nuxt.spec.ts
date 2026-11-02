@@ -36,7 +36,7 @@ describe('useDrinkForm', () => {
 					en: { name: 'Mojito', method: 'Muddle mint' },
 					pt: { name: 'Mojito', method: 'Macere hortelã' }
 				},
-				ingredients: [{ ingredient_id: 'ing-1', quantity: 60 }]
+				ingredients: [{ ingredientId: 'ing-1', quantity: 60 }]
 			});
 
 			expect(form.formState.value.form.translations.en.name).toBe('Mojito');
@@ -51,7 +51,7 @@ describe('useDrinkForm', () => {
 					en: { name: 'Mojito', method: 'Mix' },
 					pt: { name: 'Mojito', method: 'Misture' }
 				},
-				ingredients: [{ ingredient_id: 'ing-1', quantity: 60 }]
+				ingredients: [{ ingredientId: 'ing-1', quantity: 60 }]
 			});
 			form.formState.value.displayErrors = true;
 
@@ -96,7 +96,7 @@ describe('useDrinkForm', () => {
 
 			form.formState.value.form.translations.en = { name: 'Drink', method: 'Mix it' };
 			form.formState.value.form.translations.pt = { name: 'Drink', method: 'Misture' };
-			form.formState.value.form.ingredients = [{ ingredient_id: 'ing-1', quantity: 1 }];
+			form.formState.value.form.ingredients = [{ ingredientId: 'ing-1', quantity: 1 }];
 			form.validateForm();
 
 			expect(form.formState.value.errors).toEqual([]);

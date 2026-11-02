@@ -20,12 +20,16 @@
 				<ButtonGroup>
 					<AlertDialog.Cancel as-child @click="handleCancel">
 						<Button variant="secondary">
-							{{ $t('molecules.deleteModal.cancelButton.value') }}
+							{{
+								props.cancelLabel || $t('molecules.deleteModal.cancelButton.value')
+							}}
 						</Button>
 					</AlertDialog.Cancel>
 					<AlertDialog.Action as-child @click="handleDelete">
 						<Button variant="delete">
-							{{ $t('molecules.deleteModal.deleteButton.value') }}
+							{{
+								props.confirmLabel || $t('molecules.deleteModal.deleteButton.value')
+							}}
 						</Button>
 					</AlertDialog.Action>
 				</ButtonGroup>
@@ -39,7 +43,11 @@ import { AlertDialog } from 'radix-vue/namespaced';
 const props = defineProps({
 	open: { type: Boolean, default: false },
 	title: { type: String, default: '' },
-	description: { type: String, default: '' }
+	description: { type: String, default: '' },
+	/** Overrides the destructive button label (defaults to "delete"). */
+	confirmLabel: { type: String, default: '' },
+	/** Overrides the dismiss button label (defaults to "cancel"). */
+	cancelLabel: { type: String, default: '' }
 });
 const emit = defineEmits<{
 	(e: 'update:open', value: boolean): void;

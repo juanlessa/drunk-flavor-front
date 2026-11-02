@@ -1,43 +1,51 @@
 <template>
-	<ButtonGroup class="p-4">
-		<Button @click="handleCreateCategory">
-			{{ $t('organisms.categoriesControlOverview.createButton.value') }}
-		</Button>
-	</ButtonGroup>
+	<ManagementToolbar
+		v-model:search-term="searchTerm"
+		search-id="categories-search"
+		:search-label="$t('organisms.categoriesControlOverview.searchLabel')"
+		:search-placeholder="$t('organisms.categoriesControlOverview.searchPlaceholder')"
+		:create-label="$t('organisms.categoriesControlOverview.createButton.value')"
+		@create="handleCreateCategory" />
+
+	<Text v-if="isEmpty" class="px-4 py-8 text-center text-content-muted">
+		{{ $t('organisms.categoriesControlOverview.emptyMessage') }}
+	</Text>
 
 	<div ref="containerRef" class="flex-1">
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:items="overviewState.categories"
 				:height="containerHeight"
-				:item-height="CARD_GRID_METRICS_PX.controlRowHeight"
+				:item-height="CARD_GRID_METRICS_PX.managementRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
 				@load-more="loadNextPage">
 				<template #default="{ list }">
-					<Box
+					<div
 						v-for="{ data: categoryRow, index } in list"
 						:key="index"
-						direction="row"
-						:class="virtualGridRowStyle({ fixedHeight: true })">
-						<ItemControlCard
+						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
+						<ManagementItemCard
 							v-for="category in categoryRow"
-							:key="category._id"
-							ref="itemControlCard"
-							:content="category.translations[$i18n.locale].name"
-							@click="() => handleEditCategory(category._id)"
-							@action="() => triggerDeleteModal(category)" />
-					</Box>
+							:key="category.id"
+							:title="category.translations[locale].name"
+							:description="
+								$t(
+									`organisms.categoriesControlOverview.${category.isAlcoholic ? 'alcoholic' : 'nonAlcoholic'}`
+								)
+							"
+							@select="handleEditCategory(category.id)"
+							@delete="triggerDeleteModal(category)" />
+					</div>
 				</template>
 				<template #loading>
-					<Box
+					<div
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
-						direction="row"
-						:class="virtualGridRowStyle()">
-						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
-					</Box>
+						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
+						<ManagementItemCardSkeleton v-for="i in gridColumns" :key="i" />
+					</div>
 				</template>
 			</VirtualInfiniteGrid>
 		</ClientOnly>
@@ -60,7 +68,8 @@ const { $router } = useNuxtApp();
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const { addToast } = useToast();
-const { overviewState, deleteCategory, loadNextPage } = useCategoriesOverview();
+const { overviewState, searchTerm, isEmpty, deleteCategory, loadNextPage } =
+	useCategoriesOverview();
 const { screenType } = useScreenType();
 
 const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
@@ -77,7 +86,11 @@ const handleEditCategory = (id: string) => {
 function useVirtualInfiniteGrid() {
 	const containerRef = ref<HTMLDivElement | null>(null);
 	const containerHeight = ref(0);
-	const gridColumns = computed(() => (screenType.value === 'mobile' ? 1 : 2));
+	const gridColumns = computed(() => {
+		if (screenType.value === 'mobile') return 1;
+		if (screenType.value === 'tablet') return 2;
+		return 3;
+	});
 
 	const updateContainerHeight = () => {
 		if (containerRef.value) {
@@ -107,8 +120,10 @@ function useCategoryDeleteModal() {
 	const categoryToDelete = ref(initEmptyCategory());
 
 	const modalContent = computed(() => ({
-		title: `${t('organisms.categoriesControlOverview.deleteModal.title')} ${categoryToDelete.value.translations[locale.value].name}`,
-		description: `${t('organisms.categoriesControlOverview.deleteModal.description')}`
+		title: t('organisms.categoriesControlOverview.deleteModal.title', {
+			name: categoryToDelete.value.translations[locale.value].name
+		}),
+		description: t('organisms.categoriesControlOverview.deleteModal.description')
 	}));
 
 	const triggerDeleteModal = (category: Category) => {
@@ -122,10 +137,18 @@ function useCategoryDeleteModal() {
 
 	const handleDelete = async () => {
 		try {
-			await deleteCategory(categoryToDelete.value._id);
-			addToast({ type: 'success', title: 'SUCCESS!', message: 'category deleted' });
+			await deleteCategory(categoryToDelete.value.id);
+			addToast({
+				type: 'success',
+				title: t('organisms.categoriesControlOverview.deleteSuccess.title'),
+				message: t('organisms.categoriesControlOverview.deleteSuccess.message')
+			});
 		} catch {
-			addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete category' });
+			addToast({
+				type: 'error',
+				title: t('organisms.categoriesControlOverview.deleteError.title'),
+				message: t('organisms.categoriesControlOverview.deleteError.message')
+			});
 		} finally {
 			categoryToDelete.value = initEmptyCategory();
 		}

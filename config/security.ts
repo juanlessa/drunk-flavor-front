@@ -32,7 +32,7 @@ const weakCspDirectives: CspDirectives = {
 };
 
 const productionCspDirectives: CspDirectives = {
-	'img-src': ["'self'", 'data:', NUXT_PUBLIC_IMAGE_HOST],
+	'img-src': ["'self'", 'data:', 'blob:', NUXT_PUBLIC_IMAGE_HOST],
 	// Google Identity Services calls its own endpoints under /gsi/ (button + FedCM flow).
 	'connect-src': ["'self'", NUXT_PUBLIC_API_BASE, GOOGLE_IDENTITY_ORIGIN_PATH],
 	'upgrade-insecure-requests': true

@@ -3,21 +3,21 @@ import type { CompleteUser } from '~/domain/user/user.entity';
 import { defineAbilityForUser } from './index';
 
 const buildProfile = (overrides: Partial<CompleteUser>): CompleteUser => ({
-	_id: 'user-1',
-	created_at: new Date(),
-	updated_at: new Date(),
+	id: 'user-1',
+	createdAt: new Date(),
+	updatedAt: new Date(),
 	name: 'Test',
 	surname: 'User',
 	email: 'test@example.com',
-	email_verified: true,
+	emailVerified: true,
 	status: 'active',
 	role: 'member',
 	...overrides
 });
 
 describe('defineAbilityForUser', () => {
-	it('grants admin manage on all subjects and User', () => {
-		const ability = defineAbilityForUser(buildProfile({ role: 'admin' }));
+	it.each(['owner', 'admin'] as const)('grants %s manage on all subjects and User', (role) => {
+		const ability = defineAbilityForUser(buildProfile({ role }));
 
 		expect(ability.can('manage', 'all')).toBe(true);
 		expect(ability.can('manage', 'User')).toBe(true);
@@ -52,10 +52,10 @@ describe('defineAbilityForUser', () => {
 	});
 
 	it('lets a member update/delete only their own Comment', () => {
-		const ability = defineAbilityForUser(buildProfile({ _id: 'owner-1', role: 'member' }));
+		const ability = defineAbilityForUser(buildProfile({ id: 'owner-1', role: 'member' }));
 
-		const ownComment = { __typename: 'Comment' as const, user_id: 'owner-1' };
-		const otherComment = { __typename: 'Comment' as const, user_id: 'owner-2' };
+		const ownComment = { __typename: 'Comment' as const, userId: 'owner-1' };
+		const otherComment = { __typename: 'Comment' as const, userId: 'owner-2' };
 
 		expect(ability.can('update', ownComment)).toBe(true);
 		expect(ability.can('delete', ownComment)).toBe(true);

@@ -5,6 +5,8 @@ export default defineNuxtPlugin({
 	name: 'casl',
 	dependsOn: ['auth'],
 	setup(nuxtApp) {
+		if (useRuntimeConfig().public.histoire) return;
+
 		const { $auth } = useNuxtApp();
 
 		const ability = defineAbilityForUser($auth.state.value.user);

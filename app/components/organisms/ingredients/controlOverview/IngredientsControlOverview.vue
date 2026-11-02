@@ -1,43 +1,47 @@
 <template>
-	<ButtonGroup class="p-4">
-		<Button @click="handleCreateIngredient">
-			{{ $t('organisms.ingredientsControlOverview.createButton.value') }}
-		</Button>
-	</ButtonGroup>
+	<ManagementToolbar
+		v-model:search-term="searchTerm"
+		search-id="ingredients-search"
+		:search-label="$t('organisms.ingredientsControlOverview.searchLabel')"
+		:search-placeholder="$t('organisms.ingredientsControlOverview.searchPlaceholder')"
+		:create-label="$t('organisms.ingredientsControlOverview.createButton.value')"
+		@create="handleCreateIngredient" />
+
+	<Text v-if="isEmpty" class="px-4 py-8 text-center text-content-muted">
+		{{ $t('organisms.ingredientsControlOverview.emptyMessage') }}
+	</Text>
 
 	<div ref="containerRef" class="flex-1">
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:items="overviewState.ingredients"
 				:height="containerHeight"
-				:item-height="CARD_GRID_METRICS_PX.controlRowHeight"
+				:item-height="CARD_GRID_METRICS_PX.managementRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
 				@load-more="loadNextPage">
 				<template #default="{ list }">
-					<Box
+					<div
 						v-for="{ data: ingredientRow, index } in list"
 						:key="index"
-						direction="row"
-						:class="virtualGridRowStyle({ fixedHeight: true })">
-						<ItemControlCard
+						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
+						<ManagementItemCard
 							v-for="ingredient in ingredientRow"
-							:key="ingredient._id"
-							ref="itemControlCard"
-							:content="ingredient.translations[$i18n.locale].name"
-							@click="() => handleEditIngredient(ingredient._id)"
-							@action="() => triggerDeleteModal(ingredient)" />
-					</Box>
+							:key="ingredient.id"
+							:title="ingredient.translations[locale].name"
+							:description="getIngredientSummary(ingredient, locale)"
+							@select="handleEditIngredient(ingredient.id)"
+							@delete="triggerDeleteModal(ingredient)" />
+					</div>
 				</template>
 				<template #loading>
-					<Box
+					<div
 						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
 						:key="idx"
-						direction="row"
-						:class="virtualGridRowStyle()">
-						<ItemControlCardSkeleton v-for="i in gridColumns" :key="i" />
-					</Box>
+						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
+						<ManagementItemCardSkeleton v-for="i in gridColumns" :key="i" />
+					</div>
 				</template>
 			</VirtualInfiniteGrid>
 		</ClientOnly>
@@ -51,6 +55,7 @@
 <script setup lang="ts">
 import { initEmptyIngredient } from '~/domain/ingredient/ingredient.factory';
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
+import { getIngredientSummary } from '~/helpers/ingredient.helpers';
 import {
 	CARD_GRID_METRICS_PX,
 	virtualGridRowStyle
@@ -60,7 +65,8 @@ const { $router } = useNuxtApp();
 const { t, locale } = useI18n();
 const localePath = useLocalePath();
 const { addToast } = useToast();
-const { overviewState, deleteIngredient, loadNextPage } = useIngredientsOverview();
+const { overviewState, searchTerm, isEmpty, deleteIngredient, loadNextPage } =
+	useIngredientsOverview();
 const { screenType } = useScreenType();
 
 const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
@@ -77,7 +83,11 @@ const handleEditIngredient = (id: string) => {
 function useVirtualInfiniteGrid() {
 	const containerRef = ref<HTMLDivElement | null>(null);
 	const containerHeight = ref(0);
-	const gridColumns = computed(() => (screenType.value === 'mobile' ? 1 : 2));
+	const gridColumns = computed(() => {
+		if (screenType.value === 'mobile') return 1;
+		if (screenType.value === 'tablet') return 2;
+		return 3;
+	});
 
 	const updateContainerHeight = () => {
 		if (containerRef.value) {
@@ -107,8 +117,10 @@ function useIngredientDeleteModal() {
 	const ingredientToDelete = ref(initEmptyIngredient());
 
 	const modalContent = computed(() => ({
-		title: `${t('organisms.ingredientsControlOverview.deleteModal.title')} ${ingredientToDelete.value.translations[locale.value].name}`,
-		description: `${t('organisms.ingredientsControlOverview.deleteModal.description')}`
+		title: t('organisms.ingredientsControlOverview.deleteModal.title', {
+			name: ingredientToDelete.value.translations[locale.value].name
+		}),
+		description: t('organisms.ingredientsControlOverview.deleteModal.description')
 	}));
 
 	const triggerDeleteModal = (ingredient: Ingredient) => {
@@ -122,10 +134,18 @@ function useIngredientDeleteModal() {
 
 	const handleDelete = async () => {
 		try {
-			await deleteIngredient(ingredientToDelete.value._id);
-			addToast({ type: 'success', title: 'SUCCESS!', message: 'ingredient deleted' });
+			await deleteIngredient(ingredientToDelete.value.id);
+			addToast({
+				type: 'success',
+				title: t('organisms.ingredientsControlOverview.deleteSuccess.title'),
+				message: t('organisms.ingredientsControlOverview.deleteSuccess.message')
+			});
 		} catch {
-			addToast({ type: 'error', title: 'ERROR!', message: 'failed to delete ingredient' });
+			addToast({
+				type: 'error',
+				title: t('organisms.ingredientsControlOverview.deleteError.title'),
+				message: t('organisms.ingredientsControlOverview.deleteError.message')
+			});
 		} finally {
 			ingredientToDelete.value = initEmptyIngredient();
 		}

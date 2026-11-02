@@ -1,6 +1,6 @@
 <template>
-	<Form @submit="handleSubmitButton">
-		<Box direction="col" class="gap-4">
+	<form class="flex flex-col gap-6" novalidate @submit.prevent="handleSubmitButton">
+		<div class="flex flex-col gap-4">
 			<InputWrapper>
 				<template #label>
 					<Label for="email">
@@ -12,7 +12,7 @@
 					v-model="formState.form.email"
 					name="email"
 					type="email"
-					placeholder=""
+					:placeholder="$t('organisms.credentialsSignIn.emailInput.placeholder')"
 					:has-error="!!checkError('email')"
 					@blur="validateForm" />
 				<template #error>
@@ -21,9 +21,15 @@
 			</InputWrapper>
 			<InputWrapper>
 				<template #label>
-					<Label for="password">
-						{{ $t('organisms.credentialsSignIn.passwordInput.label') }}
-					</Label>
+					<!-- The recovery link sits next to the label it relates to. -->
+					<div class="flex items-baseline justify-between gap-3">
+						<Label for="password">
+							{{ $t('organisms.credentialsSignIn.passwordInput.label') }}
+						</Label>
+						<Anchor :to="localePath('/forgot-password')" :class="AUTH_FIELD_LINK_CLASS">
+							{{ $t('organisms.credentialsSignIn.forgotPasswordLink.value') }}
+						</Anchor>
+					</div>
 				</template>
 				<InputPassword
 					id="password"
@@ -36,26 +42,16 @@
 					<ErrorMessage :value="checkError('password')" />
 				</template>
 			</InputWrapper>
-		</Box>
-		<Box direction="row" class="pt-2 justify-end">
-			<Anchor :to="localePath('/forgot-password')">
-				{{ $t('organisms.credentialsSignIn.forgotPasswordLink.value') }}
-			</Anchor>
-		</Box>
-		<template #buttons>
-			<ButtonGroup
-				:has-cancel-button="false"
-				:action-button-props="{
-					variant: 'primary',
-					type: 'submit',
-					disabled: isSubmitting,
-					value: $t('organisms.credentialsSignIn.submitButton.value')
-				}" />
-		</template>
-	</Form>
+		</div>
+		<Button type="submit" class="max-w-none!" :disabled="isSubmitting">
+			{{ $t('organisms.credentialsSignIn.submitButton.value') }}
+		</Button>
+	</form>
 </template>
 
 <script setup lang="ts">
+import { AUTH_FIELD_LINK_CLASS } from '~/components/organisms/auth/prompt/AuthPrompt.constants';
+
 const emit = defineEmits<{
 	(e: 'success'): void;
 	(e: 'error', message: string): void;

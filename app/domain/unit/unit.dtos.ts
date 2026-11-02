@@ -4,8 +4,8 @@ import type { UnitKind, UnitTranslation } from './unit.entity';
 export type CreateUnit = {
 	translations: Translations<UnitTranslation>;
 	symbol?: string;
-	space_before_symbol?: boolean;
-	allow_decimal: boolean;
+	spaceBeforeSymbol?: boolean;
+	allowDecimal: boolean;
 	kind: UnitKind;
 };
 

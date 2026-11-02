@@ -8,33 +8,33 @@ import type { IngredientForm } from '../types/ingredient.types';
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
 
 const mockIngredient: Ingredient = {
-	_id: 'ing-1',
+	id: 'ing-1',
 	translations: {
 		en: { name: 'Rum' },
 		pt: { name: 'Rum' }
 	},
 	category: {
-		_id: 'cat-1',
+		id: 'cat-1',
 		translations: { en: { name: 'Spirits' }, pt: { name: 'Destilados' } },
-		is_alcoholic: true,
-		created_at: new Date(),
-		updated_at: new Date()
+		isAlcoholic: true,
+		createdAt: new Date(),
+		updatedAt: new Date()
 	},
 	unit: {
-		_id: 'unit-1',
+		id: 'unit-1',
 		translations: {
-			en: { name: 'milliliter', name_plural: 'milliliters' },
-			pt: { name: 'mililitro', name_plural: 'mililitros' }
+			en: { name: 'milliliter', namePlural: 'milliliters' },
+			pt: { name: 'mililitro', namePlural: 'mililitros' }
 		},
 		symbol: 'ml',
-		space_before_symbol: false,
-		allow_decimal: true,
+		spaceBeforeSymbol: false,
+		allowDecimal: true,
 		kind: 'volume',
-		created_at: new Date(),
-		updated_at: new Date()
+		createdAt: new Date(),
+		updatedAt: new Date()
 	},
-	created_at: new Date(),
-	updated_at: new Date()
+	createdAt: new Date(),
+	updatedAt: new Date()
 };
 
 const mockIngredientForm: IngredientForm = {
@@ -42,8 +42,8 @@ const mockIngredientForm: IngredientForm = {
 		en: { name: 'Rum' },
 		pt: { name: 'Rum' }
 	},
-	category_id: 'cat-1',
-	unit_id: 'unit-1'
+	categoryId: 'cat-1',
+	unitId: 'unit-1'
 };
 
 describe('mapIngredientToForm', () => {
@@ -55,28 +55,28 @@ describe('mapIngredientToForm', () => {
 				en: { name: 'Rum' },
 				pt: { name: 'Rum' }
 			},
-			category_id: 'cat-1',
-			unit_id: 'unit-1'
+			categoryId: 'cat-1',
+			unitId: 'unit-1'
 		});
 	});
 
-	it('extracts category_id from the category object', () => {
+	it('extracts categoryId from the category object', () => {
 		const result = mapIngredientToForm(mockIngredient);
 
-		expect(result.category_id).toBe(mockIngredient.category._id);
+		expect(result.categoryId).toBe(mockIngredient.category.id);
 	});
 
-	it('extracts unit_id from the unit object', () => {
+	it('extracts unitId from the unit object', () => {
 		const result = mapIngredientToForm(mockIngredient);
 
-		expect(result.unit_id).toBe(mockIngredient.unit._id);
+		expect(result.unitId).toBe(mockIngredient.unit.id);
 	});
 
-	it('does not include _id or date fields', () => {
+	it('does not include id or date fields', () => {
 		const result = mapIngredientToForm(mockIngredient);
 
-		expect(result).not.toHaveProperty('_id');
-		expect(result).not.toHaveProperty('created_at');
+		expect(result).not.toHaveProperty('id');
+		expect(result).not.toHaveProperty('createdAt');
 	});
 });
 
@@ -89,8 +89,8 @@ describe('mapFormToCreateIngredient', () => {
 				en: { name: 'Rum' },
 				pt: { name: 'Rum' }
 			},
-			category_id: 'cat-1',
-			unit_id: 'unit-1'
+			categoryId: 'cat-1',
+			unitId: 'unit-1'
 		});
 	});
 });
@@ -105,8 +105,8 @@ describe('mapFormToUpdateIngredient', () => {
 				en: { name: 'Rum' },
 				pt: { name: 'Rum' }
 			},
-			category_id: 'cat-1',
-			unit_id: 'unit-1'
+			categoryId: 'cat-1',
+			unitId: 'unit-1'
 		});
 	});
 

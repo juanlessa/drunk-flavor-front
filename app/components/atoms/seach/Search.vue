@@ -11,6 +11,7 @@
 		@update:search-term="handleUpdateSearchTerm">
 		<Combobox.Anchor
 			:class="selectInputContainerStyle({ border: props.border, hasError: props.hasError })">
+			<slot name="prefix"></slot>
 			<Combobox.Input
 				class="flex-1 py-1 text-body font-regular outline-hidden border-none text-content !bg-transparent selection:bg-accent selection:text-content-on-accent placeholder-content-muted"
 				:placeholder="props.placeholder" />
@@ -38,8 +39,12 @@
 						:value="option">
 						<Combobox.ItemIndicator class="option-indicator-layout">
 						</Combobox.ItemIndicator>
-						<span>
-							{{ option.label }}
+						<span class="flex flex-col py-1">
+							<span>{{ option.label }}</span>
+							<!-- Inherits the item colour, so it stays readable on the highlighted option. -->
+							<span v-if="option.description" class="text-body-sm opacity-80">
+								{{ option.description }}
+							</span>
 						</span>
 					</Combobox.Item>
 				</Combobox.Group>

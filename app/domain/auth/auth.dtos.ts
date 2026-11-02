@@ -31,3 +31,7 @@ export type ResendEmailVerification = {
 export type GoogleAuth = {
 	idToken: string;
 };
+
+export type SignoutResponse = {
+	ok: boolean;
+};

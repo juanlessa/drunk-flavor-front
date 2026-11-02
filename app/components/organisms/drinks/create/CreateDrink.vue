@@ -1,11 +1,16 @@
 <template>
-	<DrinkForm @cancel="handleCancel" @submit="handleSubmit" />
+	<DrinkForm
+		:title="$t('organisms.drinkForm.createTitle')"
+		:submit-label="$t('organisms.drinkForm.createButton')"
+		@cancel="handleCancel"
+		@submit="handleSubmit" />
 </template>
 <script setup lang="ts">
-import type { DrinkForm, DrinkFormAndMedia } from '~/types/drink.types';
+import type { DrinkFormAndMedia } from '~/types/drink.types';
 import { mapFormToCreateDrink } from '~/mappers/drink.mappers';
 
 const { $api, $router } = useNuxtApp();
+const { t } = useI18n();
 const { resetFormState } = useDrinkForm();
 const { addToast } = useToast();
 
@@ -14,44 +19,46 @@ const handleCancel = () => {
 	$router.back();
 };
 
+const reportError = (key: string, error: unknown) => {
+	addToast({
+		type: 'error',
+		title: t('organisms.drinkForm.errorTitle'),
+		message: t(`organisms.drinkForm.${key}`)
+	});
+	console.error(error);
+};
+
 const handleSubmit = async ({ form, cover, thumbnail }: DrinkFormAndMedia) => {
-	const createDrink = mapFormToCreateDrink(form);
 	let drinkId = '';
 	try {
-		const { id } = await $api.drinks.create(createDrink);
+		const { id } = await $api.drinks.create(mapFormToCreateDrink(form));
 		drinkId = id;
-		addToast({ type: 'success', title: 'Success', message: 'drink has been created' });
 	} catch (error) {
-		addToast({ type: 'error', title: 'Error', message: 'drink has not been created' });
-		console.error(error);
+		reportError('createError', error);
 		return;
 	}
 
-	if (cover && drinkId) {
+	// The drink exists from here on; a failed image upload is reported but does not undo it.
+	if (cover) {
 		try {
 			await $api.drinks.updateCover(drinkId, cover);
 		} catch (error) {
-			addToast({
-				type: 'error',
-				title: 'Error',
-				message: 'drink cover has not been updated'
-			});
-			console.error(error);
+			reportError('coverError', error);
+		}
+	}
+	if (thumbnail) {
+		try {
+			await $api.drinks.updateThumbnail(drinkId, thumbnail);
+		} catch (error) {
+			reportError('thumbnailError', error);
 		}
 	}
 
-	if (thumbnail && drinkId) {
-		try {
-			await $api.drinks.updateCover(drinkId, thumbnail);
-		} catch (error) {
-			addToast({
-				type: 'error',
-				title: 'Error',
-				message: 'drink thumbnail has not been updated'
-			});
-			console.error(error);
-		}
-	}
+	addToast({
+		type: 'success',
+		title: t('organisms.drinkForm.createSuccess.title'),
+		message: t('organisms.drinkForm.createSuccess.message')
+	});
 	resetFormState();
 	$router.back();
 };

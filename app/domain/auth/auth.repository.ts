@@ -6,9 +6,9 @@ import type {
 	ConfirmPassword,
 	ConfirmEmail,
 	ResendEmailVerification,
-	GoogleAuth
+	GoogleAuth,
+	SignoutResponse
 } from './auth.dtos';
-import type { SignoutResponse } from './auth.types';
 
 export const authRepository = ($fetch: $Fetch) => ({
 	async signup(body: Signup) {

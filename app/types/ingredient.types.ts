@@ -7,13 +7,15 @@ import type { Ingredient, IngredientTranslation } from '~/domain/ingredient/ingr
 export type IngredientsOverviewState = {
 	ingredients: Ingredient[];
 	filter: Filter;
+	/** Raw input; applied to `filter.search` after the debounce. */
+	searchTerm: string;
 	loading: boolean;
 };
 
 export type IngredientForm = {
 	translations: Translations<IngredientTranslation>;
-	category_id: string;
-	unit_id: string;
+	categoryId: string;
+	unitId: string;
 };
 
 export type IngredientFormState = {

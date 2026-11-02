@@ -11,8 +11,13 @@ export default defineNuxtRouteMiddleware(async (to) => {
 		isAuthenticated = await $auth.authenticate();
 	}
 
+	// Keep the requested page (e.g. an ownership-transfer link from an email) so sign-in can return to it.
+	// The sign-in page only follows same-origin paths.
 	if (!isAuthenticated) {
-		return navigateTo('/');
+		return navigateTo({
+			path: localePath('/signin').toString(),
+			query: { redirect: to.fullPath }
+		});
 	}
 
 	// An incomplete account must add its name before reaching any other page.

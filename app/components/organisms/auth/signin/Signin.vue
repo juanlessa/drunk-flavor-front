@@ -1,35 +1,28 @@
 <template>
-	<Box direction="col" class="gap-10">
-		<Heading as="h1" class="text-center text-headline-sm">
-			{{ $t('organisms.signin.title') }}
-		</Heading>
-		<Box direction="col" class="gap-6">
-			<CredentialsSignIn @success="handleSuccess" @error="handleError" />
-
-			<Box v-if="hasAvailableProvider" direction="row" class="items-center gap-3">
-				<Separator />
-				<Text as="span" class="text-content-subtle uppercase">
-					{{ $t('organisms.signin.divider') }}
-				</Text>
-				<Separator />
-			</Box>
-			<ClientOnly>
-				<GoogleSignIn
-					@available="setProviderAvailability('google', $event)"
-					@success="handleSuccess"
-					@error="handleError" />
-			</ClientOnly>
-
-			<Box direction="row" class="gap-1 items-center justify-center">
-				<Text as="span" class="text-content-subtle">
-					{{ $t('organisms.signin.signupPrompt.message') }}
-				</Text>
-				<Anchor :to="localePath('/signup')">
-					{{ $t('organisms.signin.signupPrompt.link') }}
-				</Anchor>
-			</Box>
-		</Box>
-	</Box>
+	<div class="flex flex-col gap-6">
+		<AuthPageHeader
+			:title="$t('organisms.signin.title')"
+			:description="$t('organisms.signin.subtitle')" />
+		<!-- Google first: a single tap for most people; the divider only shows when it is there. -->
+		<ClientOnly>
+			<GoogleSignIn
+				@available="setProviderAvailability('google', $event)"
+				@success="handleSuccess"
+				@error="handleError" />
+		</ClientOnly>
+		<div v-if="hasAvailableProvider" class="flex items-center gap-3">
+			<Separator />
+			<Text as="span" class="text-body-sm text-content-muted">
+				{{ $t('organisms.signin.divider') }}
+			</Text>
+			<Separator />
+		</div>
+		<CredentialsSignIn @success="handleSuccess" @error="handleError" />
+		<AuthPrompt
+			:message="$t('organisms.signin.signupPrompt.message')"
+			:link-label="$t('organisms.signin.signupPrompt.link')"
+			:to="localePath('/signup')" />
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -40,6 +33,9 @@ const localePath = useLocalePath();
 const { addToast } = useToast();
 
 type Provider = 'google';
+
+/** Actions a page asked to resume once the visitor is signed in. */
+const POST_SIGNIN_INTENTS = ['rate', 'comment'];
 
 const providerAvailability = ref<Record<Provider, boolean>>({ google: false });
 const hasAvailableProvider = computed(() =>
@@ -60,8 +56,10 @@ const getPostSigninTarget = (): string => {
 		const targetUrl = new URL(redirect, baseUrl);
 		if (targetUrl.origin !== baseUrl.origin) return fallback;
 
-		if (route.query.intent === 'rate') {
-			targetUrl.searchParams.set('intent', 'rate');
+		// Only known intents travel back, so the target page can resume the action (rate or comment).
+		const intent = route.query.intent;
+		if (typeof intent === 'string' && POST_SIGNIN_INTENTS.includes(intent)) {
+			targetUrl.searchParams.set('intent', intent);
 		}
 
 		return `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;

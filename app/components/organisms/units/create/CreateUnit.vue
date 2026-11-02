@@ -1,5 +1,9 @@
 <template>
-	<UnitForm @cancel="handleCancel" @submit="handleSubmit" />
+	<UnitForm
+		:title="$t('organisms.unitForm.createTitle')"
+		:submit-label="$t('organisms.unitForm.createButton')"
+		@cancel="handleCancel"
+		@submit="handleSubmit" />
 </template>
 
 <script setup lang="ts">
@@ -7,6 +11,7 @@ import type { UnitForm } from '~/types/unit.types';
 import { mapFormToCreateUnit } from '~/mappers/unit.mappers';
 
 const { $api, $router } = useNuxtApp();
+const { t } = useI18n();
 const { resetFormState } = useUnitForm();
 const { addToast } = useToast();
 
@@ -21,10 +26,18 @@ const handleSubmit = async (unitForm: UnitForm) => {
 	try {
 		await $api.units.create(createUnit);
 		resetFormState();
-		addToast({ type: 'success', title: 'Success', message: 'unit has been created' });
+		addToast({
+			type: 'success',
+			title: t('organisms.unitForm.createSuccess.title'),
+			message: t('organisms.unitForm.createSuccess.message')
+		});
 		$router.back();
 	} catch (error) {
-		addToast({ type: 'error', title: 'Error', message: 'unit has not been created' });
+		addToast({
+			type: 'error',
+			title: t('organisms.unitForm.createError.title'),
+			message: t('organisms.unitForm.createError.message')
+		});
 		console.error(error);
 	}
 };

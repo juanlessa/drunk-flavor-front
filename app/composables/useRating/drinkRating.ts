@@ -1,6 +1,6 @@
 import type { Rating, RatingSummary } from '~/domain/rating/rating.entity';
 
-type ViewerRating = Pick<Rating, '_id' | 'value'>;
+type ViewerRating = Pick<Rating, 'id' | 'value'>;
 
 const EMPTY_SUMMARY: RatingSummary = { average: 0, count: 0 };
 
@@ -27,7 +27,7 @@ export const useDrinkRating = (drinkId: MaybeRefOrGetter<string>) => {
 
 			summary.value = ratingSummary;
 			myRating.value = viewerRating
-				? { _id: viewerRating._id, value: viewerRating.value }
+				? { id: viewerRating.id, value: viewerRating.value }
 				: null;
 			selectedValue.value = viewerRating?.value ?? 0;
 			return true;
@@ -49,12 +49,12 @@ export const useDrinkRating = (drinkId: MaybeRefOrGetter<string>) => {
 
 		try {
 			if (previousRating) {
-				const result = await $api.ratings.update({ id: previousRating._id, value });
+				const result = await $api.ratings.update({ id: previousRating.id, value });
 				myRating.value = { ...previousRating, value };
 				summary.value = result.summary;
 			} else {
-				const result = await $api.ratings.create({ drink_id: toValue(drinkId), value });
-				myRating.value = { _id: result.id, value };
+				const result = await $api.ratings.create({ drinkId: toValue(drinkId), value });
+				myRating.value = { id: result.id, value };
 				summary.value = result.summary;
 			}
 
@@ -79,7 +79,7 @@ export const useDrinkRating = (drinkId: MaybeRefOrGetter<string>) => {
 		isSaving.value = true;
 
 		try {
-			const result = await $api.ratings.delete(previousRating._id);
+			const result = await $api.ratings.delete(previousRating.id);
 			summary.value = result.summary;
 			return true;
 		} catch (error) {

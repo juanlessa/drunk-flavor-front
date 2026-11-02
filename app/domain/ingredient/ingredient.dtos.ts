@@ -3,8 +3,8 @@ import type { IngredientTranslation } from './ingredient.entity';
 
 export type CreateIngredient = {
 	translations: Translations<IngredientTranslation>;
-	category_id: string;
-	unit_id: string;
+	categoryId: string;
+	unitId: string;
 };
 
 export type UpdateIngredient = CreateIngredient & {

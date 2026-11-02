@@ -22,31 +22,30 @@ vi.stubGlobal('useSigninForm', () => ({
 	validateForm: mockValidateForm
 }));
 
-const FormStub = {
-	template: '<form @submit.prevent="$emit(\'submit\')"><slot /><slot name="buttons" /></form>',
-	emits: ['submit']
-};
-
 const mountCredentialsSignIn = () =>
 	mount(CredentialsSignIn, {
 		global: {
 			stubs: {
-				Form: FormStub,
-				Box: { template: '<div><slot /></div>' },
 				InputWrapper: { template: '<div><slot name="label" /><slot /></div>' },
 				Label: { template: '<label><slot /></label>' },
-				InputText: true,
+				InputText: {
+					props: ['placeholder'],
+					template: '<input :placeholder="placeholder" />'
+				},
 				InputPassword: true,
 				ErrorMessage: true,
-				Anchor: { template: '<a><slot /></a>' },
-				ButtonGroup: true
+				Anchor: { props: ['to'], template: '<a :href="to"><slot /></a>' },
+				Button: {
+					props: ['type', 'disabled'],
+					template: '<button :type="type" :disabled="disabled"><slot /></button>'
+				}
 			},
 			mocks: { $t: (key: string) => key }
 		}
 	});
 
 const submit = async (wrapper: ReturnType<typeof mountCredentialsSignIn>) => {
-	await wrapper.findComponent(FormStub).vm.$emit('submit');
+	await wrapper.find('form').trigger('submit');
 	await flushPromises();
 };
 
@@ -91,6 +90,18 @@ describe('CredentialsSignIn', () => {
 		await submit(wrapper);
 
 		expect(wrapper.emitted('error')).toEqual([['organisms.credentialsSignIn.error.message']]);
+	});
+
+	it('links password recovery next to the password label and submits from its own button', () => {
+		const wrapper = mountCredentialsSignIn();
+
+		expect(wrapper.find('a[href="/forgot-password"]').exists()).toBe(true);
+		expect(wrapper.find('button[type="submit"]').text()).toBe(
+			'organisms.credentialsSignIn.submitButton.value'
+		);
+		expect(wrapper.find('input').attributes('placeholder')).toBe(
+			'organisms.credentialsSignIn.emailInput.placeholder'
+		);
 	});
 
 	it('clears the form state when it leaves the page', () => {

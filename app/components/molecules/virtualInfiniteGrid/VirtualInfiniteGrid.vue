@@ -31,7 +31,8 @@ const heightComputed = computed(() =>
 const virtualGridStyle = computed(() => ({
 	height: heightComputed.value,
 	'--virtual-grid-item-height': `${props.itemHeight}px`,
-	'--virtual-grid-items-gap': `${props.itemsGap}px`
+	'--virtual-grid-items-gap': `${props.itemsGap}px`,
+	'--virtual-grid-columns': `${props.gridColumns}`
 }));
 const itemsComputed = computed(() => chunkArray(props.items, props.gridColumns));
 

@@ -8,3 +8,13 @@
 	);
 	background-size: 200% 100%;
 }
+
+/* Darkens the bottom of a photo so text laid over it stays readable in both themes. */
+@utility bg-media-scrim {
+	background-image: linear-gradient(
+		to top,
+		rgb(0 0 0 / 0.78) 0%,
+		rgb(0 0 0 / 0.45) 45%,
+		rgb(0 0 0 / 0) 100%
+	);
+}
