@@ -47,10 +47,11 @@
 					</form>
 
 					<GoogleIdentityButton
-						v-if="hasGoogle && !isSubmitting"
-						context="use"
+						v-if="hasGoogle"
+						:disabled="isSubmitting"
+						:login-hint="userEmail"
 						test-id="google-reauthentication-button"
-						@credential="handleGoogleCredential"
+						@code="handleGoogleCode"
 						@error="handleGoogleError" />
 
 					<ErrorMessage
@@ -94,6 +95,8 @@ const isSubmitting = ref(false);
 const authenticationMethods = computed(() => $auth.state.value.user?.authenticationMethods);
 const hasPassword = computed(() => !!authenticationMethods.value?.password.enabled);
 const hasGoogle = computed(() => !!authenticationMethods.value?.providers.includes('google'));
+// Only a hint: Google still shows the account chooser when the linked account uses another email.
+const userEmail = computed(() => $auth.state.value.user?.email);
 
 const reset = () => {
 	form.password = '';
@@ -140,9 +143,9 @@ const handlePasswordSubmit = async () => {
 	await reauthenticate(() => $api.profile.reauthenticatePassword({ password: form.password }));
 };
 
-const handleGoogleCredential = async (idToken: string) => {
+const handleGoogleCode = async (code: string) => {
 	if (isSubmitting.value) return;
-	await reauthenticate(() => $api.profile.reauthenticateGoogle({ idToken }));
+	await reauthenticate(() => $api.profile.reauthenticateGoogle({ code }));
 };
 
 const handleGoogleError = () =>

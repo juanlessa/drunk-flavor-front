@@ -1,11 +1,11 @@
-import { flushPromises, mount } from '@vue/test-utils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { enableAutoUnmount, flushPromises, mount } from '@vue/test-utils';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ref } from 'vue';
 import GoogleIdentityButton from './GoogleIdentityButton.vue';
-import type { GoogleCredentialResponse, GoogleIdConfiguration } from '~/types/googleIdentity.types';
+import type { GoogleCodeClientConfig } from '~/types/googleIdentity.types';
 
-const initialize = vi.fn();
-const renderButton = vi.fn();
+const requestCode = vi.fn();
+const initCodeClient = vi.fn((_config: GoogleCodeClientConfig) => ({ requestCode }));
 const loadScript = vi.fn();
 const locale = ref('en');
 const t = (key: string) => key;
@@ -17,6 +17,9 @@ vi.mock('~/helpers/loadGoogleIdentityScript', () => ({
 }));
 vi.stubGlobal('useRuntimeConfig', () => runtimeConfig);
 
+// Mounted buttons watch the shared `locale` ref, so each test must clean up after itself.
+enableAutoUnmount(afterEach);
+
 const mountButton = async (props = {}) => {
 	const wrapper = mount(GoogleIdentityButton, {
 		props,
@@ -26,82 +29,108 @@ const mountButton = async (props = {}) => {
 	return wrapper;
 };
 
-const findFace = (wrapper: Awaited<ReturnType<typeof mountButton>>) =>
-	wrapper.find('[aria-hidden="true"]');
+const findButton = (wrapper: Awaited<ReturnType<typeof mountButton>>) =>
+	wrapper.find('[data-testid="google-identity-button"]');
 
-// happy-dom has no layout, so give the container the width it would have in the page.
-Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
-	configurable: true,
-	get: () => 320
-});
+const lastConfig = () => initCodeClient.mock.lastCall![0];
 
 describe('GoogleIdentityButton', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		runtimeConfig.public.googleClientId = 'client-id';
 		locale.value = 'en';
-		loadScript.mockResolvedValue({ initialize, renderButton });
+		loadScript.mockResolvedValue({ initCodeClient });
 	});
 
-	it('initializes GIS and reports availability', async () => {
+	it('creates a popup code client for authentication-only scopes and reports availability', async () => {
 		const wrapper = await mountButton();
 
 		expect(loadScript).toHaveBeenCalledWith('en');
-		expect(initialize).toHaveBeenCalledWith(
-			expect.objectContaining({ client_id: 'client-id', context: 'use' })
-		);
+		expect(lastConfig()).toMatchObject({
+			client_id: 'client-id',
+			scope: 'openid email profile',
+			ux_mode: 'popup',
+			select_account: true
+		});
 		expect(wrapper.emitted('available')).toEqual([[true]]);
 	});
 
-	it('emits the verified credential without choosing an API purpose', async () => {
+	it('opens the Google popup synchronously on click', async () => {
 		const wrapper = await mountButton();
-		const config = initialize.mock.calls[0]?.[0] as GoogleIdConfiguration;
 
-		config.callback({ credential: 'id-token' } as GoogleCredentialResponse);
+		await findButton(wrapper).trigger('click');
 
-		expect(wrapper.emitted('credential')).toEqual([['id-token']]);
+		expect(requestCode).toHaveBeenCalledTimes(1);
 	});
 
-	it('renders the Google button invisibly on top of the design-system face', async () => {
+	it('emits the authorization code returned by the popup', async () => {
 		const wrapper = await mountButton();
-		const googleLayer = wrapper.find('[data-testid="google-identity-button"]');
 
-		expect(renderButton).toHaveBeenCalledWith(
-			googleLayer.element,
-			expect.objectContaining({ theme: 'outline', size: 'large', text: 'continue_with' })
-		);
-		expect(googleLayer.classes()).toEqual(
-			expect.arrayContaining(['absolute', 'inset-0', 'opacity-0'])
-		);
+		lastConfig().callback({ code: 'authorization-code', scope: 'openid email profile' });
+
+		expect(wrapper.emitted('code')).toEqual([['authorization-code']]);
+		expect(wrapper.emitted('error')).toBeUndefined();
 	});
 
-	it('shows the localized label on a face hidden from assistive technology', async () => {
-		const wrapper = await mountButton({ text: 'signin_with' });
-		const face = findFace(wrapper);
+	it('treats a declined consent and a closed popup as a cancel', async () => {
+		const wrapper = await mountButton();
 
-		expect(face.text()).toBe('molecules.googleIdentityButton.text.signin_with');
-		expect(face.classes()).not.toContain('opacity-disabled');
+		lastConfig().callback({ error: 'access_denied' });
+		lastConfig().error_callback?.({ type: 'popup_closed' });
+
+		expect(wrapper.emitted('code')).toBeUndefined();
+		expect(wrapper.emitted('error')).toBeUndefined();
 	});
 
-	it('dims the face while the Google button is not rendered yet', async () => {
+	it('reports OAuth errors and a popup that failed to open', async () => {
+		const wrapper = await mountButton();
+
+		lastConfig().callback({ error: 'server_error' });
+		lastConfig().error_callback?.({ type: 'popup_failed_to_open' });
+
+		expect(wrapper.emitted('error')).toHaveLength(2);
+	});
+
+	it('passes the login hint instead of forcing the account chooser', async () => {
+		await mountButton({ loginHint: 'jane@example.com' });
+
+		expect(lastConfig()).toMatchObject({ login_hint: 'jane@example.com' });
+		expect(lastConfig()).not.toHaveProperty('select_account');
+	});
+
+	it('shows the localized label and stays disabled until GIS is ready', async () => {
 		loadScript.mockReturnValue(new Promise(() => {}));
-		const wrapper = await mountButton();
+		const wrapper = await mountButton({ text: 'signin_with' });
+		const button = findButton(wrapper);
 
-		expect(findFace(wrapper).classes()).toContain('opacity-disabled');
+		expect(button.text()).toBe('molecules.googleIdentityButton.text.signin_with');
+		expect(button.attributes('disabled')).toBeDefined();
 	});
 
 	it('renders nothing and reports unavailable without a client id', async () => {
 		runtimeConfig.public.googleClientId = '';
 		const wrapper = await mountButton();
 
-		expect(wrapper.find('[data-testid="google-identity-button"]').exists()).toBe(false);
+		expect(findButton(wrapper).exists()).toBe(false);
 		expect(wrapper.emitted('available')).toEqual([[false]]);
 	});
 
-	it('uses the Portuguese Google locale', async () => {
-		locale.value = 'pt';
-		await mountButton();
+	it('reports unavailable when GIS fails to load', async () => {
+		vi.spyOn(console, 'error').mockImplementation(() => {});
+		loadScript.mockRejectedValue(new Error('blocked'));
+		const wrapper = await mountButton();
 
-		expect(loadScript).toHaveBeenCalledWith('pt_BR');
+		expect(findButton(wrapper).exists()).toBe(false);
+		expect(wrapper.emitted('available')).toEqual([[false]]);
+		expect(wrapper.emitted('error')).toHaveLength(1);
+	});
+
+	it('reloads GIS in Portuguese and recreates the client when the locale changes', async () => {
+		await mountButton();
+		locale.value = 'pt';
+		await flushPromises();
+
+		expect(loadScript).toHaveBeenLastCalledWith('pt_BR');
+		expect(initCodeClient).toHaveBeenCalledTimes(2);
 	});
 });

@@ -1,46 +1,47 @@
 /**
- * Minimal typings for the subset of Google Identity Services (GIS) used by the app.
- * Reference: https://developers.google.com/identity/gsi/web/reference/js-reference
+ * Minimal typings for the subset of Google Identity Services (GIS) used by the app:
+ * the OAuth 2.0 authorization code model in popup mode.
+ * Reference: https://developers.google.com/identity/oauth2/web/reference/js-reference
  */
-
-export type GoogleCredentialResponse = {
-	/** The Google ID token (JWT) to send to the backend. */
-	credential: string;
-	select_by?: string;
+export type GoogleCodeResponse = {
+	/** Authorization code to send to the backend, which exchanges it with the client secret. */
+	code?: string;
+	scope?: string;
+	/** OAuth error code, for example `access_denied` when the user declines consent. */
+	error?: string;
+	error_description?: string;
 };
 
-export type GoogleIdConfiguration = {
+export type GoogleCodeClientError = {
+	type: 'popup_failed_to_open' | 'popup_closed' | 'unknown';
+};
+
+export type GoogleCodeClientConfig = {
 	client_id: string;
-	callback: (response: GoogleCredentialResponse) => void;
-	ux_mode?: 'popup' | 'redirect';
-	context?: 'signin' | 'signup' | 'use';
-	/** Use the browser-mediated FedCM button flow on supported Chrome versions. */
-	use_fedcm_for_button?: boolean;
-	itp_support?: boolean;
+	scope: string;
+	ux_mode: 'popup';
+	callback: (response: GoogleCodeResponse) => void;
+	error_callback?: (error: GoogleCodeClientError) => void;
+	/** Asks the user to pick an account even when only one Google session exists. */
+	select_account?: boolean;
+	/** Email of the expected account; skips the account chooser when it matches a session. */
+	login_hint?: string;
 };
 
-export type GoogleButtonConfiguration = {
-	type?: 'standard' | 'icon';
-	theme?: 'outline' | 'filled_blue' | 'filled_black';
-	size?: 'small' | 'medium' | 'large';
-	text?: 'signin_with' | 'signup_with' | 'continue_with' | 'signin';
-	shape?: 'rectangular' | 'pill' | 'circle' | 'square';
-	logo_alignment?: 'left' | 'center';
-	/** Minimum button width in pixels; Google caps it at 400. */
-	width?: string;
-	locale?: string;
+export type GoogleCodeClient = {
+	/** Opens the popup. Must run synchronously inside the click handler, or browsers block it. */
+	requestCode: () => void;
 };
 
-export type GoogleAccountsId = {
-	initialize: (config: GoogleIdConfiguration) => void;
-	renderButton: (parent: HTMLElement, options: GoogleButtonConfiguration) => void;
+export type GoogleAccountsOAuth2 = {
+	initCodeClient: (config: GoogleCodeClientConfig) => GoogleCodeClient;
 };
 
 declare global {
 	interface Window {
 		google?: {
 			accounts: {
-				id: GoogleAccountsId;
+				oauth2: GoogleAccountsOAuth2;
 			};
 		};
 	}

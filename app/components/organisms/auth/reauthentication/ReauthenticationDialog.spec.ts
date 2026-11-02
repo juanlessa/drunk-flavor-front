@@ -29,7 +29,7 @@ const addToast = vi.fn();
 const authenticationMethods = { password: { enabled: true }, providers: ['google'] };
 vi.stubGlobal('useNuxtApp', () => ({
 	$api: { profile: { reauthenticatePassword, reauthenticateGoogle } },
-	$auth: { state: ref({ user: { authenticationMethods } }) }
+	$auth: { state: ref({ user: { email: 'jane@example.com', authenticationMethods } }) }
 }));
 vi.stubGlobal('useToast', () => ({ addToast }));
 
@@ -58,9 +58,10 @@ const mountDialog = () =>
 				},
 				GoogleIdentityButton: {
 					name: 'GoogleIdentityButton',
-					emits: ['credential', 'error'],
+					props: ['loginHint', 'disabled'],
+					emits: ['code', 'error'],
 					template:
-						'<button type="button" data-testid="google" @click="$emit(\'credential\', \'google-token\')">Google</button>'
+						'<button type="button" data-testid="google" :data-login-hint="loginHint" @click="$emit(\'code\', \'google-code\')">Google</button>'
 				}
 			},
 			mocks: { $t: (key: string) => key }
@@ -84,12 +85,14 @@ describe('ReauthenticationDialog', () => {
 		expect(wrapper.emitted('reauthenticated')).toHaveLength(1);
 	});
 
-	it('reauthenticates with Google', async () => {
+	it('reauthenticates with Google, hinting the account of the signed-in user', async () => {
 		const wrapper = mountDialog();
-		await wrapper.find('[data-testid="google"]').trigger('click');
+		const googleButton = wrapper.find('[data-testid="google"]');
+		expect(googleButton.attributes('data-login-hint')).toBe('jane@example.com');
+		await googleButton.trigger('click');
 		await flushPromises();
 
-		expect(reauthenticateGoogle).toHaveBeenCalledWith({ idToken: 'google-token' });
+		expect(reauthenticateGoogle).toHaveBeenCalledWith({ code: 'google-code' });
 		expect(wrapper.emitted('reauthenticated')).toHaveLength(1);
 	});
 

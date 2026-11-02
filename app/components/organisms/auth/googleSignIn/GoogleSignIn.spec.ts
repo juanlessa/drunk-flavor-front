@@ -9,9 +9,9 @@ vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 
 const GoogleIdentityButtonStub = {
 	name: 'GoogleIdentityButton',
-	emits: ['credential', 'available', 'error'],
+	emits: ['code', 'available', 'error'],
 	template:
-		'<button data-testid="google" @click="$emit(\'credential\', \'id-token\')">Google</button>'
+		'<button data-testid="google" @click="$emit(\'code\', \'authorization-code\')">Google</button>'
 };
 const mountSignIn = () =>
 	mount(GoogleSignIn, {
@@ -27,12 +27,12 @@ describe('GoogleSignIn', () => {
 		googleAuth.mockResolvedValue(undefined);
 	});
 
-	it('posts credentials emitted by the generic identity button', async () => {
+	it('posts the authorization code emitted by the generic identity button', async () => {
 		const wrapper = mountSignIn();
 		await wrapper.find('[data-testid="google"]').trigger('click');
 		await flushPromises();
 
-		expect(googleAuth).toHaveBeenCalledWith({ idToken: 'id-token' });
+		expect(googleAuth).toHaveBeenCalledWith({ code: 'authorization-code' });
 		expect(wrapper.emitted('success')).toHaveLength(1);
 	});
 

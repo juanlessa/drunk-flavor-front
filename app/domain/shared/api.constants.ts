@@ -19,3 +19,10 @@ export const ApiErrorCodes = {
 	googleEmailNotVerified: 'GOOGLE_EMAIL_NOT_VERIFIED',
 	accountLinkRequired: 'ACCOUNT_LINK_REQUIRED'
 } as const;
+
+/**
+ * CSRF header the API requires on the endpoints that receive an authorization code from the Google popup,
+ * as recommended by Google for the popup code flow. A cross-site form cannot set it, and the API's CORS
+ * allowlist rejects the preflight a cross-origin script would need to send it.
+ */
+export const GOOGLE_CODE_REQUEST_HEADERS = { 'X-Requested-With': 'XmlHttpRequest' } as const;

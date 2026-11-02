@@ -8,6 +8,7 @@ import type {
 	UpdateProfile
 } from './profile.dtos';
 import type { Profile } from './profile.entity';
+import { GOOGLE_CODE_REQUEST_HEADERS } from '../shared/api.constants';
 
 export const profileRepository = ($fetch: $Fetch) => ({
 	async delete() {
@@ -26,10 +27,18 @@ export const profileRepository = ($fetch: $Fetch) => ({
 		return $fetch<undefined>('/me/password', { method: 'PATCH', body });
 	},
 	async linkGoogleIdentity(body: LinkGoogleIdentity) {
-		return $fetch<undefined>('/me/identities/google', { method: 'POST', body });
+		return $fetch<undefined>('/me/identities/google', {
+			method: 'POST',
+			headers: GOOGLE_CODE_REQUEST_HEADERS,
+			body
+		});
 	},
 	async reauthenticateGoogle(body: ReauthenticateGoogle) {
-		return $fetch<undefined>('/me/reauthentication/google', { method: 'POST', body });
+		return $fetch<undefined>('/me/reauthentication/google', {
+			method: 'POST',
+			headers: GOOGLE_CODE_REQUEST_HEADERS,
+			body
+		});
 	},
 	async reauthenticatePassword(body: ReauthenticatePassword) {
 		return $fetch<undefined>('/me/reauthentication/password', { method: 'POST', body });

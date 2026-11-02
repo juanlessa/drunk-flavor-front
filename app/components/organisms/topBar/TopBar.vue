@@ -53,9 +53,13 @@
 					:user="user"
 					:is-signing-out="isSigningOut"
 					@signout="handleSignout" />
-				<NuxtLink v-else :to="localePath('/signin')" :class="signInButtonClass">
+				<NuxtLink
+					v-else-if="isSessionKnown"
+					:to="localePath('/signin')"
+					:class="signInButtonClass">
 					{{ $t('organisms.topBar.signin') }}
 				</NuxtLink>
+				<span v-else class="block h-10 w-20" aria-hidden="true"></span>
 			</div>
 
 			<!-- Mobile and tablet: a shortcut to the account and the menu panel. -->
@@ -72,11 +76,12 @@
 						:fallback-delay="0" />
 				</NuxtLink>
 				<NuxtLink
-					v-else
+					v-else-if="isSessionKnown"
 					:to="localePath('/signin')"
 					:class="[signInButtonClass, 'h-9 px-4']">
 					{{ $t('organisms.topBar.signin') }}
 				</NuxtLink>
+				<span v-else class="block size-11" aria-hidden="true"></span>
 				<HamburgerMenu
 					v-model:open="isMenuOpen"
 					:title="$t('organisms.topBar.menu.title')"
@@ -179,7 +184,7 @@
 	</Box>
 </template>
 <script setup lang="ts">
-import { useId } from 'vue';
+import { onBeforeMount, onMounted, useId } from 'vue';
 import type {
 	AppActions,
 	AppCanParameters,
@@ -223,7 +228,8 @@ const MANAGEMENT_LINKS: ILink[] = [
 ];
 const PROFILE_LINK: ILink = { i18nKey: 'organisms.topBar.profile', path: '/profile' };
 
-const { $auth } = useNuxtApp();
+const nuxtApp = useNuxtApp();
+const { $auth } = nuxtApp;
 const { t } = useI18n();
 const { addToast } = useToast();
 const localePath = useLocalePath();
@@ -235,8 +241,24 @@ const accountHeadingId = useId();
 const isSigningOut = ref(false);
 const isMenuOpen = ref(false);
 
+/**
+ * Whether the account area can show the real session. The session cookies belong to the API host, so
+ * the Nuxt server never sees them: the server-rendered HTML always describes a guest, while the browser
+ * already knows the user by the time it hydrates. Rendering the real state in that first pass would not
+ * match the server HTML (a sign-in button wrapping the avatar), so while hydrating the account area is
+ * a neutral placeholder and the real state appears right after mount. Later navigations remount the
+ * bar with the state known from the start, so nothing flickers.
+ */
+const isSessionKnown = ref(false);
+onBeforeMount(() => {
+	isSessionKnown.value = !nuxtApp.isHydrating;
+});
+onMounted(() => {
+	isSessionKnown.value = true;
+});
+
 const user = computed(() =>
-	$auth.state.value.isAuthenticated ? $auth.state.value.user : undefined
+	isSessionKnown.value && $auth.state.value.isAuthenticated ? $auth.state.value.user : undefined
 );
 const userName = computed(() =>
 	user.value ? getUserFullName(user.value) || user.value.email : ''

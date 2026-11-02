@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
-const fakeAccountsId = { initialize: vi.fn(), renderButton: vi.fn() };
+const fakeOAuth2 = { initCodeClient: vi.fn() };
 
 // happy-dom refuses to download external scripts, so appended scripts are captured instead
 // of being attached to the document, and the tests drive their load/error events.
@@ -10,7 +10,7 @@ let appendedScripts: HTMLScriptElement[] = [];
 const lastScript = () => appendedScripts[appendedScripts.length - 1];
 
 const finishLoad = () => {
-	window.google = { accounts: { id: fakeAccountsId } };
+	window.google = { accounts: { oauth2: fakeOAuth2 } };
 	lastScript()?.onload?.(new Event('load'));
 };
 
@@ -36,7 +36,7 @@ describe('loadGoogleIdentityScript', () => {
 		const promise = loadGoogleIdentityScript('pt_BR');
 		finishLoad();
 
-		await expect(promise).resolves.toBe(fakeAccountsId);
+		await expect(promise).resolves.toBe(fakeOAuth2);
 		expect(appendedScripts).toHaveLength(1);
 		expect(lastScript()?.src).toBe('https://accounts.google.com/gsi/client?hl=pt_BR');
 	});
@@ -46,7 +46,7 @@ describe('loadGoogleIdentityScript', () => {
 		finishLoad();
 		await first;
 
-		await expect(loadGoogleIdentityScript('en')).resolves.toBe(fakeAccountsId);
+		await expect(loadGoogleIdentityScript('en')).resolves.toBe(fakeOAuth2);
 		expect(appendedScripts).toHaveLength(1);
 	});
 
@@ -61,7 +61,7 @@ describe('loadGoogleIdentityScript', () => {
 		expect(window.google).toBeUndefined();
 		finishLoad();
 
-		await expect(second).resolves.toBe(fakeAccountsId);
+		await expect(second).resolves.toBe(fakeOAuth2);
 	});
 
 	it('rejects when the script fails to load and retries on the next call', async () => {
@@ -72,6 +72,6 @@ describe('loadGoogleIdentityScript', () => {
 		const retry = loadGoogleIdentityScript('en');
 		expect(appendedScripts).toHaveLength(2);
 		finishLoad();
-		await expect(retry).resolves.toBe(fakeAccountsId);
+		await expect(retry).resolves.toBe(fakeOAuth2);
 	});
 });

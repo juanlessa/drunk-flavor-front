@@ -18,7 +18,11 @@ const mockSignout = vi.fn();
 const mockNavigateTo = vi.fn();
 const allowed = ref<string[]>(['Drink', 'Category', 'Unit', 'Ingredient', 'User']);
 
-vi.stubGlobal('useNuxtApp', () => ({ $auth: { state: authState, signout: mockSignout } }));
+const nuxtApp = { isHydrating: false };
+vi.stubGlobal('useNuxtApp', () => ({
+	...nuxtApp,
+	$auth: { state: authState, signout: mockSignout }
+}));
 vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 vi.stubGlobal('useToast', () => ({ addToast: vi.fn() }));
 vi.stubGlobal('useLocalePath', () => (path: string) => path);
@@ -149,6 +153,22 @@ describe('TopBar', () => {
 		expect(desktopNav(wrapper).exists()).toBe(false);
 		expect(wrapper.findAll('a[href="/signin"]').length).toBeGreaterThanOrEqual(2);
 		expect(wrapper.find('a[href="/profile"]').exists()).toBe(false);
+	});
+
+	it('keeps the account area neutral while hydrating, then shows the session', async () => {
+		nuxtApp.isHydrating = true;
+		const wrapper = mountTopBar();
+
+		// Same markup as the server-rendered guest page: no sign-in, no avatar, no user menu.
+		expect(wrapper.find('a[href="/signin"]').exists()).toBe(false);
+		expect(wrapper.find('a[href="/profile"]').exists()).toBe(false);
+		expect(wrapper.findComponent(UserMenuStub).exists()).toBe(false);
+
+		await flushPromises();
+
+		expect(wrapper.findComponent(UserMenuStub).exists()).toBe(true);
+		expect(wrapper.find('a[href="/signin"]').exists()).toBe(false);
+		nuxtApp.isHydrating = false;
 	});
 
 	it('closes the mobile menu after navigating', async () => {

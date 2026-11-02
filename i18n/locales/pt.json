@@ -30,8 +30,7 @@
 			"text": {
 				"continue_with": "Continuar com o Google",
 				"signin_with": "Fazer login com o Google",
-				"signup_with": "Inscrever-se com o Google",
-				"signin": "Fazer login"
+				"signup_with": "Inscrever-se com o Google"
 			}
 		},
 		"buttonGroup": {

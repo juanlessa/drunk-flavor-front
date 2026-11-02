@@ -39,9 +39,9 @@ const ReauthenticationDialogStub = {
 
 const GoogleIdentityButtonStub = {
 	name: 'GoogleIdentityButton',
-	emits: ['credential', 'error'],
+	emits: ['code', 'error'],
 	template:
-		'<button data-testid="google" @click="$emit(\'credential\', \'google-token\')">Google</button>'
+		'<button data-testid="google" @click="$emit(\'code\', \'google-code\')">Google</button>'
 };
 
 const mountDialog = () =>
@@ -75,7 +75,7 @@ describe('GoogleConnectionDialog', () => {
 		await wrapper.find('[data-testid="google"]').trigger('click');
 		await flushPromises();
 
-		expect(linkGoogleIdentity).toHaveBeenCalledWith({ idToken: 'google-token' });
+		expect(linkGoogleIdentity).toHaveBeenCalledWith({ code: 'google-code' });
 		expect(wrapper.emitted('update:open')).toContainEqual([false]);
 		expect(authenticate).toHaveBeenCalledOnce();
 	});
@@ -92,7 +92,7 @@ describe('GoogleConnectionDialog', () => {
 		await flushPromises();
 
 		expect(linkGoogleIdentity).toHaveBeenCalledTimes(2);
-		expect(linkGoogleIdentity).toHaveBeenLastCalledWith({ idToken: 'google-token' });
+		expect(linkGoogleIdentity).toHaveBeenLastCalledWith({ code: 'google-code' });
 		expect(wrapper.emitted('update:open')).toContainEqual([false]);
 	});
 

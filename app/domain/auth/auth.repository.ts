@@ -9,6 +9,7 @@ import type {
 	GoogleAuth,
 	SignoutResponse
 } from './auth.dtos';
+import { GOOGLE_CODE_REQUEST_HEADERS } from '../shared/api.constants';
 
 export const authRepository = ($fetch: $Fetch) => ({
 	async signup(body: Signup) {
@@ -67,6 +68,7 @@ export const authRepository = ($fetch: $Fetch) => ({
 	async googleAuth(body: GoogleAuth) {
 		return $fetch<undefined>('/google', {
 			method: 'POST',
+			headers: GOOGLE_CODE_REQUEST_HEADERS,
 			body
 		});
 	}

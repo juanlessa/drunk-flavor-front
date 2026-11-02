@@ -33,7 +33,7 @@ const weakCspDirectives: CspDirectives = {
 
 const productionCspDirectives: CspDirectives = {
 	'img-src': ["'self'", 'data:', 'blob:', NUXT_PUBLIC_IMAGE_HOST],
-	// Google Identity Services calls its own endpoints under /gsi/ (button + FedCM flow).
+	// The Google Identity Services client library calls its own endpoints under /gsi/.
 	'connect-src': ["'self'", NUXT_PUBLIC_API_BASE, GOOGLE_IDENTITY_ORIGIN_PATH],
 	'upgrade-insecure-requests': true
 };
@@ -49,6 +49,7 @@ export const securityOptions: Partial<SecurityModuleOptions> = {
 	headers: {
 		contentSecurityPolicy,
 		strictTransportSecurity: false,
+		// Keeps the opener link to the Google sign-in popup, which posts the authorization code back.
 		crossOriginOpenerPolicy: 'same-origin-allow-popups',
 		crossOriginEmbedderPolicy: 'unsafe-none',
 		referrerPolicy: 'strict-origin-when-cross-origin'
