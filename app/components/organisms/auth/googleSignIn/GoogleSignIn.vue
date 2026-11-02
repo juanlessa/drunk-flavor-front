@@ -1,13 +1,12 @@
 <template>
 	<GoogleIdentityButton
-		context="signin"
 		block
+		:disabled="isSubmitting"
 		test-id="google-signin-button"
 		@available="emit('available', $event)"
-		@credential="handleCredential"
+		@code="handleCode"
 		@error="emit('error', $t('organisms.googleSignIn.error.message'))" />
 </template>
-
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { ApiErrorCodes } from '~/domain/shared/api.constants';
@@ -23,19 +22,19 @@ const { $api } = useNuxtApp();
 const { t } = useI18n();
 const isSubmitting = ref(false);
 
-const handleCredential = async (credential: string) => {
+const handleCode = async (code: string) => {
 	if (isSubmitting.value) return;
 	isSubmitting.value = true;
 	try {
-		await $api.auth.googleAuth({ idToken: credential });
+		await $api.auth.googleAuth({ code });
 		emit('success');
 	} catch (error) {
 		console.error(error);
-		const code = readApiErrorCode(error);
+		const errorCode = readApiErrorCode(error);
 		const message =
-			code === ApiErrorCodes.googleEmailNotVerified
+			errorCode === ApiErrorCodes.googleEmailNotVerified
 				? t('organisms.googleSignIn.error.emailNotVerified')
-				: code === ApiErrorCodes.accountLinkRequired
+				: errorCode === ApiErrorCodes.accountLinkRequired
 					? t('organisms.googleSignIn.error.accountLinkRequired')
 					: t('organisms.googleSignIn.error.message');
 		emit('error', message);

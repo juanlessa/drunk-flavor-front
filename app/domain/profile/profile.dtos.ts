@@ -1,3 +1,5 @@
+import type { GoogleAuth } from '../auth/auth.dtos';
+
 export type UpdateProfile = {
 	name: string;
 	surname: string;
@@ -12,13 +14,9 @@ export type UpdatePassword = {
 	newPassword: string;
 };
 
-export type LinkGoogleIdentity = {
-	idToken: string;
-};
+export type LinkGoogleIdentity = GoogleAuth;
 
-export type ReauthenticateGoogle = {
-	idToken: string;
-};
+export type ReauthenticateGoogle = GoogleAuth;
 
 export type ReauthenticatePassword = {
 	password: string;

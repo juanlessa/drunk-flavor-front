@@ -28,8 +28,9 @@ export type ResendEmailVerification = {
 	email: string;
 };
 
+/** Authorization code from the Google popup; the API exchanges it with the client secret. */
 export type GoogleAuth = {
-	idToken: string;
+	code: string;
 };
 
 export type SignoutResponse = {

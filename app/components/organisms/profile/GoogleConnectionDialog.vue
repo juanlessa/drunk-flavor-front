@@ -21,10 +21,9 @@
 
 					<div class="flex min-h-10 flex-col gap-2">
 						<GoogleIdentityButton
-							v-if="!isSubmitting"
-							context="use"
+							:disabled="isSubmitting"
 							test-id="google-account-link-button"
-							@credential="handleCredential"
+							@code="handleCode"
 							@error="handleGoogleError" />
 					</div>
 
@@ -62,8 +61,8 @@ const {
 } = useReauthentication();
 const isSubmitting = ref(false);
 
-const linkGoogle = async (idToken: string) => {
-	await $api.profile.linkGoogleIdentity({ idToken });
+const linkGoogle = async (code: string) => {
+	await $api.profile.linkGoogleIdentity({ code });
 	isOpen.value = false;
 	await $auth.authenticate();
 	addToast({
@@ -90,7 +89,7 @@ const submit = async (execute: () => Promise<void>) => {
 	}
 };
 
-const handleCredential = (idToken: string) => submit(() => run(() => linkGoogle(idToken)));
+const handleCode = (code: string) => submit(() => run(() => linkGoogle(code)));
 const handleReauthenticated = () => submit(confirm);
 
 const handleGoogleError = () =>

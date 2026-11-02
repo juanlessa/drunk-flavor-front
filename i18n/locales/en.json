@@ -30,8 +30,7 @@
 			"text": {
 				"continue_with": "Continue with Google",
 				"signin_with": "Sign in with Google",
-				"signup_with": "Sign up with Google",
-				"signin": "Sign in"
+				"signup_with": "Sign up with Google"
 			}
 		},
 		"buttonGroup": {
