@@ -1,5 +1,10 @@
 <template>
-	<UnitForm :unit-form="unitForm" @cancel="handleCancel" @submit="handleSubmit" />
+	<UnitForm
+		:unit-form="unitForm"
+		:title="$t('organisms.unitForm.editTitle')"
+		:submit-label="$t('organisms.unitForm.saveButton')"
+		@cancel="handleCancel"
+		@submit="handleSubmit" />
 </template>
 
 <script setup lang="ts">
@@ -11,6 +16,7 @@ const props = defineProps({
 });
 
 const { $api, $router } = useNuxtApp();
+const { t } = useI18n();
 const { resetFormState } = useUnitForm();
 const { addToast } = useToast();
 
@@ -37,10 +43,18 @@ const handleSubmit = async (unitForm: UnitForm) => {
 	try {
 		await $api.units.update(updateUnit);
 		resetFormState();
-		addToast({ type: 'success', title: 'Success', message: 'unit has been updated' });
+		addToast({
+			type: 'success',
+			title: t('organisms.unitForm.updateSuccess.title'),
+			message: t('organisms.unitForm.updateSuccess.message')
+		});
 		$router.back();
 	} catch (error) {
-		addToast({ type: 'error', title: 'Error', message: 'unit has not been updated' });
+		addToast({
+			type: 'error',
+			title: t('organisms.unitForm.updateError.title'),
+			message: t('organisms.unitForm.updateError.message')
+		});
 		console.error(error);
 	}
 };

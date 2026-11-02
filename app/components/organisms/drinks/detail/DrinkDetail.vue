@@ -39,6 +39,7 @@
 <script setup lang="ts">
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
 import type { Drink, DrinkIngredient } from '~/domain/drink/drink.entity';
+import { formatUnitQuantity } from '~/helpers/unit.helpers';
 
 const { t, locale } = useI18n();
 
@@ -51,16 +52,7 @@ const props = defineProps({
 
 const formatIngredient = (ingredient: DrinkIngredient): string => {
 	const lang = locale.value;
-	const unit = ingredient.ingredient.unit;
-	const symbol = unit.symbol?.trim();
-
-	const measurement = symbol
-		? `${ingredient.quantity}${unit.spaceBeforeSymbol ? ' ' : ''}${symbol}`
-		: `${ingredient.quantity} ${
-				ingredient.quantity === 1
-					? unit.translations[lang].name
-					: unit.translations[lang].namePlural
-			}`;
+	const measurement = formatUnitQuantity(ingredient.quantity, ingredient.ingredient.unit, lang);
 
 	return `${measurement} ${t('drinkDetailPage.ingredients.ofPreposition')} ${ingredient.ingredient.translations[lang].name}`;
 };

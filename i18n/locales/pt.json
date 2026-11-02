@@ -74,10 +74,33 @@
 			"deleteError": { "title": "Erro", "message": "Não foi possível excluir a categoria." }
 		},
 		"categoryForm": {
-			"title": "Categoria",
-			"nameInput": { "label": "nome", "placeholder": "" },
-			"generalSection": { "title": "Geral" },
-			"isAlcoholicInput": { "label": "é alcoólico?" }
+			"backLink": "Categorias",
+			"createTitle": "Nova categoria",
+			"editTitle": "Editar categoria",
+			"description": "Categorias agrupam ingredientes e indicam se eles contêm álcool.",
+			"namesSection": {
+				"title": "Nomes",
+				"description": "Salvos apenas com a primeira letra maiúscula, ex. \"Triple sec\"."
+			},
+			"classificationSection": {
+				"title": "Classificação",
+				"description": "Exibida ao lado da categoria na lista de categorias."
+			},
+			"nameInput": { "label": "nome" },
+			"isAlcoholicInput": {
+				"label": "alcoólica",
+				"help": "Os ingredientes desta categoria contêm álcool."
+			},
+			"cancelButton": "Cancelar",
+			"createButton": "Criar categoria",
+			"saveButton": "Salvar alterações",
+			"createSuccess": { "title": "Categoria criada", "message": "A categoria foi criada." },
+			"createError": { "title": "Erro", "message": "Não foi possível criar a categoria." },
+			"updateSuccess": {
+				"title": "Categoria atualizada",
+				"message": "A categoria foi atualizada."
+			},
+			"updateError": { "title": "Erro", "message": "Não foi possível atualizar a categoria." }
 		},
 		"unitsControlOverview": {
 			"searchLabel": "Buscar unidades",
@@ -100,23 +123,53 @@
 			"deleteError": { "title": "Erro", "message": "Não foi possível excluir a unidade." }
 		},
 		"unitForm": {
-			"title": "Unidade",
-			"nameInput": { "label": "nome", "placeholder": "" },
-			"namePluralInput": { "label": "nome no plural", "placeholder": "" },
-			"generalSection": { "title": "Geral" },
+			"backLink": "Unidades",
+			"createTitle": "Nova unidade",
+			"editTitle": "Editar unidade",
+			"description": "Unidades medem as quantidades dos ingredientes e definem como elas são escritas.",
+			"namesSection": {
+				"title": "Nomes",
+				"description": "Singular e plural, como aparecem ao lado de uma quantidade."
+			},
+			"formatSection": {
+				"title": "Formato",
+				"description": "Símbolo, tipo e como as quantidades são escritas."
+			},
+			"nameInput": { "label": "nome" },
+			"namePluralInput": { "label": "nome no plural" },
 			"symbolInput": { "label": "símbolo", "placeholder": "ex. ml" },
 			"kindInput": {
 				"label": "tipo",
 				"placeholder": "selecione um tipo",
 				"options": {
-					"volume": "volume",
-					"mass": "massa",
-					"count": "contagem",
-					"informal": "informal"
+					"volume": "Volume",
+					"mass": "Massa",
+					"count": "Contagem",
+					"informal": "Informal"
 				}
 			},
-			"spaceBeforeSymbolInput": { "label": "espaço antes do símbolo?" },
-			"allowDecimalInput": { "label": "permite decimal?" }
+			"spaceBeforeSymbolInput": {
+				"label": "espaço antes do símbolo",
+				"help": "Escreve \"60 ml\" em vez de \"60ml\"."
+			},
+			"allowDecimalInput": {
+				"label": "permitir decimais",
+				"help": "Aceita quantidades como 1,5; desligado para unidades inteiras."
+			},
+			"preview": {
+				"label": "Prévia",
+				"empty": "Preencha os nomes ou o símbolo para ver como as quantidades vão aparecer."
+			},
+			"cancelButton": "Cancelar",
+			"createButton": "Criar unidade",
+			"saveButton": "Salvar alterações",
+			"createSuccess": { "title": "Unidade criada", "message": "A unidade foi criada." },
+			"createError": { "title": "Erro", "message": "Não foi possível criar a unidade." },
+			"updateSuccess": {
+				"title": "Unidade atualizada",
+				"message": "A unidade foi atualizada."
+			},
+			"updateError": { "title": "Erro", "message": "Não foi possível atualizar a unidade." }
 		},
 		"footer": {
 			"privacyPolicy": "Política de Privacidade",
@@ -141,11 +194,41 @@
 			"deleteError": { "title": "Erro", "message": "Não foi possível excluir o ingrediente." }
 		},
 		"ingredientForm": {
-			"title": "Ingrediente",
-			"nameInput": { "label": "nome", "placeholder": "" },
-			"generalSection": { "title": "Geral" },
+			"backLink": "Ingredientes",
+			"createTitle": "Novo ingrediente",
+			"editTitle": "Editar ingrediente",
+			"description": "Do que os drinks são feitos: cada um tem uma categoria e uma unidade.",
+			"namesSection": {
+				"title": "Nomes",
+				"description": "Salvos apenas com a primeira letra maiúscula, ex. \"Suco de limão\"."
+			},
+			"classificationSection": {
+				"title": "Categoria e unidade",
+				"description": "Onde ele é agrupado e como sua quantidade é medida nos drinks."
+			},
+			"nameInput": { "label": "nome" },
 			"categoryInput": { "label": "categoria" },
-			"unitInput": { "label": "unidade" }
+			"unitInput": { "label": "unidade" },
+			"preview": {
+				"label": "Em um drink",
+				"empty": "Preencha o nome e escolha uma unidade para ver como fica em um drink."
+			},
+			"cancelButton": "Cancelar",
+			"createButton": "Criar ingrediente",
+			"saveButton": "Salvar alterações",
+			"createSuccess": {
+				"title": "Ingrediente criado",
+				"message": "O ingrediente foi criado."
+			},
+			"createError": { "title": "Erro", "message": "Não foi possível criar o ingrediente." },
+			"updateSuccess": {
+				"title": "Ingrediente atualizado",
+				"message": "O ingrediente foi atualizado."
+			},
+			"updateError": {
+				"title": "Erro",
+				"message": "Não foi possível atualizar o ingrediente."
+			}
 		},
 		"drinksControlOverview": {
 			"searchLabel": "Buscar drinks",

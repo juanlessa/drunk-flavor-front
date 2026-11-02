@@ -1,5 +1,5 @@
 <template>
-	<NuxtLayout name="primary">
+	<NuxtLayout>
 		<UpdateUnit :unit-id="unitId" />
 	</NuxtLayout>
 </template>

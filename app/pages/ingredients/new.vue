@@ -1,5 +1,5 @@
 <template>
-	<NuxtLayout name="primary">
+	<NuxtLayout>
 		<CreateIngredient />
 	</NuxtLayout>
 </template>

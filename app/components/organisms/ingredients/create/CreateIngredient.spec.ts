@@ -4,6 +4,7 @@ import CreateIngredient from './CreateIngredient.vue';
 
 const IngredientFormStub = {
 	template: '<div data-testid="ingredient-form" />',
+	props: ['title', 'submitLabel'],
 	emits: ['submit', 'cancel']
 };
 
@@ -29,6 +30,8 @@ vi.stubGlobal('useToast', () => ({
 	addToast: mockAddToast
 }));
 
+vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
+
 const mountCreateIngredient = () =>
 	mount(CreateIngredient, {
 		global: {
@@ -53,6 +56,13 @@ describe('CreateIngredient', () => {
 	});
 
 	describe('rendering', () => {
+		it('passes the create title and submit label to the form', () => {
+			const form = mountCreateIngredient().findComponent(IngredientFormStub);
+
+			expect(form.props('title')).toBe('organisms.ingredientForm.createTitle');
+			expect(form.props('submitLabel')).toBe('organisms.ingredientForm.createButton');
+		});
+
 		it('renders IngredientForm', () => {
 			const wrapper = mountCreateIngredient();
 

@@ -5,7 +5,7 @@ import UpdateIngredient from './UpdateIngredient.vue';
 
 const IngredientFormStub = {
 	template: '<div data-testid="ingredient-form" />',
-	props: ['ingredient'],
+	props: ['ingredient', 'title', 'submitLabel'],
 	emits: ['submit', 'cancel']
 };
 
@@ -31,6 +31,8 @@ vi.stubGlobal('useIngredientForm', () => ({
 vi.stubGlobal('useToast', () => ({
 	addToast: mockAddToast
 }));
+
+vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 
 const ingredientData = {
 	id: 'ing-1',
@@ -102,6 +104,13 @@ describe('UpdateIngredient', () => {
 	});
 
 	describe('rendering', () => {
+		it('passes the edit title and submit label to the form', async () => {
+			const form = (await mountUpdateIngredient()).findComponent(IngredientFormStub);
+
+			expect(form.props('title')).toBe('organisms.ingredientForm.editTitle');
+			expect(form.props('submitLabel')).toBe('organisms.ingredientForm.saveButton');
+		});
+
 		it('renders IngredientForm', async () => {
 			const wrapper = await mountUpdateIngredient();
 

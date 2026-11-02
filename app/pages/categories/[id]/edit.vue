@@ -1,5 +1,5 @@
 <template>
-	<NuxtLayout name="primary">
+	<NuxtLayout>
 		<UpdateCategory :category-id="categoryId" />
 	</NuxtLayout>
 </template>

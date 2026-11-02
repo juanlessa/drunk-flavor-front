@@ -4,6 +4,7 @@ import CreateCategory from './CreateCategory.vue';
 
 const CategoryFormStub = {
 	template: '<div data-testid="category-form" />',
+	props: ['title', 'submitLabel'],
 	emits: ['submit', 'cancel']
 };
 
@@ -29,6 +30,8 @@ vi.stubGlobal('useToast', () => ({
 	addToast: mockAddToast
 }));
 
+vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
+
 const mountCreateCategory = () =>
 	mount(CreateCategory, {
 		global: {
@@ -47,6 +50,13 @@ describe('CreateCategory', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		mockApiCreate.mockResolvedValue({});
+	});
+
+	it('passes the create title and submit label to the form', () => {
+		const form = mountCreateCategory().findComponent(CategoryFormStub);
+
+		expect(form.props('title')).toBe('organisms.categoryForm.createTitle');
+		expect(form.props('submitLabel')).toBe('organisms.categoryForm.createButton');
 	});
 
 	describe('rendering', () => {

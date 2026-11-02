@@ -1,239 +1,203 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ref } from 'vue';
 import CategoryForm from './CategoryForm.vue';
+import type { CategoryFormState } from '~/types/category.types';
 
-const FormStub = {
-	template:
-		'<form @submit.prevent="$emit(\'submit\')">' +
-		'<slot /><button type="button" @click="$emit(\'cancel\')">cancel</button></form>',
-	props: ['title'],
-	emits: ['submit', 'cancel']
-};
-const GroupWrapperStub = {
-	template: '<div data-testid="group-wrapper"><slot /></div>',
-	props: ['title']
-};
-const InputWrapperStub = {
-	template:
-		'<div data-testid="input-wrapper"><slot name="label" /><slot /><slot name="error" /></div>'
-};
-const LabelStub = {
-	template: '<label><slot /></label>',
-	props: ['for']
-};
-const InputTextStub = {
-	template:
-		'<input :id="id" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" @blur="$emit(\'blur\')" />',
-	props: ['id', 'modelValue', 'name', 'type', 'pattern', 'placeholder', 'hasError'],
-	emits: ['update:modelValue', 'blur']
-};
-const ErrorMessageStub = {
-	template: '<span data-testid="error-message">{{ value }}</span>',
-	props: ['value']
-};
-const InputSwitchStub = {
-	template: '<input type="checkbox" data-testid="switch" />',
-	props: ['checked'],
-	emits: ['update:checked']
-};
-
-const mockFormState = ref({
+const buildState = (): CategoryFormState => ({
 	form: {
-		translations: {
-			en: { name: '' },
-			pt: { name: '' }
-		},
+		translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
 		isAlcoholic: false
 	},
-	errors: [] as { field: string; message: string }[],
+	errors: [],
 	displayErrors: false
 });
 
-const mockCheckError = vi.fn(() => '');
+const mockFormState = ref<CategoryFormState>(buildState());
+const mockCheckError = vi.fn((_field: string) => '');
 const mockValidateForm = vi.fn();
 const mockUpdateFormState = vi.fn();
-const mockResetFormState = vi.fn();
 
-vi.mock('~/domain/shared/translations.constants', () => ({
-	languages: ['en', 'pt']
-}));
-
+vi.stubGlobal('useLocalePath', () => (path: string) => path);
 vi.stubGlobal('useCategoryForm', () => ({
 	formState: mockFormState,
 	checkError: mockCheckError,
 	validateForm: mockValidateForm,
 	updateFormState: mockUpdateFormState,
-	resetFormState: mockResetFormState
+	resetFormState: vi.fn()
 }));
 
-const globalStubs = {
-	Form: FormStub,
-	GroupWrapper: GroupWrapperStub,
-	InputWrapper: InputWrapperStub,
-	Label: LabelStub,
-	InputText: InputTextStub,
-	InputSwitch: InputSwitchStub,
-	ErrorMessage: ErrorMessageStub
+const FormStub = {
+	emits: ['submit', 'cancel'],
+	template: '<form @submit.prevent="$emit(\'submit\')"><slot /><slot name="buttons" /></form>'
+};
+const InputTextStub = {
+	props: ['id', 'modelValue', 'hasError'],
+	emits: ['update:modelValue', 'blur'],
+	template:
+		'<input :id="id" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" @blur="$emit(\'blur\')" />'
 };
 
-const mountCategoryForm = (props = {}) =>
+const mountForm = (props = {}) =>
 	mount(CategoryForm, {
-		props,
+		props: { title: 'New category', submitLabel: 'Create category', ...props },
 		global: {
-			stubs: globalStubs,
-			mocks: {
-				$t: (key: string) => key,
-				$i18n: { locale: 'en' }
-			}
+			stubs: {
+				Form: FormStub,
+				FormSection: {
+					props: ['title', 'description'],
+					template: '<section :data-title="title"><slot /></section>'
+				},
+				Anchor: { props: ['to'], template: '<a :href="to"><slot /></a>' },
+				Heading: { template: '<h1><slot /></h1>' },
+				Text: { template: '<p><slot /></p>' },
+				Label: { props: ['for'], template: '<label :for="$props.for"><slot /></label>' },
+				InputWrapper: {
+					template: '<div><slot name="label" /><slot /><slot name="error" /></div>'
+				},
+				InputText: InputTextStub,
+				InputSwitch: {
+					props: ['id', 'checked'],
+					emits: ['update:checked'],
+					template:
+						'<button type="button" role="switch" :id="id" :aria-checked="String(checked)" @click="$emit(\'update:checked\', !checked)" />'
+				},
+				ErrorMessage: {
+					props: ['value'],
+					template: '<span v-if="value" data-testid="error-message">{{ value }}</span>'
+				},
+				Button: {
+					props: ['type'],
+					template: '<button :type="type ?? \'button\'"><slot /></button>'
+				},
+				ArrowLeftIcon: true
+			},
+			mocks: { $t: (key: string) => key }
 		}
 	});
 
 describe('CategoryForm', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		mockFormState.value = {
-			form: {
-				translations: {
-					en: { name: '' },
-					pt: { name: '' }
-				},
-				isAlcoholic: false
-			},
-			errors: [],
-			displayErrors: false
-		};
+		mockCheckError.mockReturnValue('');
+		mockFormState.value = buildState();
 	});
 
 	describe('rendering', () => {
-		it('renders a form with the category title', () => {
-			const wrapper = mountCategoryForm();
-			const form = wrapper.findComponent(FormStub);
+		it('renders the page header with a link back to the categories list', () => {
+			const wrapper = mountForm();
 
-			expect(form.exists()).toBe(true);
-			expect(form.props('title')).toBe('organisms.categoryForm.title');
+			expect(wrapper.find('h1').text()).toBe('New category');
+			expect(wrapper.find('a').attributes('href')).toBe('/categories');
 		});
 
-		it('renders one GroupWrapper per language plus the general section', () => {
-			const wrapper = mountCategoryForm();
-			const groups = wrapper.findAllComponents(GroupWrapperStub);
+		it('groups the fields in the names and classification sections', () => {
+			const titles = mountForm()
+				.findAll('section')
+				.map((section) => section.attributes('data-title'));
 
-			// 2 language groups + 1 general section
-			expect(groups).toHaveLength(3);
-		});
-
-		it('renders an isAlcoholic switch in the general section', () => {
-			const wrapper = mountCategoryForm();
-
-			expect(wrapper.find('[data-testid="switch"]').exists()).toBe(true);
+			expect(titles).toEqual([
+				'organisms.categoryForm.namesSection.title',
+				'organisms.categoryForm.classificationSection.title'
+			]);
 		});
 
 		it('renders a name input for each language', () => {
-			const wrapper = mountCategoryForm();
-			const inputs = wrapper.findAllComponents(InputTextStub);
+			const inputs = mountForm().findAllComponents(InputTextStub);
 
-			expect(inputs).toHaveLength(2);
-			expect(inputs.at(0)?.props('id')).toBe('en-name');
-			expect(inputs.at(1)?.props('id')).toBe('pt-name');
+			expect(inputs.map((input) => input.props('id'))).toEqual(['en-name', 'pt-name']);
+		});
+
+		it('describes the alcoholic switch with its help text', () => {
+			const wrapper = mountForm();
+			const describedBy = wrapper.find('#is-alcoholic').attributes('aria-describedby');
+
+			expect(wrapper.find(`#${describedBy}`).text()).toBe(
+				'organisms.categoryForm.isAlcoholicInput.help'
+			);
+		});
+
+		it('labels the submit button with the given text', () => {
+			expect(mountForm().find('button[type="submit"]').text()).toBe('Create category');
 		});
 	});
 
 	describe('initialization', () => {
-		it('calls updateFormState when categoryForm prop is provided', () => {
-			const categoryForm = {
-				translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } }
-			};
+		it('loads the given category into the form state', () => {
+			const categoryForm = buildState().form;
 
-			mountCategoryForm({ categoryForm });
+			mountForm({ categoryForm });
 
 			expect(mockUpdateFormState).toHaveBeenCalledWith(categoryForm);
 		});
 
-		it('does not call updateFormState when no prop is provided', () => {
-			mountCategoryForm();
+		it('keeps the current state when no category is given', () => {
+			mountForm();
 
 			expect(mockUpdateFormState).not.toHaveBeenCalled();
 		});
 	});
 
 	describe('validation', () => {
-		it('calls validateForm on input blur', async () => {
-			const wrapper = mountCategoryForm();
-			const input = wrapper.findComponent(InputTextStub);
-
-			await input.trigger('blur');
+		it('validates on input blur', async () => {
+			await mountForm().findComponent(InputTextStub).trigger('blur');
 
 			expect(mockValidateForm).toHaveBeenCalled();
 		});
 
-		it('passes hasError from checkError to InputText', () => {
-			mockCheckError.mockReturnValue('errors.categories.name');
-			const wrapper = mountCategoryForm();
+		it('flags the field and shows the message from checkError', () => {
+			mockCheckError.mockImplementation((field: string) =>
+				field === 'translations.pt.name' ? 'errors.categories.name' : ''
+			);
+			const wrapper = mountForm();
 			const inputs = wrapper.findAllComponents(InputTextStub);
 
-			expect(inputs.at(0)?.props('hasError')).toBe(true);
-		});
-
-		it('renders error message from checkError', () => {
-			mockCheckError.mockReturnValue('errors.categories.name');
-			const wrapper = mountCategoryForm();
-			const errors = wrapper.findAll('[data-testid="error-message"]');
-
-			expect(errors.at(0)?.text()).toBe('errors.categories.name');
+			expect(inputs.at(0)?.props('hasError')).toBe(false);
+			expect(inputs.at(1)?.props('hasError')).toBe(true);
+			expect(wrapper.find('[data-testid="error-message"]').text()).toBe(
+				'errors.categories.name'
+			);
 		});
 	});
 
 	describe('submit', () => {
-		it('emits submit with form data when validation passes', async () => {
-			mockFormState.value.form.translations.en.name = 'Juice';
-			mockFormState.value.form.translations.pt.name = 'Suco';
+		it('emits the form when validation passes', async () => {
+			const wrapper = mountForm();
 
-			const wrapper = mountCategoryForm();
-			const form = wrapper.findComponent(FormStub);
-
-			await form.vm.$emit('submit');
-			await wrapper.vm.$nextTick();
-
-			expect(mockValidateForm).toHaveBeenCalled();
-			expect(wrapper.emitted('submit')).toBeTruthy();
-			expect(wrapper.emitted('submit')![0]).toEqual([
-				{
-					translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
-					isAlcoholic: false
-				}
-			]);
-		});
-
-		it('does not emit submit when validation fails', async () => {
-			mockFormState.value.errors = [{ field: 'translations.en.name', message: 'error.key' }];
-
-			const wrapper = mountCategoryForm();
-			const form = wrapper.findComponent(FormStub);
-
-			await form.vm.$emit('submit');
-			await wrapper.vm.$nextTick();
-
-			expect(wrapper.emitted('submit')).toBeFalsy();
-		});
-
-		it('sets displayErrors to true on submit attempt', async () => {
-			const wrapper = mountCategoryForm();
-			const form = wrapper.findComponent(FormStub);
-
-			await form.vm.$emit('submit');
-			await wrapper.vm.$nextTick();
+			await wrapper.find('form').trigger('submit');
 
 			expect(mockFormState.value.displayErrors).toBe(true);
+			expect(mockValidateForm).toHaveBeenCalled();
+			expect(wrapper.emitted('submit')?.[0]).toEqual([mockFormState.value.form]);
+		});
+
+		it('includes the alcoholic flag toggled by the switch', async () => {
+			const wrapper = mountForm();
+
+			await wrapper.find('#is-alcoholic').trigger('click');
+			await wrapper.find('form').trigger('submit');
+
+			expect(wrapper.emitted('submit')?.[0]?.[0]).toMatchObject({ isAlcoholic: true });
+		});
+
+		it('does not emit while there are validation errors', async () => {
+			mockFormState.value.errors = [{ field: 'translations.en.name', message: 'error.key' }];
+			const wrapper = mountForm();
+
+			await wrapper.find('form').trigger('submit');
+
+			expect(wrapper.emitted('submit')).toBeUndefined();
 		});
 	});
 
 	describe('cancel', () => {
-		it('emits cancel when form cancel is triggered', async () => {
-			const wrapper = mountCategoryForm();
-			const form = wrapper.findComponent(FormStub);
+		it('emits cancel from the cancel button', async () => {
+			const wrapper = mountForm();
+			const cancel = wrapper
+				.findAll('button')
+				.find((button) => button.text() === 'organisms.categoryForm.cancelButton');
 
-			await form.vm.$emit('cancel');
-			await wrapper.vm.$nextTick();
+			await cancel!.trigger('click');
 
 			expect(wrapper.emitted('cancel')).toHaveLength(1);
 		});

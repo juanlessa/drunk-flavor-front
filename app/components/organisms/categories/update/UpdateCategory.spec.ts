@@ -5,7 +5,7 @@ import UpdateCategory from './UpdateCategory.vue';
 
 const CategoryFormStub = {
 	template: '<div data-testid="category-form" />',
-	props: ['categoryForm'],
+	props: ['categoryForm', 'title', 'submitLabel'],
 	emits: ['submit', 'cancel']
 };
 
@@ -31,6 +31,8 @@ vi.stubGlobal('useCategoryForm', () => ({
 vi.stubGlobal('useToast', () => ({
 	addToast: mockAddToast
 }));
+
+vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 
 const categoryData = {
 	id: 'cat-1',
@@ -74,6 +76,13 @@ describe('UpdateCategory', () => {
 	});
 
 	describe('rendering', () => {
+		it('passes the edit title and submit label to the form', async () => {
+			const form = (await mountUpdateCategory()).findComponent(CategoryFormStub);
+
+			expect(form.props('title')).toBe('organisms.categoryForm.editTitle');
+			expect(form.props('submitLabel')).toBe('organisms.categoryForm.saveButton');
+		});
+
 		it('renders CategoryForm', async () => {
 			const wrapper = await mountUpdateCategory();
 

@@ -1,5 +1,5 @@
 <template>
-	<NuxtLayout name="primary">
+	<NuxtLayout>
 		<CreateCategory />
 	</NuxtLayout>
 </template>

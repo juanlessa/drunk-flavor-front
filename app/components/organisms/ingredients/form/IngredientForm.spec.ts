@@ -4,15 +4,12 @@ import { ref, computed } from 'vue';
 import IngredientForm from './IngredientForm.vue';
 
 const FormStub = {
-	template:
-		'<form @submit.prevent="$emit(\'submit\')">' +
-		'<slot /><button type="button" @click="$emit(\'cancel\')">cancel</button></form>',
-	props: ['title'],
+	template: '<form @submit.prevent="$emit(\'submit\')"><slot /><slot name="buttons" /></form>',
 	emits: ['submit', 'cancel']
 };
-const GroupWrapperStub = {
-	template: '<div data-testid="group-wrapper"><slot /></div>',
-	props: ['title']
+const FormSectionStub = {
+	template: '<section :data-title="title"><slot /></section>',
+	props: ['title', 'description']
 };
 const InputWrapperStub = {
 	template:
@@ -74,7 +71,7 @@ const mockCategoryLoadNextPage = vi.fn();
 const mockUnitSelected = ref({ label: '', value: '' });
 const mockUnitSearchTerm = ref('');
 const mockUnitLoading = ref(false);
-const mockUnitOptions = ref([]);
+const mockUnitOptions = ref<Record<string, unknown>[]>([]);
 const mockUnitLoadNextPage = vi.fn();
 
 // --- Module mocks ---
@@ -112,13 +109,19 @@ vi.stubGlobal('useUnitSearchableSelect', () => ({
 }));
 
 vi.stubGlobal('useI18n', () => ({
-	t: (key: string) => key,
+	t: (key: string) => (key === 'drinkDetailPage.ingredients.ofPreposition' ? 'of' : key),
 	locale: ref('en')
 }));
+vi.stubGlobal('useLocalePath', () => (path: string) => path);
 
 const globalStubs = {
 	Form: FormStub,
-	GroupWrapper: GroupWrapperStub,
+	FormSection: FormSectionStub,
+	Anchor: { props: ['to'], template: '<a :href="to"><slot /></a>' },
+	Heading: { template: '<h1><slot /></h1>' },
+	Text: { template: '<p><slot /></p>' },
+	Button: { props: ['type'], template: '<button :type="type ?? \'button\'"><slot /></button>' },
+	ArrowLeftIcon: true,
 	InputWrapper: InputWrapperStub,
 	Label: LabelStub,
 	InputText: InputTextStub,
@@ -129,15 +132,15 @@ const globalStubs = {
 
 const mountIngredientForm = (props = {}) =>
 	mount(IngredientForm, {
-		props,
+		props: { title: 'New ingredient', submitLabel: 'Create ingredient', ...props },
 		global: {
 			stubs: globalStubs,
-			mocks: {
-				$t: (key: string) => key,
-				$i18n: { locale: 'en' }
-			}
+			mocks: { $t: (key: string) => key }
 		}
 	});
+
+const findPreview = (wrapper: ReturnType<typeof mountIngredientForm>) =>
+	wrapper.find('[data-testid="ingredient-preview"]').text();
 
 const createIngredientProp = () => ({
 	id: 'ing-1',
@@ -179,23 +182,33 @@ describe('IngredientForm', () => {
 		};
 		mockCategorySelected.value = { label: '', value: '' };
 		mockUnitSelected.value = { label: '', value: '' };
+		mockUnitOptions.value = [];
+		mockCheckError.mockReturnValue('');
 	});
 
 	describe('rendering', () => {
-		it('renders a form with the ingredient title', () => {
+		it('renders the page header with a link back to the ingredients list', () => {
 			const wrapper = mountIngredientForm();
-			const form = wrapper.findComponent(FormStub);
 
-			expect(form.exists()).toBe(true);
-			expect(form.props('title')).toBe('organisms.ingredientForm.title');
+			expect(wrapper.find('h1').text()).toBe('New ingredient');
+			expect(wrapper.find('a').attributes('href')).toBe('/ingredients');
 		});
 
-		it('renders translation GroupWrappers per language plus the general section', () => {
-			const wrapper = mountIngredientForm();
-			const groups = wrapper.findAllComponents(GroupWrapperStub);
+		it('groups the fields in the names and category/unit sections', () => {
+			const titles = mountIngredientForm()
+				.findAllComponents(FormSectionStub)
+				.map((section) => section.props('title'));
 
-			// 2 language groups + 1 general section
-			expect(groups).toHaveLength(3);
+			expect(titles).toEqual([
+				'organisms.ingredientForm.namesSection.title',
+				'organisms.ingredientForm.classificationSection.title'
+			]);
+		});
+
+		it('labels the submit button with the given text', () => {
+			expect(mountIngredientForm().find('button[type="submit"]').text()).toBe(
+				'Create ingredient'
+			);
 		});
 
 		it('renders only a name text input per language', () => {
@@ -259,6 +272,39 @@ describe('IngredientForm', () => {
 			mountIngredientForm();
 
 			expect(mockUpdateFormState).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('preview', () => {
+		it('explains the preview until a name and a unit are set', () => {
+			expect(findPreview(mountIngredientForm())).toContain(
+				'organisms.ingredientForm.preview.empty'
+			);
+		});
+
+		it('writes the ingredient with the unit picked in the select', async () => {
+			const { unit } = createIngredientProp();
+			mockUnitOptions.value = [unit];
+			mockFormState.value.form.translations.en.name = 'Sugar';
+			const wrapper = mountIngredientForm();
+
+			wrapper
+				.findAllComponents(InputSelectSearchableStub)
+				.at(1)!
+				.vm.$emit('update:modelValue', { value: 'unit-1', label: 'teaspoon' });
+			await wrapper.vm.$nextTick();
+
+			expect(mockFormState.value.form.unitId).toBe('unit-1');
+			expect(findPreview(wrapper)).toContain(
+				'1 tsp of Sugar · 60 tsp of Sugar · 1.5 tsp of Sugar'
+			);
+		});
+
+		it('uses the unit of the ingredient being edited', () => {
+			const ingredient = createIngredientProp();
+			mockFormState.value.form.translations.en.name = 'Sugar';
+
+			expect(findPreview(mountIngredientForm({ ingredient }))).toContain('60 tsp of Sugar');
 		});
 	});
 
@@ -343,12 +389,13 @@ describe('IngredientForm', () => {
 	});
 
 	describe('cancel', () => {
-		it('emits cancel when form cancel is triggered', async () => {
+		it('emits cancel from the cancel button', async () => {
 			const wrapper = mountIngredientForm();
-			const form = wrapper.findComponent(FormStub);
+			const cancel = wrapper
+				.findAll('button')
+				.find((button) => button.text() === 'organisms.ingredientForm.cancelButton');
 
-			await form.vm.$emit('cancel');
-			await wrapper.vm.$nextTick();
+			await cancel!.trigger('click');
 
 			expect(wrapper.emitted('cancel')).toHaveLength(1);
 		});

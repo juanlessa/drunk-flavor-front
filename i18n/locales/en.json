@@ -74,10 +74,36 @@
 			"deleteError": { "title": "Error", "message": "Unable to delete the category." }
 		},
 		"categoryForm": {
-			"title": "Category",
-			"nameInput": { "label": "name", "placeholder": "" },
-			"generalSection": { "title": "General" },
-			"isAlcoholicInput": { "label": "is alcoholic?" }
+			"backLink": "Categories",
+			"createTitle": "New category",
+			"editTitle": "Edit category",
+			"description": "Categories group ingredients and tell whether they contain alcohol.",
+			"namesSection": {
+				"title": "Names",
+				"description": "Saved with only the first letter capitalized, e.g. \"Triple sec\"."
+			},
+			"classificationSection": {
+				"title": "Classification",
+				"description": "Shown next to the category in the categories list."
+			},
+			"nameInput": { "label": "name" },
+			"isAlcoholicInput": {
+				"label": "alcoholic",
+				"help": "Ingredients in this category contain alcohol."
+			},
+			"cancelButton": "Cancel",
+			"createButton": "Create category",
+			"saveButton": "Save changes",
+			"createSuccess": {
+				"title": "Category created",
+				"message": "The category was created."
+			},
+			"createError": { "title": "Error", "message": "Unable to create the category." },
+			"updateSuccess": {
+				"title": "Category updated",
+				"message": "The category was updated."
+			},
+			"updateError": { "title": "Error", "message": "Unable to update the category." }
 		},
 		"unitsControlOverview": {
 			"searchLabel": "Search units",
@@ -100,23 +126,50 @@
 			"deleteError": { "title": "Error", "message": "Unable to delete the unit." }
 		},
 		"unitForm": {
-			"title": "Unit",
-			"nameInput": { "label": "name", "placeholder": "" },
-			"namePluralInput": { "label": "name plural", "placeholder": "" },
-			"generalSection": { "title": "General" },
+			"backLink": "Units",
+			"createTitle": "New unit",
+			"editTitle": "Edit unit",
+			"description": "Units measure ingredient quantities and define how they are written.",
+			"namesSection": {
+				"title": "Names",
+				"description": "Singular and plural, as shown next to a quantity."
+			},
+			"formatSection": {
+				"title": "Format",
+				"description": "Symbol, kind and how quantities are written."
+			},
+			"nameInput": { "label": "name" },
+			"namePluralInput": { "label": "plural name" },
 			"symbolInput": { "label": "symbol", "placeholder": "e.g. ml" },
 			"kindInput": {
 				"label": "kind",
 				"placeholder": "select a kind",
 				"options": {
-					"volume": "volume",
-					"mass": "mass",
-					"count": "count",
-					"informal": "informal"
+					"volume": "Volume",
+					"mass": "Mass",
+					"count": "Count",
+					"informal": "Informal"
 				}
 			},
-			"spaceBeforeSymbolInput": { "label": "space before symbol?" },
-			"allowDecimalInput": { "label": "allow decimal?" }
+			"spaceBeforeSymbolInput": {
+				"label": "space before symbol",
+				"help": "Writes \"60 ml\" instead of \"60ml\"."
+			},
+			"allowDecimalInput": {
+				"label": "allow decimals",
+				"help": "Accepts quantities like 1.5; off for whole units only."
+			},
+			"preview": {
+				"label": "Preview",
+				"empty": "Fill in the names or the symbol to see how quantities will read."
+			},
+			"cancelButton": "Cancel",
+			"createButton": "Create unit",
+			"saveButton": "Save changes",
+			"createSuccess": { "title": "Unit created", "message": "The unit was created." },
+			"createError": { "title": "Error", "message": "Unable to create the unit." },
+			"updateSuccess": { "title": "Unit updated", "message": "The unit was updated." },
+			"updateError": { "title": "Error", "message": "Unable to update the unit." }
 		},
 		"footer": {
 			"privacyPolicy": "Privacy Policy",
@@ -141,11 +194,38 @@
 			"deleteError": { "title": "Error", "message": "Unable to delete the ingredient." }
 		},
 		"ingredientForm": {
-			"title": "Ingredient",
-			"nameInput": { "label": "name", "placeholder": "" },
-			"generalSection": { "title": "General" },
+			"backLink": "Ingredients",
+			"createTitle": "New ingredient",
+			"editTitle": "Edit ingredient",
+			"description": "What drinks are made of: each one has a category and a unit.",
+			"namesSection": {
+				"title": "Names",
+				"description": "Saved with only the first letter capitalized, e.g. \"Lime juice\"."
+			},
+			"classificationSection": {
+				"title": "Category and unit",
+				"description": "Where it is grouped and how its quantity is measured in drinks."
+			},
+			"nameInput": { "label": "name" },
 			"categoryInput": { "label": "category" },
-			"unitInput": { "label": "unit" }
+			"unitInput": { "label": "unit" },
+			"preview": {
+				"label": "In a drink",
+				"empty": "Fill in the name and pick a unit to see how it reads in a drink."
+			},
+			"cancelButton": "Cancel",
+			"createButton": "Create ingredient",
+			"saveButton": "Save changes",
+			"createSuccess": {
+				"title": "Ingredient created",
+				"message": "The ingredient was created."
+			},
+			"createError": { "title": "Error", "message": "Unable to create the ingredient." },
+			"updateSuccess": {
+				"title": "Ingredient updated",
+				"message": "The ingredient was updated."
+			},
+			"updateError": { "title": "Error", "message": "Unable to update the ingredient." }
 		},
 		"drinksControlOverview": {
 			"searchLabel": "Search drinks",
