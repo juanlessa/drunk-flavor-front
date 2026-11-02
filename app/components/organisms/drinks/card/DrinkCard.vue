@@ -15,10 +15,10 @@
 					src-fallback="/thumbnail-placeholder.png"
 					src-fallback-dark="/thumbnail-placeholder-dark.png" />
 				<div class="flex-1 min-w-0 flex flex-col overflow-hidden">
-					<Heading class="text-center line-clamp-2">
+					<Heading ref="nameRef" class="text-center line-clamp-2 shrink-0">
 						{{ drink.translations[$i18n.locale].name }}
 					</Heading>
-					<div class="mt-2 min-w-0">
+					<div v-if="!isNameWrapped" class="mt-2 min-w-0">
 						<Text
 							as="span"
 							class="block text-caption-sm font-bold uppercase tracking-wide text-content-muted">
@@ -80,6 +80,38 @@ const emit = defineEmits<{
 
 const { locale, t } = useI18n();
 
+const nameRef = ref<{ $el?: HTMLElement } | HTMLElement | null>(null);
+const isNameWrapped = ref(false);
+let resizeObserver: ResizeObserver | undefined;
+
+const getNameElement = (): HTMLElement | null => {
+	const target = nameRef.value;
+	if (!target) return null;
+	return target instanceof HTMLElement ? target : (target.$el ?? null);
+};
+
+const measureName = () => {
+	const element = getNameElement();
+	if (!element) return;
+	const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
+	if (!Number.isFinite(lineHeight)) return;
+	// scrollHeight includes clipped lines, so it detects wrapping even with line-clamp.
+	isNameWrapped.value = element.scrollHeight > lineHeight * 1.5;
+};
+
+onMounted(() => {
+	const element = getNameElement();
+	if (!element) return;
+	measureName();
+	resizeObserver = new ResizeObserver(measureName);
+	resizeObserver.observe(element);
+});
+onBeforeUnmount(() => resizeObserver?.disconnect());
+watch(
+	() => props.drink.translations[locale.value]?.name,
+	() => nextTick(measureName)
+);
+
 const MAX_PREVIEW_INGREDIENTS = 3;
 
 const ingredientNames = computed(() =>
@@ -89,7 +121,10 @@ const ingredientPreview = computed(() =>
 	ingredientNames.value.slice(0, MAX_PREVIEW_INGREDIENTS).join(' · ')
 );
 const ingredientCountLabel = computed(() => {
-	const hiddenCount = Math.max(ingredientNames.value.length - MAX_PREVIEW_INGREDIENTS, 0);
+	// When the preview is hidden (wrapped name), show the total instead of the remaining count.
+	const hiddenCount = isNameWrapped.value
+		? 0
+		: Math.max(ingredientNames.value.length - MAX_PREVIEW_INGREDIENTS, 0);
 	return hiddenCount
 		? t('organisms.drinkCard.remainingIngredients', hiddenCount)
 		: t('organisms.drinkCard.ingredientsCount', ingredientNames.value.length);
