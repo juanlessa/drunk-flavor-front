@@ -31,10 +31,12 @@ const mountAcceptance = () =>
 		props: { token: 'invitation-token' },
 		global: {
 			stubs: {
-				Box: { template: '<div><slot /></div>' },
-				Heading: { props: ['value'], template: '<h1>{{ value }}</h1>' },
-				Text: { props: ['value'], template: '<p>{{ value }}</p>' },
-				Anchor: { template: '<a><slot /></a>' },
+				AuthPageHeader: {
+					props: ['title', 'description'],
+					template: '<header><h1>{{ title }}</h1><p>{{ description }}</p></header>'
+				},
+				Anchor: { props: ['to'], template: '<a :href="to"><slot /></a>' },
+				Text: { template: '<p><slot /></p>' },
 				Button: {
 					props: ['disabled'],
 					emits: ['click'],

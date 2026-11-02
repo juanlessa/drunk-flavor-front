@@ -22,11 +22,17 @@ vi.stubGlobal('useUsersOverview', () => ({
 	isEmpty: mockIsEmpty,
 	loadNextPage: mockLoadNextPage
 }));
+const mockLoadPendingTransfer = vi.fn();
+vi.stubGlobal('usePendingOwnershipTransfer', () => ({
+	isInvitee: (userId: string) => userId === 'user-2',
+	load: mockLoadPendingTransfer
+}));
 
 const UserCardStub = {
-	props: ['user'],
+	props: ['user', 'ownershipInvitee'],
 	emits: ['click'],
-	template: '<button data-testid="user-card" @click="$emit(\'click\')">{{ user.id }}</button>'
+	template:
+		'<button data-testid="user-card" :data-invitee="String(ownershipInvitee)" @click="$emit(\'click\')">{{ user.id }}</button>'
 };
 
 const mountOverview = () =>
@@ -69,6 +75,13 @@ describe('UsersControlOverview', () => {
 		await cards[1]!.trigger('click');
 
 		expect(mockRouterPush).toHaveBeenCalledWith('/users/user-2');
+	});
+
+	it('loads the pending ownership transfer once for the whole list and marks its invitee', () => {
+		const cards = mountOverview().findAll('[data-testid="user-card"]');
+
+		expect(mockLoadPendingTransfer).toHaveBeenCalledTimes(1);
+		expect(cards.map((card) => card.attributes('data-invitee'))).toEqual(['false', 'true']);
 	});
 
 	it('binds the search field to the overview search term', async () => {

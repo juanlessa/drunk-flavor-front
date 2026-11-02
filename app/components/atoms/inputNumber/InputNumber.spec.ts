@@ -86,6 +86,39 @@ describe('InputNumber', () => {
 		});
 	});
 
+	describe('integer', () => {
+		it('accepts decimals with a decimal keyboard by default', async () => {
+			const wrapper = mount(InputNumber);
+			const input = wrapper.find('input');
+
+			await input.setValue('1.5');
+
+			expect(input.attributes('inputmode')).toBe('decimal');
+			expect(input.attributes('step')).toBe('any');
+			expect(wrapper.emitted('update:modelValue')![0]).toEqual([1.5]);
+		});
+
+		it('uses a numeric keyboard and truncates fractions for whole numbers', async () => {
+			const wrapper = mount(InputNumber, { props: { integer: true } });
+			const input = wrapper.find('input');
+
+			await input.setValue('2.7');
+
+			expect(input.attributes('inputmode')).toBe('numeric');
+			expect(input.attributes('step')).toBe('1');
+			expect(wrapper.emitted('update:modelValue')![0]).toEqual([2]);
+		});
+
+		it('blocks the decimal separator keys for whole numbers', async () => {
+			const wrapper = mount(InputNumber, { props: { integer: true } });
+			const event = new KeyboardEvent('keydown', { key: ',', cancelable: true });
+
+			wrapper.find('input').element.dispatchEvent(event);
+
+			expect(event.defaultPrevented).toBe(true);
+		});
+	});
+
 	describe('styling', () => {
 		it('applies error border when hasError is true', () => {
 			const wrapper = mount(InputNumber, { props: { hasError: true } });

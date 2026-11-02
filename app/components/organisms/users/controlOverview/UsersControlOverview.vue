@@ -13,7 +13,10 @@
 
 		<ul class="flex flex-col gap-3" data-testid="users-list">
 			<li v-for="user in overviewState.users" :key="user.id">
-				<UserCard :user="user" @click="handleOpenUser(user.id)" />
+				<UserCard
+					:user="user"
+					:ownership-invitee="isInvitee(user.id)"
+					@click="handleOpenUser(user.id)" />
 			</li>
 		</ul>
 
@@ -38,6 +41,9 @@ const SCROLL_DISTANCE_PX = 200;
 const { $router } = useNuxtApp();
 const localePath = useLocalePath();
 const { overviewState, searchTerm, isEmpty, loadNextPage } = useUsersOverview();
+// One request for the whole list (owner only) marks the invitee of a pending transfer.
+const { isInvitee, load: loadPendingTransfer } = usePendingOwnershipTransfer();
+onMounted(loadPendingTransfer);
 
 // The whole page scrolls (header and search included), so the window is the scroll container.
 useInfiniteScroll(import.meta.client ? window : undefined, loadNextPage, {

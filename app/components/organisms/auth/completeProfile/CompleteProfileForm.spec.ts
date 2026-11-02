@@ -31,33 +31,29 @@ vi.stubGlobal('useCompleteProfileForm', () => ({
 	validateForm: mockValidateForm
 }));
 
-const FormStub = {
-	template: '<form @submit.prevent="$emit(\'submit\')"><slot /><slot name="buttons" /></form>',
-	props: ['title'],
-	emits: ['submit']
-};
-const ButtonStub = {
-	template: '<button type="button" @click="$emit(\'click\')"><slot /></button>',
-	emits: ['click']
-};
-
 const mountForm = () =>
 	mount(CompleteProfileForm, {
 		global: {
 			stubs: {
-				Form: FormStub,
-				Button: ButtonStub,
-				Box: { template: '<div><slot /></div>' },
-				Text: { template: '<span><slot /></span>' },
+				AuthPageHeader: true,
+				AuthPrompt: { props: ['message'], template: '<p><slot /></p>' },
+				Button: {
+					props: ['type', 'disabled'],
+					template: '<button :type="type" :disabled="disabled"><slot /></button>'
+				},
 				InputWrapper: { template: '<div><slot name="label" /><slot /></div>' },
 				Label: { template: '<label><slot /></label>' },
 				InputText: { template: '<input />' },
-				ErrorMessage: true,
-				ButtonGroup: true
+				ErrorMessage: true
 			},
 			mocks: { $t: (key: string) => key }
 		}
 	});
+
+const submit = async (wrapper: ReturnType<typeof mountForm>) => {
+	await wrapper.find('form').trigger('submit');
+	await flushPromises();
+};
 
 describe('CompleteProfileForm', () => {
 	beforeEach(() => {
@@ -74,8 +70,7 @@ describe('CompleteProfileForm', () => {
 	it('updates the profile, reloads the session and navigates home', async () => {
 		const wrapper = mountForm();
 
-		await wrapper.findComponent(FormStub).vm.$emit('submit');
-		await flushPromises();
+		await submit(wrapper);
 
 		expect(mockUpdateProfile).toHaveBeenCalledWith({ name: 'Juan', surname: 'Lessa' });
 		expect(mockAuthenticate).toHaveBeenCalled();
@@ -86,8 +81,7 @@ describe('CompleteProfileForm', () => {
 		mockFormState.value.errors = [{ field: 'name', message: 'errors.users.name' }];
 		const wrapper = mountForm();
 
-		await wrapper.findComponent(FormStub).vm.$emit('submit');
-		await flushPromises();
+		await submit(wrapper);
 
 		expect(mockUpdateProfile).not.toHaveBeenCalled();
 	});
@@ -97,8 +91,7 @@ describe('CompleteProfileForm', () => {
 		mockUpdateProfile.mockRejectedValue(new Error('network'));
 		const wrapper = mountForm();
 
-		await wrapper.findComponent(FormStub).vm.$emit('submit');
-		await flushPromises();
+		await submit(wrapper);
 
 		expect(mockRouterPush).not.toHaveBeenCalled();
 		expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'error' }));
@@ -108,7 +101,7 @@ describe('CompleteProfileForm', () => {
 		mockSignout.mockResolvedValue(undefined);
 		const wrapper = mountForm();
 
-		await wrapper.findComponent(ButtonStub).trigger('click');
+		await wrapper.find('p button').trigger('click');
 		await flushPromises();
 
 		expect(mockSignout).toHaveBeenCalled();

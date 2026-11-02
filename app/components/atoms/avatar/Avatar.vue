@@ -22,7 +22,7 @@ import { tv } from '~/utils/tv';
 const props = defineProps({
 	src: { type: String, default: '' },
 	alt: { type: String, required: true },
-	size: { type: String as PropType<'sm' | 'md' | 'lg'>, default: 'md' },
+	size: { type: String as PropType<'xs' | 'sm' | 'md' | 'lg'>, default: 'md' },
 	fallbackDelay: { type: Number, default: 100 }
 });
 
@@ -30,6 +30,7 @@ const avatarStyles = tv({
 	base: 'inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-surface-sunken ring-2 ring-surface shadow-sm',
 	variants: {
 		size: {
+			xs: 'size-8',
 			sm: 'size-10',
 			md: 'size-16',
 			lg: 'size-24'

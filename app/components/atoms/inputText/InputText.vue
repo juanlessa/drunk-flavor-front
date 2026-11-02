@@ -12,7 +12,7 @@
 			<input
 				:id="props.id"
 				:value="props.modelValue"
-				class="flex-1 py-1 text-body font-regular outline-hidden border-none text-content bg-transparent placeholder-content-muted disabled:cursor-not-allowed disabled:text-content-subtle"
+				class="flex-1 min-w-0 py-1 text-body font-regular outline-hidden border-none text-content bg-transparent placeholder-content-muted disabled:cursor-not-allowed disabled:text-content-subtle"
 				:type="props.type"
 				:name="props.name"
 				:placeholder="props.placeholder"
@@ -66,7 +66,7 @@ const handleBlurInput = (event: Event) => {
 };
 
 const inputTextContainerStyle = tv({
-	base: 'flex-1 flex items-center gap-2 px-3 rounded-control box-border control-border-width bg-surface-input border-stroke-input input-container-focus-border',
+	base: 'flex-1 min-w-0 flex items-center gap-2 px-3 rounded-control box-border control-border-width bg-surface-input border-stroke-input input-container-focus-border',
 	variants: {
 		border: {
 			true: 'border-stroke-control'

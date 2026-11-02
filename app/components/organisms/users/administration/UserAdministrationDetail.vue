@@ -24,24 +24,35 @@
 					{{ $t('organisms.userAdministration.actions.title') }}
 				</Heading>
 
-				<ProfileSection
-					v-for="section in availableSections"
-					:key="section.action"
-					:title="$t(`organisms.userAdministration.actions.${section.action}`)"
-					:description="$t(section.descriptionKey)"
-					:tone="section.tone">
-					<template #icon><component :is="section.icon" /></template>
-					<template #action>
-						<Button
-							variant="outline"
-							:class="
-								section.tone === 'danger' ? 'border-danger-stroke text-danger' : ''
-							"
-							@click="openAction(section.action)">
-							{{ $t(`organisms.userAdministration.actions.${section.action}`) }}
-						</Button>
-					</template>
-				</ProfileSection>
+				<template v-for="section in availableSections" :key="section.action">
+					<!-- Ownership transfer has its own card: it follows the pending invitation. -->
+					<UserOwnershipTransferSection
+						v-if="
+							section.action ===
+							UserAdministrativeCapabilityActions.requestOwnershipTransfer
+						"
+						:user="user"
+						:can-request="can(section.action)" />
+					<ProfileSection
+						v-else
+						:title="$t(`organisms.userAdministration.actions.${section.action}`)"
+						:description="$t(section.descriptionKey)"
+						:tone="section.tone">
+						<template #icon><component :is="section.icon" /></template>
+						<template #action>
+							<Button
+								variant="outline"
+								:class="
+									section.tone === 'danger'
+										? 'border-danger-stroke text-danger'
+										: ''
+								"
+								@click="openAction(section.action)">
+								{{ $t(`organisms.userAdministration.actions.${section.action}`) }}
+							</Button>
+						</template>
+					</ProfileSection>
+				</template>
 
 				<Text v-if="!availableSections.length" class="text-content-muted">
 					{{ $t('organisms.userAdministration.actions.none') }}
@@ -59,11 +70,6 @@
 				v-model:open="isRoleDialogOpen"
 				:user-id="props.userId"
 				:role-transitions="capabilities?.roleTransitions ?? []"
-				@completed="refresh" />
-			<RequestOwnershipTransferDialog
-				v-if="can(UserAdministrativeCapabilityActions.requestOwnershipTransfer)"
-				v-model:open="isTransferDialogOpen"
-				:target-user-id="props.userId"
 				@completed="refresh" />
 		</template>
 	</div>
@@ -149,9 +155,20 @@ const { user, capabilities, isLoading, hasError, can, refresh } = useUserAdminis
 const reasonAction = ref<UserReasonAction>();
 const isReasonDialogOpen = ref(false);
 const isRoleDialogOpen = ref(false);
-const isTransferDialogOpen = ref(false);
+const { isInvitee, load: loadPendingTransfer } = usePendingOwnershipTransfer();
+// Loaded here, not in the transfer card: the card's visibility depends on it.
+onMounted(loadPendingTransfer);
 
-const availableSections = computed(() => ACTION_SECTIONS.filter((section) => can(section.action)));
+// The transfer card also stays for the invitee of a pending transfer, so the owner can resend
+// or cancel from their page even when the backend no longer offers a new request for them.
+const isSectionAvailable = (action: UserAdministrativeCapabilityAction) =>
+	can(action) ||
+	(action === UserAdministrativeCapabilityActions.requestOwnershipTransfer &&
+		isInvitee(props.userId));
+
+const availableSections = computed(() =>
+	ACTION_SECTIONS.filter((section) => isSectionAvailable(section.action))
+);
 
 const isReasonAction = (action: UserAdministrativeCapabilityAction): action is UserReasonAction =>
 	REASON_ACTIONS.includes(action);
@@ -164,9 +181,7 @@ const openAction = (action: UserAdministrativeCapabilityAction) => {
 	}
 	if (action === UserAdministrativeCapabilityActions.changeRole) {
 		isRoleDialogOpen.value = true;
-		return;
 	}
-	isTransferDialogOpen.value = true;
 };
 
 // A closed account leaves administration entirely, so go back to the list instead of reloading it.

@@ -22,7 +22,7 @@
 	},
 	"layouts": {
 		"auth": {
-			"backButton": { "value": "voltar" }
+			"backButton": { "value": "Voltar" }
 		}
 	},
 	"molecules": {
@@ -47,6 +47,7 @@
 			"drop": { "message": "Solte o arquivo aqui" },
 			"or": { "message": "OU" },
 			"selectFile": { "message": "selecione o arquivo" },
+			"replace": { "label": "trocar imagem" },
 			"clearButton": { "label": "limpar arquivo" }
 		},
 		"managementItemCard": {
@@ -254,28 +255,73 @@
 			"ratingSummaryLabelMany": "{value} de 5 estrelas, com base em {count} avaliações"
 		},
 		"drinkForm": {
-			"title": "Drink",
-			"nameInput": { "label": "nome", "placeholder": "" },
-			"methodInput": { "label": "preparo", "placeholder": "" },
-			"generalSection": { "title": "Geral" },
-			"coverInput": { "label": "capa" },
-			"thumbnailInput": { "label": "miniatura" }
+			"backLink": "Drinks",
+			"createTitle": "Novo drink",
+			"editTitle": "Editar drink",
+			"description": "A receita nos dois idiomas, seus ingredientes e suas imagens.",
+			"recipeSection": {
+				"title": "Receita",
+				"description": "Nome e preparo em cada idioma. Os nomes mantêm apenas a primeira letra maiúscula."
+			},
+			"ingredientsSection": {
+				"title": "Ingredientes",
+				"description": "Listados no drink nesta ordem. Arraste pela alça ou use as setas para reordenar."
+			},
+			"imagesSection": {
+				"title": "Imagens",
+				"description": "Opcionais. PNG, JPG ou WebP; podem ser adicionadas depois."
+			},
+			"nameInput": { "label": "nome" },
+			"methodInput": { "label": "preparo" },
+			"thumbnailInput": { "label": "miniatura", "help": "Quadrada, exibida nos cards." },
+			"coverInput": { "label": "capa", "help": "Larga, exibida no topo da página do drink." },
+			"cancelButton": "Cancelar",
+			"createButton": "Criar drink",
+			"saveButton": "Salvar alterações",
+			"errorTitle": "Erro",
+			"createSuccess": { "title": "Drink criado", "message": "O drink foi criado." },
+			"updateSuccess": { "title": "Drink atualizado", "message": "O drink foi atualizado." },
+			"createError": "Não foi possível criar o drink.",
+			"updateError": "Não foi possível atualizar o drink.",
+			"coverError": "O drink foi salvo, mas não foi possível enviar a capa.",
+			"thumbnailError": "O drink foi salvo, mas não foi possível enviar a miniatura."
 		},
 		"ingredientsSelection": {
-			"removeButton": { "label": "remover ingrediente" }
+			"searchInput": {
+				"label": "adicionar ingrediente",
+				"placeholder": "Buscar ingredientes para adicionar",
+				"noResult": "Nenhum ingrediente encontrado"
+			},
+			"empty": "Nenhum ingrediente ainda. Busque acima para adicionar o primeiro.",
+			"reorderInstructions": "Arraste pela alça para reordenar, ou use os botões de mover para cima e para baixo.",
+			"dragHandle": { "label": "Reordenar {name}" },
+			"quantity": { "label": "Quantidade de {name}" },
+			"moveUp": { "label": "Mover {name} para cima" },
+			"moveDown": { "label": "Mover {name} para baixo" },
+			"removeButton": { "label": "Remover {name}" },
+			"announcements": {
+				"added": "{name} adicionado, {total} ingredientes.",
+				"removed": "{name} removido.",
+				"moved": "{name} movido para a posição {position} de {total}."
+			}
 		},
 		"topBar": {
-			"profile": "perfil",
-			"categories": "categorias",
-			"units": "unidades",
-			"drinks": "drinks",
-			"ingredients": "ingredientes",
-			"users": "usuários",
-			"signin": "entrar",
-			"logout": "sair",
+			"profile": "Perfil",
+			"categories": "Categorias",
+			"units": "Unidades",
+			"drinks": "Drinks",
+			"ingredients": "Ingredientes",
+			"users": "Usuários",
+			"signin": "Entrar",
+			"logout": "Sair",
 			"logoutError": "Não foi possível sair. Tente novamente.",
-			"primaryNav": { "label": "principal" },
-			"mobileNav": { "label": "mobile" }
+			"primaryNav": { "label": "Gestão" },
+			"mobileNav": { "label": "Menu" },
+			"manageSection": "Gerenciar",
+			"accountSection": "Conta",
+			"profileShortcut": "Abrir seu perfil",
+			"userMenu": { "label": "Menu da conta" },
+			"menu": { "title": "Menu", "open": "Abrir menu", "close": "Fechar menu" }
 		},
 		"profile": {
 			"title": "Perfil",
@@ -348,24 +394,30 @@
 			},
 			"toast": { "successTitle": "Sucesso", "errorTitle": "Erro" }
 		},
+		"authLegalNotice": {
+			"message": "Ao continuar, você concorda com os {terms} e a {privacy}.",
+			"terms": "Termos de Uso",
+			"privacy": "Política de Privacidade"
+		},
 		"signin": {
 			"title": "Bem-vindo de volta",
+			"subtitle": "Entre para avaliar e comentar seus drinks favoritos.",
 			"divider": "ou",
 			"signupPrompt": { "message": "Não tem uma conta?", "link": "Criar conta" },
 			"error": { "title": "Erro" }
 		},
 		"credentialsSignIn": {
-			"emailInput": { "label": "email" },
-			"passwordInput": { "label": "senha" },
-			"submitButton": { "value": "entrar" },
-			"forgotPasswordLink": { "value": "Esqueceu sua senha?" },
+			"emailInput": { "label": "Email", "placeholder": "voce{'@'}exemplo.com" },
+			"passwordInput": { "label": "Senha" },
+			"submitButton": { "value": "Entrar" },
+			"forgotPasswordLink": { "value": "Esqueceu a senha?" },
 			"error": { "message": "Email ou senha incorretos." }
 		},
 		"completeProfileForm": {
 			"title": "Complete seu perfil",
 			"description": "Adicione seu nome para concluir a configuração da sua conta.",
-			"nameInput": { "label": "nome" },
-			"surnameInput": { "label": "sobrenome" },
+			"nameInput": { "label": "Nome" },
+			"surnameInput": { "label": "Sobrenome" },
 			"submitButton": { "value": "Continuar" },
 			"signoutPrompt": { "message": "Não é você?", "link": "Sair" },
 			"error": {
@@ -487,7 +539,30 @@
 				"resendSuccessMessage": "O convite foi enviado novamente.",
 				"resendErrorMessage": "Não foi possível reenviar o convite. Tente novamente.",
 				"cancelSuccessMessage": "A transferência de propriedade foi cancelada.",
-				"cancelErrorMessage": "Não foi possível cancelar a transferência de propriedade. Tente novamente."
+				"cancelErrorMessage": "Não foi possível cancelar a transferência de propriedade. Tente novamente.",
+				"reasonLabel": "Motivo",
+				"expiresBadge": "Expira {time}",
+				"expiredBadge": "Expirado",
+				"expiresAt": "Expira em {date}.",
+				"expiredAt": "Expirou em {date}. Reenvie para gerar um novo link válido por 24 horas.",
+				"unknownInvitee": "o administrador convidado",
+				"loadError": "Não foi possível carregar a transferência de propriedade. Recarregue a página.",
+				"thisUserDescription": "{name} recebeu o convite por email. Você continua sendo o proprietário até o convite ser aceito.",
+				"otherPending": "Já existe um convite pendente para {name}.",
+				"otherPendingHint": "Cancele-o antes de convidar outra pessoa.",
+				"viewInvitation": "Ver convite",
+				"listBadge": "Convite de propriedade",
+				"cancelDialog": {
+					"title": "Cancelar a transferência?",
+					"description": "O link enviado para {name} deixa de funcionar. Você pode enviar um novo convite depois.",
+					"keepButton": "Manter convite"
+				}
+			},
+			"section": {
+				"title": "Propriedade da aplicação",
+				"description": "Você é o proprietário do DrunkFlavor. A propriedade só muda quando o administrador convidado aceitar o convite.",
+				"noneMessage": "Nenhuma transferência de propriedade pendente.",
+				"startLink": "Para transferir, abra um administrador em Usuários"
 			},
 			"acceptance": {
 				"title": "Aceitar a propriedade",
@@ -496,30 +571,41 @@
 				"successMessage": "Agora você é o proprietário. Entre novamente para continuar.",
 				"invalidMessage": "Este convite é inválido ou expirou. Peça ao proprietário atual para enviar um novo.",
 				"errorMessage": "Não foi possível aceitar o convite. Tente novamente.",
-				"homeLink": "Ir para a página inicial"
+				"homeLink": "Ir para a página inicial",
+				"invitedMessage": "Você foi convidado para ser o proprietário do DrunkFlavor.",
+				"changesTitle": "O que muda",
+				"changes": {
+					"newOwner": "Você passa a ser o proprietário.",
+					"previousOwner": "O proprietário atual passa a ser administrador.",
+					"signInAgain": "Vocês dois precisam entrar novamente."
+				},
+				"reauthenticationHint": "Sua senha ou o Google podem ser pedidos antes de concluir.",
+				"invalidTitle": "Convite indisponível"
 			},
 			"toast": { "successTitle": "Sucesso", "errorTitle": "Erro" }
 		},
 		"signupForm": {
 			"title": "Criar uma conta",
-			"nameInput": { "label": "nome" },
-			"surnameInput": { "label": "sobrenome" },
-			"emailInput": { "label": "email" },
-			"passwordInput": { "label": "senha" },
-			"confirmPasswordInput": { "label": "confirmar senha" },
+			"nameInput": { "label": "Nome" },
+			"surnameInput": { "label": "Sobrenome" },
+			"emailInput": { "label": "Email", "placeholder": "voce{'@'}exemplo.com" },
+			"passwordInput": { "label": "Senha" },
+			"confirmPasswordInput": { "label": "Confirmar senha" },
 			"submitButton": { "value": "Criar conta" },
-			"hasAccount": { "message": "Já tem uma conta?", "link": "Entrar" }
+			"hasAccount": { "message": "Já tem uma conta?", "link": "Entrar" },
+			"subtitle": "Avalie drinks e participe da conversa em menos de um minuto."
 		},
 		"forgotPasswordForm": {
-			"title": "Redefinir senha",
-			"emailInput": { "label": "email" },
-			"submitButton": { "value": "Enviar código" },
-			"rememberPassword": { "message": "Lembrou sua senha?", "link": "Voltar para entrar" }
+			"title": "Esqueceu a senha?",
+			"emailInput": { "label": "Email", "placeholder": "voce{'@'}exemplo.com" },
+			"submitButton": { "value": "Enviar link" },
+			"rememberPassword": { "message": "Lembrou sua senha?", "link": "Voltar para entrar" },
+			"description": "Informe seu email e enviaremos um link para você criar uma nova senha."
 		},
 		"confirmPasswordForm": {
 			"title": "Defina uma nova senha",
-			"passwordInput": { "label": "nova senha" },
-			"confirmPasswordInput": { "label": "confirmar senha" },
+			"passwordInput": { "label": "Nova senha" },
+			"confirmPasswordInput": { "label": "Confirmar senha" },
 			"submitButton": { "value": "Redefinir senha" },
 			"backToSignin": { "message": "Lembrou sua senha?", "link": "Voltar para entrar" },
 			"success": {
@@ -532,7 +618,8 @@
 				"successMessage": "Senha redefinida com sucesso",
 				"errorTitle": "Erro",
 				"errorMessage": "Não foi possível redefinir a senha. O link pode estar inválido ou expirado."
-			}
+			},
+			"description": "Escolha uma senha forte que você não use em outros sites."
 		},
 		"verifyEmail": {
 			"pending": {
@@ -552,7 +639,9 @@
 		},
 		"toastNotification": {
 			"label": "Notificação"
-		}
+		},
+		"languageSwitcher": { "label": "Idioma" },
+		"themeSwitcher": { "label": "Tema escuro", "on": "Ligado", "off": "Desligado" }
 	},
 	"users": {
 		"roles": {
@@ -612,9 +701,16 @@
 		"message": "Tem certeza que deseja excluir o item"
 	},
 	"drinkDetailPage": {
+		"backLink": "Todos os drinks",
+		"loading": "Carregando drink...",
+		"loadError": {
+			"title": "Drink indisponível",
+			"message": "Não foi possível carregar este drink. Ele pode ter sido removido."
+		},
 		"ingredients": {
 			"title": "Ingredientes",
-			"ofPreposition": "de"
+			"ofPreposition": "de",
+			"count": "{count} ingrediente | {count} ingredientes"
 		},
 		"instructions": "Modo de preparo",
 		"rating": {
@@ -634,6 +730,64 @@
 			"removed": "Avaliação removida.",
 			"saveError": "Não foi possível salvar sua avaliação. Tente novamente.",
 			"removeError": "Não foi possível remover sua avaliação. Tente novamente."
+		},
+		"comments": {
+			"title": "Comentários",
+			"composerLabel": "Escreva um comentário",
+			"editLabel": "Edite seu comentário",
+			"placeholder": "Conte o que você achou deste drink...",
+			"publish": "Publicar",
+			"save": "Salvar",
+			"saving": "Salvando...",
+			"cancel": "Cancelar",
+			"counter": "{count} / {max}",
+			"signInPrompt": "Participe da conversa sobre este drink.",
+			"signIn": "Entrar para comentar",
+			"loading": "Carregando comentários...",
+			"loadError": "Não foi possível carregar os comentários.",
+			"retry": "Tentar novamente",
+			"empty": "Ainda não há comentários. Seja o primeiro a opinar.",
+			"loadMore": "Carregar mais comentários",
+			"loadingMore": "Carregando...",
+			"you": "Você",
+			"edited": "editado",
+			"unknownAuthor": "Ex-membro",
+			"actions": "Ações do comentário de {name}",
+			"edit": "Editar",
+			"hide": "Ocultar comentário",
+			"delete": "Excluir",
+			"deleteDialog": {
+				"title": "Excluir este comentário?",
+				"description": "O comentário será removido permanentemente. Esta ação não pode ser desfeita."
+			},
+			"createError": {
+				"title": "Comentário não publicado",
+				"message": "Não foi possível publicar seu comentário. Tente novamente."
+			},
+			"updateError": {
+				"title": "Comentário não salvo",
+				"message": "Não foi possível salvar suas alterações. Tente novamente."
+			},
+			"deleteSuccess": {
+				"title": "Comentário excluído",
+				"message": "O comentário foi removido."
+			},
+			"deleteError": {
+				"title": "Comentário não excluído",
+				"message": "Não foi possível excluir o comentário. Tente novamente."
+			},
+			"hideSuccess": {
+				"title": "Comentário ocultado",
+				"message": "O comentário não aparece mais para os visitantes."
+			},
+			"hideError": {
+				"title": "Comentário não ocultado",
+				"message": "Não foi possível ocultar o comentário. Tente novamente."
+			},
+			"loadMoreError": {
+				"title": "Comentários não carregados",
+				"message": "Não foi possível carregar mais comentários. Tente novamente."
+			}
 		}
 	},
 	"drinkForm": {

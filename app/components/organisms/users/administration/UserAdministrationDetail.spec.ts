@@ -20,6 +20,18 @@ vi.stubGlobal('useUserAdministration', () => ({
 	can: (action: string) => mockActions.value.includes(action),
 	refresh: mockRefresh
 }));
+const mockLoadPendingTransfer = vi.fn();
+const mockInviteeId = ref<string | null>(null);
+vi.stubGlobal('usePendingOwnershipTransfer', () => ({
+	isInvitee: (userId: string) => mockInviteeId.value === userId,
+	load: mockLoadPendingTransfer
+}));
+
+const TransferSectionStub = {
+	name: 'UserOwnershipTransferSection',
+	props: ['user', 'canRequest'],
+	template: '<section data-testid="transfer-section" :data-can-request="String(canRequest)" />'
+};
 
 const ProfileSectionStub = {
 	props: ['title', 'description', 'tone'],
@@ -51,7 +63,7 @@ const mountDetail = () =>
 				},
 				UserReasonActionDialog: ReasonDialogStub,
 				ChangeUserRoleDialog: true,
-				RequestOwnershipTransferDialog: true
+				UserOwnershipTransferSection: TransferSectionStub
 			},
 			mocks: { $t: (key: string) => key }
 		}
@@ -64,6 +76,37 @@ describe('UserAdministrationDetail', () => {
 		mockIsLoading.value = false;
 		mockHasError.value = false;
 		mockUser.value = { id: 'user-1', role: 'partner' };
+		mockInviteeId.value = null;
+	});
+
+	it('loads the pending ownership transfer on mount', () => {
+		mountDetail();
+
+		expect(mockLoadPendingTransfer).toHaveBeenCalledTimes(1);
+	});
+
+	it('renders the dedicated transfer card when the backend allows a request', () => {
+		mockActions.value = ['requestOwnershipTransfer'];
+		const section = mountDetail().find('[data-testid="transfer-section"]');
+
+		expect(section.exists()).toBe(true);
+		expect(section.attributes('data-can-request')).toBe('true');
+	});
+
+	it('keeps the transfer card for the invitee even without the request capability', () => {
+		mockActions.value = [];
+		mockInviteeId.value = 'user-1';
+		const section = mountDetail().find('[data-testid="transfer-section"]');
+
+		expect(section.exists()).toBe(true);
+		expect(section.attributes('data-can-request')).toBe('false');
+	});
+
+	it('hides the transfer card for anyone else without the capability', () => {
+		mockActions.value = [];
+		mockInviteeId.value = 'someone-else';
+
+		expect(mountDetail().find('[data-testid="transfer-section"]').exists()).toBe(false);
 	});
 
 	it('renders the summary and only the actions granted by the backend', () => {

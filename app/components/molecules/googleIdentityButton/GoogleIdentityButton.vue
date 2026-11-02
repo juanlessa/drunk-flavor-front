@@ -1,6 +1,9 @@
 <template>
 	<div v-if="isAvailable" class="flex justify-center">
-		<div ref="containerRef" class="group relative w-full max-w-80 tablet:max-w-64">
+		<div
+			ref="containerRef"
+			class="group relative w-full"
+			:class="props.block ? '' : 'max-w-80 tablet:max-w-64'">
 			<!--
 				Design-system face of the button. It is not interactive: the real control is
 				Google's button, rendered invisibly on top of it (see the note in the script).
@@ -54,6 +57,11 @@ const props = defineProps({
 	text: {
 		type: String as PropType<NonNullable<GoogleButtonConfiguration['text']>>,
 		default: 'continue_with'
+	},
+	/** Fills its container (up to Google's 400px button limit) instead of the pill button widths. */
+	block: {
+		type: Boolean,
+		default: false
 	},
 	testId: { type: String, default: 'google-identity-button' }
 });

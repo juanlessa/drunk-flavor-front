@@ -1,39 +1,76 @@
 <template>
-	<Box direction="col" class="gap-6 items-center text-center">
-		<Heading as="h1" :value="$t('organisms.ownershipTransfer.acceptance.title')" />
-
+	<div class="flex flex-col gap-6">
 		<template v-if="isInvalid">
-			<Text
-				:value="$t('organisms.ownershipTransfer.acceptance.invalidMessage')"
-				class="text-content-subtle" />
-			<Anchor :to="localePath('/')">
+			<AuthPageHeader
+				tone="danger"
+				:title="$t('organisms.ownershipTransfer.acceptance.invalidTitle')"
+				:description="$t('organisms.ownershipTransfer.acceptance.invalidMessage')">
+				<template #icon><ClockIcon /></template>
+			</AuthPageHeader>
+			<Anchor :to="localePath('/')" :class="['self-center', AUTH_PROMPT_ACTION_CLASS]">
 				{{ $t('organisms.ownershipTransfer.acceptance.homeLink') }}
 			</Anchor>
 		</template>
 
 		<template v-else>
-			<Text
-				:value="$t('organisms.ownershipTransfer.acceptance.description')"
-				class="text-content-subtle" />
-			<Button
-				variant="primary"
-				data-testid="accept-ownership-button"
-				:disabled="isSubmitting"
-				@click="handleAccept">
-				{{ $t('organisms.ownershipTransfer.acceptance.confirmButton') }}
-			</Button>
+			<AuthPageHeader
+				:title="$t('organisms.ownershipTransfer.acceptance.title')"
+				:description="$t('organisms.ownershipTransfer.acceptance.invitedMessage')">
+				<template #icon><CrownIcon /></template>
+			</AuthPageHeader>
+			<section
+				class="w-full flex flex-col gap-2 rounded-card bg-surface-sunken p-4 text-left"
+				:aria-labelledby="changesId">
+				<h2
+					:id="changesId"
+					class="text-caption font-bold uppercase tracking-wide text-content-muted">
+					{{ $t('organisms.ownershipTransfer.acceptance.changesTitle') }}
+				</h2>
+				<ul class="flex flex-col gap-1.5">
+					<li
+						v-for="change in CHANGES"
+						:key="change"
+						class="flex items-baseline gap-2.5 text-body-sm text-content-secondary">
+						<span
+							class="size-1.5 shrink-0 translate-y-[-0.15em] rounded-full bg-accent"
+							aria-hidden="true"></span>
+						{{ $t(`organisms.ownershipTransfer.acceptance.changes.${change}`) }}
+					</li>
+				</ul>
+			</section>
+			<div class="flex flex-col items-center gap-2">
+				<Button
+					variant="primary"
+					class="max-w-none!"
+					data-testid="accept-ownership-button"
+					:disabled="isSubmitting"
+					@click="handleAccept">
+					{{ $t('organisms.ownershipTransfer.acceptance.confirmButton') }}
+				</Button>
+				<Text class="text-center text-caption text-content-muted">
+					{{ $t('organisms.ownershipTransfer.acceptance.reauthenticationHint') }}
+				</Text>
+			</div>
 		</template>
 
 		<ReauthenticationDialog
 			:open="requiresReauthentication"
 			@reauthenticated="handleReauthenticated"
 			@cancel="cancelReauthentication" />
-	</Box>
+	</div>
 </template>
 
 <script setup lang="ts">
+import { useId } from 'vue';
+import ClockIcon from '~/components/icons/ClockIcon.vue';
+import CrownIcon from '~/components/icons/CrownIcon.vue';
+import { AUTH_PROMPT_ACTION_CLASS } from '~/components/organisms/auth/prompt/AuthPrompt.constants';
 import { ApiErrorCodes } from '~/domain/shared/api.constants';
 import { readApiErrorCode } from '~/domain/shared/api.helpers';
+
+/** What accepting changes, in display order (keys under `acceptance.changes`). */
+const CHANGES = ['newOwner', 'previousOwner', 'signInAgain'] as const;
+const changesId = useId();
 
 // Responses meaning this invitation cannot be accepted: invalid, expired, meant for another account,
 // already consumed, or a target that is no longer eligible.

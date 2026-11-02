@@ -6,11 +6,9 @@
 	--size-dialog-inline-fluid: 90vw;
 	--size-dialog-max-inline: 500px;
 	--size-toast-viewport: 390px;
-	--size-auth-panel-max-inline: 25rem;
+	--size-auth-panel-max-inline: 30rem;
 	--size-drink-cover-block: 30vh;
-	--spacing-mobile-menu-inline-offset: 2rem;
 	--spacing-form-page-inset: 1.5rem;
-	--size-auth-logo-block: 6.5rem;
 	--size-drink-card-tablet-max-inline: 45%;
 	--size-drink-card-desktop-max-inline: 30%;
 }
@@ -60,15 +58,6 @@
 
 @utility h-drink-cover {
 	height: var(--size-drink-cover-block);
-}
-
-@utility h-auth-logo {
-	height: var(--size-auth-logo-block);
-}
-
-@utility mobile-menu-envelope {
-	right: calc(var(--spacing-mobile-menu-inline-offset) * -1);
-	width: 100vw;
 }
 
 @utility p-form-page {

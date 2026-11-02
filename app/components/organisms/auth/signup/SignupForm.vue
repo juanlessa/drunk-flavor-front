@@ -1,57 +1,56 @@
 <template>
-	<Box direction="col" class="gap-6">
-		<Form :title="$t('organisms.signupForm.title')" @submit="handleSubmitButton">
-			<Box direction="col" class="gap-4">
+	<div class="flex flex-col gap-6">
+		<AuthPageHeader
+			:title="$t('organisms.signupForm.title')"
+			:description="$t('organisms.signupForm.subtitle')" />
+		<form class="flex flex-col gap-6" novalidate @submit.prevent="handleSubmitButton">
+			<div class="flex flex-col gap-4">
+				<!-- Name and surname share a row from tablet up. -->
+				<div class="grid grid-cols-1 gap-4 tablet:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+					<InputWrapper>
+						<template #label>
+							<Label for="name">{{
+								$t('organisms.signupForm.nameInput.label')
+							}}</Label>
+						</template>
+						<InputText
+							id="name"
+							v-model="formState.form.name"
+							name="name"
+							:has-error="!!checkError('name')"
+							@blur="validateForm" />
+						<template #error>
+							<ErrorMessage :value="checkError('name')" />
+						</template>
+					</InputWrapper>
+					<InputWrapper>
+						<template #label>
+							<Label for="surname">
+								{{ $t('organisms.signupForm.surnameInput.label') }}
+							</Label>
+						</template>
+						<InputText
+							id="surname"
+							v-model="formState.form.surname"
+							name="surname"
+							:has-error="!!checkError('surname')"
+							@blur="validateForm" />
+						<template #error>
+							<ErrorMessage :value="checkError('surname')" />
+						</template>
+					</InputWrapper>
+				</div>
 				<InputWrapper>
 					<template #label>
-						<Label for="name">
-							{{ $t('organisms.signupForm.nameInput.label') }}
-						</Label>
-					</template>
-					<InputText
-						id="name"
-						v-model="formState.form.name"
-						name="name"
-						placeholder=""
-						:has-error="!!checkError('name')"
-						:error-message="checkError('name')"
-						@blur="validateForm" />
-					<template #error>
-						<ErrorMessage :value="checkError('name')" />
-					</template>
-				</InputWrapper>
-				<InputWrapper>
-					<template #label>
-						<Label for="surname">
-							{{ $t('organisms.signupForm.surnameInput.label') }}
-						</Label>
-					</template>
-					<InputText
-						id="surname"
-						v-model="formState.form.surname"
-						name="surname"
-						placeholder=""
-						:has-error="!!checkError('surname')"
-						:error-message="checkError('surname')"
-						@blur="validateForm" />
-					<template #error>
-						<ErrorMessage :value="checkError('surname')" />
-					</template>
-				</InputWrapper>
-				<InputWrapper>
-					<template #label>
-						<Label for="email">
-							{{ $t('organisms.signupForm.emailInput.label') }}
-						</Label>
+						<Label for="email">{{ $t('organisms.signupForm.emailInput.label') }}</Label>
 					</template>
 					<InputText
 						id="email"
 						v-model="formState.form.email"
 						name="email"
 						type="email"
-						placeholder=""
+						:placeholder="$t('organisms.signupForm.emailInput.placeholder')"
 						:has-error="!!checkError('email')"
-						:error-message="checkError('email')"
 						@blur="validateForm" />
 					<template #error>
 						<ErrorMessage :value="checkError('email')" />
@@ -88,33 +87,21 @@
 						:error-message="checkError('confirmPassword')"
 						@blur="validateForm" />
 				</InputWrapper>
-			</Box>
-			<PasswordStrength
-				class="mt-4"
-				:password="formState.form.password"
-				:confirm-password="formState.form.confirmPassword"
-				:active="isPasswordActive" />
-
-			<template #buttons>
-				<ButtonGroup
-					:has-cancel-button="false"
-					:action-button-props="{
-						variant: 'primary',
-						type: 'submit',
-						value: $t('organisms.signupForm.submitButton.value')
-					}" />
-			</template>
-		</Form>
-
-		<Box direction="row" class="gap-1 justify-center items-center">
-			<Text as="span" class="text-content-subtle">
-				{{ $t('organisms.signupForm.hasAccount.message') }}
-			</Text>
-			<Anchor :to="localePath('/signin')" @click="resetFormState">
-				{{ $t('organisms.signupForm.hasAccount.link') }}
-			</Anchor>
-		</Box>
-	</Box>
+				<PasswordStrength
+					:password="formState.form.password"
+					:confirm-password="formState.form.confirmPassword"
+					:active="isPasswordActive" />
+			</div>
+			<Button type="submit" class="max-w-none!">
+				{{ $t('organisms.signupForm.submitButton.value') }}
+			</Button>
+		</form>
+		<AuthPrompt
+			:message="$t('organisms.signupForm.hasAccount.message')"
+			:link-label="$t('organisms.signupForm.hasAccount.link')"
+			:to="localePath('/signin')"
+			@navigate="resetFormState" />
+	</div>
 </template>
 
 <script setup lang="ts">

@@ -1,6 +1,7 @@
 <template>
 	<GoogleIdentityButton
 		context="signin"
+		block
 		test-id="google-signin-button"
 		@available="emit('available', $event)"
 		@credential="handleCredential"

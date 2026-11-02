@@ -16,9 +16,9 @@ const profile: Profile = {
 	authenticationMethods: { password: { enabled: true }, providers: ['google'] }
 };
 
-const mountOverview = () =>
+const mountOverview = (overrides: Partial<Profile> = {}) =>
 	mount(ProfileOverview, {
-		props: { profile },
+		props: { profile: { ...profile, ...overrides } as Profile },
 		global: {
 			stubs: {
 				Heading: { template: '<h1><slot /></h1>' },
@@ -32,7 +32,8 @@ const mountOverview = () =>
 					props: ['connected'],
 					template: '<div data-testid="google" :data-connected="connected" />'
 				},
-				DeleteAccountSection: { template: '<div data-testid="deletion" />' }
+				DeleteAccountSection: { template: '<div data-testid="deletion" />' },
+				OwnershipSection: { template: '<div data-testid="ownership" />' }
 			},
 			mocks: { $t: (key: string) => key }
 		}
@@ -54,5 +55,13 @@ describe('ProfileOverview', () => {
 		expect(wrapper.find('[data-testid="password"]').exists()).toBe(true);
 		expect(wrapper.find('[data-testid="google"]').attributes('data-connected')).toBe('true');
 		expect(wrapper.find('[data-testid="deletion"]').exists()).toBe(true);
+		expect(wrapper.find('[data-testid="ownership"]').exists()).toBe(false);
+	});
+
+	it('shows the ownership section instead of account deletion for the owner', () => {
+		const wrapper = mountOverview({ role: 'owner' });
+
+		expect(wrapper.find('[data-testid="ownership"]').exists()).toBe(true);
+		expect(wrapper.find('[data-testid="deletion"]').exists()).toBe(false);
 	});
 });

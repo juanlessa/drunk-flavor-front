@@ -7,7 +7,7 @@ import type {
 	ModerateComment,
 	UpdateComment
 } from './comment.dtos';
-import type { Comment } from './comment.entity';
+import type { Comment, CommentWithAuthor } from './comment.entity';
 
 const path = '/comments';
 
@@ -31,7 +31,7 @@ export const commentsRepository = ($fetch: $Fetch) => ({
 		return $fetch<Comment[]>(path, { query: serializeListQuery(query) });
 	},
 	async listByDrink(drinkId: string, query: PaginatedQueryParams) {
-		return $fetch<Comment[]>(`/drinks/${drinkId}/comments`, {
+		return $fetch<CommentWithAuthor[]>(`/drinks/${drinkId}/comments`, {
 			query: serializeListQuery(query)
 		});
 	},

@@ -139,7 +139,17 @@ export const useIngredientSearch = () => {
 		state.value.selected = [...ingredients];
 	};
 
+	/** Moves a selected ingredient to another position; out-of-range moves are ignored. */
+	const moveSelected = (from: number, to: number) => {
+		const list = [...state.value.selected];
+		if (from === to || from < 0 || to < 0 || from >= list.length || to >= list.length) return;
+		const [moved] = list.splice(from, 1);
+		list.splice(to, 0, moved!);
+		state.value.selected = list;
+	};
+
 	return {
+		moveSelected,
 		loading,
 		options,
 		selected,

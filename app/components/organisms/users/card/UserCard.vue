@@ -19,6 +19,10 @@
 				<Badge
 					:tone="getUserStatusBadgeTone(props.user.status)"
 					:value="$t(`users.statuses.${props.user.status}`)" />
+				<Badge
+					v-if="props.ownershipInvitee"
+					tone="warning"
+					:value="$t('organisms.ownershipTransfer.pending.listBadge')" />
 			</div>
 		</div>
 		<ArrowRightIcon class="size-4 shrink-0 text-content-subtle" aria-hidden="true" />
@@ -30,7 +34,9 @@ import type { User } from '~/domain/user/user.entity';
 import { getUserFullName, getUserStatusBadgeTone } from '~/helpers/user.helpers';
 
 const props = defineProps({
-	user: { type: Object as PropType<User>, required: true }
+	user: { type: Object as PropType<User>, required: true },
+	/** Marks the invitee of the owner's pending ownership transfer. */
+	ownershipInvitee: { type: Boolean, default: false }
 });
 
 const emit = defineEmits<{

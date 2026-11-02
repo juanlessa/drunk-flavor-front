@@ -60,7 +60,7 @@
 			</Card>
 		</template>
 
-		<DrinkDetail :drink="drink" class="w-120" />
+		<DrinkPreview :drink="drink" />
 	</HoverCard>
 </template>
 <script setup lang="ts">
