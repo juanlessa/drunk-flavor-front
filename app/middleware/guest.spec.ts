@@ -2,6 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { RouteLocationNormalized } from 'vue-router';
 import guestMiddleware from './guest';
 
+const { mockIsServerRuntime } = vi.hoisted(() => ({ mockIsServerRuntime: vi.fn() }));
+vi.mock('~/helpers/runtime.helpers', () => ({ isServerRuntime: mockIsServerRuntime }));
+
 const { mockAuthenticate, mockAuthState } = vi.hoisted(() => {
 	const mockAuthenticate = vi.fn();
 	const mockAuthState = { value: { isAuthenticated: false, user: undefined } };
@@ -21,6 +24,7 @@ const { mockAuthenticate, mockAuthState } = vi.hoisted(() => {
 describe('guest middleware', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		mockIsServerRuntime.mockReturnValue(false);
 		mockAuthState.value = { isAuthenticated: false, user: undefined };
 	});
 
@@ -102,5 +106,32 @@ describe('guest middleware', () => {
 		);
 
 		expect(result).toBeUndefined();
+	});
+
+	describe('during server rendering', () => {
+		beforeEach(() => {
+			mockIsServerRuntime.mockReturnValue(true);
+		});
+
+		it('does not call the API to authenticate, since the session cookie never reaches the server', async () => {
+			mockAuthenticate.mockResolvedValue(true);
+
+			const result = await guestMiddleware(
+				{ path: '/' } as RouteLocationNormalized,
+				{} as RouteLocationNormalized
+			);
+
+			expect(mockAuthenticate).not.toHaveBeenCalled();
+			expect(result).toBeUndefined();
+		});
+
+		it('leaves the guest state untouched so the payload carries no user', async () => {
+			await guestMiddleware(
+				{ path: '/' } as RouteLocationNormalized,
+				{} as RouteLocationNormalized
+			);
+
+			expect(mockAuthState.value).toEqual({ isAuthenticated: false, user: undefined });
+		});
 	});
 });
