@@ -18,6 +18,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	}
 
 	if (isAuthenticated && to.path === localePath('/signin').toString()) {
-		return navigateTo('/');
+		return navigateTo(localePath('/').toString());
 	}
 });

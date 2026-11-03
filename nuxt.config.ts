@@ -52,7 +52,9 @@ export default defineNuxtConfig({
 	},
 
 	i18n: {
-		strategy: 'no_prefix',
+		// English stays at the root and Portuguese lives under /pt, so each language has its own
+		// crawlable URL. With no prefix, search engines (which send no cookie) only ever saw English.
+		strategy: 'prefix_except_default',
 		defaultLocale: 'en',
 		locales: [
 			{ code: 'en', name: 'English', file: 'en.json' },

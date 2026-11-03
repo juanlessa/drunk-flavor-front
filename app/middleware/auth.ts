@@ -30,7 +30,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 	if (can) {
 		const ability = defineAbilityForUser($auth.state.value.user);
 		if (ability.cannot(...([can.action, can.subject] as AppCanParameters))) {
-			return navigateTo('/');
+			return navigateTo(localePath('/').toString());
 		}
 	}
 });

@@ -34,6 +34,7 @@ import TrashIcon from '~/components/icons/TrashIcon.vue';
 const { $api, $auth } = useNuxtApp();
 const { t } = useI18n();
 const { addToast } = useToast();
+const localePath = useLocalePath();
 const {
 	isRequired: requiresReauthentication,
 	run,
@@ -46,7 +47,7 @@ const isDeleting = ref(false);
 const deleteAccount = async () => {
 	await $api.profile.delete();
 	$auth.clear();
-	await navigateTo('/');
+	await navigateTo(localePath('/'));
 };
 
 const submit = async (execute: () => Promise<void>) => {

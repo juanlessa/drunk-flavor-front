@@ -1,10 +1,14 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mockNuxtImport, registerEndpoint } from '@nuxt/test-utils/runtime';
 import { getRequestHeader } from 'h3';
-import { readRequestLocale } from './api-fetch';
+import { readRequestLocale, resolveLocalePath } from './api-fetch';
 
-const { reloadNuxtAppMock } = vi.hoisted(() => ({ reloadNuxtAppMock: vi.fn() }));
+const { reloadNuxtAppMock, navigateToMock } = vi.hoisted(() => ({
+	reloadNuxtAppMock: vi.fn(),
+	navigateToMock: vi.fn()
+}));
 mockNuxtImport('reloadNuxtApp', () => reloadNuxtAppMock);
+mockNuxtImport('navigateTo', () => navigateToMock);
 
 const receivedLanguages: (string | undefined)[] = [];
 
@@ -28,12 +32,14 @@ const registerErrorEndpoint = (id: string, code: string) => {
 };
 
 registerErrorEndpoint('revoked', 'SESSION_REVOKED');
+registerErrorEndpoint('incomplete', 'PROFILE_INCOMPLETE');
 registerErrorEndpoint('unauthorized', 'UNAUTHORIZED');
 
 describe('api-fetch plugin', () => {
 	afterEach(async () => {
 		receivedLanguages.length = 0;
 		reloadNuxtAppMock.mockClear();
+		navigateToMock.mockClear();
 		await useNuxtApp().$i18n.setLocale('en');
 	});
 
@@ -55,12 +61,45 @@ describe('api-fetch plugin', () => {
 		expect(reloadNuxtAppMock).toHaveBeenCalledWith({ path: '/signin' });
 	});
 
+	it('keeps the Portuguese prefix when reloading on the sign-in page', async () => {
+		const { $api, $i18n } = useNuxtApp();
+		await $i18n.setLocale('pt');
+
+		await expect($api.users.get('revoked')).rejects.toBeDefined();
+
+		expect(reloadNuxtAppMock).toHaveBeenCalledWith({ path: '/pt/signin' });
+	});
+
+	it('sends an incomplete profile to the complete-profile page in the active language', async () => {
+		const { $api, $i18n } = useNuxtApp();
+
+		await expect($api.users.get('incomplete')).rejects.toBeDefined();
+		await $i18n.setLocale('pt');
+		await expect($api.users.get('incomplete')).rejects.toBeDefined();
+
+		// `setLocale` also navigates (to the localized current route), so only the guard's calls count.
+		const guardRedirects = navigateToMock.mock.calls
+			.map(([path]) => String(path))
+			.filter((path) => path.endsWith('/complete-profile'));
+		expect(guardRedirects).toEqual(['/complete-profile', '/pt/complete-profile']);
+	});
+
 	it('does not reload the app for other unauthorized responses', async () => {
 		const { $api } = useNuxtApp();
 
 		await expect($api.users.get('unauthorized')).rejects.toBeDefined();
 
 		expect(reloadNuxtAppMock).not.toHaveBeenCalled();
+	});
+});
+
+describe('resolveLocalePath', () => {
+	it('localizes the path with the i18n helper', () => {
+		expect(resolveLocalePath((path: string) => `/pt${path}`, '/signin')).toBe('/pt/signin');
+	});
+
+	it('returns the path unchanged when i18n is not installed', () => {
+		expect(resolveLocalePath(undefined, '/signin')).toBe('/signin');
 	});
 });
 
