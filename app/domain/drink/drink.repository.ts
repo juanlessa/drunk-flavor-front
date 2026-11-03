@@ -29,7 +29,7 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 	async list(query: QueryParams) {
 		return $fetch<Drink[]>(path, { query: serializeListQuery(query) });
 	},
-	async get(id: string) {
-		return $fetch<Drink>(`${path}/${id}`);
+	async get(id: string, options?: { signal?: AbortSignal }) {
+		return $fetch<Drink>(`${path}/${id}`, { signal: options?.signal });
 	}
 });

@@ -1,8 +1,7 @@
 <template>
 	<NuxtLayout>
-		<DrinkDetailSkeleton v-if="isLoading" />
 		<div
-			v-else-if="hasLoadError"
+			v-if="!drink"
 			class="mx-auto flex w-full max-w-5xl flex-col items-center gap-4 px-4 py-16 text-center"
 			role="alert">
 			<Heading as="h1" size="titleSm">{{ $t('drinkDetailPage.loadError.title') }}</Heading>
@@ -22,35 +21,41 @@
 	</NuxtLayout>
 </template>
 <script setup lang="ts">
-import { initEmptyDrink } from '~/domain/drink/drink.factory';
-import type { Drink } from '~/domain/drink/drink.entity';
 import type { RatingSummary } from '~/domain/rating/rating.entity';
 
 definePageMeta({
 	middleware: 'guest'
 });
 
+const SERVICE_UNAVAILABLE_STATUS = 503;
+
 const { $api } = useNuxtApp();
 const route = useRoute('drinks-id');
 const localePath = useLocalePath();
 
-const drink = ref<Drink>(initEmptyDrink());
-const isLoading = ref(true);
-const hasLoadError = ref(false);
+const drinkId = computed(() => route.params.id as string);
+
+// Fetched on the server and carried in the payload, so the SSR HTML already holds the drink content.
+// The key follows the route param, so navigating between drinks refetches.
+const { data: drink, error } = await useAsyncData(
+	() => `drink-${drinkId.value}`,
+	(_nuxtApp, { signal }) => $api.drinks.get(drinkId.value, { signal })
+);
+
+if (error.value) {
+	const status = error.value.status ?? error.value.statusCode;
+	if (status === 404) {
+		// Real 404 status on SSR, so search engines drop the URL instead of indexing a soft-404.
+		throw createError({ status: 404, statusText: 'Not Found', fatal: true });
+	}
+	console.error(error.value);
+	// Transient failures must not answer 200, or crawlers would index the error message.
+	if (import.meta.server) setResponseStatus(useRequestEvent()!, SERVICE_UNAVAILABLE_STATUS);
+}
 
 // Keeps the header summary in step with ratings saved or removed on this page.
 const handleSummaryChange = ({ average, count }: RatingSummary) => {
+	if (!drink.value) return;
 	drink.value = { ...drink.value, avgRating: average, ratingsCount: count };
 };
-
-onMounted(async () => {
-	try {
-		drink.value = await $api.drinks.get(route.params.id as string);
-	} catch (error) {
-		console.error(error);
-		hasLoadError.value = true;
-	} finally {
-		isLoading.value = false;
-	}
-});
 </script>

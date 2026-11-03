@@ -699,6 +699,17 @@
 		"deleteButton": { "message": "excluir" },
 		"message": "Tem certeza que deseja excluir o item"
 	},
+	"errorPage": {
+		"backLink": "Voltar para todos os drinks",
+		"notFound": {
+			"title": "Página não encontrada",
+			"message": "Não encontramos o que você procurava. Ele pode ter sido movido ou removido."
+		},
+		"generic": {
+			"title": "Algo deu errado",
+			"message": "Ocorreu um erro inesperado. Tente novamente em instantes."
+		}
+	},
 	"drinkDetailPage": {
 		"backLink": "Todos os drinks",
 		"loading": "Carregando drink...",
