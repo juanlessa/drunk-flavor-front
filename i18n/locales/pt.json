@@ -19,6 +19,9 @@
 		"inputPassword": {
 			"toggleVisibilityButton": { "label": "alternar visibilidade da senha" }
 		},
+		"search": {
+			"clearButton": { "label": "limpar busca" }
+		},
 		"passwordStrength": {
 			"bar": { "label": "força da senha" },
 			"requirements": {

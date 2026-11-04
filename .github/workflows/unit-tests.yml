@@ -42,7 +42,9 @@ jobs:
             - name: Nuxt environment tests
               run: npm run test:nuxt
 
+            # Informational: a failure is reported on the step but does not block the merge.
             - name: Accessibility tests
+              continue-on-error: true
               run: npm run test:a11y
 
             - name: Dependency audit

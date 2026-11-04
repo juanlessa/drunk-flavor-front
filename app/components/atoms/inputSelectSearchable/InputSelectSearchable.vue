@@ -12,9 +12,10 @@
 		<Combobox.Anchor
 			:class="selectInputContainerStyle({ border: props.border, hasError: props.hasError })">
 			<Combobox.Input
+				:id="props.id"
 				class="flex-1 py-1 text-body font-regular outline-hidden border-none text-content !bg-transparent selection:bg-accent selection:text-content-on-accent placeholder-content-muted"
 				:placeholder="props.placeholder" />
-			<Combobox.Trigger :id="props.id">
+			<Combobox.Trigger>
 				<ChevronDownIcon />
 			</Combobox.Trigger>
 		</Combobox.Anchor>
