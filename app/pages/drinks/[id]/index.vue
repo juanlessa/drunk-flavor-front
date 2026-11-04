@@ -24,7 +24,7 @@
 import type { RatingSummary } from '~/domain/rating/rating.entity';
 import { SITE_NAME } from '~/constants/site.constants';
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
-import { formatIngredientList } from '~/helpers/seo.helpers';
+import { formatIngredientList, getDrinkShareImage } from '~/helpers/seo.helpers';
 import {
 	buildBreadcrumbJsonLd,
 	buildRecipeJsonLd,
@@ -77,17 +77,30 @@ const seoDescription = computed(() => {
 		: t('seo.drink.descriptionWithoutIngredients', { name: drinkName.value });
 });
 
+const siteUrl = useSiteConfig().url;
+
+// The drink's own picture replaces the site-wide default image. The default's width and height
+// describe another image, so they are cleared (`null` removes a tag); without a picture of its own
+// the drink keeps the default image and its dimensions.
+const shareImage = computed(() =>
+	drink.value ? getDrinkShareImage(drink.value, drinkName.value, siteUrl) : undefined
+);
+
 useSeoMeta({
 	title: () => drinkName.value,
 	description: () => seoDescription.value,
 	ogTitle: () => drinkName.value,
 	ogDescription: () => seoDescription.value,
-	ogType: 'article'
+	ogType: 'article',
+	ogImage: () => shareImage.value?.url,
+	ogImageAlt: () => shareImage.value?.alt,
+	ogImageWidth: () => (shareImage.value ? null : undefined),
+	ogImageHeight: () => (shareImage.value ? null : undefined),
+	twitterCard: () => shareImage.value?.card
 });
 
 // Structured data for search results (recipe card, star rating, breadcrumb). The ingredient lines are
 // the same ones the page shows, because Google requires the markup to match the visible content.
-const siteUrl = useSiteConfig().url;
 const { method, ingredientItems } = useDrinkSummary(() => drink.value ?? initEmptyDrink());
 
 const structuredData = computed(() => {

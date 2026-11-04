@@ -1,5 +1,6 @@
 import type { Drink } from '~/domain/drink/drink.entity';
 import { RATING_MAX_VALUE, RATING_MIN_VALUE } from '~/domain/rating/rating.constants';
+import { toAbsoluteUrl } from './seo.helpers';
 
 type JsonLdNode = Record<string, unknown>;
 
@@ -26,16 +27,6 @@ export const splitMethodSteps = (method: string): string[] =>
 		.split(/\r?\n/)
 		.map((line) => line.trim())
 		.filter(Boolean);
-
-/** Absolute URL for a possibly relative one; `undefined` when it cannot be resolved. */
-const toAbsoluteUrl = (url: string | undefined, siteUrl: string): string | undefined => {
-	if (!url) return undefined;
-	try {
-		return new URL(url, siteUrl).href;
-	} catch {
-		return undefined;
-	}
-};
 
 /** ISO 8601 date; the API sends dates as strings even though the entity types them as `Date`. */
 const toIsoDate = (value: Date | string | undefined): string | undefined => {

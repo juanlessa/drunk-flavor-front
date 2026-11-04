@@ -1,5 +1,6 @@
 {
 	"seo": {
+		"defaultImageAlt": "DrunkFlavor logo",
 		"home": {
 			"tagline": "Cocktail recipes and drinks",
 			"description": "Discover cocktail recipes with ingredients, measures and step-by-step methods, rated by the community."
