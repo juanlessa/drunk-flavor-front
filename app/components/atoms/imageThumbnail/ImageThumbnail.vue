@@ -36,9 +36,16 @@ const props = defineProps({
 	alt: { type: String, required: true }
 });
 
-const primary = useImage(() => ({ src: props.src }));
-const fallback = useImage(() => ({ src: props.srcFallback }));
-const darkFallback = useImage(() => ({ src: props.srcFallbackDark ?? '' }));
+/**
+ * A source that fails to load is an expected state here: the template falls back to the next image.
+ * `useImage` reports failures through `globalThis.reportError` by default, which surfaces every missing
+ * thumbnail (an empty src always fails) as an uncaught error, so failures are handled locally instead.
+ */
+const IMAGE_OPTIONS = { onError: () => {} };
+
+const primary = useImage(() => ({ src: props.src }), IMAGE_OPTIONS);
+const fallback = useImage(() => ({ src: props.srcFallback }), IMAGE_OPTIONS);
+const darkFallback = useImage(() => ({ src: props.srcFallbackDark ?? '' }), IMAGE_OPTIONS);
 
 /** Primary resolved to a usable image. An empty src can never be ready. */
 const isPrimaryReady = computed(() => !!props.src && primary.isReady.value);

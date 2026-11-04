@@ -32,7 +32,7 @@
 
 			<ul v-if="section.links?.length" class="space-y-2">
 				<li v-for="link in section.links" :key="link.href">
-					<Anchor :to="link.href" class="underline underline-offset-4">
+					<Anchor :to="resolveHref(link.href)" class="underline underline-offset-4">
 						{{ link.label }}
 					</Anchor>
 				</li>
@@ -47,4 +47,9 @@ import type { LegalDocument } from '~/constants/legalDocuments.constants';
 defineProps<{
 	document: LegalDocument;
 }>();
+
+const localePath = useLocalePath();
+
+// Internal links ("/privacy") get the language prefix, so they never point to a redirect.
+const resolveHref = (href: string) => (href.startsWith('/') ? localePath(href) : href);
 </script>

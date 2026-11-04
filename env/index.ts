@@ -5,6 +5,7 @@ const HTTP_PROTOCOL = /^https?$/; // http or https
 
 const DEFAULT_API_BASE = 'http://localhost:3333';
 const DEFAULT_IMAGE_HOST = 'http://localhost:3333';
+const DEFAULT_SITE_URL = 'http://localhost:3000';
 
 const isBareOrigin = (value: string): boolean => {
 	try {
@@ -25,6 +26,9 @@ export const buildEnvsSchema = (nodeEnv: NodeEnv) => {
 	const imageHost = isProduction
 		? bareOriginSchema
 		: bareOriginSchema.default(DEFAULT_IMAGE_HOST);
+	// Public origin of this site. Every canonical, hreflang and sitemap URL is built from it, so a
+	// wrong value in production would point search engines elsewhere: required there, no default.
+	const siteUrl = isProduction ? bareOriginSchema : bareOriginSchema.default(DEFAULT_SITE_URL);
 
 	// Public OAuth client id (not a secret). Required in production; optional elsewhere so
 	// the app still runs locally without Google sign-in configured.
@@ -33,6 +37,7 @@ export const buildEnvsSchema = (nodeEnv: NodeEnv) => {
 	return z.object({
 		NUXT_PUBLIC_API_BASE: apiBase,
 		NUXT_PUBLIC_IMAGE_HOST: imageHost,
+		NUXT_PUBLIC_SITE_URL: siteUrl,
 		NUXT_PUBLIC_GOOGLE_CLIENT_ID: googleClientId,
 		HISTOIRE: z.coerce.boolean().default(false)
 	});

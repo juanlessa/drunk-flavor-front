@@ -17,8 +17,4 @@ useSeoMeta({
 	ogTitle: () => document.value.metaTitle,
 	ogDescription: () => document.value.metaDescription
 });
-
-useHead({
-	link: [{ rel: 'canonical', href: 'https://drunkflavor.com/terms' }]
-});
 </script>

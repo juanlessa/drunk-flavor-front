@@ -61,14 +61,13 @@
 
 		<!--
 			Mobile: one column (ingredients, method, ratings, comments).
-			Tablet: ingredients beside the method, ratings and comments full width below.
-			Desktop: two independent columns, so ratings sit right under the ingredients and
+			Tablet and up: two independent columns, so ratings sit right under the ingredients and
 			comments right under the method. The column wrappers use `display: contents` below
-			desktop, which lets `order` interleave their cards into the single grid.
+			tablet, which lets `order` interleave their cards into the single grid.
 		-->
 		<div
 			class="grid grid-cols-1 items-start gap-6 tablet:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-			<div class="contents desktop:flex desktop:flex-col desktop:gap-6 desktop:min-w-0">
+			<div class="contents tablet:flex tablet:flex-col tablet:gap-6 tablet:min-w-0">
 				<Card class="order-1">
 					<section
 						class="flex flex-col gap-4 p-5 tablet:p-6"
@@ -99,11 +98,11 @@
 						</ul>
 					</section>
 				</Card>
-				<div class="order-3 tablet:col-span-2 desktop:col-span-1">
+				<div class="order-3">
 					<slot name="rating"></slot>
 				</div>
 			</div>
-			<div class="contents desktop:flex desktop:flex-col desktop:gap-6 desktop:min-w-0">
+			<div class="contents tablet:flex tablet:flex-col tablet:gap-6 tablet:min-w-0">
 				<Card class="order-2">
 					<section class="flex flex-col gap-4 p-5 tablet:p-6" :aria-labelledby="methodId">
 						<Heading :id="methodId" as="h2" size="titleSm">
@@ -115,7 +114,7 @@
 						</Text>
 					</section>
 				</Card>
-				<div class="order-4 tablet:col-span-2 desktop:col-span-1">
+				<div class="order-4">
 					<slot name="comments"></slot>
 				</div>
 			</div>

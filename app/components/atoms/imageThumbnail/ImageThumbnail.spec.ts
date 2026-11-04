@@ -141,4 +141,39 @@ describe('ImageThumbnail', () => {
 			wrapper.unmount();
 		});
 	});
+
+	describe('when a source fails to load', () => {
+		// `useImage` reports failures to `globalThis.reportError` unless told otherwise. The spy is
+		// installed before mounting because the handler is resolved when the component sets up.
+		const originalReportError = globalThis.reportError;
+		const reportError = vi.fn();
+
+		beforeEach(() => {
+			reportError.mockClear();
+			globalThis.reportError = reportError;
+		});
+
+		afterEach(() => {
+			globalThis.reportError = originalReportError;
+		});
+
+		it('does not report an empty src as an uncaught error', async () => {
+			mockImages(['']);
+			const wrapper = mountThumbnail('');
+			await settleLoads();
+
+			expect(reportError).not.toHaveBeenCalled();
+			wrapper.unmount();
+		});
+
+		it('does not report a broken primary image as an uncaught error', async () => {
+			mockImages([PRIMARY_SRC]);
+			const wrapper = mountThumbnail(PRIMARY_SRC);
+			await settleLoads();
+
+			expect(wrapper.find('img').attributes('src')).toBe(FALLBACK_SRC);
+			expect(reportError).not.toHaveBeenCalled();
+			wrapper.unmount();
+		});
+	});
 });

@@ -25,7 +25,7 @@ type LocalizedLegalDocuments = Record<SupportedLegalLocale, LegalDocument>;
 export const privacyPolicyDocuments: LocalizedLegalDocuments = {
 	en: {
 		title: 'Privacy Policy',
-		metaTitle: 'Privacy Policy | Drunk Flavor',
+		metaTitle: 'Privacy Policy',
 		metaDescription:
 			'Learn how Drunk Flavor collects, uses, stores, and protects personal data.',
 		lastUpdated: 'Last updated: October 26, 2026',
@@ -163,7 +163,7 @@ export const privacyPolicyDocuments: LocalizedLegalDocuments = {
 	},
 	pt: {
 		title: 'Política de Privacidade',
-		metaTitle: 'Política de Privacidade | Drunk Flavor',
+		metaTitle: 'Política de Privacidade',
 		metaDescription:
 			'Saiba como o Drunk Flavor coleta, utiliza, armazena e protege dados pessoais.',
 		lastUpdated: 'Última atualização: 26 de outubro de 2026',
@@ -310,7 +310,7 @@ export const privacyPolicyDocuments: LocalizedLegalDocuments = {
 export const termsOfServiceDocuments: LocalizedLegalDocuments = {
 	en: {
 		title: 'Terms of Service',
-		metaTitle: 'Terms of Service | Drunk Flavor',
+		metaTitle: 'Terms of Service',
 		metaDescription: 'Read the rules and conditions that apply when using Drunk Flavor.',
 		lastUpdated: 'Last updated: October 26, 2026',
 		introduction: [
@@ -452,7 +452,7 @@ export const termsOfServiceDocuments: LocalizedLegalDocuments = {
 	},
 	pt: {
 		title: 'Termos de Serviço',
-		metaTitle: 'Termos de Serviço | Drunk Flavor',
+		metaTitle: 'Termos de Serviço',
 		metaDescription: 'Consulte as regras e condições aplicáveis ao uso do Drunk Flavor.',
 		lastUpdated: 'Última atualização: 26 de outubro de 2026',
 		introduction: [

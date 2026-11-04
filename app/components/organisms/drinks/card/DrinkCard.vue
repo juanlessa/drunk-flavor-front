@@ -2,12 +2,7 @@
 	<HoverCard side="right" :side-offset="-8" :align="'start'" :align-offset="8">
 		<template #trigger>
 			<Card
-				class="w-full h-full tablet:max-w-drink-card-tablet desktop:max-w-drink-card-desktop p-2 flex gap-4 cursor-pointer hover:bg-surface-hover transition-colors duration-short focus-visible:outline-2 focus-visible:outline-focus-ring focus-visible:-outline-offset-2"
-				tabindex="0"
-				role="button"
-				@click="emit('click')"
-				@keydown.enter="emit('click')"
-				@keydown.space.prevent="emit('click')">
+				class="w-full h-full tablet:max-w-drink-card-tablet desktop:max-w-drink-card-desktop p-2 flex gap-4 cursor-pointer hover:bg-surface-hover transition-colors duration-short has-focus-visible:outline-2 has-focus-visible:outline-focus-ring has-focus-visible:-outline-offset-2">
 				<ImageThumbnail
 					class="h-full aspect-square shrink-0 rounded-control"
 					:src="drink.thumbnail?.url ?? ''"
@@ -16,7 +11,12 @@
 					src-fallback-dark="/thumbnail-placeholder-dark.png" />
 				<div class="flex-1 min-w-0 flex flex-col overflow-hidden">
 					<Heading ref="nameRef" class="text-center line-clamp-2 shrink-0">
-						{{ drink.translations[$i18n.locale].name }}
+						<!-- Stretched link: a real anchor (crawlable, opens in a new tab) that covers the whole card. -->
+						<NuxtLink
+							:to="localePath(`/drinks/${drink.id}`)"
+							class="after:absolute after:inset-0 after:rounded-card focus-visible:outline-hidden">
+							{{ drink.translations[$i18n.locale].name }}
+						</NuxtLink>
 					</Heading>
 					<div v-if="!isNameWrapped" class="mt-2 min-w-0">
 						<Text
@@ -74,11 +74,8 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits<{
-	(e: 'click'): void;
-}>();
-
 const { locale, t } = useI18n();
+const localePath = useLocalePath();
 
 const nameRef = ref<{ $el?: HTMLElement } | HTMLElement | null>(null);
 const isNameWrapped = ref(false);

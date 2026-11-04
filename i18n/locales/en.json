@@ -1,4 +1,14 @@
 {
+	"seo": {
+		"home": {
+			"tagline": "Cocktail recipes and drinks",
+			"description": "Discover cocktail recipes with ingredients, measures and step-by-step methods, rated by the community."
+		},
+		"drink": {
+			"description": "{name} recipe: {ingredients}. Ingredients, measures and method.",
+			"descriptionWithoutIngredients": "{name} recipe with ingredients, measures and method."
+		}
+	},
 	"languages": {
 		"en": "English",
 		"pt": "Portuguese"
@@ -695,6 +705,17 @@
 		"cancelButton": { "message": "cancel" },
 		"deleteButton": { "message": "delete" },
 		"message": "Are you sure you want to delete the item"
+	},
+	"errorPage": {
+		"backLink": "Back to all drinks",
+		"notFound": {
+			"title": "Page not found",
+			"message": "We couldn't find what you were looking for. It may have been moved or removed."
+		},
+		"generic": {
+			"title": "Something went wrong",
+			"message": "An unexpected error happened. Please try again in a moment."
+		}
 	},
 	"drinkDetailPage": {
 		"backLink": "All drinks",

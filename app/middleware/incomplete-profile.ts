@@ -7,8 +7,9 @@ import { isIncompleteProfile } from '~/helpers/profile.helpers';
  */
 export default defineNuxtRouteMiddleware(() => {
 	const { $auth } = useNuxtApp();
+	const localePath = useLocalePath();
 
 	if (!isIncompleteProfile($auth.state.value.user)) {
-		return navigateTo('/');
+		return navigateTo(localePath('/').toString());
 	}
 });

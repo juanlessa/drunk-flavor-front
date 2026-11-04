@@ -17,6 +17,15 @@ const ACCEPT_LANGUAGE_HEADER = 'Accept-Language';
 const SIGNIN_PATH = '/signin';
 
 /**
+ * Localizes an app path for the active language (`/signin` becomes `/pt/signin` in Portuguese).
+ * Falls back to the path itself when i18n is not installed (Histoire builds).
+ */
+export const resolveLocalePath = (localePath: unknown, path: string): string => {
+	if (typeof localePath !== 'function') return path;
+	return String(localePath(path)) || path;
+};
+
+/**
  * Locale the API should answer in: the i18n locale active when the request is sent, so error messages
  * follow the language the user is currently seeing. `undefined` when i18n is not installed (Histoire builds).
  */
@@ -53,18 +62,23 @@ export default defineNuxtPlugin({
 			onResponseError: ({ response }) => {
 				if (!import.meta.client) return;
 
+				// Paths carry the language prefix, so the user stays in the language they are reading.
+				const localizePath = (path: string) =>
+					resolveLocalePath((nuxtApp as NuxtApp).$localePath, path);
+
 				// Safety net for the route guards: a business route rejected the request because
 				// the account still has to add its name (e.g. the profile changed in another tab).
-				// i18n uses the `no_prefix` strategy, so the paths are locale-independent.
 				if (hasApiErrorCode({ response }, ApiErrorCodes.profileIncomplete)) {
-					void nuxtApp.runWithContext(() => navigateTo(COMPLETE_PROFILE_PATH));
+					void nuxtApp.runWithContext(() =>
+						navigateTo(localizePath(COMPLETE_PROFILE_PATH))
+					);
 				}
 
 				// The backend already cleared the session cookie. A full reload drops every piece of
 				// in-memory state (auth, administration, cached async data) without tracking keys, and
 				// its TTL collapses concurrent revoked responses into a single reload.
 				if (hasApiErrorCode({ response }, ApiErrorCodes.sessionRevoked)) {
-					reloadNuxtApp({ path: SIGNIN_PATH });
+					reloadNuxtApp({ path: localizePath(SIGNIN_PATH) });
 				}
 			}
 		});

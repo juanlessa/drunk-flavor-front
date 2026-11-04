@@ -10,6 +10,7 @@ const { mockAuthState } = vi.hoisted(() => {
 	(globalThis as unknown as Record<string, unknown>).useNuxtApp = () => ({
 		$auth: { state: mockAuthState }
 	});
+	(globalThis as unknown as Record<string, unknown>).useLocalePath = () => (path: string) => path;
 	(globalThis as unknown as Record<string, unknown>).navigateTo = (path: string) => ({
 		redirect: path
 	});

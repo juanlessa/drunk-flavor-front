@@ -1,5 +1,5 @@
 <template>
-	<div ref="containerRef" class="flex-1">
+	<div ref="containerRef" class="relative flex-1">
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:items="overviewState.drinks"
@@ -15,11 +15,7 @@
 						:key="index"
 						direction="row"
 						:class="virtualGridRowStyle({ fixedHeight: true })">
-						<DrinkCard
-							v-for="drink in drinkRow"
-							:key="drink.id"
-							:drink="drink"
-							@click="() => handleDrinkClick(drink.id)" />
+						<DrinkCard v-for="drink in drinkRow" :key="drink.id" :drink="drink" />
 					</Box>
 				</template>
 				<template #loading>
@@ -32,6 +28,25 @@
 					</Box>
 				</template>
 			</VirtualInfiniteGrid>
+			<!--
+				Server-rendered first page, so the drinks are real links in the HTML that search engines read.
+				The virtual grid needs the browser to measure its height, so it takes over after mount.
+				Clipped inside the container, so it never changes the page height.
+			-->
+			<template #fallback>
+				<ul
+					class="absolute inset-0 mx-auto grid w-full max-w-screen-desktop list-none grid-cols-1 content-start gap-4 overflow-hidden px-4 tablet:grid-cols-2 desktop:grid-cols-3">
+					<li
+						v-for="drink in overviewState.drinks"
+						:key="drink.id"
+						class="flex h-[var(--drink-row-height)] justify-center"
+						:style="{
+							'--drink-row-height': `${CARD_GRID_METRICS_PX.drinkRowHeight}px`
+						}">
+						<DrinkCard :drink="drink" />
+					</li>
+				</ul>
+			</template>
 		</ClientOnly>
 	</div>
 </template>
@@ -41,16 +56,10 @@ import {
 	virtualGridRowStyle
 } from '~/components/molecules/virtualInfiniteGrid/VirtualInfiniteGrid.contract';
 
-const { $router } = useNuxtApp();
-const localePath = useLocalePath();
-const { overviewState, loadNextPage } = useDrinksOverview();
+const { overviewState, loadNextPage } = await useDrinksOverview();
 const { screenType } = useScreenType();
 
 const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
-
-const handleDrinkClick = (id: string) => {
-	$router.push(localePath(`/drinks/${id}`));
-};
 
 function useVirtualInfiniteGrid() {
 	const containerRef = ref<HTMLDivElement | null>(null);
