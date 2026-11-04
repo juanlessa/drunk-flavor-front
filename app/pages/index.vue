@@ -6,6 +6,7 @@
 <script setup lang="ts">
 import { SITE_NAME } from '~/constants/site.constants';
 import { getLocaleAgnosticPageKey } from '~/helpers/route.helpers';
+import { buildSiteJsonLd, serializeJsonLd } from '~/helpers/structuredData.helpers';
 
 definePageMeta({
 	middleware: 'guest',
@@ -13,7 +14,9 @@ definePageMeta({
 	key: (route) => getLocaleAgnosticPageKey(route)
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const localePath = useLocalePath();
+const siteUrl = useSiteConfig().url;
 
 // The home leads with the brand ("DrunkFlavor | <tagline>"), so it skips the global
 // "<title> | DrunkFlavor" template. Built here because "|" is the plural separator in messages.
@@ -26,5 +29,23 @@ useSeoMeta({
 	ogTitle: () => homeTitle.value,
 	ogDescription: () => t('seo.home.description'),
 	ogType: 'website'
+});
+
+// Tells search engines the site name and the organization behind it.
+useHead({
+	script: computed(() => [
+		{
+			key: 'site-structured-data',
+			type: 'application/ld+json',
+			innerHTML: serializeJsonLd(
+				buildSiteJsonLd({
+					name: SITE_NAME,
+					siteUrl,
+					homeUrl: new URL(localePath('/').toString(), siteUrl).href,
+					locale: locale.value
+				})
+			)
+		}
+	])
 });
 </script>

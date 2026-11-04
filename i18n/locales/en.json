@@ -1,10 +1,12 @@
 {
 	"seo": {
+		"defaultImageAlt": "DrunkFlavor logo",
 		"home": {
 			"tagline": "Cocktail recipes and drinks",
 			"description": "Discover cocktail recipes with ingredients, measures and step-by-step methods, rated by the community."
 		},
 		"drink": {
+			"recipeCategory": "Drink",
 			"description": "{name} recipe: {ingredients}. Ingredients, measures and method.",
 			"descriptionWithoutIngredients": "{name} recipe with ingredients, measures and method."
 		}
@@ -236,6 +238,9 @@
 				"message": "The ingredient was updated."
 			},
 			"updateError": { "title": "Error", "message": "Unable to update the ingredient." }
+		},
+		"drinksOverview": {
+			"heading": "Cocktail recipes"
 		},
 		"drinksControlOverview": {
 			"searchLabel": "Search drinks",

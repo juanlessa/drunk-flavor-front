@@ -1,5 +1,7 @@
 <template>
 	<div ref="containerRef" class="relative flex-1">
+		<!-- The page is a visual grid with no display heading, so the required h1 is screen-reader only. -->
+		<Heading as="h1" class="sr-only">{{ $t('organisms.drinksOverview.heading') }}</Heading>
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:items="overviewState.drinks"
