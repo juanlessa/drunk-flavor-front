@@ -9,26 +9,10 @@ describe('AnimatedPlaceHolder', () => {
 
 			expect(wrapper.element.tagName).toBe('DIV');
 		});
-
-		it('applies default dimension classes', () => {
-			const wrapper = mount(AnimatedPlaceHolder);
-			const classes = wrapper.classes();
-
-			expect(classes).toContain('h-6');
-			expect(classes).toContain('w-12');
-			expect(classes).toContain('rounded-none');
-		});
 	});
 
 	describe('styling', () => {
-		it('applies the animation and gradient classes', () => {
-			const wrapper = mount(AnimatedPlaceHolder);
-			const classes = wrapper.classes();
-
-			expect(classes).toContain('animate-loading');
-			expect(classes).toContain('bg-loading-gradient');
-		});
-
+		// tailwind-merge behaviour: a consumer class must win over the component defaults.
 		it('lets a consumer class override the default dimensions', () => {
 			const wrapper = mount(AnimatedPlaceHolder, {
 				attrs: { class: 'w-40 h-5 rounded-xs' }

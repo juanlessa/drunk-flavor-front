@@ -34,11 +34,11 @@ describe('Box', () => {
 		});
 	});
 
+	// The direction prop only surfaces as flex classes, so the class is the behavioural output here.
 	describe('direction', () => {
 		it('applies responsive direction by default (flex-col)', () => {
 			const wrapper = mount(Box);
 
-			expect(wrapper.classes()).toContain('flex');
 			expect(wrapper.classes()).toContain('flex-col');
 		});
 

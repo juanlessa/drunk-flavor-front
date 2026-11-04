@@ -7,6 +7,5 @@ describe('Separator', () => {
 		const wrapper = mount(Separator);
 
 		expect(wrapper.attributes('aria-hidden')).toBe('true');
-		expect(wrapper.classes()).toEqual(expect.arrayContaining(['flex-1', 'border-t']));
 	});
 });

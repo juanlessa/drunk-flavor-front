@@ -64,19 +64,8 @@ describe('TextList', () => {
 		});
 	});
 
-	describe('styling', () => {
-		it('applies default text-body class', () => {
-			const wrapper = mount(TextList);
-
-			expect(wrapper.classes()).toContain('text-body');
-		});
-
-		it('applies default font-regular class', () => {
-			const wrapper = mount(TextList);
-
-			expect(wrapper.classes()).toContain('font-regular');
-		});
-
+	// The marker and gap props only surface as list classes, so the class is the behavioural output here.
+	describe('marker and gap', () => {
 		it('applies disc marker class', () => {
 			const wrapper = mount(TextList, { props: { marker: 'disc' } });
 

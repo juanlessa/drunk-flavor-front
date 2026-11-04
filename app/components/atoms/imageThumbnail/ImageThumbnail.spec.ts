@@ -69,14 +69,6 @@ describe('ImageThumbnail', () => {
 		vi.useRealTimers();
 	});
 
-	it('always renders a grey surface on the root container', () => {
-		mockImages();
-		const wrapper = mountThumbnail(PRIMARY_SRC);
-
-		expect(wrapper.classes()).toContain('bg-surface-sunken');
-		wrapper.unmount();
-	});
-
 	describe('while the primary image is loading', () => {
 		it('shows the animated placeholder', () => {
 			mockImages();

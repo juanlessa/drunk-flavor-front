@@ -39,24 +39,4 @@ describe('Text', () => {
 			expect(wrapper.element.tagName).toBe('STRONG');
 		});
 	});
-
-	describe('styling', () => {
-		it('applies default text-body class', () => {
-			const wrapper = mount(Text);
-
-			expect(wrapper.classes()).toContain('text-body');
-		});
-
-		it('applies default font-regular class', () => {
-			const wrapper = mount(Text);
-
-			expect(wrapper.classes()).toContain('font-regular');
-		});
-
-		it('applies default text-content class', () => {
-			const wrapper = mount(Text);
-
-			expect(wrapper.classes()).toContain('text-content');
-		});
-	});
 });

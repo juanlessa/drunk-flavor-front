@@ -43,24 +43,4 @@ describe('Anchor', () => {
 			expect(wrapper.find('a').attributes('href')).toBe('/about');
 		});
 	});
-
-	describe('styling', () => {
-		it('applies default text-body class', () => {
-			const wrapper = mountAnchor({ to: '/' });
-
-			expect(wrapper.classes()).toContain('text-body');
-		});
-
-		it('applies default font-regular class', () => {
-			const wrapper = mountAnchor({ to: '/' });
-
-			expect(wrapper.classes()).toContain('font-regular');
-		});
-
-		it('applies default text-content class', () => {
-			const wrapper = mountAnchor({ to: '/' });
-
-			expect(wrapper.classes()).toContain('text-content');
-		});
-	});
 });

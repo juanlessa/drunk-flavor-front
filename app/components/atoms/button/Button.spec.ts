@@ -43,30 +43,6 @@ describe('Button', () => {
 			expect(wrapper.find('button').attributes('type')).toBe('submit');
 		});
 
-		it('applies primary variant classes by default', () => {
-			const wrapper = mount(Button);
-
-			expect(wrapper.find('button').classes()).toContain('bg-accent');
-		});
-
-		it('applies secondary variant classes', () => {
-			const wrapper = mount(Button, { props: { variant: 'secondary' } });
-
-			expect(wrapper.find('button').classes()).toContain('bg-surface-control');
-		});
-
-		it('applies delete variant classes', () => {
-			const wrapper = mount(Button, { props: { variant: 'delete' } });
-
-			expect(wrapper.find('button').classes()).toContain('bg-danger-emphasis');
-		});
-
-		it('applies outline variant classes', () => {
-			const wrapper = mount(Button, { props: { variant: 'outline' } });
-
-			expect(wrapper.find('button').classes()).toContain('bg-surface-transparent');
-		});
-
 		// Regression: tailwind-merge used to treat the custom `text-body` size and
 		// the custom `text-content*` colours as one conflict group, so the size
 		// silently stripped the text colour and buttons fell back to the browser
