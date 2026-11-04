@@ -64,7 +64,7 @@ const { $api, $auth, $router } = useNuxtApp();
 const { t } = useI18n();
 const { addToast } = useToast();
 const localePath = useLocalePath();
-const { formState, checkError, resetFormState, validateForm } = useCompleteProfileForm();
+const { formState, checkError, validateForm } = useCompleteProfileForm();
 
 const isSubmitting = ref(false);
 
@@ -80,7 +80,6 @@ const handleSubmitButton = async () => {
 	try {
 		await $api.profile.update(formState.value.form);
 		await $auth.authenticate();
-		resetFormState();
 		$router.push(localePath('/'));
 	} catch (error) {
 		console.error(error);
@@ -100,7 +99,6 @@ const handleSignout = async () => {
 	} catch (error) {
 		console.error(error);
 	}
-	resetFormState();
 	$router.push(localePath('/signin'));
 };
 </script>

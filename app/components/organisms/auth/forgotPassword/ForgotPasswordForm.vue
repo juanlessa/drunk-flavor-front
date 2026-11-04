@@ -29,8 +29,7 @@
 		<AuthPrompt
 			:message="$t('organisms.forgotPasswordForm.rememberPassword.message')"
 			:link-label="$t('organisms.forgotPasswordForm.rememberPassword.link')"
-			:to="localePath('/signin')"
-			@navigate="resetFormState" />
+			:to="localePath('/signin')" />
 	</div>
 </template>
 
@@ -38,7 +37,7 @@
 const { $api, $router } = useNuxtApp();
 const { addToast } = useToast();
 const localePath = useLocalePath();
-const { formState, checkError, validateForm, resetFormState } = useForgotPasswordForm();
+const { formState, checkError, validateForm } = useForgotPasswordForm();
 
 const handleSubmitButton = async () => {
 	formState.value.displayErrors = true;

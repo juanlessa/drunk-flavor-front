@@ -12,11 +12,8 @@ const initState = (): ConfirmPasswordFormState => ({
 export const useConfirmPasswordForm = () => {
 	const { t } = useI18n();
 
-	const state = useState<ConfirmPasswordFormState>('confirmPasswordForm', initState);
-
-	const resetFormState = () => {
-		state.value = initState();
-	};
+	// Local to the calling component: the state is discarded on unmount, so it needs no manual reset.
+	const state = ref<ConfirmPasswordFormState>(initState());
 
 	const checkError = (field: string) => {
 		const error = checkFieldError(state.value.errors, field);
@@ -38,7 +35,6 @@ export const useConfirmPasswordForm = () => {
 
 	return {
 		formState: state,
-		resetFormState,
 		checkError,
 		validateForm
 	};

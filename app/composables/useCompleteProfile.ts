@@ -11,11 +11,8 @@ const initState = (): CompleteProfileFormState => ({
 
 export const useCompleteProfileForm = () => {
 	const { t } = useI18n();
-	const state = useState<CompleteProfileFormState>('completeProfileForm', initState);
-
-	const resetFormState = () => {
-		state.value = initState();
-	};
+	// Local to the calling component: the state is discarded on unmount, so it needs no manual reset.
+	const state = ref<CompleteProfileFormState>(initState());
 
 	const checkError = (field: string) => {
 		const error = checkFieldError(state.value.errors, field);
@@ -34,7 +31,6 @@ export const useCompleteProfileForm = () => {
 
 	return {
 		formState: state,
-		resetFormState,
 		checkError,
 		validateForm
 	};

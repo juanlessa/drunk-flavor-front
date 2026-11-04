@@ -5,7 +5,6 @@ import CredentialsSignIn from './CredentialsSignIn.vue';
 
 const mockSignin = vi.fn();
 const mockValidateForm = vi.fn();
-const mockResetFormState = vi.fn();
 const mockFormState = ref({
 	form: { email: '', password: '' },
 	errors: [] as { field: string; message: string }[],
@@ -18,7 +17,6 @@ vi.stubGlobal('useLocalePath', () => (path: string) => path);
 vi.stubGlobal('useSigninForm', () => ({
 	formState: mockFormState,
 	checkError: () => '',
-	resetFormState: mockResetFormState,
 	validateForm: mockValidateForm
 }));
 
@@ -102,13 +100,5 @@ describe('CredentialsSignIn', () => {
 		expect(wrapper.find('input').attributes('placeholder')).toBe(
 			'organisms.credentialsSignIn.emailInput.placeholder'
 		);
-	});
-
-	it('clears the form state when it leaves the page', () => {
-		const wrapper = mountCredentialsSignIn();
-
-		wrapper.unmount();
-
-		expect(mockResetFormState).toHaveBeenCalled();
 	});
 });

@@ -6,7 +6,6 @@ describe('useSigninForm', () => {
 
 	beforeEach(() => {
 		form = useSigninForm();
-		form.resetFormState();
 	});
 
 	describe('initial state', () => {
@@ -24,17 +23,15 @@ describe('useSigninForm', () => {
 		});
 	});
 
-	describe('resetFormState', () => {
-		it('resets form and flags to initial state', () => {
+	describe('state scope', () => {
+		it('gives each call its own state, so nothing leaks between component instances', () => {
 			form.formState.value.form.email = 'test@test.com';
-			form.formState.value.form.password = 'Password123!';
 			form.formState.value.displayErrors = true;
 
-			form.resetFormState();
+			const other = useSigninForm();
 
-			expect(form.formState.value.form.email).toBe('');
-			expect(form.formState.value.form.password).toBe('');
-			expect(form.formState.value.displayErrors).toBe(false);
+			expect(other.formState.value.form.email).toBe('');
+			expect(other.formState.value.displayErrors).toBe(false);
 		});
 	});
 

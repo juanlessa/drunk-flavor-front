@@ -60,7 +60,7 @@ const emit = defineEmits<{
 const { $api } = useNuxtApp();
 const { t } = useI18n();
 const localePath = useLocalePath();
-const { formState, checkError, resetFormState, validateForm } = useSigninForm();
+const { formState, checkError, validateForm } = useSigninForm();
 
 const isSubmitting = ref(false);
 
@@ -83,6 +83,4 @@ const handleSubmitButton = async () => {
 		isSubmitting.value = false;
 	}
 };
-
-onBeforeUnmount(resetFormState);
 </script>

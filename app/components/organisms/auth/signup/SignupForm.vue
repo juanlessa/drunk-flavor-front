@@ -99,8 +99,7 @@
 		<AuthPrompt
 			:message="$t('organisms.signupForm.hasAccount.message')"
 			:link-label="$t('organisms.signupForm.hasAccount.link')"
-			:to="localePath('/signin')"
-			@navigate="resetFormState" />
+			:to="localePath('/signin')" />
 	</div>
 </template>
 
@@ -108,7 +107,7 @@
 const { $api, $router } = useNuxtApp();
 const { addToast } = useToast();
 const localePath = useLocalePath();
-const { formState, checkError, resetFormState, validateForm } = useSignupForm();
+const { formState, checkError, validateForm } = useSignupForm();
 
 const isPasswordActive = ref(false);
 
@@ -126,7 +125,6 @@ const handleSubmitButton = async () => {
 
 	try {
 		await $api.auth.signup(formState.value.form);
-		resetFormState();
 		addToast({ type: 'success', title: 'Success', message: 'Account created successfully' });
 		$router.push(localePath('/signin'));
 	} catch (error) {
