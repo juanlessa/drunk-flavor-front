@@ -58,7 +58,7 @@ describe('api-fetch plugin', () => {
 
 		await expect($api.users.get('revoked')).rejects.toBeDefined();
 
-		expect(reloadNuxtAppMock).toHaveBeenCalledWith({ path: '/signin' });
+		expect(reloadNuxtAppMock).toHaveBeenCalledWith({ path: '/en/signin' });
 	});
 
 	it('keeps the Portuguese prefix when reloading on the sign-in page', async () => {
@@ -81,7 +81,7 @@ describe('api-fetch plugin', () => {
 		const guardRedirects = navigateToMock.mock.calls
 			.map(([path]) => String(path))
 			.filter((path) => path.endsWith('/complete-profile'));
-		expect(guardRedirects).toEqual(['/complete-profile', '/pt/complete-profile']);
+		expect(guardRedirects).toEqual(['/en/complete-profile', '/pt/complete-profile']);
 	});
 
 	it('does not reload the app for other unauthorized responses', async () => {

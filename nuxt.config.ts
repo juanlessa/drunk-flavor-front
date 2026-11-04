@@ -52,9 +52,12 @@ export default defineNuxtConfig({
 	},
 
 	i18n: {
-		// English stays at the root and Portuguese lives under /pt, so each language has its own
-		// crawlable URL. With no prefix, search engines (which send no cookie) only ever saw English.
-		strategy: 'prefix_except_default',
+		// Every language lives under its own prefix (/en, /pt), so each page has one crawlable URL per
+		// language and prefixed URLs are never redirected (search engines and shared links get exactly
+		// the page they asked for). Paths without a prefix (the bare domain, links in emails, typed
+		// URLs) are language-neutral entry points: they redirect to the cookie choice, then the
+		// browser language, then English. Never link to an unprefixed path from the app or SEO tags.
+		strategy: 'prefix',
 		defaultLocale: 'en',
 		locales: [
 			{ code: 'en', name: 'English', file: 'en.json' },
@@ -63,7 +66,10 @@ export default defineNuxtConfig({
 		detectBrowserLanguage: {
 			useCookie: true,
 			cookieKey: 'i18n_redirected',
-			redirectOn: 'root'
+			// Detects the language only on unprefixed paths, which have no page of their own. 'root'
+			// would redirect the bare domain only and leave every other unprefixed path (email links)
+			// as a 404; 'all' would also redirect explicit /en and /pt URLs, which must never happen.
+			redirectOn: 'no prefix'
 		},
 		experimental: {
 			typedOptionsAndMessages: 'default'
