@@ -22,6 +22,7 @@
 </template>
 <script setup lang="ts">
 import type { RatingSummary } from '~/domain/rating/rating.entity';
+import { formatIngredientList } from '~/helpers/seo.helpers';
 
 definePageMeta({
 	middleware: 'guest'
@@ -52,6 +53,30 @@ if (error.value) {
 	// Transient failures must not answer 200, or crawlers would index the error message.
 	if (import.meta.server) setResponseStatus(useRequestEvent()!, SERVICE_UNAVAILABLE_STATUS);
 }
+
+const { t, locale } = useI18n();
+
+const drinkName = computed(() => drink.value?.translations[locale.value]?.name ?? '');
+const seoDescription = computed(() => {
+	if (!drink.value) return '';
+	const ingredients = formatIngredientList(
+		drink.value.ingredients.map(
+			({ ingredient }) => ingredient.translations[locale.value]?.name ?? ''
+		),
+		locale.value
+	);
+	return ingredients
+		? t('seo.drink.description', { name: drinkName.value, ingredients })
+		: t('seo.drink.descriptionWithoutIngredients', { name: drinkName.value });
+});
+
+useSeoMeta({
+	title: () => drinkName.value,
+	description: () => seoDescription.value,
+	ogTitle: () => drinkName.value,
+	ogDescription: () => seoDescription.value,
+	ogType: 'article'
+});
 
 // Keeps the header summary in step with ratings saved or removed on this page.
 const handleSummaryChange = ({ average, count }: RatingSummary) => {

@@ -1,4 +1,14 @@
 {
+	"seo": {
+		"home": {
+			"tagline": "Cocktail recipes and drinks",
+			"description": "Discover cocktail recipes with ingredients, measures and step-by-step methods, rated by the community."
+		},
+		"drink": {
+			"description": "{name} recipe: {ingredients}. Ingredients, measures and method.",
+			"descriptionWithoutIngredients": "{name} recipe with ingredients, measures and method."
+		}
+	},
 	"languages": {
 		"en": "English",
 		"pt": "Portuguese"

@@ -17,10 +17,4 @@ useSeoMeta({
 	ogTitle: () => document.value.metaTitle,
 	ogDescription: () => document.value.metaDescription
 });
-
-// Self-referencing canonical for the language being read; the unprefixed URL only redirects.
-const localePath = useLocalePath();
-useHead({
-	link: [{ rel: 'canonical', href: () => `https://drunkflavor.com${localePath('/privacy')}` }]
-});
 </script>

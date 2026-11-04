@@ -42,6 +42,7 @@ jobs:
                   NUXT_PUBLIC_API_BASE: ${{ vars.NUXT_PUBLIC_API_BASE }}
                   NUXT_PUBLIC_IMAGE_HOST: ${{ vars.NUXT_PUBLIC_IMAGE_HOST }}
                   NUXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ vars.NUXT_PUBLIC_GOOGLE_CLIENT_ID }}
+                  NUXT_PUBLIC_SITE_URL: ${{ vars.NUXT_PUBLIC_SITE_URL }}
               run: |
                   set -Eeuo pipefail
                   # NODE_ENV=production (needed for the production CSP and parseEnvs)

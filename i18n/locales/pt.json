@@ -1,4 +1,14 @@
 {
+	"seo": {
+		"home": {
+			"tagline": "Receitas de drinks e coquetéis",
+			"description": "Descubra receitas de drinks com ingredientes, medidas e modo de preparo, avaliadas pela comunidade."
+		},
+		"drink": {
+			"description": "Receita de {name}: {ingredients}. Ingredientes, medidas e modo de preparo.",
+			"descriptionWithoutIngredients": "Receita de {name} com ingredientes, medidas e modo de preparo."
+		}
+	},
 	"languages": {
 		"en": "Inglês",
 		"pt": "Português"
