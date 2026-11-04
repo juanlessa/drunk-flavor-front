@@ -237,6 +237,9 @@
 			},
 			"updateError": { "title": "Error", "message": "Unable to update the ingredient." }
 		},
+		"drinksOverview": {
+			"heading": "Cocktail recipes"
+		},
 		"drinksControlOverview": {
 			"searchLabel": "Search drinks",
 			"searchPlaceholder": "Search drinks by name",
