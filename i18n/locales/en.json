@@ -5,6 +5,7 @@
 			"description": "Discover cocktail recipes with ingredients, measures and step-by-step methods, rated by the community."
 		},
 		"drink": {
+			"recipeCategory": "Drink",
 			"description": "{name} recipe: {ingredients}. Ingredients, measures and method.",
 			"descriptionWithoutIngredients": "{name} recipe with ingredients, measures and method."
 		}

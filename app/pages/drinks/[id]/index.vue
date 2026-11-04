@@ -22,7 +22,14 @@
 </template>
 <script setup lang="ts">
 import type { RatingSummary } from '~/domain/rating/rating.entity';
+import { SITE_NAME } from '~/constants/site.constants';
+import { initEmptyDrink } from '~/domain/drink/drink.factory';
 import { formatIngredientList } from '~/helpers/seo.helpers';
+import {
+	buildBreadcrumbJsonLd,
+	buildRecipeJsonLd,
+	serializeJsonLd
+} from '~/helpers/structuredData.helpers';
 
 definePageMeta({
 	middleware: 'guest'
@@ -76,6 +83,52 @@ useSeoMeta({
 	ogTitle: () => drinkName.value,
 	ogDescription: () => seoDescription.value,
 	ogType: 'article'
+});
+
+// Structured data for search results (recipe card, star rating, breadcrumb). The ingredient lines are
+// the same ones the page shows, because Google requires the markup to match the visible content.
+const siteUrl = useSiteConfig().url;
+const { method, ingredientItems } = useDrinkSummary(() => drink.value ?? initEmptyDrink());
+
+const structuredData = computed(() => {
+	if (!drink.value) return undefined;
+	const pageUrl = new URL(route.path, siteUrl).href;
+	const recipe = buildRecipeJsonLd({
+		drink: drink.value,
+		name: drinkName.value,
+		description: seoDescription.value,
+		method: method.value,
+		ingredients: ingredientItems.value.map(
+			({ measurement, connector, name }) => `${measurement} ${connector} ${name}`
+		),
+		category: t('seo.drink.recipeCategory'),
+		locale: locale.value,
+		url: pageUrl,
+		siteUrl,
+		publisherName: SITE_NAME
+	});
+	if (!recipe) return undefined;
+	return [
+		recipe,
+		buildBreadcrumbJsonLd([
+			{ name: SITE_NAME, url: new URL(localePath('/').toString(), siteUrl).href },
+			{ name: drinkName.value, url: pageUrl }
+		])
+	];
+});
+
+useHead({
+	script: computed(() =>
+		structuredData.value
+			? [
+					{
+						key: 'drink-structured-data',
+						type: 'application/ld+json',
+						innerHTML: serializeJsonLd(structuredData.value)
+					}
+				]
+			: []
+	)
 });
 
 // Keeps the header summary in step with ratings saved or removed on this page.
