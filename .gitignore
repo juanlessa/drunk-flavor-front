@@ -9,8 +9,9 @@ dist
 # Node dependencies
 node_modules
 
-# Test coverage reports
+# Test coverage reports and Vitest artifacts (browser failure screenshots)
 coverage
+.vitest
 # Logs
 logs
 *.log

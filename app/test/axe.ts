@@ -18,6 +18,11 @@ const DEFAULT_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice
 const DISABLED_RULES = ['color-contrast', 'region', 'landmark-one-main', 'page-has-heading-one'];
 
 export interface RunAxeOptions {
+	/**
+	 * Enables the color-contrast rule. Only meaningful in a real browser (Vitest Browser Mode):
+	 * happy-dom does no layout or rendering, so leave it off there.
+	 */
+	checkContrast?: boolean;
 	/** Extra rule ids to disable for a specific case. Always justify it in a comment at the call site. */
 	disableRules?: string[];
 	/** Replaces the default rule tags. */
@@ -25,7 +30,10 @@ export interface RunAxeOptions {
 }
 
 export async function runAxe(element: Element, options: RunAxeOptions = {}): Promise<AxeResults> {
-	const disabled = [...DISABLED_RULES, ...(options.disableRules ?? [])];
+	const baseDisabled = options.checkContrast
+		? DISABLED_RULES.filter((id) => id !== 'color-contrast')
+		: DISABLED_RULES;
+	const disabled = [...baseDisabled, ...(options.disableRules ?? [])];
 
 	return axe.run(element, {
 		runOnly: { type: 'tag', values: options.tags ?? DEFAULT_TAGS },
@@ -51,7 +59,11 @@ export function withLabel(
 
 function formatViolation(violation: Result): string {
 	const nodes = violation.nodes
-		.map((node) => `    - ${node.target.join(' ')}\n      ${node.html}`)
+		.map((node) => {
+			// axe explains the failure, e.g. the measured contrast ratio and the foreground/background colors.
+			const reason = (node.failureSummary ?? '').split('\n').slice(1).join(' ').trim();
+			return `    - ${node.target.join(' ')}\n      ${node.html}${reason ? `\n      ${reason}` : ''}`;
+		})
 		.join('\n');
 
 	return `[${violation.impact ?? 'unknown'}] ${violation.id}: ${violation.help}\n  ${violation.helpUrl}\n${nodes}`;

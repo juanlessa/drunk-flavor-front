@@ -19,6 +19,7 @@ Github repositories:
     - [dotenv](#dotenv)
 - [Dev](#dev)
 - [Build](#build)
+- [Tests](#tests)
 
 ## Setup
 
@@ -80,3 +81,28 @@ Build the application for production by using the command below.
 ```shell
 npm run build
 ```
+
+## Tests
+
+Tests run with [Vitest](https://vitest.dev) and are split into projects, each with its own script.
+
+| Script                      | What it runs                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------------- |
+| `npm test`                  | Every project below except the browser one                                                  |
+| `npm run test:unit`         | Helpers, mappers, validations, middleware and components (`node` and `happy-dom`)           |
+| `npm run test:nuxt`         | Composables and plugins that need the Nuxt runtime (`*.nuxt.spec.ts`)                       |
+| `npm run test:a11y`         | Accessibility checks with axe-core in `happy-dom` (`*.a11y.spec.ts`)                        |
+| `npm run test:a11y:browser` | Color contrast and open states (menus, dialogs) in real Chromium (`*.a11y.browser.spec.ts`) |
+| `npm run test:coverage`     | Same projects as `npm test`, with a coverage report                                         |
+
+### Browser tests (one-time setup)
+
+`test:a11y:browser` drives a real Chromium through Playwright. Playwright does not ship browsers inside the npm
+package, so download it once per machine (about 150 MB):
+
+```shell
+npx playwright install chromium
+```
+
+Without it the script fails with `Executable doesn't exist`. These tests audit every component in both the light and
+dark themes. In CI they run in their own non-blocking workflow (`a11y-browser.yml`).

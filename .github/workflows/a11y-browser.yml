@@ -1,0 +1,52 @@
+name: accessibility browser flow
+
+on:
+    pull_request:
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+    contents: read
+
+jobs:
+    a11y-browser:
+        name: color contrast and open states in Chromium (informational)
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+
+        env:
+            NODE_ENV: test
+
+        steps:
+            - name: Git checkout
+              uses: actions/checkout@v7
+
+            - name: Use Node.js from .nvmrc
+              uses: actions/setup-node@v7
+              with:
+                  node-version-file: '.nvmrc'
+
+            - name: Install dependencies
+              run: npm ci
+
+            # Browsers are not cached on purpose: restoring the cache takes about as long as downloading them,
+            # and the OS dependencies installed by --with-deps are not cacheable (see the Playwright CI docs).
+            - name: Install Chromium
+              run: npx playwright install --with-deps chromium
+
+            # Informational: a failure is reported on the step (and as annotations) but does not block the merge.
+            - name: Accessibility browser tests
+              continue-on-error: true
+              run: npm run test:a11y:browser
+
+            # Failure screenshots written by Vitest Browser Mode, to help diagnose contrast and open-state findings.
+            - name: Upload failure screenshots
+              if: ${{ !cancelled() }}
+              uses: actions/upload-artifact@v4
+              with:
+                  name: a11y-browser-screenshots
+                  path: .vitest/attachments/
+                  if-no-files-found: ignore
+                  retention-days: 14

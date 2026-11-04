@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 import { defineVitestProject } from '@nuxt/test-utils/config';
 import vue from '@vitejs/plugin-vue';
+import { playwright } from '@vitest/browser-playwright';
 
 const appDir = fileURLToPath(new URL('./app', import.meta.url));
 
@@ -53,7 +54,8 @@ export default defineConfig({
 						'app/**/*.nuxt.spec.ts',
 						'app/helpers/**/*.spec.ts',
 						'app/**/*.helpers.spec.ts',
-						'app/**/*.a11y.spec.ts'
+						'app/**/*.a11y.spec.ts',
+						'app/**/*.browser.spec.ts'
 					],
 					environment: 'happy-dom',
 					setupFiles: ['./vitest.setup.ts']
@@ -71,6 +73,26 @@ export default defineConfig({
 					setupFiles: ['./vitest.setup.ts']
 				}
 			},
+			// Real Chromium via Playwright, inside the Nuxt environment. Covers what happy-dom cannot:
+			// color contrast (needs layout and rendering) and portal content in both themes.
+			// Opt-in (A11Y_BROWSER=true, set by `npm run test:a11y:browser`) so `npm test` and coverage
+			// do not require a downloaded Chromium.
+			...(process.env.A11Y_BROWSER === 'true'
+				? [
+						await defineVitestProject({
+							test: {
+								name: 'a11y-browser',
+								include: ['app/**/*.a11y.browser.spec.ts'],
+								browser: {
+									enabled: true,
+									headless: true,
+									provider: playwright(),
+									instances: [{ browser: 'chromium' }]
+								}
+							}
+						})
+					]
+				: []),
 			await defineVitestProject({
 				test: {
 					name: 'nuxt',
