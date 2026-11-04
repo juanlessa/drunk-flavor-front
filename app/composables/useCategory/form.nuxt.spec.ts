@@ -6,7 +6,6 @@ describe('useCategoryForm', () => {
 
 	beforeEach(() => {
 		form = useCategoryForm();
-		form.resetFormState();
 	});
 
 	describe('initial state', () => {
@@ -37,20 +36,19 @@ describe('useCategoryForm', () => {
 		});
 	});
 
-	describe('resetFormState', () => {
-		it('resets form and flags to initial state', () => {
+	describe('state scope', () => {
+		it('gives each call its own state, so nothing leaks between component instances', () => {
 			form.updateFormState({
 				translations: { en: { name: 'Juice' }, pt: { name: 'Suco' } },
 				isAlcoholic: true
 			});
 			form.formState.value.displayErrors = true;
 
-			form.resetFormState();
+			const other = useCategoryForm();
 
-			expect(form.formState.value.form.translations.en.name).toBe('');
-			expect(form.formState.value.form.isAlcoholic).toBe(false);
-			expect(form.formState.value.displayErrors).toBe(false);
-			expect(form.formState.value.errors).toEqual([]);
+			expect(other.formState.value.form.translations.en.name).toBe('');
+			expect(other.formState.value.form.isAlcoholic).toBe(false);
+			expect(other.formState.value.displayErrors).toBe(false);
 		});
 	});
 

@@ -58,7 +58,6 @@ const mockFormState = ref({
 const mockCheckError = vi.fn(() => '');
 const mockValidateForm = vi.fn();
 const mockUpdateFormState = vi.fn();
-const mockResetFormState = vi.fn();
 
 // --- Category searchable select mock ---
 const mockCategorySelected = ref({ label: '', value: '' });
@@ -88,8 +87,7 @@ vi.stubGlobal('useIngredientForm', () => ({
 	formState: mockFormState,
 	checkError: mockCheckError,
 	validateForm: mockValidateForm,
-	updateFormState: mockUpdateFormState,
-	resetFormState: mockResetFormState
+	updateFormState: mockUpdateFormState
 }));
 
 vi.stubGlobal('useCategorySearchableSelect', () => ({

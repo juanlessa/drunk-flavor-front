@@ -17,7 +17,6 @@ const props = defineProps({
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
-const { resetFormState } = useDrinkForm();
 const { addToast } = useToast();
 
 const drink = ref<Drink | undefined>(undefined);
@@ -33,7 +32,6 @@ if (data.value) {
 }
 
 const handleCancel = () => {
-	resetFormState();
 	$router.back();
 };
 
@@ -74,7 +72,6 @@ const handleSubmit = async ({ form, cover, thumbnail }: DrinkFormAndMedia) => {
 		title: t('organisms.drinkForm.updateSuccess.title'),
 		message: t('organisms.drinkForm.updateSuccess.message')
 	});
-	resetFormState();
 	$router.back();
 };
 </script>

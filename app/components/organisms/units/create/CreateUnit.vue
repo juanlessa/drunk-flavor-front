@@ -12,11 +12,9 @@ import { mapFormToCreateUnit } from '~/mappers/unit.mappers';
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
-const { resetFormState } = useUnitForm();
 const { addToast } = useToast();
 
 const handleCancel = () => {
-	resetFormState();
 	$router.back();
 };
 
@@ -25,7 +23,6 @@ const handleSubmit = async (unitForm: UnitForm) => {
 
 	try {
 		await $api.units.create(createUnit);
-		resetFormState();
 		addToast({
 			type: 'success',
 			title: t('organisms.unitForm.createSuccess.title'),

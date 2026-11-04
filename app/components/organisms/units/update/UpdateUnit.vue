@@ -17,7 +17,6 @@ const props = defineProps({
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
-const { resetFormState } = useUnitForm();
 const { addToast } = useToast();
 
 const unitForm = ref<UnitForm | undefined>(undefined);
@@ -33,7 +32,6 @@ if (data.value) {
 }
 
 const handleCancel = () => {
-	resetFormState();
 	$router.back();
 };
 
@@ -42,7 +40,6 @@ const handleSubmit = async (unitForm: UnitForm) => {
 
 	try {
 		await $api.units.update(updateUnit);
-		resetFormState();
 		addToast({
 			type: 'success',
 			title: t('organisms.unitForm.updateSuccess.title'),
