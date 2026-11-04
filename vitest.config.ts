@@ -17,6 +17,7 @@ export default defineConfig({
 			include: ['app/**/*.{ts,vue}'],
 			exclude: [
 				'app/**/*.spec.ts',
+				'app/test/**',
 				'app/**/*.story.vue',
 				'app/**/*.d.ts',
 				// Pure type declarations and static constants produce no meaningful coverage signal.
@@ -51,8 +52,21 @@ export default defineConfig({
 					exclude: [
 						'app/**/*.nuxt.spec.ts',
 						'app/helpers/**/*.spec.ts',
-						'app/**/*.helpers.spec.ts'
+						'app/**/*.helpers.spec.ts',
+						'app/**/*.a11y.spec.ts'
 					],
+					environment: 'happy-dom',
+					setupFiles: ['./vitest.setup.ts']
+				}
+			},
+			{
+				plugins: [vue()],
+				resolve: {
+					alias: { '~': appDir, '@': appDir }
+				},
+				test: {
+					name: 'a11y',
+					include: ['app/**/*.a11y.spec.ts'],
 					environment: 'happy-dom',
 					setupFiles: ['./vitest.setup.ts']
 				}
