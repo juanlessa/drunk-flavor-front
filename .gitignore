@@ -24,6 +24,9 @@ logs
 # Agent workflow artifacts
 .agents
 
+# Local notes
+TODO.md
+
 # Local env files
 .env
 .env.*
