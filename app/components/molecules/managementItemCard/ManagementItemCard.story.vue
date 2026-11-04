@@ -31,7 +31,7 @@
 				<ManagementItemCard title="Mojito" description="5 ingredients">
 					<template #media>
 						<img
-							src="/mojito-thumb.png"
+							src="/thumbnail-placeholder.png"
 							alt=""
 							class="size-11 shrink-0 rounded-control object-cover" />
 					</template>
