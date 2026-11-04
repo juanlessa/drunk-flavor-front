@@ -7,6 +7,28 @@ const appDir = fileURLToPath(new URL('./app', import.meta.url));
 
 export default defineConfig({
 	test: {
+		// Coverage is configured at the root: it is global across all projects (node, happy-dom, nuxt).
+		coverage: {
+			provider: 'v8',
+			reportsDirectory: './coverage',
+			// text-summary prints totals in the terminal; json-summary and json feed the PR comment action.
+			reporter: ['text-summary', 'html', 'lcov', 'json-summary', 'json'],
+			// List source files explicitly so untested files (e.g. pages, layouts) show up as 0%.
+			include: ['app/**/*.{ts,vue}'],
+			exclude: [
+				'app/**/*.spec.ts',
+				'app/**/*.story.vue',
+				'app/**/*.d.ts',
+				// Pure type declarations and static constants produce no meaningful coverage signal.
+				'app/**/*.types.ts',
+				'app/**/*.constants.ts',
+				'app/types/**',
+				// Presentational SVG components without logic.
+				'app/components/icons/**',
+				// Histoire-only setup, not part of the shipped app.
+				'app/histoire.setup.ts'
+			]
+		},
 		projects: [
 			{
 				resolve: {

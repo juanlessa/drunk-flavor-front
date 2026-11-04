@@ -36,8 +36,11 @@ jobs:
             - name: Typecheck
               run: npm run typecheck
 
-            - name: Unit tests
-              run: npm test
+            - name: Unit and component tests
+              run: npm run test:unit
+
+            - name: Nuxt environment tests
+              run: npm run test:nuxt
 
             - name: Dependency audit
               continue-on-error: true
