@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, it } from 'vitest';
 import { expectNoA11yViolations } from '~/test/axe';
 import AnimatedPlaceHolder from '~/components/atoms/animatedPlaceholder/AnimatedPlaceHolder.vue';
-import ManagementItemCardSkeleton from './ManagementItemCardSkeleton.vue';
+import ManagementItemCardSkeleton from '../managementItemCard/ManagementItemCardSkeleton.vue';
 
 describe('ManagementItemCardSkeleton accessibility', () => {
 	it.each<{ media?: boolean }>([{}, { media: true }])(
