@@ -11,11 +11,9 @@ import { mapFormToCreateCategory } from '~/mappers/category.mappers';
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
-const { resetFormState } = useCategoryForm();
 const { addToast } = useToast();
 
 const handleCancel = () => {
-	resetFormState();
 	$router.back();
 };
 
@@ -23,7 +21,6 @@ const handleSubmit = async (categoryForm: CategoryForm) => {
 	const createCategory = mapFormToCreateCategory(categoryForm);
 	try {
 		await $api.categories.create(createCategory);
-		resetFormState();
 		addToast({
 			type: 'success',
 			title: t('organisms.categoryForm.createSuccess.title'),

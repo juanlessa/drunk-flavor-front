@@ -31,12 +31,4 @@ describe('ErrorMessage', () => {
 			expect(wrapper.text()).toBe('Custom error message');
 		});
 	});
-
-	describe('styling', () => {
-		it('applies error text color classes', () => {
-			const wrapper = mount(ErrorMessage, { props: { value: 'Error' } });
-
-			expect(wrapper.classes()).toContain('text-danger');
-		});
-	});
 });

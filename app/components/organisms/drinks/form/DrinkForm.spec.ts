@@ -28,8 +28,7 @@ vi.stubGlobal('useDrinkForm', () => ({
 	formState: mockFormState,
 	checkError: () => '',
 	validateForm: mockValidateForm,
-	updateFormState: mockUpdateFormState,
-	resetFormState: vi.fn()
+	updateFormState: mockUpdateFormState
 }));
 
 const FormStub = {

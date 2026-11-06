@@ -11,11 +11,9 @@ import { mapFormToCreateDrink } from '~/mappers/drink.mappers';
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
-const { resetFormState } = useDrinkForm();
 const { addToast } = useToast();
 
 const handleCancel = () => {
-	resetFormState();
 	$router.back();
 };
 
@@ -59,7 +57,6 @@ const handleSubmit = async ({ form, cover, thumbnail }: DrinkFormAndMedia) => {
 		title: t('organisms.drinkForm.createSuccess.title'),
 		message: t('organisms.drinkForm.createSuccess.message')
 	});
-	resetFormState();
 	$router.back();
 };
 </script>

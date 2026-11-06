@@ -19,6 +19,9 @@
 		"inputPassword": {
 			"toggleVisibilityButton": { "label": "toggle password visibility" }
 		},
+		"search": {
+			"clearButton": { "label": "clear search" }
+		},
 		"passwordStrength": {
 			"bar": { "label": "password strength" },
 			"requirements": {

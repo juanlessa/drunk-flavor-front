@@ -9,7 +9,6 @@ const mockSignout = vi.fn();
 const mockRouterPush = vi.fn();
 const mockAddToast = vi.fn();
 const mockValidateForm = vi.fn();
-const mockResetFormState = vi.fn();
 const mockFormState = ref({
 	form: { name: '', surname: '' },
 	errors: [] as { field: string; message: string }[],
@@ -27,7 +26,6 @@ vi.stubGlobal('useLocalePath', () => (path: string) => path);
 vi.stubGlobal('useCompleteProfileForm', () => ({
 	formState: mockFormState,
 	checkError: () => '',
-	resetFormState: mockResetFormState,
 	validateForm: mockValidateForm
 }));
 

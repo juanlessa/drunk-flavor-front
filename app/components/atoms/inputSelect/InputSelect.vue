@@ -6,8 +6,7 @@
 		@update:model-value="handleUpdate">
 		<Select.Trigger
 			:id="props.id"
-			:class="selectInputContainerStyle({ hasError: props.hasError, border: props.border })"
-			aria-label="Customise options">
+			:class="selectInputContainerStyle({ hasError: props.hasError, border: props.border })">
 			<Select.Value :placeholder="props.placeholder" />
 			<Select.Icon as-child>
 				<ChevronDownIcon />

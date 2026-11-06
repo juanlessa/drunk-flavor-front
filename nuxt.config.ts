@@ -58,6 +58,12 @@ export default defineNuxtConfig({
 
 	compatibilityDate: '2026-07-15',
 
+	// Histoire runs without the SEO modules (see `modules` below), so the sitemap source handler
+	// would reference `defineSitemapEventHandler`, an auto-import that only exists when
+	// `@nuxtjs/sitemap` is enabled. Keep the handler out of the Nitro route scan in that mode so it
+	// is never bundled and cannot throw at server bootstrap.
+	nitro: HISTOIRE ? { ignore: ['api/__sitemap__/**'] } : {},
+
 	runtimeConfig: {
 		public: {
 			apiBase: '',

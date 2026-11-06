@@ -12,9 +12,10 @@
 		<Combobox.Anchor
 			:class="selectInputContainerStyle({ border: props.border, hasError: props.hasError })">
 			<Combobox.Input
+				:id="props.id"
 				class="flex-1 py-1 text-body font-regular outline-hidden border-none text-content !bg-transparent selection:bg-accent selection:text-content-on-accent placeholder-content-muted"
 				:placeholder="props.placeholder" />
-			<Combobox.Trigger :id="props.id">
+			<Combobox.Trigger>
 				<ChevronDownIcon />
 			</Combobox.Trigger>
 		</Combobox.Anchor>
@@ -23,7 +24,12 @@
 			class="w-full z-dropdown absolute mt-1 overflow-hidden bg-surface-overlay rounded-overlay shadow-overlay will-change-[opacity,transform]">
 			<Combobox.Viewport class="py-1">
 				<Combobox.Empty as-child>
-					<Text :value="props.noResult" class="text-center py-2" />
+					<Text
+						:value="props.noResult"
+						role="option"
+						aria-disabled="true"
+						aria-selected="false"
+						class="text-center py-2" />
 				</Combobox.Empty>
 
 				<Combobox.Group ref="infiniteScrollContainer" class="max-h-28 overflow-y-auto">

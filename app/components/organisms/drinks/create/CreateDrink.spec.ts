@@ -12,7 +12,6 @@ const mockCreate = vi.fn();
 const mockUpdateCover = vi.fn();
 const mockUpdateThumbnail = vi.fn();
 const mockRouterBack = vi.fn();
-const mockResetFormState = vi.fn();
 const mockAddToast = vi.fn();
 
 vi.stubGlobal('useNuxtApp', () => ({
@@ -26,7 +25,6 @@ vi.stubGlobal('useNuxtApp', () => ({
 	$router: { back: mockRouterBack }
 }));
 vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
-vi.stubGlobal('useDrinkForm', () => ({ resetFormState: mockResetFormState }));
 vi.stubGlobal('useToast', () => ({ addToast: mockAddToast }));
 
 const form = {
@@ -73,7 +71,6 @@ describe('CreateDrink', () => {
 		expect(mockUpdateCover).toHaveBeenCalledWith('drink-1', cover);
 		expect(mockUpdateThumbnail).toHaveBeenCalledWith('drink-1', thumbnail);
 		expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'success' }));
-		expect(mockResetFormState).toHaveBeenCalled();
 		expect(mockRouterBack).toHaveBeenCalled();
 	});
 

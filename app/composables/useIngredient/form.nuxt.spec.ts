@@ -6,7 +6,6 @@ describe('useIngredientForm', () => {
 
 	beforeEach(() => {
 		form = useIngredientForm();
-		form.resetFormState();
 	});
 
 	describe('initial state', () => {
@@ -41,8 +40,8 @@ describe('useIngredientForm', () => {
 		});
 	});
 
-	describe('resetFormState', () => {
-		it('resets form and flags to initial state', () => {
+	describe('state scope', () => {
+		it('gives each call its own state, so nothing leaks between component instances', () => {
 			form.updateFormState({
 				translations: {
 					en: { name: 'Rum' },
@@ -52,11 +51,11 @@ describe('useIngredientForm', () => {
 				unitId: 'unit-1'
 			});
 
-			form.resetFormState();
+			const other = useIngredientForm();
 
-			expect(form.formState.value.form.translations.en.name).toBe('');
-			expect(form.formState.value.form.categoryId).toBe('');
-			expect(form.formState.value.form.unitId).toBe('');
+			expect(other.formState.value.form.translations.en.name).toBe('');
+			expect(other.formState.value.form.categoryId).toBe('');
+			expect(other.formState.value.form.unitId).toBe('');
 		});
 	});
 

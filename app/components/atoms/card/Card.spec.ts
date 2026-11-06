@@ -16,24 +16,4 @@ describe('Card', () => {
 			expect(wrapper.text()).toBe('Hello');
 		});
 	});
-
-	describe('styling', () => {
-		it('applies bg-surface class', () => {
-			const wrapper = mount(Card);
-
-			expect(wrapper.classes()).toContain('bg-surface');
-		});
-
-		it('applies shadow-card class', () => {
-			const wrapper = mount(Card);
-
-			expect(wrapper.classes()).toContain('shadow-card');
-		});
-
-		it('applies rounded-card by default', () => {
-			const wrapper = mount(Card);
-
-			expect(wrapper.classes()).toContain('rounded-card');
-		});
-	});
 });

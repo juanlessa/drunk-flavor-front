@@ -12,11 +12,7 @@ const initState = (): SignupFormState => ({
 export const useSignupForm = () => {
 	const { t } = useI18n();
 
-	const state = useState<SignupFormState>('signupForm', initState);
-
-	const resetFormState = () => {
-		state.value = initState();
-	};
+	const state = ref<SignupFormState>(initState());
 
 	const checkError = (field: string) => {
 		const error = checkFieldError(state.value.errors, field);
@@ -38,7 +34,6 @@ export const useSignupForm = () => {
 
 	return {
 		formState: state,
-		resetFormState,
 		checkError,
 		validateForm
 	};

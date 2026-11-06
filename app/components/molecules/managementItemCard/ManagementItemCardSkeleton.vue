@@ -27,7 +27,7 @@ import {
 	managementItemCardContentStyle,
 	managementItemCardDimensions,
 	managementItemCardStyle
-} from '~/components/molecules/managementItemCard/ManagementItemCard.styles';
+} from './ManagementItemCard.styles';
 
 const props = defineProps({
 	/** Reserves the leading square used by cards that render the `media` slot. */

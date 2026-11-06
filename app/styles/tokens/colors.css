@@ -112,15 +112,16 @@
 	--color-accent-content: var(--color-blue-600);
 	--color-accent-content-hover: var(--color-blue-700);
 
-	--color-success: var(--color-green-700);
+	/* Status text sits on tinted surfaces and the page background, so it needs 4.5:1 (WCAG AA for normal text). */
+	--color-success: var(--color-green-800);
 	--color-success-surface: var(--color-green-300);
-	--color-danger: var(--color-red-600);
+	--color-danger: var(--color-red-700);
 	--color-danger-surface: var(--color-red-300);
 	--color-danger-stroke: var(--color-red-600);
 	--color-danger-emphasis: var(--color-red-600);
 	--color-danger-emphasis-hover: var(--color-red-700);
 	--color-danger-emphasis-active: var(--color-red-800);
-	--color-warning: var(--color-amber-700);
+	--color-warning: var(--color-amber-800);
 	--color-warning-surface: var(--color-amber-300);
 	--color-info: var(--color-blue-600);
 	--color-info-surface: var(--color-white);

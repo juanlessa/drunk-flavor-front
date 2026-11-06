@@ -10,20 +10,11 @@ const CategoryFormStub = {
 
 const mockRouterBack = vi.fn();
 const mockApiCreate = vi.fn();
-const mockResetFormState = vi.fn();
 const mockAddToast = vi.fn();
 
 vi.stubGlobal('useNuxtApp', () => ({
 	$api: { categories: { create: mockApiCreate } },
 	$router: { back: mockRouterBack }
-}));
-
-vi.stubGlobal('useCategoryForm', () => ({
-	formState: { value: { form: {}, errors: [], displayErrors: false } },
-	resetFormState: mockResetFormState,
-	checkError: vi.fn(),
-	validateForm: vi.fn(),
-	updateFormState: vi.fn()
 }));
 
 vi.stubGlobal('useToast', () => ({
@@ -68,16 +59,6 @@ describe('CreateCategory', () => {
 	});
 
 	describe('cancel', () => {
-		it('resets form state on cancel', async () => {
-			const wrapper = mountCreateCategory();
-			const form = wrapper.findComponent(CategoryFormStub);
-
-			await form.vm.$emit('cancel');
-			await wrapper.vm.$nextTick();
-
-			expect(mockResetFormState).toHaveBeenCalled();
-		});
-
 		it('navigates back on cancel', async () => {
 			const wrapper = mountCreateCategory();
 			const form = wrapper.findComponent(CategoryFormStub);

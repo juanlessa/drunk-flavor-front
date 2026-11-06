@@ -6,7 +6,6 @@ describe('useSignupForm', () => {
 
 	beforeEach(() => {
 		form = useSignupForm();
-		form.resetFormState();
 	});
 
 	describe('initial state', () => {
@@ -27,19 +26,15 @@ describe('useSignupForm', () => {
 		});
 	});
 
-	describe('resetFormState', () => {
-		it('resets form and flags to initial state', () => {
+	describe('state scope', () => {
+		it('gives each call its own state, so nothing leaks between component instances', () => {
 			form.formState.value.form.name = 'Jane';
-			form.formState.value.form.password = 'Password123!';
-			form.formState.value.form.confirmPassword = 'Password123!';
 			form.formState.value.displayErrors = true;
 
-			form.resetFormState();
+			const other = useSignupForm();
 
-			expect(form.formState.value.form.name).toBe('');
-			expect(form.formState.value.form.password).toBe('');
-			expect(form.formState.value.form.confirmPassword).toBe('');
-			expect(form.formState.value.displayErrors).toBe(false);
+			expect(other.formState.value.form.name).toBe('');
+			expect(other.formState.value.displayErrors).toBe(false);
 		});
 	});
 

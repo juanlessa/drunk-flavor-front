@@ -6,7 +6,6 @@ describe('useDrinkForm', () => {
 
 	beforeEach(() => {
 		form = useDrinkForm();
-		form.resetFormState();
 	});
 
 	describe('initial state', () => {
@@ -44,8 +43,8 @@ describe('useDrinkForm', () => {
 		});
 	});
 
-	describe('resetFormState', () => {
-		it('resets form and flags to initial state', () => {
+	describe('state scope', () => {
+		it('gives each call its own state, so nothing leaks between component instances', () => {
 			form.updateFormState({
 				translations: {
 					en: { name: 'Mojito', method: 'Mix' },
@@ -55,11 +54,11 @@ describe('useDrinkForm', () => {
 			});
 			form.formState.value.displayErrors = true;
 
-			form.resetFormState();
+			const other = useDrinkForm();
 
-			expect(form.formState.value.form.translations.en.name).toBe('');
-			expect(form.formState.value.form.ingredients).toEqual([]);
-			expect(form.formState.value.displayErrors).toBe(false);
+			expect(other.formState.value.form.translations.en.name).toBe('');
+			expect(other.formState.value.form.ingredients).toEqual([]);
+			expect(other.formState.value.displayErrors).toBe(false);
 		});
 	});
 

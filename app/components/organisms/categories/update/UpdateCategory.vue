@@ -16,7 +16,6 @@ const props = defineProps({
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
-const { resetFormState } = useCategoryForm();
 const { addToast } = useToast();
 
 const categoryForm = ref<CategoryForm | undefined>(undefined);
@@ -32,7 +31,6 @@ if (data.value) {
 }
 
 const handleCancel = () => {
-	resetFormState();
 	$router.back();
 };
 
@@ -40,7 +38,6 @@ const handleSubmit = async (categoryForm: CategoryForm) => {
 	const updateCategory = mapFormToUpdateCategory(props.categoryId, categoryForm);
 	try {
 		await $api.categories.update(updateCategory);
-		resetFormState();
 		addToast({
 			type: 'success',
 			title: t('organisms.categoryForm.updateSuccess.title'),

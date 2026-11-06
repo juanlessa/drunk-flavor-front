@@ -48,8 +48,7 @@
 		<AuthPrompt
 			:message="$t('organisms.confirmPasswordForm.backToSignin.message')"
 			:link-label="$t('organisms.confirmPasswordForm.backToSignin.link')"
-			:to="localePath('/signin')"
-			@navigate="resetFormState" />
+			:to="localePath('/signin')" />
 	</div>
 </template>
 
@@ -59,7 +58,7 @@ const { addToast } = useToast();
 const localePath = useLocalePath();
 const route = useRoute('confirm-password-token');
 const { t } = useI18n();
-const { formState, resetFormState, checkError, validateForm } = useConfirmPasswordForm();
+const { formState, checkError, validateForm } = useConfirmPasswordForm();
 
 const isPasswordActive = ref(false);
 
@@ -81,7 +80,6 @@ const handleSubmitButton = async () => {
 			password: formState.value.form.password,
 			confirmPassword: formState.value.form.confirmPassword
 		});
-		resetFormState();
 		addToast({
 			type: 'success',
 			title: t('organisms.confirmPasswordForm.toast.successTitle'),

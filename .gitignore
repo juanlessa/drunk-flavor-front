@@ -9,6 +9,9 @@ dist
 # Node dependencies
 node_modules
 
+# Test coverage reports and Vitest artifacts (browser failure screenshots)
+coverage
+.vitest
 # Logs
 logs
 *.log
@@ -20,6 +23,9 @@ logs
 
 # Agent workflow artifacts
 .agents
+
+# Local notes
+TODO.md
 
 # Local env files
 .env

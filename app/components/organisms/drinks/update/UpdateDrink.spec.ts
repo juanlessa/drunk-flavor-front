@@ -37,7 +37,6 @@ vi.stubGlobal('useNuxtApp', () => ({
 }));
 vi.stubGlobal('useAsyncData', () => ({ data: ref(drink), error: ref(null) }));
 vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
-vi.stubGlobal('useDrinkForm', () => ({ resetFormState: vi.fn() }));
 vi.stubGlobal('useToast', () => ({ addToast: mockAddToast }));
 
 const mountUpdate = async () => {

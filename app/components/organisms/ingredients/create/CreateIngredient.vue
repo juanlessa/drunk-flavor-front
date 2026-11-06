@@ -11,11 +11,9 @@ import { mapFormToCreateIngredient } from '~/mappers/ingredient.mappers';
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
-const { resetFormState } = useIngredientForm();
 const { addToast } = useToast();
 
 const handleCancel = () => {
-	resetFormState();
 	$router.back();
 };
 
@@ -23,7 +21,6 @@ const handleSubmit = async (ingredientForm: IngredientForm) => {
 	const createIngredient = mapFormToCreateIngredient(ingredientForm);
 	try {
 		await $api.ingredients.create(createIngredient);
-		resetFormState();
 		addToast({
 			type: 'success',
 			title: t('organisms.ingredientForm.createSuccess.title'),

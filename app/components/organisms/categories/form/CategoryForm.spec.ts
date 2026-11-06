@@ -23,8 +23,7 @@ vi.stubGlobal('useCategoryForm', () => ({
 	formState: mockFormState,
 	checkError: mockCheckError,
 	validateForm: mockValidateForm,
-	updateFormState: mockUpdateFormState,
-	resetFormState: vi.fn()
+	updateFormState: mockUpdateFormState
 }));
 
 const FormStub = {

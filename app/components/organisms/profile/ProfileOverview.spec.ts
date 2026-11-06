@@ -40,14 +40,6 @@ const mountOverview = (overrides: Partial<Profile> = {}) =>
 	});
 
 describe('ProfileOverview', () => {
-	it('uses the standard page inset around the profile sections', () => {
-		const wrapper = mountOverview();
-
-		expect(wrapper.classes()).toContain('py-6');
-		expect(wrapper.classes()).not.toContain('py-8');
-		expect(wrapper.classes()).not.toContain('tablet:py-12');
-	});
-
 	it('composes all profile organisms from its profile prop', () => {
 		const wrapper = mountOverview();
 

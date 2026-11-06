@@ -11,11 +11,8 @@ const initState = (): UnitFormState => ({
 
 export const useUnitForm = () => {
 	const { t } = useI18n();
-	const state = useState<UnitFormState>('unitForm', initState);
-
-	const resetFormState = () => {
-		state.value = initState();
-	};
+	// Local to the calling component: the state is discarded on unmount, so it needs no manual reset.
+	const state = ref<UnitFormState>(initState());
 
 	const updateFormState = (newFormValue: UnitForm) => {
 		state.value.form = newFormValue;
@@ -40,7 +37,6 @@ export const useUnitForm = () => {
 
 	return {
 		formState: state,
-		resetFormState,
 		updateFormState,
 		checkError,
 		validateForm

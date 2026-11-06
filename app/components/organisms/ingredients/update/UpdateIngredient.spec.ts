@@ -12,20 +12,11 @@ const IngredientFormStub = {
 const mockRouterBack = vi.fn();
 const mockApiGet = vi.fn();
 const mockApiUpdate = vi.fn();
-const mockResetFormState = vi.fn();
 const mockAddToast = vi.fn();
 
 vi.stubGlobal('useNuxtApp', () => ({
 	$api: { ingredients: { get: mockApiGet, update: mockApiUpdate } },
 	$router: { back: mockRouterBack }
-}));
-
-vi.stubGlobal('useIngredientForm', () => ({
-	formState: { value: { form: {}, errors: [], displayErrors: false } },
-	resetFormState: mockResetFormState,
-	checkError: vi.fn(),
-	validateForm: vi.fn(),
-	updateFormState: vi.fn()
 }));
 
 vi.stubGlobal('useToast', () => ({
@@ -126,16 +117,6 @@ describe('UpdateIngredient', () => {
 	});
 
 	describe('cancel', () => {
-		it('resets form state on cancel', async () => {
-			const wrapper = await mountUpdateIngredient();
-			const form = wrapper.findComponent(IngredientFormStub);
-
-			await form.vm.$emit('cancel');
-			await wrapper.vm.$nextTick();
-
-			expect(mockResetFormState).toHaveBeenCalled();
-		});
-
 		it('navigates back on cancel', async () => {
 			const wrapper = await mountUpdateIngredient();
 			const form = wrapper.findComponent(IngredientFormStub);

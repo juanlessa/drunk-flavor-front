@@ -37,23 +37,25 @@ describe('Heading', () => {
 		);
 	});
 
-	describe('styling', () => {
-		it('applies default text-title class', () => {
+	// The size prop only shows up as a typography class, so the class is the behavioural output here.
+	describe('size', () => {
+		it.each([
+			['titleSm', 'text-title-sm'],
+			['title', 'text-title'],
+			['titleLg', 'text-title-lg'],
+			['headlineSm', 'text-headline-sm'],
+			['headline', 'text-headline'],
+			['headlineLg', 'text-headline-lg']
+		] as const)('maps size %s to %s', (size, expected) => {
+			const wrapper = mount(Heading, { props: { size } });
+
+			expect(wrapper.classes()).toContain(expected);
+		});
+
+		it('defaults to the title size', () => {
 			const wrapper = mount(Heading);
 
 			expect(wrapper.classes()).toContain('text-title');
-		});
-
-		it('applies default font-bold class', () => {
-			const wrapper = mount(Heading);
-
-			expect(wrapper.classes()).toContain('font-bold');
-		});
-
-		it('applies default text-content class', () => {
-			const wrapper = mount(Heading);
-
-			expect(wrapper.classes()).toContain('text-content');
 		});
 	});
 });
