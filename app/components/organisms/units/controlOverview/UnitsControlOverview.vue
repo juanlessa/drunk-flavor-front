@@ -61,7 +61,6 @@
 </template>
 <script setup lang="ts">
 import { initEmptyUnit } from '~/domain/unit/unit.factory';
-import type { Unit } from '~/domain/unit/unit.entity';
 import { getUnitSummary } from '~/helpers/unit.helpers';
 import {
 	CARD_GRID_METRICS_PX,
@@ -69,14 +68,17 @@ import {
 } from '~/components/molecules/virtualInfiniteGrid/VirtualInfiniteGrid.contract';
 
 const { $router } = useNuxtApp();
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 const localePath = useLocalePath();
-const { addToast } = useToast();
 const { overviewState, searchTerm, isEmpty, deleteUnit, loadNextPage } = useUnitsOverview();
 
 const gridColumns = useGridColumns();
-const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } =
-	useUnitDeleteModal();
+const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } = useDeleteModal({
+	i18nPrefix: 'organisms.unitsControlOverview',
+	initEmpty: initEmptyUnit,
+	getName: (unit, lang) => unit.translations[lang].name,
+	remove: deleteUnit
+});
 
 const handleCreateUnit = () => {
 	$router.push(localePath('/units/new'));
@@ -84,46 +86,4 @@ const handleCreateUnit = () => {
 const handleEditUnit = (id: string) => {
 	$router.push(localePath(`/units/${id}/edit`));
 };
-
-function useUnitDeleteModal() {
-	const isOpen = ref(false);
-	const unitToDelete = ref(initEmptyUnit());
-
-	const modalContent = computed(() => ({
-		title: t('organisms.unitsControlOverview.deleteModal.title', {
-			name: unitToDelete.value.translations[locale.value].name
-		}),
-		description: t('organisms.unitsControlOverview.deleteModal.description')
-	}));
-
-	const triggerDeleteModal = (unit: Unit) => {
-		unitToDelete.value = { ...unit };
-		isOpen.value = true;
-	};
-
-	const handleCancel = () => {
-		unitToDelete.value = initEmptyUnit();
-	};
-
-	const handleDelete = async () => {
-		try {
-			await deleteUnit(unitToDelete.value.id);
-			addToast({
-				type: 'success',
-				title: t('organisms.unitsControlOverview.deleteSuccess.title'),
-				message: t('organisms.unitsControlOverview.deleteSuccess.message')
-			});
-		} catch {
-			addToast({
-				type: 'error',
-				title: t('organisms.unitsControlOverview.deleteError.title'),
-				message: t('organisms.unitsControlOverview.deleteError.message')
-			});
-		} finally {
-			unitToDelete.value = initEmptyUnit();
-		}
-	};
-
-	return { isOpen, handleCancel, handleDelete, triggerDeleteModal, modalContent };
-}
 </script>

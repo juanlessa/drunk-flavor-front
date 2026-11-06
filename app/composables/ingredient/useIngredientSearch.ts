@@ -22,7 +22,7 @@ type UpdateStateFilter = {
 export const useIngredientSearch = () => {
 	const { $api } = useNuxtApp();
 	const { addToast } = useToast();
-	const { locale } = useI18n();
+	const { t, locale } = useI18n();
 	const state = useState<IngredientSearchState>('IngredientSearch', initState);
 
 	const updateStateFilterQuery = (query?: Partial<QueryParams>) => {
@@ -63,7 +63,11 @@ export const useIngredientSearch = () => {
 	watch(error, (newError) => {
 		if (!newError) return;
 		console.error(newError);
-		addToast({ type: 'error', title: 'ERROR!', message: 'unable to fetch data' });
+		addToast({
+			type: 'error',
+			title: t('organisms.ingredientsControlOverview.errorTitle'),
+			message: t('organisms.ingredientsControlOverview.errorMessage')
+		});
 	});
 	watch(status, (newStatus) => {
 		state.value.loading = newStatus === 'pending';

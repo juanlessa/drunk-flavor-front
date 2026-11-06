@@ -71,22 +71,24 @@
 </template>
 <script setup lang="ts">
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
-import type { Drink } from '~/domain/drink/drink.entity';
 import {
 	CARD_GRID_METRICS_PX,
 	virtualGridRowStyle
 } from '~/components/molecules/virtualInfiniteGrid/VirtualInfiniteGrid.contract';
 
 const { $router } = useNuxtApp();
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 const localePath = useLocalePath();
-const { addToast } = useToast();
 const { overviewState, searchTerm, isEmpty, deleteDrink, loadNextPage } =
 	useDrinksControlOverview();
 
 const gridColumns = useGridColumns();
-const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } =
-	useDrinkDeleteModal();
+const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } = useDeleteModal({
+	i18nPrefix: 'organisms.drinksControlOverview',
+	initEmpty: initEmptyDrink,
+	getName: (drink, lang) => drink.translations[lang].name,
+	remove: deleteDrink
+});
 
 const handleCreateDrink = () => {
 	$router.push(localePath('/drinks/new'));
@@ -94,46 +96,4 @@ const handleCreateDrink = () => {
 const handleEditDrink = (id: string) => {
 	$router.push(localePath(`/drinks/${id}/edit`));
 };
-
-function useDrinkDeleteModal() {
-	const isOpen = ref(false);
-	const drinkToDelete = ref(initEmptyDrink());
-
-	const modalContent = computed(() => ({
-		title: t('organisms.drinksControlOverview.deleteModal.title', {
-			name: drinkToDelete.value.translations[locale.value].name
-		}),
-		description: t('organisms.drinksControlOverview.deleteModal.description')
-	}));
-
-	const triggerDeleteModal = (drink: Drink) => {
-		drinkToDelete.value = { ...drink };
-		isOpen.value = true;
-	};
-
-	const handleCancel = () => {
-		drinkToDelete.value = initEmptyDrink();
-	};
-
-	const handleDelete = async () => {
-		try {
-			await deleteDrink(drinkToDelete.value.id);
-			addToast({
-				type: 'success',
-				title: t('organisms.drinksControlOverview.deleteSuccess.title'),
-				message: t('organisms.drinksControlOverview.deleteSuccess.message')
-			});
-		} catch {
-			addToast({
-				type: 'error',
-				title: t('organisms.drinksControlOverview.deleteError.title'),
-				message: t('organisms.drinksControlOverview.deleteError.message')
-			});
-		} finally {
-			drinkToDelete.value = initEmptyDrink();
-		}
-	};
-
-	return { isOpen, handleCancel, handleDelete, triggerDeleteModal, modalContent };
-}
 </script>

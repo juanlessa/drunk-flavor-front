@@ -1,3 +1,4 @@
+import type { PaginatedOverviewState } from '~/types/overview.types';
 import type { DrinkIngredientRequest } from '~/domain/drink/drink.dtos';
 import type { Drink, DrinkTranslation } from '~/domain/drink/drink.entity';
 import type { Filter } from '~/domain/shared/filters.types';
@@ -10,10 +11,7 @@ export type DrinksOverviewState = {
 	loading: boolean;
 };
 
-export type DrinksControlOverviewState = DrinksOverviewState & {
-	/** Raw input; applied to `filter.search` after the debounce. */
-	searchTerm: string;
-};
+export type DrinksControlOverviewState = PaginatedOverviewState<'drinks', Drink>;
 
 export type DrinkForm = {
 	translations: Translations<DrinkTranslation>;

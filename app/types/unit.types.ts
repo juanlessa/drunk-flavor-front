@@ -1,17 +1,10 @@
-import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
+import type { PaginatedOverviewState } from '~/types/overview.types';
 import type { Translations } from '~/domain/shared/translations.types';
 import type { FieldError } from '~/types/form.types';
-import type { Filter } from '~/domain/shared/filters.types';
-import type { QueryParams } from '~/domain/shared/query.types';
+import type { SearchSelectState } from '~/types/searchSelect.types';
 import type { Unit, UnitKind, UnitTranslation } from '~/domain/unit/unit.entity';
 
-export type UnitsOverviewState = {
-	units: Unit[];
-	filter: Filter;
-	/** Raw input; applied to `filter.search` after the debounce. */
-	searchTerm: string;
-	loading: boolean;
-};
+export type UnitsOverviewState = PaginatedOverviewState<'units', Unit>;
 
 export type UnitForm = {
 	translations: Translations<UnitTranslation>;
@@ -29,13 +22,4 @@ export type UnitFormState = {
 	displayErrors: boolean;
 };
 
-export type UnitSearchSelectState = {
-	options: Unit[];
-	selected: InputSelectOption;
-	filter: {
-		query: QueryParams;
-		isLastPage: boolean;
-		searchTerm: string;
-	};
-	loading: boolean;
-};
+export type UnitSearchSelectState = SearchSelectState<Unit>;

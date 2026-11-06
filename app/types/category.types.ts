@@ -1,17 +1,10 @@
-import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
+import type { PaginatedOverviewState } from '~/types/overview.types';
 import type { Translations } from '~/domain/shared/translations.types';
 import type { FieldError } from '~/types/form.types';
-import type { Filter } from '~/domain/shared/filters.types';
-import type { QueryParams } from '~/domain/shared/query.types';
+import type { SearchSelectState } from '~/types/searchSelect.types';
 import type { Category, CategoryTranslation } from '~/domain/category/category.entity';
 
-export type CategoriesOverviewState = {
-	categories: Category[];
-	filter: Filter;
-	/** Raw input; applied to `filter.search` after the debounce. */
-	searchTerm: string;
-	loading: boolean;
-};
+export type CategoriesOverviewState = PaginatedOverviewState<'categories', Category>;
 
 export type CategoryForm = {
 	translations: Translations<CategoryTranslation>;
@@ -24,13 +17,4 @@ export type CategoryFormState = {
 	displayErrors: boolean;
 };
 
-export type CategorySearchSelectState = {
-	options: Category[];
-	selected: InputSelectOption;
-	filter: {
-		query: QueryParams;
-		isLastPage: boolean;
-		searchTerm: string;
-	};
-	loading: boolean;
-};
+export type CategorySearchSelectState = SearchSelectState<Category>;

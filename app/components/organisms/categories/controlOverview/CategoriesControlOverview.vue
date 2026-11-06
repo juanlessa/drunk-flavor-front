@@ -60,22 +60,24 @@
 </template>
 <script setup lang="ts">
 import { initEmptyCategory } from '~/domain/category/category.factory';
-import type { Category } from '~/domain/category/category.entity';
 import {
 	CARD_GRID_METRICS_PX,
 	virtualGridRowStyle
 } from '~/components/molecules/virtualInfiniteGrid/VirtualInfiniteGrid.contract';
 
 const { $router } = useNuxtApp();
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 const localePath = useLocalePath();
-const { addToast } = useToast();
 const { overviewState, searchTerm, isEmpty, deleteCategory, loadNextPage } =
 	useCategoriesOverview();
 
 const gridColumns = useGridColumns();
-const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } =
-	useCategoryDeleteModal();
+const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } = useDeleteModal({
+	i18nPrefix: 'organisms.categoriesControlOverview',
+	initEmpty: initEmptyCategory,
+	getName: (category, lang) => category.translations[lang].name,
+	remove: deleteCategory
+});
 
 const handleCreateCategory = () => {
 	$router.push(localePath('/categories/new'));
@@ -83,46 +85,4 @@ const handleCreateCategory = () => {
 const handleEditCategory = (id: string) => {
 	$router.push(localePath(`/categories/${id}/edit`));
 };
-
-function useCategoryDeleteModal() {
-	const isOpen = ref(false);
-	const categoryToDelete = ref(initEmptyCategory());
-
-	const modalContent = computed(() => ({
-		title: t('organisms.categoriesControlOverview.deleteModal.title', {
-			name: categoryToDelete.value.translations[locale.value].name
-		}),
-		description: t('organisms.categoriesControlOverview.deleteModal.description')
-	}));
-
-	const triggerDeleteModal = (category: Category) => {
-		categoryToDelete.value = { ...category };
-		isOpen.value = true;
-	};
-
-	const handleCancel = () => {
-		categoryToDelete.value = initEmptyCategory();
-	};
-
-	const handleDelete = async () => {
-		try {
-			await deleteCategory(categoryToDelete.value.id);
-			addToast({
-				type: 'success',
-				title: t('organisms.categoriesControlOverview.deleteSuccess.title'),
-				message: t('organisms.categoriesControlOverview.deleteSuccess.message')
-			});
-		} catch {
-			addToast({
-				type: 'error',
-				title: t('organisms.categoriesControlOverview.deleteError.title'),
-				message: t('organisms.categoriesControlOverview.deleteError.message')
-			});
-		} finally {
-			categoryToDelete.value = initEmptyCategory();
-		}
-	};
-
-	return { isOpen, handleCancel, handleDelete, triggerDeleteModal, modalContent };
-}
 </script>

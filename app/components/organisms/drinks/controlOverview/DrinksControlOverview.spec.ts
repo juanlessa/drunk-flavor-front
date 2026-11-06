@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { computed, ref } from 'vue';
+import { useDeleteModal } from '~/composables/ui/useDeleteModal';
 import DrinksControlOverview from './DrinksControlOverview.vue';
 
 const mockRouterPush = vi.fn();
@@ -34,6 +35,7 @@ vi.stubGlobal('useI18n', () => ({
 	locale: ref('en')
 }));
 vi.stubGlobal('useToast', () => ({ addToast: mockAddToast }));
+vi.stubGlobal('useDeleteModal', useDeleteModal);
 const gridColumnsByScreen = { mobile: 1, tablet: 2, desktop: 3 };
 vi.stubGlobal('useGridColumns', () => computed(() => gridColumnsByScreen[mockScreenType.value]));
 vi.stubGlobal('useDrinksControlOverview', () => ({
