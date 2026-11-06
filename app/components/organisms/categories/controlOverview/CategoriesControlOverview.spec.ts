@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import CategoriesControlOverview from './CategoriesControlOverview.vue';
 
 const mockRouterPush = vi.fn();
@@ -31,7 +31,8 @@ vi.stubGlobal('useI18n', () => ({
 	locale: ref('en')
 }));
 vi.stubGlobal('useToast', () => ({ addToast: mockAddToast }));
-vi.stubGlobal('useScreenType', () => ({ screenType: mockScreenType }));
+const gridColumnsByScreen = { mobile: 1, tablet: 2, desktop: 3 };
+vi.stubGlobal('useGridColumns', () => computed(() => gridColumnsByScreen[mockScreenType.value]));
 vi.stubGlobal('useCategoriesOverview', () => ({
 	overviewState: mockOverviewState,
 	searchTerm: mockSearchTerm,
@@ -53,7 +54,7 @@ const VirtualInfiniteGridStub = {
 	props: ['items', 'gridColumns', 'loading'],
 	template: `
 		<div data-testid="grid" :data-columns="gridColumns">
-			<slot :list="[{ data: items, index: 0 }]" />
+			<slot :list="[{ data: items, index: 0 }]" :row-attrs="() => ({})" />
 			<slot v-if="loading" name="loading" />
 		</div>
 	`

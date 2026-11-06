@@ -11,20 +11,22 @@
 		{{ $t('organisms.categoriesControlOverview.emptyMessage') }}
 	</Text>
 
-	<div ref="containerRef" class="flex-1">
+	<div class="relative flex-1">
 		<ClientOnly>
 			<VirtualInfiniteGrid
+				:label="$t('organisms.categoriesControlOverview.listLabel')"
 				:items="overviewState.categories"
-				:height="containerHeight"
 				:item-height="CARD_GRID_METRICS_PX.managementRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
+				:can-load-more="!overviewState.filter.isLastPage"
 				@load-more="loadNextPage">
-				<template #default="{ list }">
+				<template #default="{ list, rowAttrs }">
 					<div
 						v-for="{ data: categoryRow, index } in list"
 						:key="index"
+						v-bind="rowAttrs(index)"
 						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
 						<ManagementItemCard
 							v-for="category in categoryRow"
@@ -70,9 +72,8 @@ const localePath = useLocalePath();
 const { addToast } = useToast();
 const { overviewState, searchTerm, isEmpty, deleteCategory, loadNextPage } =
 	useCategoriesOverview();
-const { screenType } = useScreenType();
 
-const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
+const gridColumns = useGridColumns();
 const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } =
 	useCategoryDeleteModal();
 
@@ -82,38 +83,6 @@ const handleCreateCategory = () => {
 const handleEditCategory = (id: string) => {
 	$router.push(localePath(`/categories/${id}/edit`));
 };
-
-function useVirtualInfiniteGrid() {
-	const containerRef = ref<HTMLDivElement | null>(null);
-	const containerHeight = ref(0);
-	const gridColumns = computed(() => {
-		if (screenType.value === 'mobile') return 1;
-		if (screenType.value === 'tablet') return 2;
-		return 3;
-	});
-
-	const updateContainerHeight = () => {
-		if (containerRef.value) {
-			containerHeight.value = containerRef.value.offsetHeight;
-		}
-	};
-
-	let resizeObserver: ResizeObserver;
-	onMounted(() => {
-		resizeObserver = new ResizeObserver(updateContainerHeight);
-		if (containerRef.value) {
-			resizeObserver.observe(containerRef.value);
-		}
-	});
-	onBeforeUnmount(() => {
-		if (containerRef.value) {
-			resizeObserver.unobserve(containerRef.value);
-		}
-		resizeObserver.disconnect();
-	});
-
-	return { containerRef, containerHeight, gridColumns };
-}
 
 function useCategoryDeleteModal() {
 	const isOpen = ref(false);

@@ -70,6 +70,7 @@
 	},
 	"organisms": {
 		"categoriesControlOverview": {
+			"listLabel": "Categories",
 			"searchLabel": "Search categories",
 			"searchPlaceholder": "Search categories by name",
 			"createButton": { "value": "New category" },
@@ -121,6 +122,7 @@
 			"updateError": { "title": "Error", "message": "Unable to update the category." }
 		},
 		"unitsControlOverview": {
+			"listLabel": "Units",
 			"searchLabel": "Search units",
 			"searchPlaceholder": "Search units by name",
 			"createButton": { "value": "New unit" },
@@ -192,6 +194,7 @@
 			"legalNav": { "label": "legal" }
 		},
 		"ingredientsControlOverview": {
+			"listLabel": "Ingredients",
 			"searchLabel": "Search ingredients",
 			"searchPlaceholder": "Search ingredients by name",
 			"createButton": { "value": "New ingredient" },
@@ -243,9 +246,11 @@
 			"updateError": { "title": "Error", "message": "Unable to update the ingredient." }
 		},
 		"drinksOverview": {
+			"listLabel": "Cocktail recipes",
 			"heading": "Cocktail recipes"
 		},
 		"drinksControlOverview": {
+			"listLabel": "Drinks",
 			"searchLabel": "Search drinks",
 			"searchPlaceholder": "Search drinks by name",
 			"createButton": { "value": "New drink" },

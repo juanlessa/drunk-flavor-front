@@ -70,6 +70,7 @@
 	},
 	"organisms": {
 		"categoriesControlOverview": {
+			"listLabel": "Categorias",
 			"searchLabel": "Buscar categorias",
 			"searchPlaceholder": "Buscar categorias por nome",
 			"createButton": { "value": "Nova categoria" },
@@ -118,6 +119,7 @@
 			"updateError": { "title": "Erro", "message": "Não foi possível atualizar a categoria." }
 		},
 		"unitsControlOverview": {
+			"listLabel": "Unidades",
 			"searchLabel": "Buscar unidades",
 			"searchPlaceholder": "Buscar unidades por nome",
 			"createButton": { "value": "Nova unidade" },
@@ -192,6 +194,7 @@
 			"legalNav": { "label": "documentos legais" }
 		},
 		"ingredientsControlOverview": {
+			"listLabel": "Ingredientes",
 			"searchLabel": "Buscar ingredientes",
 			"searchPlaceholder": "Buscar ingredientes por nome",
 			"createButton": { "value": "Novo ingrediente" },
@@ -246,9 +249,11 @@
 			}
 		},
 		"drinksOverview": {
+			"listLabel": "Receitas de drinks",
 			"heading": "Receitas de drinks"
 		},
 		"drinksControlOverview": {
+			"listLabel": "Drinks",
 			"searchLabel": "Buscar drinks",
 			"searchPlaceholder": "Buscar drinks por nome",
 			"createButton": { "value": "Novo drink" },
