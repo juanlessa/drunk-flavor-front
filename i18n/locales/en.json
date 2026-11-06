@@ -247,7 +247,9 @@
 		},
 		"drinksOverview": {
 			"listLabel": "Cocktail recipes",
-			"heading": "Cocktail recipes"
+			"heading": "Cocktail recipes",
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load the drinks."
 		},
 		"drinksControlOverview": {
 			"listLabel": "Drinks",

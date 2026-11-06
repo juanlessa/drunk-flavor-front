@@ -1,17 +1,17 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useSigninForm } from './useSignin';
+import { useConfirmPasswordForm } from './useConfirmPasswordForm';
 
-describe('useSigninForm', () => {
-	let form: ReturnType<typeof useSigninForm>;
+describe('useConfirmPasswordForm', () => {
+	let form: ReturnType<typeof useConfirmPasswordForm>;
 
 	beforeEach(() => {
-		form = useSigninForm();
+		form = useConfirmPasswordForm();
 	});
 
 	describe('initial state', () => {
-		it('starts with empty email and password', () => {
-			expect(form.formState.value.form.email).toBe('');
+		it('starts with empty password and confirmPassword', () => {
 			expect(form.formState.value.form.password).toBe('');
+			expect(form.formState.value.form.confirmPassword).toBe('');
 		});
 
 		it('starts with no errors', () => {
@@ -25,25 +25,27 @@ describe('useSigninForm', () => {
 
 	describe('state scope', () => {
 		it('gives each call its own state, so nothing leaks between component instances', () => {
-			form.formState.value.form.email = 'test@test.com';
+			form.formState.value.form.password = 'Password123!';
 			form.formState.value.displayErrors = true;
 
-			const other = useSigninForm();
+			const other = useConfirmPasswordForm();
 
-			expect(other.formState.value.form.email).toBe('');
+			expect(other.formState.value.form.password).toBe('');
 			expect(other.formState.value.displayErrors).toBe(false);
 		});
 	});
 
 	describe('checkError', () => {
 		it('returns empty string when field has no error', () => {
-			expect(form.checkError('email')).toBe('');
+			expect(form.checkError('password')).toBe('');
 		});
 
 		it('returns translated message when field has error', () => {
-			form.formState.value.errors = [{ field: 'email', message: 'errors.users.email' }];
+			form.formState.value.errors = [
+				{ field: 'confirmPassword', message: 'errors.auth.passwordsMismatch' }
+			];
 
-			expect(form.checkError('email')).toBeTruthy();
+			expect(form.checkError('confirmPassword')).toBeTruthy();
 		});
 	});
 
@@ -62,12 +64,25 @@ describe('useSigninForm', () => {
 			expect(form.formState.value.errors.length).toBeGreaterThan(0);
 		});
 
+		it('reports a confirmPassword error when passwords do not match', () => {
+			form.formState.value.displayErrors = true;
+			form.formState.value.form.password = 'Password123!';
+			form.formState.value.form.confirmPassword = 'Password456!';
+
+			form.validateForm();
+
+			const mismatch = form.formState.value.errors.find(
+				(err) => err.field === 'confirmPassword'
+			);
+			expect(mismatch).toBeTruthy();
+		});
+
 		it('clears errors when form becomes valid', () => {
 			form.formState.value.displayErrors = true;
 			form.validateForm();
 
-			form.formState.value.form.email = 'valid@test.com';
 			form.formState.value.form.password = 'Password123!';
+			form.formState.value.form.confirmPassword = 'Password123!';
 			form.validateForm();
 
 			expect(form.formState.value.errors).toEqual([]);

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { registerEndpoint } from '@nuxt/test-utils/runtime';
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
-import { useIngredientSearch } from './search';
+import { useIngredientSearch } from './useIngredientSearch';
 
 registerEndpoint('/ingredients', { method: 'GET', handler: () => [] });
 

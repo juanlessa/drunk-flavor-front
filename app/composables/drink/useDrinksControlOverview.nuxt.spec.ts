@@ -1,20 +1,20 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { registerEndpoint } from '@nuxt/test-utils/runtime';
 import { getQuery, readBody } from 'h3';
-import type { Category } from '~/domain/category/category.entity';
-import { useCategoriesOverview } from './overview';
+import type { Drink } from '~/domain/drink/drink.entity';
+import { useDrinksControlOverview } from './useDrinksControlOverview';
 
 const receivedQueries: Record<string, unknown>[] = [];
 const deletedIds: string[] = [];
 
-registerEndpoint('/categories', {
+registerEndpoint('/drinks', {
 	method: 'GET',
 	handler: (event) => {
 		receivedQueries.push(getQuery(event));
 		return [];
 	}
 });
-registerEndpoint('/categories', {
+registerEndpoint('/drinks', {
 	method: 'DELETE',
 	handler: async (event) => {
 		const body = (await readBody(event)) as { id: string };
@@ -23,13 +23,13 @@ registerEndpoint('/categories', {
 	}
 });
 
-describe('useCategoriesOverview', () => {
-	let overview: ReturnType<typeof useCategoriesOverview>;
+describe('useDrinksControlOverview', () => {
+	let overview: ReturnType<typeof useDrinksControlOverview>;
 
 	beforeEach(() => {
 		receivedQueries.length = 0;
 		deletedIds.length = 0;
-		overview = useCategoriesOverview();
+		overview = useDrinksControlOverview();
 		overview.resetOverviewState();
 	});
 
@@ -38,7 +38,7 @@ describe('useCategoriesOverview', () => {
 	});
 
 	it('starts on the first page sorted by the localized name', () => {
-		expect(overview.overviewState.value.categories).toEqual([]);
+		expect(overview.overviewState.value.drinks).toEqual([]);
 		expect(overview.overviewState.value.filter).toMatchObject({
 			page: 1,
 			limit: 30,
@@ -46,6 +46,12 @@ describe('useCategoriesOverview', () => {
 			sort: { 'translations.en.name': 1 }
 		});
 		expect(overview.overviewState.value.filter.search).toBeUndefined();
+	});
+
+	it('does not share state with the public drinks overview', () => {
+		overview.overviewState.value.filter.page = 4;
+
+		expect(useState('drinksOverview').value).toBeUndefined();
 	});
 
 	it('loads the next page unless loading or already on the last page', () => {
@@ -66,18 +72,18 @@ describe('useCategoriesOverview', () => {
 		vi.useFakeTimers();
 		overview.overviewState.value.filter.page = 3;
 
-		overview.searchTerm.value = '  spi  ';
+		overview.searchTerm.value = '  moj  ';
 		await vi.advanceTimersByTimeAsync(300);
 
 		expect(overview.overviewState.value.filter).toMatchObject({
 			page: 1,
-			search: { 'translations.en.name': 'spi' }
+			search: { 'translations.en.name': 'moj' }
 		});
 		await vi.waitFor(() =>
 			expect(receivedQueries).toContainEqual(
 				expect.objectContaining({
 					page: '1',
-					search: JSON.stringify({ 'translations.en.name': 'spi' })
+					search: JSON.stringify({ 'translations.en.name': 'moj' })
 				})
 			)
 		);
@@ -85,7 +91,7 @@ describe('useCategoriesOverview', () => {
 
 	it('clears the search filter when the term is emptied', async () => {
 		vi.useFakeTimers();
-		overview.searchTerm.value = 'spi';
+		overview.searchTerm.value = 'moj';
 		await vi.advanceTimersByTimeAsync(300);
 
 		overview.searchTerm.value = '';
@@ -101,12 +107,12 @@ describe('useCategoriesOverview', () => {
 		await vi.waitFor(() => expect(overview.isEmpty.value).toBe(true));
 	});
 
-	it('removes the deleted category from the loaded list', async () => {
-		overview.overviewState.value.categories = [{ id: 'cat-1' }, { id: 'cat-2' }] as Category[];
+	it('removes the deleted drink from the loaded list', async () => {
+		overview.overviewState.value.drinks = [{ id: 'drink-1' }, { id: 'drink-2' }] as Drink[];
 
-		await overview.deleteCategory('cat-1');
+		await overview.deleteDrink('drink-1');
 
-		expect(deletedIds).toEqual(['cat-1']);
-		expect(overview.overviewState.value.categories.map(({ id }) => id)).toEqual(['cat-2']);
+		expect(deletedIds).toEqual(['drink-1']);
+		expect(overview.overviewState.value.drinks.map(({ id }) => id)).toEqual(['drink-2']);
 	});
 });

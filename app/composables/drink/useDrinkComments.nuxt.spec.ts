@@ -4,7 +4,7 @@ import { getQuery, readBody } from 'h3';
 import { DRINK_COMMENTS_PAGE_SIZE } from '~/domain/comment/comment.constants';
 import type { CommentWithAuthor } from '~/domain/comment/comment.entity';
 import type { Profile } from '~/domain/profile/profile.entity';
-import { useDrinkComments } from './drinkComments';
+import { useDrinkComments } from './useDrinkComments';
 
 const DRINK_ID = 'drink-1';
 

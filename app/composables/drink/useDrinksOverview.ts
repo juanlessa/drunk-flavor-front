@@ -13,6 +13,7 @@ const initState = (): DrinksOverviewState => ({
 
 export const useDrinksOverview = async () => {
 	const { $api } = useNuxtApp();
+	const { t } = useI18n();
 	const { addToast } = useToast();
 
 	const state = useState<DrinksOverviewState>('drinksOverview', initState);
@@ -50,7 +51,11 @@ export const useDrinksOverview = async () => {
 	watch(error, (newError) => {
 		if (!newError) return;
 		console.error(newError);
-		addToast({ type: 'error', title: 'ERROR!', message: 'unable to fetch data' });
+		addToast({
+			type: 'error',
+			title: t('organisms.drinksOverview.errorTitle'),
+			message: t('organisms.drinksOverview.errorMessage')
+		});
 	});
 	watch(status, (newStatus) => {
 		state.value.loading = newStatus === 'pending';

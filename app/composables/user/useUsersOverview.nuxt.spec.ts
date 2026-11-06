@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { registerEndpoint } from '@nuxt/test-utils/runtime';
 import { getQuery } from 'h3';
-import { useUsersOverview } from './overview';
+import { useUsersOverview } from './useUsersOverview';
 
 const receivedQueries: Record<string, unknown>[] = [];
 

@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useReauthentication } from '~/composables/useReauthentication';
+import { useReauthentication } from '~/composables/auth/useReauthentication';
 import GoogleConnectionDialog from './GoogleConnectionDialog.vue';
 
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key: string) => key }) }));

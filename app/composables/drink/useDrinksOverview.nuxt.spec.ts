@@ -3,7 +3,7 @@ import { defineComponent, h } from 'vue';
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime';
 import { getQuery } from 'h3';
 import type { Drink } from '~/domain/drink/drink.entity';
-import { useDrinksOverview } from './overview';
+import { useDrinksOverview } from './useDrinksOverview';
 
 const buildDrink = (id: string) => ({ id }) as Drink;
 
@@ -121,7 +121,11 @@ describe('useDrinksOverview', () => {
 
 		await vi.waitFor(() =>
 			expect(useToast().state.value.displayingToasts).toContainEqual(
-				expect.objectContaining({ type: 'error' })
+				expect.objectContaining({
+					type: 'error',
+					title: 'organisms.drinksOverview.errorTitle',
+					message: 'organisms.drinksOverview.errorMessage'
+				})
 			)
 		);
 	});

@@ -1,20 +1,20 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { registerEndpoint } from '@nuxt/test-utils/runtime';
 import { getQuery, readBody } from 'h3';
-import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
-import { useIngredientsOverview } from './overview';
+import type { Category } from '~/domain/category/category.entity';
+import { useCategoriesOverview } from './useCategoriesOverview';
 
 const receivedQueries: Record<string, unknown>[] = [];
 const deletedIds: string[] = [];
 
-registerEndpoint('/ingredients', {
+registerEndpoint('/categories', {
 	method: 'GET',
 	handler: (event) => {
 		receivedQueries.push(getQuery(event));
 		return [];
 	}
 });
-registerEndpoint('/ingredients', {
+registerEndpoint('/categories', {
 	method: 'DELETE',
 	handler: async (event) => {
 		const body = (await readBody(event)) as { id: string };
@@ -23,13 +23,13 @@ registerEndpoint('/ingredients', {
 	}
 });
 
-describe('useIngredientsOverview', () => {
-	let overview: ReturnType<typeof useIngredientsOverview>;
+describe('useCategoriesOverview', () => {
+	let overview: ReturnType<typeof useCategoriesOverview>;
 
 	beforeEach(() => {
 		receivedQueries.length = 0;
 		deletedIds.length = 0;
-		overview = useIngredientsOverview();
+		overview = useCategoriesOverview();
 		overview.resetOverviewState();
 	});
 
@@ -38,6 +38,7 @@ describe('useIngredientsOverview', () => {
 	});
 
 	it('starts on the first page sorted by the localized name', () => {
+		expect(overview.overviewState.value.categories).toEqual([]);
 		expect(overview.overviewState.value.filter).toMatchObject({
 			page: 1,
 			limit: 30,
@@ -65,18 +66,18 @@ describe('useIngredientsOverview', () => {
 		vi.useFakeTimers();
 		overview.overviewState.value.filter.page = 3;
 
-		overview.searchTerm.value = '  gin  ';
+		overview.searchTerm.value = '  spi  ';
 		await vi.advanceTimersByTimeAsync(300);
 
 		expect(overview.overviewState.value.filter).toMatchObject({
 			page: 1,
-			search: { 'translations.en.name': 'gin' }
+			search: { 'translations.en.name': 'spi' }
 		});
 		await vi.waitFor(() =>
 			expect(receivedQueries).toContainEqual(
 				expect.objectContaining({
 					page: '1',
-					search: JSON.stringify({ 'translations.en.name': 'gin' })
+					search: JSON.stringify({ 'translations.en.name': 'spi' })
 				})
 			)
 		);
@@ -84,7 +85,7 @@ describe('useIngredientsOverview', () => {
 
 	it('clears the search filter when the term is emptied', async () => {
 		vi.useFakeTimers();
-		overview.searchTerm.value = 'gin';
+		overview.searchTerm.value = 'spi';
 		await vi.advanceTimersByTimeAsync(300);
 
 		overview.searchTerm.value = '';
@@ -100,17 +101,12 @@ describe('useIngredientsOverview', () => {
 		await vi.waitFor(() => expect(overview.isEmpty.value).toBe(true));
 	});
 
-	it('removes the deleted ingredient from the loaded list', async () => {
-		overview.overviewState.value.ingredients = [
-			{ id: 'ingredient-1' },
-			{ id: 'ingredient-2' }
-		] as Ingredient[];
+	it('removes the deleted category from the loaded list', async () => {
+		overview.overviewState.value.categories = [{ id: 'cat-1' }, { id: 'cat-2' }] as Category[];
 
-		await overview.deleteIngredient('ingredient-1');
+		await overview.deleteCategory('cat-1');
 
-		expect(deletedIds).toEqual(['ingredient-1']);
-		expect(overview.overviewState.value.ingredients.map(({ id }) => id)).toEqual([
-			'ingredient-2'
-		]);
+		expect(deletedIds).toEqual(['cat-1']);
+		expect(overview.overviewState.value.categories.map(({ id }) => id)).toEqual(['cat-2']);
 	});
 });

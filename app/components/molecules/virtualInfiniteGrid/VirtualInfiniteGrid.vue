@@ -22,7 +22,7 @@
 	</div>
 </template>
 <script setup lang="ts" generic="AcceptableValue extends { [k: string]: any }">
-import { useVirtualInfiniteGrid } from '~/composables/useVirtualInfiniteGrid';
+import { useVirtualInfiniteGrid } from '~/composables/ui/useVirtualInfiniteGrid';
 const props = defineProps({
 	/** Accessible name of the list. */
 	label: { type: String, required: true },

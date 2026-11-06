@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { registerEndpoint } from '@nuxt/test-utils/runtime';
 import type { Profile } from '~/domain/profile/profile.entity';
-import { usePendingOwnershipTransfer } from './pending';
+import { usePendingOwnershipTransfer } from './usePendingOwnershipTransfer';
 
 const PATH = '/administration/ownership-transfer';
 const calls = { get: 0, resend: 0, cancel: 0 };

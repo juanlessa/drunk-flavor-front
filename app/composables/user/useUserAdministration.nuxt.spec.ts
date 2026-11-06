@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { registerEndpoint } from '@nuxt/test-utils/runtime';
-import { useUserAdministration } from './administration';
+import { useUserAdministration } from './useUserAdministration';
 
 const user = {
 	id: 'user-1',

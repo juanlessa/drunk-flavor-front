@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useCategoryForm } from './form';
+import { useCategoryForm } from './useCategoryForm';
 
 describe('useCategoryForm', () => {
 	let form: ReturnType<typeof useCategoryForm>;

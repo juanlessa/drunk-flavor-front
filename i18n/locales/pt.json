@@ -250,7 +250,9 @@
 		},
 		"drinksOverview": {
 			"listLabel": "Receitas de drinks",
-			"heading": "Receitas de drinks"
+			"heading": "Receitas de drinks",
+			"errorTitle": "Erro",
+			"errorMessage": "Não foi possível carregar os drinks."
 		},
 		"drinksControlOverview": {
 			"listLabel": "Drinks",

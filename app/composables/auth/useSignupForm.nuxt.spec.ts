@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useSignupForm } from './useSignup';
+import { useSignupForm } from './useSignupForm';
 
 describe('useSignupForm', () => {
 	let form: ReturnType<typeof useSignupForm>;

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useIngredientForm } from './form';
+import { useIngredientForm } from './useIngredientForm';
 
 describe('useIngredientForm', () => {
 	let form: ReturnType<typeof useIngredientForm>;
