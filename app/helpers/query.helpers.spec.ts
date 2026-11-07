@@ -4,7 +4,7 @@ import { buildTranslatedNameQuery } from './query.helpers';
 describe('query helpers', () => {
 	it('searches and sorts on the name of the given locale', () => {
 		expect(buildTranslatedNameQuery('gin', 'pt')).toEqual({
-			search: { 'translations.pt.name': 'gin' },
+			search: { name: 'gin' },
 			sort: { 'translations.pt.name': 1 }
 		});
 	});

@@ -113,7 +113,7 @@ export const useSearchableSelect = <T extends SearchableEntity>(
 		state.value.selected = { label: name, value: id };
 		state.value.options = [];
 		state.value.filter = updateStateFilter({
-			query: { page: 1, search: { [`translations.${newLocale}.name`]: name } },
+			query: { page: 1, search: { name } },
 			isLastPage: false,
 			searchTerm: name
 		});
@@ -130,7 +130,7 @@ export const useSearchableSelect = <T extends SearchableEntity>(
 			if (shouldResetFilters(newTerm, currentTerm)) {
 				state.value.options = [];
 				state.value.filter = updateStateFilter({
-					query: { page: 1, search: { [`translations.${locale.value}.name`]: newTerm } },
+					query: { page: 1, search: { name: newTerm } },
 					isLastPage: false,
 					searchTerm: newTerm
 				});

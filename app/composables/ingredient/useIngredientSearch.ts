@@ -79,10 +79,10 @@ export const useIngredientSearch = () => {
 
 	onBeforeUnmount(() => resetState());
 
-	watch(locale, (newLocale) => {
+	watch(locale, () => {
 		state.value.options = [];
 		state.value.filter = updateStateFilter({
-			query: { page: 1, search: { [`translations.${newLocale}.name`]: '' } },
+			query: { page: 1, search: { name: '' } },
 			isLastPage: false,
 			searchTerm: ''
 		});
@@ -99,7 +99,7 @@ export const useIngredientSearch = () => {
 			if (shouldResetFilters(newTerm, currentTerm)) {
 				state.value.options = [];
 				state.value.filter = updateStateFilter({
-					query: { page: 1, search: { [`translations.${locale.value}.name`]: newTerm } },
+					query: { page: 1, search: { name: newTerm } },
 					isLastPage: false,
 					searchTerm: newTerm
 				});

@@ -70,13 +70,13 @@ describe('useIngredientsOverview', () => {
 
 		expect(overview.overviewState.value.filter).toMatchObject({
 			page: 1,
-			search: { 'translations.en.name': 'gin' }
+			search: { name: 'gin' }
 		});
 		await vi.waitFor(() =>
 			expect(receivedQueries).toContainEqual(
 				expect.objectContaining({
 					page: '1',
-					search: JSON.stringify({ 'translations.en.name': 'gin' })
+					search: JSON.stringify({ name: 'gin' })
 				})
 			)
 		);

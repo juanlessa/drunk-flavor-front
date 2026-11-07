@@ -77,13 +77,13 @@ describe('useDrinksControlOverview', () => {
 
 		expect(overview.overviewState.value.filter).toMatchObject({
 			page: 1,
-			search: { 'translations.en.name': 'moj' }
+			search: { name: 'moj' }
 		});
 		await vi.waitFor(() =>
 			expect(receivedQueries).toContainEqual(
 				expect.objectContaining({
 					page: '1',
-					search: JSON.stringify({ 'translations.en.name': 'moj' })
+					search: JSON.stringify({ name: 'moj' })
 				})
 			)
 		);
