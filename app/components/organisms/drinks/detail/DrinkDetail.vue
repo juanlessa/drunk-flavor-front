@@ -88,14 +88,73 @@
 								<span
 									class="size-1.5 shrink-0 translate-y-[-0.2em] rounded-full bg-accent"
 									aria-hidden="true"></span>
-								<span class="min-w-0 text-content-secondary">
-									<span class="font-bold text-content">
-										{{ item.measurement }}
+								<div class="flex min-w-0 flex-1 flex-col">
+									<div class="flex items-baseline justify-between gap-3">
+										<span class="min-w-0 text-content-secondary">
+											<span class="font-bold text-content">
+												{{ item.measurement }}
+											</span>
+											{{ item.connector }} {{ item.name }}
+										</span>
+										<Badge
+											v-if="item.optional"
+											class="shrink-0 self-center"
+											:value="$t('drinkDetailPage.ingredients.optional')" />
+									</div>
+									<span
+										v-if="item.description"
+										class="text-body-sm text-content-muted">
+										{{ item.description }}
 									</span>
-									{{ item.connector }} {{ item.name }}
-								</span>
+									<span v-if="item.brand" class="text-body-sm text-content-muted">
+										<span class="font-medium">
+											{{ $t('drinkDetailPage.ingredients.brand') }}:
+										</span>
+										{{ item.brand }}
+									</span>
+								</div>
 							</li>
 						</ul>
+						<div
+							v-if="garnishItems.length"
+							class="flex flex-col gap-3 border-t border-stroke pt-4">
+							<h3 :id="garnishesId" class="text-body font-bold text-content">
+								{{ $t('drinkDetailPage.garnishes.title') }}
+							</h3>
+							<ul
+								class="flex flex-col divide-y divide-stroke"
+								:aria-labelledby="garnishesId">
+								<li
+									v-for="item in garnishItems"
+									:key="item.id"
+									class="flex items-baseline gap-3 py-2.5 first:pt-0 last:pb-0 text-body">
+									<span
+										class="size-1.5 shrink-0 translate-y-[-0.2em] rounded-full bg-accent"
+										aria-hidden="true"></span>
+									<span class="min-w-0 text-content-secondary">
+										<span
+											v-if="item.measurement"
+											class="font-bold text-content">
+											{{ item.measurement }}
+										</span>
+										{{ item.connector }} {{ item.name }}
+										<span
+											v-if="item.description"
+											class="block text-body-sm text-content-muted">
+											{{ item.description }}
+										</span>
+										<span
+											v-if="item.brand"
+											class="block text-body-sm text-content-muted">
+											<span class="font-medium">
+												{{ $t('drinkDetailPage.ingredients.brand') }}:
+											</span>
+											{{ item.brand }}
+										</span>
+									</span>
+								</li>
+							</ul>
+						</div>
 					</section>
 				</Card>
 				<div class="order-3">
@@ -138,11 +197,13 @@ const props = defineProps({
 const localePath = useLocalePath();
 const ingredientsId = useId();
 const methodId = useId();
+const garnishesId = useId();
 
 const {
 	name,
 	method,
 	ingredientItems,
+	garnishItems,
 	ingredientCountLabel,
 	hasRatings,
 	ratingSummaryText,

@@ -8,10 +8,10 @@ const items = Array.from({ length: 6 }, (_, index) => ({ id: index, name: `Item 
 describe('VirtualInfiniteGrid accessibility', () => {
 	it.each([{}, { loading: true }])('has no violations with props %o', async (extra) => {
 		const wrapper = mount(VirtualInfiniteGrid, {
-			props: { items, height: 200, itemHeight: 40, gridColumns: 2, ...extra },
+			props: { label: 'Items', items, itemHeight: 40, gridColumns: 2, ...extra },
 			slots: {
 				default:
-					'<template #default="{ list }"><p v-for="row in list" :key="row.index">Row {{ row.index }}</p></template>',
+					'<template #default="{ list, rowAttrs }"><p v-for="row in list" :key="row.index" v-bind="rowAttrs(row.index)">Row {{ row.index }}</p></template>',
 				loading: '<p>Loading</p>'
 			},
 			attachTo: document.body

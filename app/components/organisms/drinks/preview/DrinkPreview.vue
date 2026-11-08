@@ -87,6 +87,7 @@ const props = defineProps({
 	}
 });
 
+const { t } = useI18n();
 const titleId = useId();
 const ingredientsId = useId();
 const methodId = useId();
@@ -94,10 +95,15 @@ const methodId = useId();
 const {
 	name,
 	method,
-	ingredientItems,
-	ingredientCountLabel,
+	ingredientItems: allIngredientItems,
 	hasRatings,
 	ratingSummaryText,
 	ratingSummaryLabel
 } = useDrinkSummary(() => props.drink);
+
+// Like the card, the preview leaves optional ingredients out.
+const ingredientItems = computed(() => allIngredientItems.value.filter((item) => !item.optional));
+const ingredientCountLabel = computed(() =>
+	t('drinkDetailPage.ingredients.count', ingredientItems.value.length)
+);
 </script>

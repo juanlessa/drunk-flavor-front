@@ -2,9 +2,11 @@ import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Suspense, defineComponent, h, ref } from 'vue';
 import UpdateDrink from './UpdateDrink.vue';
+import { initEmptyDrinkForm } from '~/factories/drink.factory';
+import type { DrinkForm } from '~/types/drink.types';
 
 const DrinkFormStub = {
-	props: ['drink', 'title', 'submitLabel'],
+	props: ['drink', 'title', 'submitLabel', 'serverErrors'],
 	emits: ['submit', 'cancel'],
 	template: '<div data-testid="drink-form" />'
 };
@@ -50,6 +52,10 @@ const mountUpdate = async () => {
 	return wrapper;
 };
 
+const updateForm: DrinkForm = {
+	...initEmptyDrinkForm(),
+	translations: drink.translations
+};
 describe('UpdateDrink', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
@@ -71,7 +77,7 @@ describe('UpdateDrink', () => {
 		const wrapper = await mountUpdate();
 
 		wrapper.findComponent(DrinkFormStub).vm.$emit('submit', {
-			form: { translations: drink.translations, ingredients: [] },
+			form: updateForm,
 			cover: undefined,
 			thumbnail
 		});
@@ -90,7 +96,7 @@ describe('UpdateDrink', () => {
 		const wrapper = await mountUpdate();
 
 		wrapper.findComponent(DrinkFormStub).vm.$emit('submit', {
-			form: { translations: drink.translations, ingredients: [] },
+			form: updateForm,
 			cover: undefined,
 			thumbnail: undefined
 		});
@@ -100,5 +106,25 @@ describe('UpdateDrink', () => {
 			expect.objectContaining({ type: 'error', message: 'organisms.drinkForm.updateError' })
 		);
 		expect(mockRouterBack).not.toHaveBeenCalled();
+	});
+	it('hands the form the errors the API listed when the drink cannot be updated, and clears them next time', async () => {
+		const fieldError = {
+			location: 'body',
+			path: 'preparation',
+			localeKey: 'apiResponses.drinks.preparation.nothingServed',
+			message: 'Nothing was served'
+		};
+		mockUpdate.mockRejectedValueOnce({ data: { errors: [fieldError] } });
+		vi.spyOn(console, 'error').mockImplementation(() => {});
+		const wrapper = await mountUpdate();
+		const payload = { form: updateForm, cover: undefined, thumbnail: undefined };
+
+		wrapper.findComponent(DrinkFormStub).vm.$emit('submit', payload);
+		await flushPromises();
+		expect(wrapper.findComponent(DrinkFormStub).props('serverErrors')).toEqual([fieldError]);
+
+		wrapper.findComponent(DrinkFormStub).vm.$emit('submit', payload);
+		await flushPromises();
+		expect(wrapper.findComponent(DrinkFormStub).props('serverErrors')).toEqual([]);
 	});
 });

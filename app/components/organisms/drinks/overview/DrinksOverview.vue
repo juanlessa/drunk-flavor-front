@@ -1,20 +1,22 @@
 <template>
-	<div ref="containerRef" class="relative flex-1">
+	<div class="relative flex-1">
 		<!-- The page is a visual grid with no display heading, so the required h1 is screen-reader only. -->
 		<Heading as="h1" class="sr-only">{{ $t('organisms.drinksOverview.heading') }}</Heading>
 		<ClientOnly>
 			<VirtualInfiniteGrid
+				:label="$t('organisms.drinksOverview.listLabel')"
 				:items="overviewState.drinks"
-				:height="containerHeight"
 				:item-height="CARD_GRID_METRICS_PX.drinkRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
+				:can-load-more="!overviewState.filter.isLastPage"
 				@load-more="loadNextPage">
-				<template #default="{ list }">
+				<template #default="{ list, rowAttrs }">
 					<Box
 						v-for="{ data: drinkRow, index } in list"
 						:key="index"
+						v-bind="rowAttrs(index)"
 						direction="row"
 						:class="virtualGridRowStyle({ fixedHeight: true })">
 						<DrinkCard v-for="drink in drinkRow" :key="drink.id" :drink="drink" />
@@ -72,39 +74,6 @@ import {
 } from '~/components/molecules/virtualInfiniteGrid/VirtualInfiniteGrid.contract';
 
 const { overviewState, loadNextPage } = await useDrinksOverview();
-const { screenType } = useScreenType();
 
-const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
-
-function useVirtualInfiniteGrid() {
-	const containerRef = ref<HTMLDivElement | null>(null);
-	const containerHeight = ref(0);
-	const gridColumns = computed(() => {
-		if (screenType.value === 'mobile') return 1;
-		if (screenType.value === 'tablet') return 2;
-		return 3;
-	});
-
-	const updateContainerHeight = () => {
-		if (containerRef.value) {
-			containerHeight.value = containerRef.value.offsetHeight;
-		}
-	};
-
-	let resizeObserver: ResizeObserver;
-	onMounted(() => {
-		resizeObserver = new ResizeObserver(updateContainerHeight);
-		if (containerRef.value) {
-			resizeObserver.observe(containerRef.value);
-		}
-	});
-	onBeforeUnmount(() => {
-		if (containerRef.value) {
-			resizeObserver.unobserve(containerRef.value);
-		}
-		resizeObserver.disconnect();
-	});
-
-	return { containerRef, containerHeight, gridColumns };
-}
+const gridColumns = useGridColumns();
 </script>

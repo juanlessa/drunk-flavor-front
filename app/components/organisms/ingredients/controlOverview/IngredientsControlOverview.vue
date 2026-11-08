@@ -11,20 +11,22 @@
 		{{ $t('organisms.ingredientsControlOverview.emptyMessage') }}
 	</Text>
 
-	<div ref="containerRef" class="flex-1">
+	<div class="relative flex-1">
 		<ClientOnly>
 			<VirtualInfiniteGrid
+				:label="$t('organisms.ingredientsControlOverview.listLabel')"
 				:items="overviewState.ingredients"
-				:height="containerHeight"
 				:item-height="CARD_GRID_METRICS_PX.managementRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
 				:loading="overviewState.loading"
+				:can-load-more="!overviewState.filter.isLastPage"
 				@load-more="loadNextPage">
-				<template #default="{ list }">
+				<template #default="{ list, rowAttrs }">
 					<div
 						v-for="{ data: ingredientRow, index } in list"
 						:key="index"
+						v-bind="rowAttrs(index)"
 						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
 						<ManagementItemCard
 							v-for="ingredient in ingredientRow"
@@ -54,7 +56,6 @@
 </template>
 <script setup lang="ts">
 import { initEmptyIngredient } from '~/domain/ingredient/ingredient.factory';
-import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
 import { getIngredientSummary } from '~/helpers/ingredient.helpers';
 import {
 	CARD_GRID_METRICS_PX,
@@ -62,16 +63,18 @@ import {
 } from '~/components/molecules/virtualInfiniteGrid/VirtualInfiniteGrid.contract';
 
 const { $router } = useNuxtApp();
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 const localePath = useLocalePath();
-const { addToast } = useToast();
 const { overviewState, searchTerm, isEmpty, deleteIngredient, loadNextPage } =
 	useIngredientsOverview();
-const { screenType } = useScreenType();
 
-const { containerRef, containerHeight, gridColumns } = useVirtualInfiniteGrid();
-const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } =
-	useIngredientDeleteModal();
+const gridColumns = useGridColumns();
+const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } = useDeleteModal({
+	i18nPrefix: 'organisms.ingredientsControlOverview',
+	initEmpty: initEmptyIngredient,
+	getName: (ingredient, lang) => ingredient.translations[lang].name,
+	remove: deleteIngredient
+});
 
 const handleCreateIngredient = () => {
 	$router.push(localePath('/ingredients/new'));
@@ -79,78 +82,4 @@ const handleCreateIngredient = () => {
 const handleEditIngredient = (id: string) => {
 	$router.push(localePath(`/ingredients/${id}/edit`));
 };
-
-function useVirtualInfiniteGrid() {
-	const containerRef = ref<HTMLDivElement | null>(null);
-	const containerHeight = ref(0);
-	const gridColumns = computed(() => {
-		if (screenType.value === 'mobile') return 1;
-		if (screenType.value === 'tablet') return 2;
-		return 3;
-	});
-
-	const updateContainerHeight = () => {
-		if (containerRef.value) {
-			containerHeight.value = containerRef.value.offsetHeight;
-		}
-	};
-
-	let resizeObserver: ResizeObserver;
-	onMounted(() => {
-		resizeObserver = new ResizeObserver(updateContainerHeight);
-		if (containerRef.value) {
-			resizeObserver.observe(containerRef.value);
-		}
-	});
-	onBeforeUnmount(() => {
-		if (containerRef.value) {
-			resizeObserver.unobserve(containerRef.value);
-		}
-		resizeObserver.disconnect();
-	});
-
-	return { containerRef, containerHeight, gridColumns };
-}
-
-function useIngredientDeleteModal() {
-	const isOpen = ref(false);
-	const ingredientToDelete = ref(initEmptyIngredient());
-
-	const modalContent = computed(() => ({
-		title: t('organisms.ingredientsControlOverview.deleteModal.title', {
-			name: ingredientToDelete.value.translations[locale.value].name
-		}),
-		description: t('organisms.ingredientsControlOverview.deleteModal.description')
-	}));
-
-	const triggerDeleteModal = (ingredient: Ingredient) => {
-		ingredientToDelete.value = { ...ingredient };
-		isOpen.value = true;
-	};
-
-	const handleCancel = () => {
-		ingredientToDelete.value = initEmptyIngredient();
-	};
-
-	const handleDelete = async () => {
-		try {
-			await deleteIngredient(ingredientToDelete.value.id);
-			addToast({
-				type: 'success',
-				title: t('organisms.ingredientsControlOverview.deleteSuccess.title'),
-				message: t('organisms.ingredientsControlOverview.deleteSuccess.message')
-			});
-		} catch {
-			addToast({
-				type: 'error',
-				title: t('organisms.ingredientsControlOverview.deleteError.title'),
-				message: t('organisms.ingredientsControlOverview.deleteError.message')
-			});
-		} finally {
-			ingredientToDelete.value = initEmptyIngredient();
-		}
-	};
-
-	return { isOpen, handleCancel, handleDelete, triggerDeleteModal, modalContent };
-}
 </script>

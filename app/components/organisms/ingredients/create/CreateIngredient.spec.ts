@@ -33,11 +33,14 @@ const mountCreateIngredient = () =>
 
 const ingredientFormPayload = {
 	translations: {
-		en: { name: 'Sugar' },
-		pt: { name: 'Açúcar' }
+		en: { name: 'Sugar', description: '' },
+		pt: { name: 'Açúcar', description: '', gender: 'masculine' as const }
 	},
 	categoryId: 'cat-1',
-	unitId: 'unit-1'
+	kind: 'generic' as const,
+	brand: '',
+	measurable: true,
+	unitIds: ['unit-1']
 };
 
 describe('CreateIngredient', () => {
@@ -82,9 +85,13 @@ describe('CreateIngredient', () => {
 			await wrapper.vm.$nextTick();
 
 			expect(mockApiCreate).toHaveBeenCalledWith({
-				translations: ingredientFormPayload.translations,
+				translations: {
+					en: { name: 'Sugar' },
+					pt: { name: 'Açúcar', gender: 'masculine' }
+				},
 				categoryId: 'cat-1',
-				unitId: 'unit-1'
+				unitIds: ['unit-1'],
+				kind: 'generic'
 			});
 		});
 

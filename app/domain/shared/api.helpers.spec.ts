@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { ApiErrorCodes } from './api.constants';
-import { hasApiErrorCode, normalizeApiError, readApiErrorCode } from './api.helpers';
+import {
+	hasApiErrorCode,
+	normalizeApiError,
+	readApiErrorCode,
+	readApiFieldErrors
+} from './api.helpers';
 
 const recentCode = ApiErrorCodes.recentAuthenticationRequired;
 
@@ -66,5 +71,44 @@ describe('hasApiErrorCode', () => {
 				ApiErrorCodes.sessionRevoked
 			)
 		).toBe(false);
+	});
+});
+
+describe('readApiFieldErrors', () => {
+	const fieldError = {
+		location: 'body',
+		path: 'preparation.actions.2',
+		localeKey: 'apiResponses.drinks.preparation.nothingToShake',
+		message: 'Nothing to shake'
+	};
+
+	it('reads the errors of the response envelope', () => {
+		expect(
+			readApiFieldErrors({ response: { status: 400, _data: { errors: [fieldError] } } })
+		).toEqual([fieldError]);
+	});
+
+	it('reads the errors of the flattened error', () => {
+		expect(readApiFieldErrors({ statusCode: 400, data: { errors: [fieldError] } })).toEqual([
+			fieldError
+		]);
+	});
+
+	it('keeps only the entries that look like a field error', () => {
+		expect(
+			readApiFieldErrors({ data: { errors: [fieldError, { path: 1 }, 'x', null] } })
+		).toEqual([fieldError]);
+	});
+
+	it.each([
+		undefined,
+		null,
+		'oops',
+		{},
+		{ data: {} },
+		{ data: { errors: 'no' } },
+		{ response: 1 }
+	])('is empty when the error carries none (%o)', (error) => {
+		expect(readApiFieldErrors(error)).toEqual([]);
 	});
 });

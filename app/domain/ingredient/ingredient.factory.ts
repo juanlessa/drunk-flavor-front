@@ -1,7 +1,6 @@
 import { initEmptyCategory } from '../category/category.factory';
-import { initEmptyUnit } from '../unit/unit.factory';
+import { IngredientKinds } from './ingredient.constants';
 import type { Ingredient } from './ingredient.entity';
-
 export const initEmptyIngredient = (): Ingredient => ({
 	id: '',
 	translations: {
@@ -9,7 +8,9 @@ export const initEmptyIngredient = (): Ingredient => ({
 		pt: { name: '' }
 	},
 	category: initEmptyCategory(),
-	unit: initEmptyUnit(),
+	units: [],
+	kind: IngredientKinds.generic,
+	brand: undefined,
 	createdAt: new Date(),
 	updatedAt: new Date()
 });

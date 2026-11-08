@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { useReauthentication } from '~/composables/useReauthentication';
+import { useReauthentication } from '~/composables/auth/useReauthentication';
 import UserReasonActionDialog from './UserReasonActionDialog.vue';
 
 vi.mock('radix-vue/namespaced', () => {

@@ -61,6 +61,13 @@
 										:value="checkError(`translations.${lang}.namePlural`)" />
 								</template>
 							</InputWrapper>
+							<GenderField
+								v-if="isGenderedLanguage(lang)"
+								:id="`${lang}-gender`"
+								v-model="formState.form.translations[lang].gender"
+								:name="`${lang}_gender`"
+								:error="checkError(`translations.${lang}.gender`)"
+								@blur="validateForm" />
 						</div>
 					</div>
 				</FormSection>
@@ -161,6 +168,7 @@
 
 <script setup lang="ts">
 import ArrowLeftIcon from '~/components/icons/ArrowLeftIcon.vue';
+import { isGenderedLanguage } from '~/domain/shared/gender.helpers';
 import { languages } from '~/domain/shared/translations.constants';
 import { unitKinds } from '~/domain/unit/unit.constants';
 import type { UnitKind } from '~/domain/unit/unit.entity';

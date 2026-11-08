@@ -1,5 +1,6 @@
 <template>
 	<DrinkForm
+		:server-errors="serverErrors"
 		:drink="drink"
 		:title="$t('organisms.drinkForm.editTitle')"
 		:submit-label="$t('organisms.drinkForm.saveButton')"
@@ -9,6 +10,8 @@
 <script setup lang="ts">
 import { mapFormToUpdateDrink } from '~/mappers/drink.mappers';
 import type { Drink } from '~/domain/drink/drink.entity';
+import type { ApiFieldError } from '~/domain/shared/api.types';
+import { readApiFieldErrors } from '~/domain/shared/api.helpers';
 import type { DrinkFormAndMedia } from '~/types/drink.types';
 
 const props = defineProps({
@@ -18,6 +21,8 @@ const props = defineProps({
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
 const { addToast } = useToast();
+// What the API said about the plan when saving failed, so the form can show where it went wrong.
+const serverErrors = ref<ApiFieldError[]>([]);
 
 const drink = ref<Drink | undefined>(undefined);
 
@@ -45,9 +50,11 @@ const reportError = (key: string, error: unknown) => {
 };
 
 const handleSubmit = async ({ form, cover, thumbnail }: DrinkFormAndMedia) => {
+	serverErrors.value = [];
 	try {
 		await $api.drinks.update(mapFormToUpdateDrink(props.drinkId, form));
 	} catch (error) {
+		serverErrors.value = readApiFieldErrors(error);
 		reportError('updateError', error);
 		return;
 	}

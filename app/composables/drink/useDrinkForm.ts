@@ -1,0 +1,48 @@
+import { checkFieldError } from '~/helpers/checkFieldError';
+import type { DrinkForm, DrinkFormState } from '~/types/drink.types';
+import { initEmptyDrinkForm } from '~/factories/drink.factory';
+import { drinkFormValidator } from '~/validations/drink';
+
+const initState = (): DrinkFormState => ({
+	form: initEmptyDrinkForm(),
+	cover: undefined,
+	thumbnail: undefined,
+	errors: [],
+	displayErrors: false
+});
+
+export const useDrinkForm = () => {
+	const { t } = useI18n();
+
+	// Local to the calling component: the state is discarded on unmount, so it needs no manual reset.
+	const state = ref<DrinkFormState>(initState());
+
+	const updateFormState = (newFormValue: DrinkForm) => {
+		state.value.form = newFormValue;
+	};
+
+	const checkError = (field: string) => {
+		const error = checkFieldError(state.value.errors, field);
+		if (!error) {
+			return '';
+		}
+		return t(error);
+	};
+
+	const validateForm = () => {
+		if (!state.value.displayErrors) {
+			return;
+		}
+		const data = state.value.form;
+		const errors = drinkFormValidator(data);
+
+		state.value.errors = errors;
+	};
+
+	return {
+		formState: state,
+		updateFormState,
+		checkError,
+		validateForm
+	};
+};

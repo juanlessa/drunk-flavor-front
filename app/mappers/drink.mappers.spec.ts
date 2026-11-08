@@ -1,21 +1,32 @@
 import { describe, it, expect } from 'vitest';
-import { mapDrinkToForm, mapFormToCreateDrink, mapFormToUpdateDrink } from './drink.mappers';
-import type { DrinkForm } from '../types/drink.types';
+import { reactive } from 'vue';
+import {
+	mapDrinkToForm,
+	mapFormToCreateDrink,
+	mapFormToGenerateMethod,
+	mapFormToUpdateDrink
+} from './drink.mappers';
 import type { Drink } from '~/domain/drink/drink.entity';
-import type { Unit } from '~/domain/unit/unit.entity';
+import type { PreparationPlan } from '~/domain/preparation/preparation.entity';
+import { initEmptyDrinkForm } from '~/factories/drink.factory';
+import { buildIngredient, buildLine, buildUnit, milliliter } from '~/test/drink.fixtures';
+import type { DrinkForm } from '~/types/drink.types';
 
-const mockMilliliterUnit: Unit = {
-	id: 'unit-1',
-	translations: {
-		en: { name: 'milliliter', namePlural: 'milliliters' },
-		pt: { name: 'mililitro', namePlural: 'mililitros' }
-	},
-	symbol: 'ml',
-	spaceBeforeSymbol: false,
-	allowDecimal: true,
-	kind: 'volume',
-	createdAt: new Date(),
-	updatedAt: new Date()
+const rum = buildIngredient('ing-1', 'Rum');
+const juice = buildIngredient('ing-2', 'Pineapple Juice');
+const foam = buildIngredient('ing-3', 'Ginger foam', []);
+const lime = buildIngredient('ing-4', 'Lime');
+
+const plan: PreparationPlan = {
+	mixingVessel: 'serving_glass',
+	servingGlass: 'rocks',
+	actions: [
+		{
+			type: 'add',
+			target: 'mixing',
+			items: [{ list: 'ingredients', ingredientId: 'ing-1', unitId: 'ml' }]
+		}
+	]
 };
 
 const mockDrink: Drink = {
@@ -28,80 +39,102 @@ const mockDrink: Drink = {
 	thumbnail: { name: 'thumb.jpg', mimetype: 'image/jpeg', url: 'https://example.com/thumb.jpg' },
 	ingredients: [
 		{
-			quantity: 60,
-			ingredient: {
-				id: 'ing-1',
-				translations: {
-					en: { name: 'Rum' },
-					pt: { name: 'Rum' }
-				},
-				category: {
-					id: 'cat-1',
-					translations: { en: { name: 'Spirits' }, pt: { name: 'Destilados' } },
-					isAlcoholic: true,
-					createdAt: new Date(),
-					updatedAt: new Date()
-				},
-				unit: mockMilliliterUnit,
-				createdAt: new Date(),
-				updatedAt: new Date()
-			}
+			ingredient: rum,
+			amount: { type: 'exact', quantity: 60, unit: milliliter },
+			optional: false
 		},
 		{
-			quantity: 90,
-			ingredient: {
-				id: 'ing-2',
-				translations: {
-					en: { name: 'Pineapple Juice' },
-					pt: { name: 'Suco de abacaxi' }
-				},
-				category: {
-					id: 'cat-2',
-					translations: { en: { name: 'Juices' }, pt: { name: 'Sucos' } },
-					isAlcoholic: false,
-					createdAt: new Date(),
-					updatedAt: new Date()
-				},
-				unit: mockMilliliterUnit,
-				createdAt: new Date(),
-				updatedAt: new Date()
-			}
-		}
+			ingredient: juice,
+			amount: { type: 'qualitative', qualifier: 'top_up', quantity: 90, unit: milliliter },
+			optional: true
+		},
+		{ ingredient: foam, amount: { type: 'none' }, optional: false }
 	],
+	garnishes: [{ ingredient: lime, amount: { type: 'exact', quantity: 1, unit: milliliter } }],
 	avgRating: 0,
 	ratingsCount: 0,
 	createdAt: new Date(),
 	updatedAt: new Date()
 };
 
-const mockDrinkForm: DrinkForm = {
+const mockForm = (overrides: Partial<DrinkForm> = {}): DrinkForm => ({
 	translations: {
 		en: { name: 'Piña Colada', method: 'Blend everything' },
 		pt: { name: 'Piña Colada', method: 'Bata tudo' }
 	},
 	ingredients: [
-		{ ingredientId: 'ing-1', quantity: 60 },
-		{ ingredientId: 'ing-2', quantity: 90 }
-	]
-};
+		buildLine(rum),
+		buildLine(juice, { type: 'qualitative', qualifier: 'to_taste' }, true)
+	],
+	garnishes: [buildLine(lime, { type: 'none' })],
+	methodMode: 'manual',
+	preparation: plan,
+	...overrides
+});
 
 describe('mapDrinkToForm', () => {
-	it('maps a drink entity to a form object', () => {
-		const result = mapDrinkToForm(mockDrink);
-
-		expect(result.translations).toEqual({
+	it('maps the translations', () => {
+		expect(mapDrinkToForm(mockDrink).translations).toEqual({
 			en: { name: 'Piña Colada', method: 'Blend everything' },
 			pt: { name: 'Piña Colada', method: 'Bata tudo' }
 		});
 	});
 
-	it('maps ingredients to DrinkIngredientRequest format', () => {
+	it('keeps the ingredient of each line and maps every kind of amount, with the optional flag', () => {
+		const { ingredients } = mapDrinkToForm(mockDrink);
+
+		expect(ingredients).toEqual([
+			{
+				ingredient: rum,
+				amount: { type: 'exact', quantity: 60, unitId: 'ml' },
+				optional: false
+			},
+			{
+				ingredient: juice,
+				amount: { type: 'qualitative', qualifier: 'top_up', quantity: 90, unitId: 'ml' },
+				optional: true
+			},
+			{ ingredient: foam, amount: { type: 'none' }, optional: false }
+		]);
+	});
+
+	it('maps the garnishes, which are never optional lines of their own', () => {
+		expect(mapDrinkToForm(mockDrink).garnishes).toEqual([
+			{
+				ingredient: lime,
+				amount: { type: 'exact', quantity: 1, unitId: 'ml' },
+				optional: false
+			}
+		]);
+	});
+
+	it('edits the written method of a drink without a plan, with an empty plan ready', () => {
 		const result = mapDrinkToForm(mockDrink);
 
-		expect(result.ingredients).toEqual([
-			{ ingredientId: 'ing-1', quantity: 60 },
-			{ ingredientId: 'ing-2', quantity: 90 }
-		]);
+		expect(result.methodMode).toBe('manual');
+		expect(result.preparation).toEqual(initEmptyDrinkForm().preparation);
+	});
+
+	it('edits the plan of a drink that has one, as a copy', () => {
+		const result = mapDrinkToForm({ ...mockDrink, preparation: plan });
+
+		expect(result.methodMode).toBe('generated');
+		expect(result.preparation).toEqual(plan);
+		expect(result.preparation).not.toBe(plan);
+	});
+
+	it('discards the autogenerated method of a drink that has a plan', () => {
+		const result = mapDrinkToForm({ ...mockDrink, preparation: plan });
+
+		expect(result.translations.en.method).toBe('');
+		expect(result.translations.pt.method).toBe('');
+		expect(result.translations.en.name).toBe('Piña Colada');
+	});
+
+	it('copies the plan even when the drink is a reactive proxy', () => {
+		const result = mapDrinkToForm(reactive({ ...mockDrink, preparation: plan }) as Drink);
+
+		expect(result.preparation).toEqual(plan);
 	});
 
 	it('does not include cover, thumbnail, or date fields', () => {
@@ -109,55 +142,145 @@ describe('mapDrinkToForm', () => {
 
 		expect(result).not.toHaveProperty('id');
 		expect(result).not.toHaveProperty('cover');
-		expect(result).not.toHaveProperty('thumbnail');
 		expect(result).not.toHaveProperty('createdAt');
 	});
 
-	it('handles empty ingredients array', () => {
-		const drinkNoIngredients = { ...mockDrink, ingredients: [] };
-		const result = mapDrinkToForm(drinkNoIngredients);
+	it('handles empty ingredients and garnishes', () => {
+		const result = mapDrinkToForm({ ...mockDrink, ingredients: [], garnishes: [] });
 
 		expect(result.ingredients).toEqual([]);
+		expect(result.garnishes).toEqual([]);
 	});
 });
 
 describe('mapFormToCreateDrink', () => {
-	it('maps a form to a create request', () => {
-		const result = mapFormToCreateDrink(mockDrinkForm);
+	it('sends the methods written by hand, and no plan, in manual mode', () => {
+		const result = mapFormToCreateDrink(mockForm());
 
-		expect(result).toEqual({
-			translations: {
-				en: { name: 'Piña Colada', method: 'Blend everything' },
-				pt: { name: 'Piña Colada', method: 'Bata tudo' }
+		expect(result.translations).toEqual({
+			en: { name: 'Piña Colada', method: 'Blend everything' },
+			pt: { name: 'Piña Colada', method: 'Bata tudo' }
+		});
+		expect(result).not.toHaveProperty('preparation');
+	});
+
+	it('sends the plan and only the names, never the methods, in generated mode', () => {
+		const result = mapFormToCreateDrink(mockForm({ methodMode: 'generated' }));
+
+		expect(result.preparation).toEqual(plan);
+		expect(result.translations).toEqual({
+			en: { name: 'Piña Colada' },
+			pt: { name: 'Piña Colada' }
+		});
+	});
+
+	it('sends each ingredient by id, with its amount and optional flag', () => {
+		expect(mapFormToCreateDrink(mockForm()).ingredients).toEqual([
+			{
+				ingredientId: 'ing-1',
+				amount: { type: 'exact', quantity: 60, unitId: 'ml' },
+				optional: false
 			},
+			{
+				ingredientId: 'ing-2',
+				amount: { type: 'qualitative', qualifier: 'to_taste' },
+				optional: true
+			}
+		]);
+	});
+
+	it('sends the garnishes without the optional flag', () => {
+		const [garnish] = mapFormToCreateDrink(mockForm()).garnishes ?? [];
+
+		expect(garnish).toEqual({ ingredientId: 'ing-4', amount: { type: 'none' } });
+		expect(garnish).not.toHaveProperty('optional');
+	});
+
+	it('drops the hint of a qualitative amount that has no quantity', () => {
+		const form = mockForm({
 			ingredients: [
-				{ ingredientId: 'ing-1', quantity: 60 },
-				{ ingredientId: 'ing-2', quantity: 90 }
+				buildLine(rum),
+				buildLine(juice, {
+					type: 'qualitative',
+					qualifier: 'top_up',
+					quantity: 0,
+					unitId: 'ml'
+				})
 			]
+		});
+
+		expect(mapFormToCreateDrink(form).ingredients[1]!.amount).toEqual({
+			type: 'qualitative',
+			qualifier: 'top_up'
+		});
+	});
+
+	it('keeps the hint of a qualitative amount that has a quantity', () => {
+		const form = mockForm({
+			ingredients: [
+				buildLine(juice, {
+					type: 'qualitative',
+					qualifier: 'top_up',
+					quantity: 100,
+					unitId: 'ml'
+				})
+			]
+		});
+
+		expect(mapFormToCreateDrink(form).ingredients[0]!.amount).toEqual({
+			type: 'qualitative',
+			qualifier: 'top_up',
+			quantity: 100,
+			unitId: 'ml'
+		});
+	});
+
+	it('sends the unit chosen among several', () => {
+		const grams = buildUnit('g', { symbol: 'g' });
+		const sugar = buildIngredient('ing-5', 'Sugar', [milliliter, grams]);
+		const form = mockForm({
+			ingredients: [buildLine(sugar, { type: 'exact', quantity: 5, unitId: 'g' })]
+		});
+
+		expect(mapFormToCreateDrink(form).ingredients[0]!.amount).toEqual({
+			type: 'exact',
+			quantity: 5,
+			unitId: 'g'
 		});
 	});
 });
 
 describe('mapFormToUpdateDrink', () => {
-	it('maps a form to an update request with id', () => {
-		const result = mapFormToUpdateDrink('drink-1', mockDrinkForm);
+	it('maps a form to an update request with id and the garnishes it carries', () => {
+		const result = mapFormToUpdateDrink('drink-1', mockForm());
 
-		expect(result).toEqual({
-			id: 'drink-1',
-			translations: {
-				en: { name: 'Piña Colada', method: 'Blend everything' },
-				pt: { name: 'Piña Colada', method: 'Bata tudo' }
-			},
-			ingredients: [
-				{ ingredientId: 'ing-1', quantity: 60 },
-				{ ingredientId: 'ing-2', quantity: 90 }
-			]
-		});
+		expect(result.id).toBe('drink-1');
+		expect(result.garnishes).toEqual([{ ingredientId: 'ing-4', amount: { type: 'none' } }]);
+		expect(result.translations.en).toEqual({ name: 'Piña Colada', method: 'Blend everything' });
 	});
 
-	it('includes the provided id', () => {
-		const result = mapFormToUpdateDrink('custom-id', mockDrinkForm);
+	it('sends the plan and the names in generated mode', () => {
+		const result = mapFormToUpdateDrink('drink-1', mockForm({ methodMode: 'generated' }));
 
-		expect(result.id).toBe('custom-id');
+		expect(result.preparation).toEqual(plan);
+		expect(result.translations.en).toEqual({ name: 'Piña Colada' });
+	});
+
+	it('sends no plan in manual mode, so the stored one is removed', () => {
+		expect(mapFormToUpdateDrink('drink-1', mockForm())).not.toHaveProperty('preparation');
+	});
+});
+
+describe('mapFormToGenerateMethod', () => {
+	it('sends the recipe lines and the plan of the form, whatever the mode', () => {
+		const result = mapFormToGenerateMethod(mockForm());
+
+		expect(result.preparation).toEqual(plan);
+		expect(result.ingredients.map(({ ingredientId }) => ingredientId)).toEqual([
+			'ing-1',
+			'ing-2'
+		]);
+		expect(result.garnishes).toEqual([{ ingredientId: 'ing-4', amount: { type: 'none' } }]);
+		expect(result).not.toHaveProperty('translations');
 	});
 });
