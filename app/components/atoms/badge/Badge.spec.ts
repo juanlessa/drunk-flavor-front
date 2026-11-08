@@ -11,6 +11,7 @@ describe('Badge', () => {
 		['accent', 'bg-accent-subtle'],
 		['success', 'bg-success-surface'],
 		['warning', 'bg-warning-surface'],
+		['danger', 'bg-danger-surface'],
 		['neutral', 'bg-surface-control']
 	] as const)('applies the %s tone', (tone, expectedClass) => {
 		expect(mount(Badge, { props: { value: 'Label', tone } }).classes()).toContain(

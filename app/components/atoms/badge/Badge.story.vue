@@ -12,6 +12,6 @@
 import { reactive } from 'vue';
 import type { BadgeTone } from './Badge.types';
 
-const tones: BadgeTone[] = ['accent', 'success', 'warning', 'neutral'];
+const tones: BadgeTone[] = ['accent', 'success', 'warning', 'danger', 'neutral'];
 const state = reactive({ value: 'Active' });
 </script>

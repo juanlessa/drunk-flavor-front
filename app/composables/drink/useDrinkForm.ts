@@ -8,8 +8,7 @@ const initState = (): DrinkFormState => ({
 	cover: undefined,
 	thumbnail: undefined,
 	errors: [],
-	displayErrors: false,
-	defaultIngredients: []
+	displayErrors: false
 });
 
 export const useDrinkForm = () => {

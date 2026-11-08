@@ -93,6 +93,11 @@
 										{{ item.measurement }}
 									</span>
 									{{ item.connector }} {{ item.name }}
+									<span
+										v-if="item.description"
+										class="block text-body-sm text-content-muted">
+										{{ item.description }}
+									</span>
 								</span>
 							</li>
 						</ul>

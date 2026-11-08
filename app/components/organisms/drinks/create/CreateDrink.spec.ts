@@ -1,9 +1,13 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import CreateDrink from './CreateDrink.vue';
+import { initEmptyDrinkForm } from '~/factories/drink.factory';
+import { mapFormToCreateDrink } from '~/mappers/drink.mappers';
+import { buildIngredient, buildLine } from '~/test/drink.fixtures';
+import type { DrinkForm } from '~/types/drink.types';
 
 const DrinkFormStub = {
-	props: ['title', 'submitLabel'],
+	props: ['title', 'submitLabel', 'serverErrors'],
 	emits: ['submit', 'cancel'],
 	template: '<div data-testid="drink-form" />'
 };
@@ -27,12 +31,13 @@ vi.stubGlobal('useNuxtApp', () => ({
 vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 vi.stubGlobal('useToast', () => ({ addToast: mockAddToast }));
 
-const form = {
+const form: DrinkForm = {
+	...initEmptyDrinkForm(),
 	translations: {
 		en: { name: 'Mojito', method: 'Shake.' },
 		pt: { name: 'Mojito', method: 'Bata.' }
 	},
-	ingredients: [{ ingredientId: 'rum', quantity: 60 }]
+	ingredients: [buildLine(buildIngredient('rum', 'Rum'))]
 };
 const cover = new File(['c'], 'cover.png', { type: 'image/png' });
 const thumbnail = new File(['t'], 'thumb.png', { type: 'image/png' });
@@ -67,7 +72,7 @@ describe('CreateDrink', () => {
 	it('creates the drink, then uploads the cover and the thumbnail to their own endpoints', async () => {
 		await submit({ form, cover, thumbnail });
 
-		expect(mockCreate).toHaveBeenCalledWith(form);
+		expect(mockCreate).toHaveBeenCalledWith(mapFormToCreateDrink(form));
 		expect(mockUpdateCover).toHaveBeenCalledWith('drink-1', cover);
 		expect(mockUpdateThumbnail).toHaveBeenCalledWith('drink-1', thumbnail);
 		expect(mockAddToast).toHaveBeenCalledWith(expect.objectContaining({ type: 'success' }));
@@ -107,5 +112,34 @@ describe('CreateDrink', () => {
 			})
 		);
 		expect(mockRouterBack).toHaveBeenCalled();
+	});
+	describe('what the API says about the steps', () => {
+		const fieldError = {
+			location: 'body',
+			path: 'preparation.actions.0',
+			localeKey: 'apiResponses.drinks.preparation.nothingToShake',
+			message: 'Nothing to shake'
+		};
+
+		it('hands the form the errors the API listed when the drink cannot be created', async () => {
+			mockCreate.mockRejectedValue({ data: { errors: [fieldError] } });
+			vi.spyOn(console, 'error').mockImplementation(() => {});
+			const wrapper = await submit({ form, cover, thumbnail });
+
+			expect(wrapper.findComponent(DrinkFormStub).props('serverErrors')).toEqual([
+				fieldError
+			]);
+		});
+
+		it('clears them when the next attempt starts', async () => {
+			mockCreate.mockRejectedValueOnce({ data: { errors: [fieldError] } });
+			vi.spyOn(console, 'error').mockImplementation(() => {});
+			const wrapper = await submit({ form, cover, thumbnail });
+
+			wrapper.findComponent(DrinkFormStub).vm.$emit('submit', { form, cover, thumbnail });
+			await flushPromises();
+
+			expect(wrapper.findComponent(DrinkFormStub).props('serverErrors')).toEqual([]);
+		});
 	});
 });

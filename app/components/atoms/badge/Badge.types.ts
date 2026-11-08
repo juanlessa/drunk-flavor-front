@@ -1,1 +1,1 @@
-export type BadgeTone = 'accent' | 'success' | 'warning' | 'neutral';
+export type BadgeTone = 'accent' | 'success' | 'warning' | 'danger' | 'neutral';

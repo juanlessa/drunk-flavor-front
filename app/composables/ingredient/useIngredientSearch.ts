@@ -19,11 +19,15 @@ type UpdateStateFilter = {
 	searchTerm?: string;
 };
 
-export const useIngredientSearch = () => {
+/**
+ * `scope` keeps the state and the request of one search apart from another, so two lists on the same page
+ * (the ingredients and the garnishes of a drink) can each search on their own.
+ */
+export const useIngredientSearch = (scope = 'default') => {
 	const { $api } = useNuxtApp();
 	const { addToast } = useToast();
 	const { t, locale } = useI18n();
-	const state = useState<IngredientSearchState>('IngredientSearch', initState);
+	const state = useState<IngredientSearchState>(`IngredientSearch:${scope}`, initState);
 
 	const updateStateFilterQuery = (query?: Partial<QueryParams>) => {
 		return {
@@ -43,7 +47,7 @@ export const useIngredientSearch = () => {
 	};
 
 	const { data, error, status } = useAsyncData(
-		'ingredientMultiselectSearch',
+		`ingredientMultiselectSearch:${scope}`,
 		() => $api.ingredients.list(state.value.filter.query),
 		{
 			server: false,

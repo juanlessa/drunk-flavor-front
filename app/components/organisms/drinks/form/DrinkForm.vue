@@ -8,12 +8,11 @@
 			<Heading as="h1" size="headlineSm">{{ props.title }}</Heading>
 			<Text class="text-content-muted">{{ $t('organisms.drinkForm.description') }}</Text>
 		</header>
-
 		<Form @cancel="handleCancelButton" @submit="handleSubmitButton">
 			<div class="flex flex-col gap-6">
 				<FormSection
-					:title="$t('organisms.drinkForm.recipeSection.title')"
-					:description="$t('organisms.drinkForm.recipeSection.description')">
+					:title="$t('organisms.drinkForm.namesSection.title')"
+					:description="$t('organisms.drinkForm.namesSection.description')">
 					<!-- Stacked with a divider on mobile, side by side from tablet up. -->
 					<div
 						class="grid grid-cols-1 divide-y divide-stroke tablet:grid-cols-2 tablet:gap-6 tablet:divide-y-0">
@@ -43,38 +42,72 @@
 										:value="checkError(`translations.${lang}.name`)" />
 								</template>
 							</InputWrapper>
-							<InputWrapper>
-								<template #label>
-									<Label :for="`${lang}-method`">
-										{{ $t('organisms.drinkForm.methodInput.label') }}
-									</Label>
-								</template>
-								<InputTextArea
-									:id="`${lang}-method`"
-									v-model="formState.form.translations[lang].method"
-									:name="`${lang}_method`"
-									:has-error="!!checkError(`translations.${lang}.method`)"
-									@blur="validateForm" />
-								<template #error>
-									<ErrorMessage
-										:value="checkError(`translations.${lang}.method`)" />
-								</template>
-							</InputWrapper>
 						</div>
 					</div>
 				</FormSection>
-
 				<FormSection
 					:title="$t('organisms.drinkForm.ingredientsSection.title')"
 					:description="$t('organisms.drinkForm.ingredientsSection.description')">
-					<IngredientsSelection
-						v-model="formState.form.ingredients"
-						:initial-ingredients="drinkIngredients"
+					<RecipeLinesSelection
+						v-model:lines="formState.form.ingredients"
+						kind="ingredients"
 						:check-error="checkError"
-						@update:model-value="validateForm"
+						@update:lines="validateForm"
 						@blur="validateForm" />
 				</FormSection>
-
+				<FormSection
+					:title="$t('organisms.drinkForm.garnishesSection.title')"
+					:description="$t('organisms.drinkForm.garnishesSection.description')">
+					<RecipeLinesSelection
+						v-model:lines="formState.form.garnishes"
+						kind="garnishes"
+						:check-error="checkError"
+						@update:lines="validateForm"
+						@blur="validateForm" />
+				</FormSection>
+				<FormSection
+					:title="$t('organisms.drinkForm.methodSection.title')"
+					:description="$t('organisms.drinkForm.methodSection.description')">
+					<RadioCardGroup
+						id="method-mode"
+						name="method_mode"
+						:label="$t('organisms.drinkForm.methodMode.legend')"
+						:model-value="formState.form.methodMode"
+						:options="methodModeOptions"
+						@update:model-value="handleMethodModeUpdate" />
+					<!-- Written by hand: one text per language. -->
+					<div
+						v-if="formState.form.methodMode === DrinkMethodModes.manual"
+						class="grid grid-cols-1 gap-4 tablet:grid-cols-2">
+						<InputWrapper v-for="lang in languages" :key="lang">
+							<template #label>
+								<Label :for="`${lang}-method`">
+									{{ $t('organisms.drinkForm.methodInput.label') }} ·
+									{{ $t(`languages.${lang}`) }}
+								</Label>
+							</template>
+							<InputTextArea
+								:id="`${lang}-method`"
+								v-model="formState.form.translations[lang].method"
+								:name="`${lang}_method`"
+								:has-error="!!checkError(`translations.${lang}.method`)"
+								@blur="validateForm" />
+							<template #error>
+								<ErrorMessage :value="checkError(`translations.${lang}.method`)" />
+							</template>
+						</InputWrapper>
+					</div>
+					<!-- Generated: the plan is edited here and the backend writes the methods from it. -->
+					<PreparationPlanBuilder
+						v-else
+						v-model:plan="formState.form.preparation"
+						:ingredients="formState.form.ingredients"
+						:garnishes="formState.form.garnishes"
+						:check-error="checkError"
+						:preview="builderPreview"
+						@update:plan="validateForm"
+						@generate="handlePreview" />
+				</FormSection>
 				<FormSection
 					:title="$t('organisms.drinkForm.imagesSection.title')"
 					:description="$t('organisms.drinkForm.imagesSection.description')">
@@ -117,7 +150,6 @@
 					</div>
 				</FormSection>
 			</div>
-
 			<template #buttons>
 				<div
 					class="flex flex-col-reverse items-center gap-4 tablet:flex-row tablet:justify-end">
@@ -132,30 +164,89 @@
 </template>
 <script setup lang="ts">
 import ArrowLeftIcon from '~/components/icons/ArrowLeftIcon.vue';
+import type { RadioCardOption } from '~/components/molecules/radioCardGroup/RadioCardGroup.types';
+import { DrinkMethodModes, drinkMethodModes } from '~/domain/drink/drink.constants';
+import type { Drink } from '~/domain/drink/drink.entity';
+import type { ApiFieldError } from '~/domain/shared/api.types';
 import { languages } from '~/domain/shared/translations.constants';
 import { mapDrinkToForm } from '~/mappers/drink.mappers';
-import type { Drink } from '~/domain/drink/drink.entity';
-import type { DrinkFormAndMedia } from '~/types/drink.types';
-import IngredientsSelection from '../ingredientsSelection/IngredientsSelection.vue';
+import type {
+	DrinkFormAndMedia,
+	DrinkMethodMode,
+	PreparationPreviewState
+} from '~/types/drink.types';
+import PreparationPlanBuilder from '../preparation/PreparationPlanBuilder.vue';
+import RecipeLinesSelection from '../recipeLines/RecipeLinesSelection.vue';
 
 const props = defineProps({
 	drink: { type: Object as PropType<Drink>, default: undefined },
 	title: { type: String, required: true },
-	submitLabel: { type: String, required: true }
+	submitLabel: { type: String, required: true },
+	/** What the API said about the plan when the drink was submitted, to show where it went wrong. */
+	serverErrors: { type: Array as PropType<ApiFieldError[]>, default: () => [] }
 });
 const emit = defineEmits<{
 	(e: 'submit', value: DrinkFormAndMedia): void;
 	(e: 'cancel'): void;
 }>();
 
+const { t } = useI18n();
+const { addToast } = useToast();
 const localePath = useLocalePath();
 const { formState, updateFormState, checkError, validateForm } = useDrinkForm();
-
-const drinkIngredients = computed(() => (props.drink ? props.drink.ingredients : []));
+const form = computed({
+	get: () => formState.value.form,
+	set: (value) => (formState.value.form = value)
+});
+const { preview, generate } = usePreparationPreview(form);
 
 if (props.drink) {
 	updateFormState(mapDrinkToForm(props.drink));
 }
+
+// What the API said at submit time is shown next to what it said for the preview.
+const builderPreview = computed<PreparationPreviewState>(() => ({
+	...preview.value,
+	errors: [...preview.value.errors, ...props.serverErrors]
+}));
+
+const methodModeOptions = computed<RadioCardOption[]>(() =>
+	drinkMethodModes.map((mode) => ({
+		value: mode,
+		label: t(`organisms.drinkForm.methodMode.options.${mode}.label`),
+		description: t(`organisms.drinkForm.methodMode.options.${mode}.description`)
+	}))
+);
+
+const isMethodMode = (value: string): value is DrinkMethodMode =>
+	(drinkMethodModes as readonly string[]).includes(value);
+
+const handleMethodModeUpdate = (value: string) => {
+	if (isMethodMode(value)) {
+		formState.value.form.methodMode = value;
+		validateForm();
+	}
+};
+
+// The parts of the form the backend needs to write the method; the names and the methods are not among them.
+const RECIPE_FIELDS = ['ingredients', 'garnishes', 'preparation'];
+
+const handlePreview = async () => {
+	formState.value.displayErrors = true;
+	validateForm();
+	const blocking = formState.value.errors.some(({ field }) =>
+		RECIPE_FIELDS.some((prefix) => field === prefix || field.startsWith(`${prefix}.`))
+	);
+	if (blocking) {
+		addToast({
+			type: 'error',
+			title: t('organisms.drinkForm.preview.invalid.title'),
+			message: t('organisms.drinkForm.preview.invalid.message')
+		});
+		return;
+	}
+	await generate();
+};
 
 const handleCancelButton = () => {
 	emit('cancel');

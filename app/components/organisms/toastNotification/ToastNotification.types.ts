@@ -1,6 +1,6 @@
 export type Toast = {
 	id: string;
-	type: 'error' | 'info' | 'success';
+	type: 'error' | 'info' | 'success' | 'warning';
 	title: string;
 	message: string;
 	duration?: number;
@@ -11,7 +11,7 @@ export type Toast = {
 export type ICreateToast = {
 	title: string;
 	message: string;
-	type: 'error' | 'info' | 'success';
+	type: 'error' | 'info' | 'success' | 'warning';
 };
 
 export type ToastState = {

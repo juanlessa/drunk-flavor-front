@@ -333,51 +333,330 @@
 			"backLink": "Drinks",
 			"createTitle": "Novo drink",
 			"editTitle": "Editar drink",
-			"description": "A receita nos dois idiomas, seus ingredientes e suas imagens.",
-			"recipeSection": {
-				"title": "Receita",
-				"description": "Nome e preparo em cada idioma. Os nomes mantêm apenas a primeira letra maiúscula."
+			"description": "Seus nomes, ingredientes, guarnições, modo de preparo e imagens.",
+			"namesSection": {
+				"title": "Nomes",
+				"description": "Os nomes são salvos apenas com a primeira letra maiúscula."
 			},
 			"ingredientsSection": {
 				"title": "Ingredientes",
-				"description": "Listados no drink nesta ordem. Arraste pela alça ou use as setas para reordenar."
+				"description": "Listados no drink nesta ordem. Pelo menos um não pode ser opcional."
+			},
+			"garnishesSection": {
+				"title": "Guarnições",
+				"description": "Toques finais, listados à parte dos ingredientes. São opcionais."
+			},
+			"methodSection": {
+				"title": "Modo de preparo",
+				"description": "Como preparar, em português e em inglês."
+			},
+			"methodMode": {
+				"legend": "como o modo de preparo é informado",
+				"options": {
+					"manual": {
+						"label": "Escrever eu mesmo",
+						"description": "Um texto para cada idioma."
+					},
+					"generated": {
+						"label": "Montar a partir de passos",
+						"description": "Descreva os passos e o modo de preparo é escrito nos dois idiomas."
+					}
+				}
 			},
 			"imagesSection": {
 				"title": "Imagens",
-				"description": "Opcionais. PNG, JPG ou WebP; podem ser adicionadas depois."
+				"description": "Opcional. PNG, JPG ou WebP; podem ser adicionadas depois."
 			},
-			"nameInput": { "label": "nome" },
-			"methodInput": { "label": "preparo" },
-			"thumbnailInput": { "label": "miniatura", "help": "Quadrada, exibida nos cards." },
-			"coverInput": { "label": "capa", "help": "Larga, exibida no topo da página do drink." },
+			"nameInput": {
+				"label": "nome"
+			},
+			"methodInput": {
+				"label": "modo de preparo"
+			},
+			"thumbnailInput": {
+				"label": "miniatura",
+				"help": "Quadrada, exibida nos cards."
+			},
+			"coverInput": {
+				"label": "capa",
+				"help": "Larga, exibida no topo da página do drink."
+			},
+			"preview": {
+				"success": {
+					"title": "Prévia pronta",
+					"message": "O modo de preparo foi escrito a partir dos seus passos."
+				},
+				"warning": {
+					"title": "Confira os passos",
+					"message": "A prévia tem {count} observação(ões); o modo de preparo foi escrito mesmo assim."
+				},
+				"error": {
+					"title": "A prévia falhou",
+					"message": "{count} problema(s) nos passos. Eles estão marcados abaixo.",
+					"unknown": "Não foi possível gerar a prévia."
+				},
+				"invalid": {
+					"title": "Corrija os campos antes",
+					"message": "Complete os ingredientes, guarnições e passos marcados em vermelho para gerar a prévia."
+				}
+			},
 			"cancelButton": "Cancelar",
 			"createButton": "Criar drink",
 			"saveButton": "Salvar alterações",
 			"errorTitle": "Erro",
-			"createSuccess": { "title": "Drink criado", "message": "O drink foi criado." },
-			"updateSuccess": { "title": "Drink atualizado", "message": "O drink foi atualizado." },
+			"createSuccess": {
+				"title": "Drink criado",
+				"message": "O drink foi criado."
+			},
+			"updateSuccess": {
+				"title": "Drink atualizado",
+				"message": "O drink foi atualizado."
+			},
 			"createError": "Não foi possível criar o drink.",
 			"updateError": "Não foi possível atualizar o drink.",
-			"coverError": "O drink foi salvo, mas não foi possível enviar a capa.",
-			"thumbnailError": "O drink foi salvo, mas não foi possível enviar a miniatura."
+			"coverError": "O drink foi salvo, mas a capa não pôde ser enviada.",
+			"thumbnailError": "O drink foi salvo, mas a miniatura não pôde ser enviada."
 		},
-		"ingredientsSelection": {
-			"searchInput": {
-				"label": "adicionar ingrediente",
-				"placeholder": "Buscar ingredientes para adicionar",
-				"noResult": "Nenhum ingrediente encontrado"
+		"recipeLines": {
+			"kinds": {
+				"ingredients": {
+					"searchLabel": "adicionar ingrediente",
+					"searchPlaceholder": "Busque ingredientes para adicionar",
+					"empty": "Nenhum ingrediente ainda. Busque acima para adicionar o primeiro."
+				},
+				"garnishes": {
+					"searchLabel": "adicionar guarnição",
+					"searchPlaceholder": "Busque ingredientes para usar como guarnição",
+					"empty": "Nenhuma guarnição. Elas são opcionais."
+				}
 			},
-			"empty": "Nenhum ingrediente ainda. Busque acima para adicionar o primeiro.",
-			"reorderInstructions": "Arraste pela alça para reordenar, ou use os botões de mover para cima e para baixo.",
-			"dragHandle": { "label": "Reordenar {name}" },
-			"quantity": { "label": "Quantidade de {name}" },
-			"moveUp": { "label": "Mover {name} para cima" },
-			"moveDown": { "label": "Mover {name} para baixo" },
-			"removeButton": { "label": "Remover {name}" },
+			"noResult": "Nenhum ingrediente encontrado",
+			"amountType": {
+				"label": "quantidade",
+				"options": {
+					"exact": "Exata",
+					"qualitative": "A gosto, completar…",
+					"none": "Sem quantidade"
+				},
+				"noneHelp": "Listado sem número."
+			},
+			"quantity": {
+				"label": "quantidade"
+			},
+			"hint": {
+				"label": "quantidade aproximada (opcional)"
+			},
+			"unit": {
+				"label": "unidade"
+			},
+			"qualifier": {
+				"label": "quanto",
+				"options": {
+					"top_up": "Completar",
+					"to_taste": "A gosto",
+					"as_needed": "Conforme necessário"
+				}
+			},
+			"optional": {
+				"label": "opcional",
+				"help": "O drink funciona sem ele."
+			},
+			"moveUp": {
+				"label": "Mover {name} para cima"
+			},
+			"moveDown": {
+				"label": "Mover {name} para baixo"
+			},
+			"removeButton": {
+				"label": "Remover {name}"
+			},
 			"announcements": {
-				"added": "{name} adicionado, {total} ingredientes.",
+				"added": "{name} adicionado, {total} na lista.",
 				"removed": "{name} removido.",
 				"moved": "{name} movido para a posição {position} de {total}."
+			}
+		},
+		"preparationBuilder": {
+			"mixingVessel": {
+				"label": "misturado em",
+				"help": "Onde o drink é feito. Escolha o copo de servir para montá-lo direto no copo."
+			},
+			"servingGlass": {
+				"label": "servido em"
+			},
+			"actions": {
+				"label": "Passos",
+				"empty": "Nenhum passo ainda. Adicione o primeiro abaixo.",
+				"addLabel": "adicionar um passo",
+				"addPlaceholder": "Escolha o tipo de passo"
+			},
+			"card": {
+				"error": "Erro",
+				"warning": "Aviso",
+				"moveUp": "Mover o passo {name} para cima",
+				"moveDown": "Mover o passo {name} para baixo",
+				"remove": "Remover o passo {name}"
+			},
+			"items": {
+				"placeholder": "Escolha um item",
+				"addPlaceholder": "Adicionar um item",
+				"withUnit": "Citar a unidade",
+				"remove": "Remover {name}",
+				"missing": "Este item não está mais na receita.",
+				"unknown": "Item fora da receita",
+				"lists": {
+					"ingredients": "ingrediente",
+					"garnishes": "guarnição"
+				}
+			},
+			"fields": {
+				"mode": "o que fazer",
+				"rinseItem": "ambientar com",
+				"rimItem": "bordear com",
+				"coverage": "quanto da borda",
+				"target": "em",
+				"addItems": "ingredientes",
+				"iceKind": "gelo",
+				"intensity": "intensidade",
+				"intensityDefault": "Padrão",
+				"seconds": "tempo",
+				"secondsSuffix": "segundos",
+				"revolutions": "voltas",
+				"revolutionsSuffix": "voltas",
+				"strainKind": "coador",
+				"strainTo": "coar para",
+				"overIce": "sobre o gelo",
+				"overIceHelp": "Despeja sobre o gelo que já está no copo.",
+				"topItem": "completar com",
+				"garnishItems": "guarnições",
+				"style": "como decorar",
+				"styleDefault": "Padrão",
+				"text": "texto",
+				"customItems": "ingredientes usados neste passo (opcional)",
+				"customInto": "eles terminam em"
+			},
+			"actionTypes": {
+				"prepare_glass": {
+					"title": "Preparar o copo"
+				},
+				"add": {
+					"title": "Adicionar ingredientes"
+				},
+				"add_ice": {
+					"title": "Adicionar gelo"
+				},
+				"muddle": {
+					"title": "Macerar"
+				},
+				"shake": {
+					"title": "Agitar"
+				},
+				"stir": {
+					"title": "Mexer"
+				},
+				"strain": {
+					"title": "Coar"
+				},
+				"top": {
+					"title": "Completar"
+				},
+				"garnish": {
+					"title": "Decorar"
+				},
+				"custom": {
+					"title": "Texto livre"
+				}
+			},
+			"options": {
+				"mixingVessel": {
+					"shaker": "Coqueteleira",
+					"mixing_glass": "Copo misturador",
+					"pitcher": "Jarra",
+					"serving_glass": "Direto no copo de servir"
+				},
+				"servingGlass": {
+					"martini": "Taça martini",
+					"coupe": "Taça coupe",
+					"nick_and_nora": "Taça Nick and Nora",
+					"flute": "Taça flûte",
+					"highball": "Copo long drink",
+					"collins": "Copo Collins",
+					"rocks": "Copo baixo",
+					"double_rocks": "Copo baixo grande",
+					"hurricane": "Taça hurricane",
+					"copper_mug": "Caneca de cobre",
+					"wine": "Taça de vinho",
+					"shot": "Copo de shot",
+					"snifter": "Taça snifter",
+					"julep_cup": "Copo julep",
+					"tiki_mug": "Caneca tiki",
+					"heatproof_mug": "Caneca resistente ao calor"
+				},
+				"role": {
+					"mixing": "O recipiente de mistura",
+					"serving": "O copo de servir"
+				},
+				"strainTo": {
+					"serving": "O copo de servir",
+					"mixing": "De volta ao recipiente de mistura (reverse dry shake)"
+				},
+				"iceKind": {
+					"cubes": "Gelo em cubos",
+					"crushed": "Gelo picado",
+					"large_cube": "Pedra grande de gelo",
+					"sphere": "Esfera de gelo"
+				},
+				"intensity": {
+					"muddle": {
+						"gentle": "Gentilmente",
+						"normal": "Normal",
+						"vigorous": "Com firmeza"
+					},
+					"shake": {
+						"gentle": "Gentilmente",
+						"normal": "Normal",
+						"vigorous": "Vigorosamente"
+					},
+					"stir": {
+						"gentle": "Gentilmente",
+						"normal": "Normal",
+						"vigorous": "Vigorosamente"
+					}
+				},
+				"strainKind": {
+					"single": "Coagem simples",
+					"double": "Dupla coagem (strainer + peneira)",
+					"fine": "Coagem fina",
+					"none": "Sem coador (despejar)"
+				},
+				"garnishStyle": {
+					"express": "Torcer para liberar os óleos e usar a casca",
+					"express_and_discard": "Torcer para liberar os óleos e descartar a casca",
+					"flame": "Flambar os óleos e usar a casca",
+					"flame_and_discard": "Flambar os óleos e descartar a casca",
+					"skewer": "Em um espeto",
+					"rim_perch": "Na borda",
+					"float": "Por cima",
+					"sprinkle": "Polvilhado por cima"
+				},
+				"glassMode": {
+					"chill": "Gelar o copo",
+					"warm": "Aquecer o copo",
+					"rinse": "Ambientar com um líquido",
+					"rim": "Bordear"
+				},
+				"rimCoverage": {
+					"full": "A borda toda",
+					"half": "Metade da borda"
+				}
+			},
+			"preview": {
+				"label": "Prévia",
+				"help": "Pede ao backend para escrever o modo de preparo a partir dos seus passos. Nada é salvo.",
+				"generate": "Gerar prévia",
+				"generating": "Gerando…",
+				"stale": "A receita ou os passos mudaram depois desta prévia. Gere de novo.",
+				"step": "Passo {number}"
 			}
 		},
 		"topBar": {
@@ -771,7 +1050,19 @@
 			"name": "nome é obrigatório",
 			"method": "preparo é obrigatório",
 			"ingredients": "adicione pelo menos um ingrediente",
-			"quantity": "quantidade deve ser maior que 0"
+			"quantity": "quantidade deve ser maior que 0",
+			"unit": "a unidade deve ser selecionada",
+			"qualifier": "escolha quanto",
+			"requiredIngredient": "pelo menos um ingrediente não pode ser opcional",
+			"preparation": {
+				"actions": "adicione pelo menos um passo",
+				"mixingVessel": "escolha onde o drink é misturado",
+				"servingGlass": "escolha o copo de servir",
+				"items": "escolha pelo menos um item",
+				"item": "escolha um item",
+				"text": "escreva o texto nos dois idiomas",
+				"duration": "deve ser um número inteiro maior que zero"
+			}
 		}
 	},
 	"deleteModal": {

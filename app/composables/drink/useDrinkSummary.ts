@@ -21,7 +21,8 @@ export const useDrinkSummary = (drink: MaybeRefOrGetter<Drink>) => {
 				measurement,
 				// Without a measurement there is nothing for the connector to join ("of Gin").
 				connector: measurement ? t('drinkDetailPage.ingredients.ofPreposition') : '',
-				name: ingredient.translations[lang.value]?.name ?? ''
+				name: ingredient.translations[lang.value]?.name ?? '',
+				description: ingredient.translations[lang.value]?.description ?? ''
 			};
 		})
 	);

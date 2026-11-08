@@ -38,7 +38,8 @@ const toastColorsStyle = tv({
 		type: {
 			info: 'bg-info-surface',
 			success: 'bg-success-surface',
-			error: 'bg-danger-surface'
+			error: 'bg-danger-surface',
+			warning: 'bg-warning-surface'
 		}
 	}
 });

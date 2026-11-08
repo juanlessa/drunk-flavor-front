@@ -19,6 +19,7 @@ const badgeStyles = tv({
 			accent: 'bg-accent-subtle text-accent-content',
 			success: 'bg-success-surface text-success',
 			warning: 'bg-warning-surface text-warning',
+			danger: 'bg-danger-surface text-danger',
 			neutral: 'bg-surface-control text-content-muted'
 		}
 	},

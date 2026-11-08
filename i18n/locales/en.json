@@ -330,51 +330,330 @@
 			"backLink": "Drinks",
 			"createTitle": "New drink",
 			"editTitle": "Edit drink",
-			"description": "The recipe in both languages, its ingredients and its images.",
-			"recipeSection": {
-				"title": "Recipe",
-				"description": "Name and method in each language. Names keep only the first letter capitalized."
+			"description": "Its names, ingredients, garnishes, method and images.",
+			"namesSection": {
+				"title": "Names",
+				"description": "Names keep only the first letter capitalized."
 			},
 			"ingredientsSection": {
 				"title": "Ingredients",
-				"description": "Listed on the drink in this order. Drag the handle or use the arrows to reorder."
+				"description": "Listed on the drink in this order. At least one must not be optional."
+			},
+			"garnishesSection": {
+				"title": "Garnishes",
+				"description": "Finishing touches, listed apart from the ingredients. They are optional."
+			},
+			"methodSection": {
+				"title": "Method",
+				"description": "How to prepare it, in English and Portuguese."
+			},
+			"methodMode": {
+				"legend": "how the method is given",
+				"options": {
+					"manual": {
+						"label": "Write it myself",
+						"description": "One text for each language."
+					},
+					"generated": {
+						"label": "Build it from steps",
+						"description": "Describe the steps and the method is written in both languages."
+					}
+				}
 			},
 			"imagesSection": {
 				"title": "Images",
 				"description": "Optional. PNG, JPG or WebP; they can be added later."
 			},
-			"nameInput": { "label": "name" },
-			"methodInput": { "label": "method" },
-			"thumbnailInput": { "label": "thumbnail", "help": "Square, shown on the cards." },
-			"coverInput": { "label": "cover", "help": "Wide, shown on top of the drink page." },
+			"nameInput": {
+				"label": "name"
+			},
+			"methodInput": {
+				"label": "method"
+			},
+			"thumbnailInput": {
+				"label": "thumbnail",
+				"help": "Square, shown on the cards."
+			},
+			"coverInput": {
+				"label": "cover",
+				"help": "Wide, shown on top of the drink page."
+			},
+			"preview": {
+				"success": {
+					"title": "Preview ready",
+					"message": "The method was written from your steps."
+				},
+				"warning": {
+					"title": "Check the steps",
+					"message": "The preview has {count} remark(s); the method was written anyway."
+				},
+				"error": {
+					"title": "Preview failed",
+					"message": "{count} problem(s) in the steps. They are marked below.",
+					"unknown": "Unable to generate the preview."
+				},
+				"invalid": {
+					"title": "Fix the fields first",
+					"message": "Complete the ingredients, garnishes and steps marked in red to generate the preview."
+				}
+			},
 			"cancelButton": "Cancel",
 			"createButton": "Create drink",
 			"saveButton": "Save changes",
 			"errorTitle": "Error",
-			"createSuccess": { "title": "Drink created", "message": "The drink was created." },
-			"updateSuccess": { "title": "Drink updated", "message": "The drink was updated." },
+			"createSuccess": {
+				"title": "Drink created",
+				"message": "The drink was created."
+			},
+			"updateSuccess": {
+				"title": "Drink updated",
+				"message": "The drink was updated."
+			},
 			"createError": "Unable to create the drink.",
 			"updateError": "Unable to update the drink.",
 			"coverError": "The drink was saved, but the cover could not be uploaded.",
 			"thumbnailError": "The drink was saved, but the thumbnail could not be uploaded."
 		},
-		"ingredientsSelection": {
-			"searchInput": {
-				"label": "add ingredient",
-				"placeholder": "Search ingredients to add",
-				"noResult": "No ingredients found"
+		"recipeLines": {
+			"kinds": {
+				"ingredients": {
+					"searchLabel": "add ingredient",
+					"searchPlaceholder": "Search ingredients to add",
+					"empty": "No ingredients yet. Search above to add the first one."
+				},
+				"garnishes": {
+					"searchLabel": "add garnish",
+					"searchPlaceholder": "Search ingredients to use as garnish",
+					"empty": "No garnishes. They are optional."
+				}
 			},
-			"empty": "No ingredients yet. Search above to add the first one.",
-			"reorderInstructions": "Drag the handle to reorder, or use the move up and move down buttons.",
-			"dragHandle": { "label": "Reorder {name}" },
-			"quantity": { "label": "Quantity of {name}" },
-			"moveUp": { "label": "Move {name} up" },
-			"moveDown": { "label": "Move {name} down" },
-			"removeButton": { "label": "Remove {name}" },
+			"noResult": "No ingredients found",
+			"amountType": {
+				"label": "amount",
+				"options": {
+					"exact": "Exact",
+					"qualitative": "To taste, top up…",
+					"none": "No amount"
+				},
+				"noneHelp": "Listed without a number."
+			},
+			"quantity": {
+				"label": "quantity"
+			},
+			"hint": {
+				"label": "approximate quantity (optional)"
+			},
+			"unit": {
+				"label": "unit"
+			},
+			"qualifier": {
+				"label": "how much",
+				"options": {
+					"top_up": "Top up",
+					"to_taste": "To taste",
+					"as_needed": "As needed"
+				}
+			},
+			"optional": {
+				"label": "optional",
+				"help": "The drink works without it."
+			},
+			"moveUp": {
+				"label": "Move {name} up"
+			},
+			"moveDown": {
+				"label": "Move {name} down"
+			},
+			"removeButton": {
+				"label": "Remove {name}"
+			},
 			"announcements": {
-				"added": "{name} added, {total} ingredients.",
+				"added": "{name} added, {total} in the list.",
 				"removed": "{name} removed.",
 				"moved": "{name} moved to position {position} of {total}."
+			}
+		},
+		"preparationBuilder": {
+			"mixingVessel": {
+				"label": "mixed in",
+				"help": "Where the drink is made. Choose the serving glass to build it directly in the glass."
+			},
+			"servingGlass": {
+				"label": "served in"
+			},
+			"actions": {
+				"label": "Steps",
+				"empty": "No steps yet. Add the first one below.",
+				"addLabel": "add a step",
+				"addPlaceholder": "Choose the kind of step"
+			},
+			"card": {
+				"error": "Error",
+				"warning": "Warning",
+				"moveUp": "Move step {name} up",
+				"moveDown": "Move step {name} down",
+				"remove": "Remove step {name}"
+			},
+			"items": {
+				"placeholder": "Choose an item",
+				"addPlaceholder": "Add an item",
+				"withUnit": "Name the unit",
+				"remove": "Remove {name}",
+				"missing": "This item is no longer in the recipe.",
+				"unknown": "Item not in the recipe",
+				"lists": {
+					"ingredients": "ingredient",
+					"garnishes": "garnish"
+				}
+			},
+			"fields": {
+				"mode": "what to do",
+				"rinseItem": "rinse with",
+				"rimItem": "rim with",
+				"coverage": "how much of the rim",
+				"target": "in",
+				"addItems": "ingredients",
+				"iceKind": "ice",
+				"intensity": "intensity",
+				"intensityDefault": "Default",
+				"seconds": "time",
+				"secondsSuffix": "seconds",
+				"revolutions": "turns",
+				"revolutionsSuffix": "turns",
+				"strainKind": "strainer",
+				"strainTo": "strain into",
+				"overIce": "over the ice",
+				"overIceHelp": "Pours onto the ice already in the glass.",
+				"topItem": "top with",
+				"garnishItems": "garnishes",
+				"style": "how to garnish",
+				"styleDefault": "Default",
+				"text": "text",
+				"customItems": "ingredients used in this step (optional)",
+				"customInto": "they end up in"
+			},
+			"actionTypes": {
+				"prepare_glass": {
+					"title": "Prepare the glass"
+				},
+				"add": {
+					"title": "Add ingredients"
+				},
+				"add_ice": {
+					"title": "Add ice"
+				},
+				"muddle": {
+					"title": "Muddle"
+				},
+				"shake": {
+					"title": "Shake"
+				},
+				"stir": {
+					"title": "Stir"
+				},
+				"strain": {
+					"title": "Strain"
+				},
+				"top": {
+					"title": "Top up"
+				},
+				"garnish": {
+					"title": "Garnish"
+				},
+				"custom": {
+					"title": "Free text"
+				}
+			},
+			"options": {
+				"mixingVessel": {
+					"shaker": "Shaker",
+					"mixing_glass": "Mixing glass",
+					"pitcher": "Pitcher",
+					"serving_glass": "Straight in the serving glass"
+				},
+				"servingGlass": {
+					"martini": "Martini glass",
+					"coupe": "Coupe glass",
+					"nick_and_nora": "Nick and Nora glass",
+					"flute": "Flute",
+					"highball": "Highball glass",
+					"collins": "Collins glass",
+					"rocks": "Rocks glass",
+					"double_rocks": "Double rocks glass",
+					"hurricane": "Hurricane glass",
+					"copper_mug": "Copper mug",
+					"wine": "Wine glass",
+					"shot": "Shot glass",
+					"snifter": "Snifter",
+					"julep_cup": "Julep cup",
+					"tiki_mug": "Tiki mug",
+					"heatproof_mug": "Heatproof mug"
+				},
+				"role": {
+					"mixing": "The mixing vessel",
+					"serving": "The serving glass"
+				},
+				"strainTo": {
+					"serving": "The serving glass",
+					"mixing": "Back into the mixing vessel (reverse dry shake)"
+				},
+				"iceKind": {
+					"cubes": "Ice cubes",
+					"crushed": "Crushed ice",
+					"large_cube": "Large ice cube",
+					"sphere": "Ice sphere"
+				},
+				"intensity": {
+					"muddle": {
+						"gentle": "Gently",
+						"normal": "Normal",
+						"vigorous": "Firmly"
+					},
+					"shake": {
+						"gentle": "Gently",
+						"normal": "Normal",
+						"vigorous": "Vigorously"
+					},
+					"stir": {
+						"gentle": "Gently",
+						"normal": "Normal",
+						"vigorous": "Vigorously"
+					}
+				},
+				"strainKind": {
+					"single": "Single strain",
+					"double": "Double strain (strainer + fine mesh)",
+					"fine": "Fine strain",
+					"none": "No strainer (pour)"
+				},
+				"garnishStyle": {
+					"express": "Express the oils, keep the peel",
+					"express_and_discard": "Express the oils, discard the peel",
+					"flame": "Flame the oils, keep the peel",
+					"flame_and_discard": "Flame the oils, discard the peel",
+					"skewer": "On a skewer",
+					"rim_perch": "On the rim",
+					"float": "Floating on top",
+					"sprinkle": "Sprinkled on top"
+				},
+				"glassMode": {
+					"chill": "Chill the glass",
+					"warm": "Warm the glass",
+					"rinse": "Rinse with a liquid",
+					"rim": "Rim the edge"
+				},
+				"rimCoverage": {
+					"full": "The whole rim",
+					"half": "Half of the rim"
+				}
+			},
+			"preview": {
+				"label": "Preview",
+				"help": "Asks the backend to write the method from your steps. Nothing is saved.",
+				"generate": "Generate preview",
+				"generating": "Generating…",
+				"stale": "The recipe or the steps changed after this preview. Generate it again.",
+				"step": "Step {number}"
 			}
 		},
 		"topBar": {
@@ -768,7 +1047,19 @@
 			"name": "name is required",
 			"method": "method is required",
 			"ingredients": "add at least one ingredient",
-			"quantity": "quantity must be greater than 0"
+			"quantity": "quantity must be greater than 0",
+			"unit": "unit must be selected",
+			"qualifier": "choose how much",
+			"requiredIngredient": "at least one ingredient must not be optional",
+			"preparation": {
+				"actions": "add at least one step",
+				"mixingVessel": "choose where the drink is mixed",
+				"servingGlass": "choose the serving glass",
+				"items": "choose at least one item",
+				"item": "choose an item",
+				"text": "write the text in both languages",
+				"duration": "must be a whole number above zero"
+			}
 		}
 	},
 	"deleteModal": {
