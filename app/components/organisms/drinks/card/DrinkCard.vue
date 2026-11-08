@@ -111,8 +111,11 @@ watch(
 
 const MAX_PREVIEW_INGREDIENTS = 3;
 
+// Optional ingredients are left out of the card: it summarizes what the drink needs.
 const ingredientNames = computed(() =>
-	props.drink.ingredients.map((item) => item.ingredient.translations[locale.value].name)
+	props.drink.ingredients
+		.filter((item) => !item.optional)
+		.map((item) => item.ingredient.translations[locale.value].name)
 );
 const ingredientPreview = computed(() =>
 	ingredientNames.value.slice(0, MAX_PREVIEW_INGREDIENTS).join(' · ')

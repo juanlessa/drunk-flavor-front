@@ -1088,7 +1088,12 @@
 		"ingredients": {
 			"title": "Ingredients",
 			"ofPreposition": "of",
-			"count": "{count} ingredient | {count} ingredients"
+			"count": "{count} ingredient | {count} ingredients",
+			"optional": "optional",
+			"brand": "Brand"
+		},
+		"garnishes": {
+			"title": "Garnishes"
 		},
 		"instructions": "Preparation Instructions",
 		"rating": {

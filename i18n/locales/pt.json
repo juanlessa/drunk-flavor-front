@@ -1091,7 +1091,12 @@
 		"ingredients": {
 			"title": "Ingredientes",
 			"ofPreposition": "de",
-			"count": "{count} ingrediente | {count} ingredientes"
+			"count": "{count} ingrediente | {count} ingredientes",
+			"optional": "opcional",
+			"brand": "Marca"
+		},
+		"garnishes": {
+			"title": "Guarnições"
 		},
 		"instructions": "Modo de preparo",
 		"rating": {

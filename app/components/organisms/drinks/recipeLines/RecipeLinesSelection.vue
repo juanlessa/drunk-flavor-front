@@ -11,6 +11,7 @@
 				:placeholder="$t(`organisms.recipeLines.kinds.${props.kind}.searchPlaceholder`)"
 				:no-result="$t('organisms.recipeLines.noResult')"
 				infinite-scroll
+				server-filtered
 				:loading="loading"
 				@load-more="loadNextPage"
 				@select="handleAdd">

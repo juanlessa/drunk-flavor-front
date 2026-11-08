@@ -6,7 +6,7 @@
 		class="relative"
 		:name="props.name"
 		:display-value="(opt) => opt.label"
-		:filter-function="filterOptionsBySearchTerm"
+		:filter-function="filterOptions"
 		@update:model-value="handleUpdateModelValue"
 		@update:search-term="handleUpdateSearchTerm">
 		<Combobox.Anchor
@@ -72,7 +72,9 @@ const props = defineProps({
 	border: { type: Boolean, default: false },
 	hasError: { type: Boolean, default: false },
 	infiniteScroll: { type: Boolean, default: false },
-	loading: { type: Boolean, default: false }
+	loading: { type: Boolean, default: false },
+	/** The options already match the term (the server searched), so they are shown as they are. */
+	serverFiltered: { type: Boolean, default: false }
 });
 
 const emit = defineEmits<{
@@ -125,6 +127,9 @@ const selectInputContainerStyle = tv({
 		}
 	}
 });
+
+const filterOptions = (options: InputSelectOption[], searchTerm: string): InputSelectOption[] =>
+	props.serverFiltered ? options : filterOptionsBySearchTerm(options, searchTerm);
 
 const filterOptionsBySearchTerm = (
 	options: InputSelectOption[],

@@ -1,9 +1,17 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { getQuery } from 'h3';
 import { registerEndpoint } from '@nuxt/test-utils/runtime';
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
 import { useIngredientSearch } from './useIngredientSearch';
 
-registerEndpoint('/ingredients', { method: 'GET', handler: () => [] });
+const requests: Record<string, unknown>[] = [];
+registerEndpoint('/ingredients', {
+	method: 'GET',
+	handler: (event) => {
+		requests.push(getQuery(event));
+		return [];
+	}
+});
 
 const ingredient = (id: string) => ({ id }) as Ingredient;
 
@@ -31,5 +39,18 @@ describe('useIngredientSearch', () => {
 		search.moveSelected(1, 1);
 
 		expect(order()).toEqual(['rum', 'lime', 'mint']);
+	});
+
+	it('searches on the name and sorts by the current language, after a pause in typing', async () => {
+		requests.length = 0;
+		search.searchTerm.value = 'limao';
+		await vi.waitFor(
+			() => expect(requests.at(-1)?.search).toBe(JSON.stringify({ name: 'limao' })),
+			{
+				timeout: 2000
+			}
+		);
+
+		expect(requests.at(-1)?.sort).toMatch(/translations\.\w+\.name/);
 	});
 });

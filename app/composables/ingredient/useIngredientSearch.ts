@@ -1,25 +1,28 @@
 import type { IngredientSearchState } from '~/types/ingredient.types';
 import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
-import type { QueryParams } from '~/domain/shared/query.types';
+import { watchDebounced } from '@vueuse/core';
+import { INTERACTION_TIMING_MS } from '~/constants/durations.constants';
+import type { Language } from '~/domain/shared/translations.types';
+import { buildTranslatedNameQuery } from '~/helpers/query.helpers';
 
-const initState = (): IngredientSearchState => ({
+const PAGE_SIZE = 20;
+
+const initState = (locale: Language): IngredientSearchState => ({
 	options: [],
 	selected: [],
 	filter: {
-		query: { page: 1, limit: 10, search: {} },
+		query: { page: 1, limit: PAGE_SIZE, ...buildTranslatedNameQuery('', locale) },
 		isLastPage: false,
 		searchTerm: ''
 	},
 	loading: false
 });
 
-type UpdateStateFilter = {
-	query?: Partial<QueryParams>;
-	isLastPage?: boolean;
-	searchTerm?: string;
-};
-
 /**
+ * Searches ingredients on the server, the same way the ingredients list does: the term matches the name in
+ * any language, ignoring accents and case ("limao" finds "Limão" and "Lime"), and the results are sorted
+ * by the name in the current language.
+ *
  * `scope` keeps the state and the request of one search apart from another, so two lists on the same page
  * (the ingredients and the garnishes of a drink) can each search on their own.
  */
@@ -27,24 +30,9 @@ export const useIngredientSearch = (scope = 'default') => {
 	const { $api } = useNuxtApp();
 	const { addToast } = useToast();
 	const { t, locale } = useI18n();
-	const state = useState<IngredientSearchState>(`IngredientSearch:${scope}`, initState);
-
-	const updateStateFilterQuery = (query?: Partial<QueryParams>) => {
-		return {
-			limit: query?.limit || state.value.filter.query.limit,
-			page: query?.page || state.value.filter.query.page,
-			search: query?.search || state.value.filter.query.search,
-			sort: query?.sort || state.value.filter.query.sort
-		};
-	};
-
-	const updateStateFilter = ({ query, isLastPage, searchTerm }: UpdateStateFilter) => {
-		return {
-			query: updateStateFilterQuery(query),
-			isLastPage: isLastPage || state.value.filter.isLastPage,
-			searchTerm: searchTerm || state.value.filter.searchTerm
-		};
-	};
+	const state = useState<IngredientSearchState>(`IngredientSearch:${scope}`, () =>
+		initState(locale.value)
+	);
 
 	const { data, error, status } = useAsyncData(
 		`ingredientMultiselectSearch:${scope}`,
@@ -58,9 +46,8 @@ export const useIngredientSearch = (scope = 'default') => {
 
 	watch(data, (newData) => {
 		if (!newData) return;
-		if (newData.length === 0) {
+		if (newData.length < state.value.filter.query.limit) {
 			state.value.filter.isLastPage = true;
-			return;
 		}
 		state.value.options = [...state.value.options, ...newData];
 	});
@@ -77,38 +64,31 @@ export const useIngredientSearch = (scope = 'default') => {
 		state.value.loading = newStatus === 'pending';
 	});
 
-	const resetState = () => {
-		state.value = initState();
+	const restartSearch = () => {
+		state.value.options = [];
+		state.value.filter = {
+			...state.value.filter,
+			query: {
+				page: 1,
+				limit: PAGE_SIZE,
+				...buildTranslatedNameQuery(state.value.filter.searchTerm.trim(), locale.value)
+			},
+			isLastPage: false
+		};
 	};
 
-	onBeforeUnmount(() => resetState());
-
-	watch(locale, () => {
-		state.value.options = [];
-		state.value.filter = updateStateFilter({
-			query: { page: 1, search: { name: '' } },
-			isLastPage: false,
-			searchTerm: ''
-		});
+	watchDebounced(() => state.value.filter.searchTerm, restartSearch, {
+		debounce: INTERACTION_TIMING_MS.searchDebounce
 	});
+	watch(locale, restartSearch);
 
-	const shouldResetFilters = (newTerm: string, currentTerm: string) =>
-		(newTerm.length >= 2 && newTerm.slice(0, 2) !== currentTerm.slice(0, 2)) ||
-		newTerm.length === 0;
+	onBeforeUnmount(() => {
+		state.value = initState(locale.value);
+	});
 
 	const searchTerm = computed({
 		get: () => state.value.filter.searchTerm,
 		set: (newTerm) => {
-			const currentTerm = state.value.filter.searchTerm;
-			if (shouldResetFilters(newTerm, currentTerm)) {
-				state.value.options = [];
-				state.value.filter = updateStateFilter({
-					query: { page: 1, search: { name: newTerm } },
-					isLastPage: false,
-					searchTerm: newTerm
-				});
-				return;
-			}
 			state.value.filter.searchTerm = newTerm;
 		}
 	});
@@ -127,8 +107,8 @@ export const useIngredientSearch = (scope = 'default') => {
 
 	const loadNextPage = () => {
 		if (state.value.loading || state.value.filter.isLastPage) return;
-		const { page } = state.value.filter.query;
-		state.value.filter.query = updateStateFilterQuery({ page: page + 1 });
+		const { query } = state.value.filter;
+		state.value.filter = { ...state.value.filter, query: { ...query, page: query.page + 1 } };
 	};
 
 	const handleSelect = (newSelected: InputSelectOption) => {

@@ -1,4 +1,4 @@
-import type { Drink } from '~/domain/drink/drink.entity';
+import type { Drink, DrinkRecipeItem } from '~/domain/drink/drink.entity';
 import type { Language } from '~/domain/shared/translations.types';
 import { formatDrinkAmount } from '~/helpers/drink.helpers';
 
@@ -13,18 +13,24 @@ export const useDrinkSummary = (drink: MaybeRefOrGetter<Drink>) => {
 	const name = computed(() => toValue(drink).translations[lang.value]?.name ?? '');
 	const method = computed(() => toValue(drink).translations[lang.value]?.method ?? '');
 
+	const toItem = ({ amount, ingredient }: DrinkRecipeItem, optional: boolean) => {
+		const measurement = formatDrinkAmount(amount, lang.value);
+		return {
+			id: ingredient.id,
+			measurement,
+			// Without a measurement there is nothing for the connector to join ("of Gin").
+			connector: measurement ? t('drinkDetailPage.ingredients.ofPreposition') : '',
+			name: ingredient.translations[lang.value]?.name ?? '',
+			description: ingredient.translations[lang.value]?.description ?? '',
+			brand: ingredient.brand ?? '',
+			optional
+		};
+	};
 	const ingredientItems = computed(() =>
-		toValue(drink).ingredients.map(({ amount, ingredient }) => {
-			const measurement = formatDrinkAmount(amount, lang.value);
-			return {
-				id: ingredient.id,
-				measurement,
-				// Without a measurement there is nothing for the connector to join ("of Gin").
-				connector: measurement ? t('drinkDetailPage.ingredients.ofPreposition') : '',
-				name: ingredient.translations[lang.value]?.name ?? '',
-				description: ingredient.translations[lang.value]?.description ?? ''
-			};
-		})
+		toValue(drink).ingredients.map((line) => toItem(line, line.optional))
+	);
+	const garnishItems = computed(() =>
+		(toValue(drink).garnishes ?? []).map((line) => toItem(line, false))
 	);
 	const ingredientCountLabel = computed(() =>
 		t('drinkDetailPage.ingredients.count', toValue(drink).ingredients.length)
@@ -57,6 +63,7 @@ export const useDrinkSummary = (drink: MaybeRefOrGetter<Drink>) => {
 		name,
 		method,
 		ingredientItems,
+		garnishItems,
 		ingredientCountLabel,
 		hasRatings,
 		ratingSummaryText,
