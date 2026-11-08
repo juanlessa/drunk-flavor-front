@@ -1,5 +1,6 @@
 import { z } from 'zod/v4';
-import { getZodTranslationsSchema } from '~/helpers/getZodTranslationsSchema';
+import { Genders } from '~/domain/shared/gender.constants';
+import { getZodGenderedTranslationsSchema } from '~/helpers/getZodTranslationsSchema';
 import { validateSchema } from '~/helpers/validateSchema';
 import type { IngredientForm } from '~/types/ingredient.types';
 
@@ -9,11 +10,16 @@ export const ingredientNameValidation = z
 	.trim()
 	.min(1, { error: 'errors.ingredients.name' });
 
+export const ingredientGenderValidation = z.enum(Genders, {
+	error: 'errors.ingredients.gender'
+});
 export const ingredientCategoryIdValidation = z
 	.string()
 	.min(1, { error: 'errors.ingredients.category' });
 
-export const ingredientUnitIdValidation = z.string().min(1, { error: 'errors.ingredients.unit' });
+export const ingredientUnitIdsValidation = z
+	.array(z.string().min(1))
+	.min(1, { error: 'errors.ingredients.unit' });
 
 // schemas
 export const ingredientTranslationSchema = z.object({
@@ -21,9 +27,12 @@ export const ingredientTranslationSchema = z.object({
 });
 
 export const ingredientFormSchema = z.object({
-	translations: getZodTranslationsSchema(ingredientTranslationSchema),
+	translations: getZodGenderedTranslationsSchema(
+		ingredientTranslationSchema,
+		ingredientGenderValidation
+	),
 	categoryId: ingredientCategoryIdValidation,
-	unitId: ingredientUnitIdValidation
+	unitIds: ingredientUnitIdsValidation
 });
 
 //validators

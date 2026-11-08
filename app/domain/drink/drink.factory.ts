@@ -7,6 +7,8 @@ export const initEmptyDrink = (): Drink => ({
 		pt: { name: '', method: '' }
 	},
 	ingredients: [],
+	garnishes: [],
+	preparation: undefined,
 	cover: undefined,
 	thumbnail: undefined,
 	avgRating: 0,

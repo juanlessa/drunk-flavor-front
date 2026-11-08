@@ -6,5 +6,5 @@ export const initEmptyIngredientForm = (): IngredientForm => ({
 		pt: { name: '' }
 	},
 	categoryId: '',
-	unitId: ''
+	unitIds: []
 });

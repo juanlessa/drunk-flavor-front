@@ -13,13 +13,13 @@ const copyTranslations = (source: Translations<IngredientTranslation>) =>
 export const mapIngredientToForm = (ingredient: Ingredient): IngredientForm => ({
 	translations: copyTranslations(ingredient.translations),
 	categoryId: ingredient.category.id,
-	unitId: ingredient.unit.id
+	unitIds: ingredient.units.map((unit) => unit.id)
 });
 
 export const mapFormToCreateIngredient = (ingredientForm: IngredientForm): CreateIngredient => ({
 	translations: copyTranslations(ingredientForm.translations),
 	categoryId: ingredientForm.categoryId,
-	unitId: ingredientForm.unitId
+	unitIds: [...ingredientForm.unitIds]
 });
 
 export const mapFormToUpdateIngredient = (

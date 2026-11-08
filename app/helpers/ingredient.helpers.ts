@@ -4,15 +4,22 @@ import type { Unit } from '~/domain/unit/unit.entity';
 import { formatUnitQuantity } from './unit.helpers';
 
 /**
+ * The unit that cards and forms show for an ingredient: the first of its allowed units. It is undefined for an
+ * ingredient that is not measurable (it has no units).
+ */
+export const getPrimaryUnit = (ingredient: Pick<Ingredient, 'units'>): Unit | undefined =>
+	ingredient.units[0];
+/**
  * Secondary line of an ingredient card: "category · unit".
  * Units without a symbol (e.g. "leaf") fall back to their translated name.
  */
 export const getIngredientSummary = (
-	ingredient: Pick<Ingredient, 'category' | 'unit'>,
+	ingredient: Pick<Ingredient, 'category' | 'units'>,
 	locale: Language
 ): string => {
 	const category = ingredient.category.translations[locale].name;
-	const unit = ingredient.unit.symbol || ingredient.unit.translations[locale].name;
+	const primaryUnit = getPrimaryUnit(ingredient);
+	const unit = primaryUnit?.symbol || primaryUnit?.translations[locale].name;
 	return [category, unit].filter(Boolean).join(' · ');
 };
 

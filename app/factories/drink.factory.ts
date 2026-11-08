@@ -5,5 +5,6 @@ export const initEmptyDrinkForm = (): DrinkForm => ({
 		en: { name: '', method: '' },
 		pt: { name: '', method: '' }
 	},
-	ingredients: []
+	ingredients: [],
+	garnishes: []
 });

@@ -44,7 +44,7 @@
 						:id="quantityId"
 						:model-value="props.quantity"
 						:suffix="suffix"
-						:integer="!props.ingredient.unit.allowDecimal"
+						:integer="!(unit?.allowDecimal ?? true)"
 						:has-error="!!props.error"
 						@update:model-value="(value: number) => emit('update:quantity', value)"
 						@blur="emit('blur')" />
@@ -80,7 +80,7 @@
 </template>
 <script setup lang="ts">
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
-import { getIngredientSummary } from '~/helpers/ingredient.helpers';
+import { getIngredientSummary, getPrimaryUnit } from '~/helpers/ingredient.helpers';
 import { tv } from '~/utils/tv';
 
 const props = defineProps({
@@ -106,10 +106,11 @@ const removeLabel = computed(() =>
 	t('organisms.ingredientsSelection.removeButton.label', { name: name.value })
 );
 // Same wording as the drink page: the symbol, or the singular/plural unit name.
+const unit = computed(() => getPrimaryUnit(props.ingredient));
 const suffix = computed(() => {
-	const { unit } = props.ingredient;
-	if (unit.symbol) return unit.symbol;
-	const { name: singular, namePlural } = unit.translations[locale.value];
+	if (!unit.value) return '';
+	if (unit.value.symbol) return unit.value.symbol;
+	const { name: singular, namePlural } = unit.value.translations[locale.value];
 	return props.quantity === 1 ? singular : namePlural;
 });
 

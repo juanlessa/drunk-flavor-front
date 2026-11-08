@@ -47,7 +47,7 @@ const createEmptyForm = () => ({
 		pt: { name: '' }
 	},
 	categoryId: '',
-	unitId: ''
+	unitIds: [] as string[]
 });
 
 const mockFormState = ref({
@@ -153,19 +153,21 @@ const createIngredientProp = () => ({
 		createdAt: new Date(),
 		updatedAt: new Date()
 	},
-	unit: {
-		id: 'unit-1',
-		translations: {
-			en: { name: 'teaspoon', namePlural: 'teaspoons' },
-			pt: { name: 'colher de chá', namePlural: 'colheres de chá' }
-		},
-		symbol: 'tsp',
-		spaceBeforeSymbol: true,
-		allowDecimal: true,
-		kind: 'volume',
-		createdAt: new Date(),
-		updatedAt: new Date()
-	},
+	units: [
+		{
+			id: 'unit-1',
+			translations: {
+				en: { name: 'teaspoon', namePlural: 'teaspoons' },
+				pt: { name: 'colher de chá', namePlural: 'colheres de chá' }
+			},
+			symbol: 'tsp',
+			spaceBeforeSymbol: true,
+			allowDecimal: true,
+			kind: 'volume',
+			createdAt: new Date(),
+			updatedAt: new Date()
+		}
+	],
 	createdAt: new Date(),
 	updatedAt: new Date()
 });
@@ -242,7 +244,7 @@ describe('IngredientForm', () => {
 			expect(mockUpdateFormState).toHaveBeenCalledWith({
 				translations: ingredient.translations,
 				categoryId: 'cat-1',
-				unitId: 'unit-1'
+				unitIds: ['unit-1']
 			});
 		});
 
@@ -281,8 +283,8 @@ describe('IngredientForm', () => {
 		});
 
 		it('writes the ingredient with the unit picked in the select', async () => {
-			const { unit } = createIngredientProp();
-			mockUnitOptions.value = [unit];
+			const [unit] = createIngredientProp().units;
+			mockUnitOptions.value = [unit!];
 			mockFormState.value.form.translations.en.name = 'Sugar';
 			const wrapper = mountIngredientForm();
 
@@ -292,7 +294,7 @@ describe('IngredientForm', () => {
 				.vm.$emit('update:modelValue', { value: 'unit-1', label: 'teaspoon' });
 			await wrapper.vm.$nextTick();
 
-			expect(mockFormState.value.form.unitId).toBe('unit-1');
+			expect(mockFormState.value.form.unitIds).toEqual(['unit-1']);
 			expect(findPreview(wrapper)).toContain(
 				'1 tsp of Sugar · 60 tsp of Sugar · 1.5 tsp of Sugar'
 			);
@@ -349,7 +351,7 @@ describe('IngredientForm', () => {
 					pt: { name: 'Açúcar' }
 				},
 				categoryId: 'cat-1',
-				unitId: 'unit-1'
+				unitIds: ['unit-1']
 			};
 
 			const wrapper = mountIngredientForm();

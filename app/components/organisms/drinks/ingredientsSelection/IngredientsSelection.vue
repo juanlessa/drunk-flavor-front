@@ -35,7 +35,7 @@
 				:index="index"
 				:total="selected.length"
 				:quantity="quantities[ingredient.id] ?? 0"
-				:error="props.checkError(`ingredients.${index}.quantity`)"
+				:error="props.checkError(`ingredients.${index}.amount.quantity`)"
 				:instructions-id="instructionsId"
 				@update:quantity="(value) => updateQuantity(ingredient.id, value)"
 				@move-up="move(index, index - 1)"
@@ -65,9 +65,11 @@ import type { SortableEvent } from 'sortablejs';
 import { nextTick, useId, useTemplateRef } from 'vue';
 import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
 import type { DrinkIngredient } from '~/domain/drink/drink.entity';
+import { DrinkIngredientAmountTypes } from '~/domain/drink/drink.constants';
 import type { DrinkIngredientRequest } from '~/domain/drink/drink.dtos';
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
-import { getIngredientSummary } from '~/helpers/ingredient.helpers';
+import { mapAmountToRequest } from '~/helpers/drink.helpers';
+import { getIngredientSummary, getPrimaryUnit } from '~/helpers/ingredient.helpers';
 import IngredientsSelectionItem from './IngredientsSelectionItem.vue';
 
 const props = defineProps({
@@ -101,12 +103,24 @@ const {
 } = useIngredientSearch();
 
 const quantities = ref<Record<string, number>>({});
+// This list only edits exact amounts in the first unit of an ingredient. A line that came with any other amount
+// (to taste, top up, none) or flagged as optional goes back as it was, until the amount can be edited here too.
+const carriedLines = ref<Record<string, DrinkIngredientRequest>>({});
 const announcement = ref('');
 
 if (props.initialIngredients.length > 0) {
 	initSelected(props.initialIngredients.map((di) => di.ingredient));
 	props.initialIngredients.forEach((di) => {
-		quantities.value[di.ingredient.id] = di.quantity;
+		if (di.amount.type === DrinkIngredientAmountTypes.exact) {
+			quantities.value[di.ingredient.id] = di.amount.quantity;
+		}
+		if (di.amount.type !== DrinkIngredientAmountTypes.exact || di.optional) {
+			carriedLines.value[di.ingredient.id] = {
+				ingredientId: di.ingredient.id,
+				amount: mapAmountToRequest(di.amount),
+				optional: di.optional
+			};
+		}
 	});
 }
 
@@ -122,10 +136,18 @@ const searchOptions = computed<InputSelectOption[]>(() =>
 const nameOf = (ingredient: Ingredient) => ingredient.translations[locale.value].name;
 
 const emitIngredients = () => {
-	const ingredients: DrinkIngredientRequest[] = selected.value.map((sel) => ({
-		ingredientId: sel.id,
-		quantity: quantities.value[sel.id] || 0
-	}));
+	const ingredients: DrinkIngredientRequest[] = selected.value.map(
+		(sel) =>
+			carriedLines.value[sel.id] ?? {
+				ingredientId: sel.id,
+				amount: {
+					type: DrinkIngredientAmountTypes.exact,
+					quantity: quantities.value[sel.id] || 0,
+					unitId: getPrimaryUnit(sel)?.id ?? ''
+				},
+				optional: false
+			}
+	);
 	emit('update:modelValue', ingredients);
 };
 
@@ -146,6 +168,8 @@ const handleRemove = (ingredient: Ingredient) => {
 	handleRemoveSelected({ label: '', value: ingredient.id });
 	const { [ingredient.id]: _, ...rest } = quantities.value;
 	quantities.value = rest;
+	const { [ingredient.id]: __, ...restCarried } = carriedLines.value;
+	carriedLines.value = restCarried;
 	announcement.value = t('organisms.ingredientsSelection.announcements.removed', {
 		name: nameOf(ingredient)
 	});

@@ -38,19 +38,21 @@ const ingredientData = {
 		createdAt: new Date(),
 		updatedAt: new Date()
 	},
-	unit: {
-		id: 'unit-1',
-		translations: {
-			en: { name: 'teaspoon', namePlural: 'teaspoons' },
-			pt: { name: 'colher de chá', namePlural: 'colheres de chá' }
-		},
-		symbol: 'tsp',
-		spaceBeforeSymbol: true,
-		allowDecimal: true,
-		kind: 'volume',
-		createdAt: new Date(),
-		updatedAt: new Date()
-	},
+	units: [
+		{
+			id: 'unit-1',
+			translations: {
+				en: { name: 'teaspoon', namePlural: 'teaspoons' },
+				pt: { name: 'colher de chá', namePlural: 'colheres de chá' }
+			},
+			symbol: 'tsp',
+			spaceBeforeSymbol: true,
+			allowDecimal: true,
+			kind: 'volume',
+			createdAt: new Date(),
+			updatedAt: new Date()
+		}
+	],
 	createdAt: new Date(),
 	updatedAt: new Date()
 };
@@ -66,7 +68,7 @@ const ingredientFormPayload = {
 		pt: { name: 'Açúcar' }
 	},
 	categoryId: 'cat-1',
-	unitId: 'unit-1'
+	unitIds: ['unit-1']
 };
 
 const mountUpdateIngredient = async () => {
@@ -140,7 +142,7 @@ describe('UpdateIngredient', () => {
 				id: 'ing-1',
 				translations: ingredientFormPayload.translations,
 				categoryId: 'cat-1',
-				unitId: 'unit-1'
+				unitIds: ['unit-1']
 			});
 		});
 

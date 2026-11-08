@@ -1,6 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useDrinkForm } from './useDrinkForm';
 
+const exactLine = (ingredientId: string, quantity: number) => ({
+	ingredientId,
+	amount: { type: 'exact' as const, quantity, unitId: 'unit-1' },
+	optional: false
+});
 describe('useDrinkForm', () => {
 	let form: ReturnType<typeof useDrinkForm>;
 
@@ -35,7 +40,8 @@ describe('useDrinkForm', () => {
 					en: { name: 'Mojito', method: 'Muddle mint' },
 					pt: { name: 'Mojito', method: 'Macere hortelã' }
 				},
-				ingredients: [{ ingredientId: 'ing-1', quantity: 60 }]
+				ingredients: [exactLine('ing-1', 60)],
+				garnishes: []
 			});
 
 			expect(form.formState.value.form.translations.en.name).toBe('Mojito');
@@ -50,7 +56,8 @@ describe('useDrinkForm', () => {
 					en: { name: 'Mojito', method: 'Mix' },
 					pt: { name: 'Mojito', method: 'Misture' }
 				},
-				ingredients: [{ ingredientId: 'ing-1', quantity: 60 }]
+				ingredients: [exactLine('ing-1', 60)],
+				garnishes: []
 			});
 			form.formState.value.displayErrors = true;
 
@@ -95,7 +102,7 @@ describe('useDrinkForm', () => {
 
 			form.formState.value.form.translations.en = { name: 'Drink', method: 'Mix it' };
 			form.formState.value.form.translations.pt = { name: 'Drink', method: 'Misture' };
-			form.formState.value.form.ingredients = [{ ingredientId: 'ing-1', quantity: 1 }];
+			form.formState.value.form.ingredients = [exactLine('ing-1', 1)];
 			form.validateForm();
 
 			expect(form.formState.value.errors).toEqual([]);

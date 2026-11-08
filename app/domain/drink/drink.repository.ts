@@ -1,7 +1,7 @@
 import type { $Fetch } from 'nitropack';
 import type { QueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
-import type { CreateDrink, UpdateDrink } from './drink.dtos';
+import type { CreateDrink, GeneratedMethod, GenerateMethod, UpdateDrink } from './drink.dtos';
 import type { Drink } from './drink.entity';
 
 const path = '/drinks';
@@ -31,5 +31,9 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 	},
 	async get(id: string, options?: { signal?: AbortSignal }) {
 		return $fetch<Drink>(`${path}/${id}`, { signal: options?.signal });
+	},
+	/** Writes the method of a drink from its preparation plan, without saving anything. */
+	async generateMethod(body: GenerateMethod) {
+		return $fetch<GeneratedMethod>(`${path}/method`, { method: 'POST', body });
 	}
 });

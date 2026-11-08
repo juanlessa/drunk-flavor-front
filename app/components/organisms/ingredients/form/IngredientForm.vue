@@ -87,12 +87,12 @@
 								:options="mapToSelectOptions(unitOptions, locale)"
 								infinite-scroll
 								:loading="unitLoading"
-								:has-error="!!checkError(`unitId`)"
+								:has-error="!!checkError(`unitIds`)"
 								@update:model-value="handleUnitSelect"
 								@load-more="unitLoadNextPage"
 								@blur="validateForm" />
 							<template #error>
-								<ErrorMessage :value="checkError(`unitId`)" />
+								<ErrorMessage :value="checkError(`unitIds`)" />
 							</template>
 						</InputWrapper>
 					</div>
@@ -135,7 +135,7 @@ import type { Unit } from '~/domain/unit/unit.entity';
 import type { IngredientForm } from '~/types/ingredient.types';
 import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
 import { mapToSelectOptions } from '~/components/atoms/inputSelect/InputSelect.helpers';
-import { getIngredientPreviewItems } from '~/helpers/ingredient.helpers';
+import { getIngredientPreviewItems, getPrimaryUnit } from '~/helpers/ingredient.helpers';
 import { mapIngredientToForm } from '~/mappers/ingredient.mappers';
 
 const props = defineProps({
@@ -171,7 +171,9 @@ const {
  * The whole selected unit, kept apart from the select options because those are
  * replaced on every new search. The preview needs its symbol, spacing and names.
  */
-const selectedUnit = ref<Unit | undefined>(props.ingredient?.unit);
+const selectedUnit = ref<Unit | undefined>(
+	props.ingredient ? getPrimaryUnit(props.ingredient) : undefined
+);
 
 if (props.ingredient) {
 	updateFormState(mapIngredientToForm(props.ingredient));
@@ -179,10 +181,12 @@ if (props.ingredient) {
 		value: props.ingredient.category.id,
 		label: props.ingredient.category.translations[locale.value].name
 	};
-	unitSelected.value = {
-		value: props.ingredient.unit.id,
-		label: props.ingredient.unit.translations[locale.value].name
-	};
+	if (selectedUnit.value) {
+		unitSelected.value = {
+			value: selectedUnit.value.id,
+			label: selectedUnit.value.translations[locale.value].name
+		};
+	}
 }
 
 // How the ingredient will read on a drink page, in the interface language.
@@ -200,7 +204,8 @@ const handleCategorySelect = (option: InputSelectOption) => {
 };
 
 const handleUnitSelect = (option: InputSelectOption) => {
-	formState.value.form.unitId = option.value;
+	// The form edits the first allowed unit and keeps the others as they are.
+	formState.value.form.unitIds = [option.value, ...formState.value.form.unitIds.slice(1)];
 	selectedUnit.value = unitOptions.value.find((unit) => unit.id === option.value);
 };
 

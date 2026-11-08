@@ -1,20 +1,27 @@
 import { describe, expect, it } from 'vitest';
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
-import { getIngredientPreviewItems, getIngredientSummary } from './ingredient.helpers';
+import type { Unit } from '~/domain/unit/unit.entity';
+import {
+	getIngredientPreviewItems,
+	getIngredientSummary,
+	getPrimaryUnit
+} from './ingredient.helpers';
 
 const buildIngredient = (unit: { symbol?: string; en: string; pt: string }) =>
 	({
 		category: {
 			translations: { en: { name: 'Spirit' }, pt: { name: 'Destilado' } }
 		},
-		unit: {
-			symbol: unit.symbol,
-			translations: {
-				en: { name: unit.en, namePlural: `${unit.en}s` },
-				pt: { name: unit.pt, namePlural: `${unit.pt}s` }
+		units: [
+			{
+				symbol: unit.symbol,
+				translations: {
+					en: { name: unit.en, namePlural: `${unit.en}s` },
+					pt: { name: unit.pt, namePlural: `${unit.pt}s` }
+				}
 			}
-		}
-	}) as unknown as Pick<Ingredient, 'category' | 'unit'>;
+		]
+	}) as unknown as Pick<Ingredient, 'category' | 'units'>;
 
 describe('ingredient helpers', () => {
 	it('joins the category name and the unit symbol', () => {
@@ -30,6 +37,20 @@ describe('ingredient helpers', () => {
 	});
 });
 
+describe('ingredient units', () => {
+	it('shows the first allowed unit and ignores the others', () => {
+		const ingredient = buildIngredient({ symbol: 'ml', en: 'milliliter', pt: 'mililitro' });
+		const first = ingredient.units[0] as Unit;
+		ingredient.units.push({ ...first, symbol: 'g' } as Unit);
+		expect(getPrimaryUnit(ingredient)).toBe(first);
+		expect(getIngredientSummary(ingredient, 'en')).toBe('Spirit · ml');
+	});
+	it('shows only the category for an ingredient that is not measurable', () => {
+		const ingredient = { ...buildIngredient({ en: 'leaf', pt: 'folha' }), units: [] };
+		expect(getPrimaryUnit(ingredient)).toBeUndefined();
+		expect(getIngredientSummary(ingredient, 'en')).toBe('Spirit');
+	});
+});
 describe('getIngredientPreviewItems', () => {
 	const milliliter = {
 		symbol: 'ml',

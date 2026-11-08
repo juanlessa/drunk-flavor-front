@@ -10,7 +10,14 @@ const buildState = (): DrinkFormState => ({
 			en: { name: 'Mojito', method: 'Muddle and shake.' },
 			pt: { name: 'Mojito', method: 'Macere e bata.' }
 		},
-		ingredients: [{ ingredientId: 'rum', quantity: 60 }]
+		ingredients: [
+			{
+				ingredientId: 'rum',
+				amount: { type: 'exact', quantity: 60, unitId: 'ml' },
+				optional: false
+			}
+		],
+		garnishes: []
 	},
 	cover: undefined,
 	thumbnail: undefined,
@@ -86,7 +93,14 @@ const mountForm = (props = {}) =>
 const drink = {
 	id: 'mojito',
 	translations: buildState().form.translations,
-	ingredients: [{ quantity: 60, ingredient: { id: 'rum' } }],
+	ingredients: [
+		{
+			amount: { type: 'exact', quantity: 60, unit: { id: 'ml' } },
+			optional: false,
+			ingredient: { id: 'rum' }
+		}
+	],
+	garnishes: [],
 	thumbnail: { name: 'thumb', mimetype: 'image/png', url: '/mojito-thumb.png' },
 	cover: { name: 'cover', mimetype: 'image/png', url: '/mojito-cover.png' },
 	avgRating: 0,

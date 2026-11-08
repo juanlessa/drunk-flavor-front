@@ -23,14 +23,29 @@ const buildIngredient = (id: string, name: string) => ({
 	id,
 	translations: { en: { name }, pt: { name } },
 	category: { translations: { en: { name: 'Spirit' }, pt: { name: 'Destilado' } } },
-	unit: {
-		symbol: 'ml',
-		allowDecimal: true,
-		translations: {
-			en: { name: 'milliliter', namePlural: 'milliliters' },
-			pt: { name: 'mililitro', namePlural: 'mililitros' }
+	units: [
+		{
+			id: 'ml',
+			symbol: 'ml',
+			allowDecimal: true,
+			translations: {
+				en: { name: 'milliliter', namePlural: 'milliliters' },
+				pt: { name: 'mililitro', namePlural: 'mililitros' }
+			}
 		}
-	}
+	]
+});
+// A drink line with an exact amount in the ingredient's first unit.
+const exactLine = (quantity: number, ingredient: ReturnType<typeof buildIngredient>) => ({
+	ingredient,
+	amount: { type: 'exact' as const, quantity, unit: ingredient.units[0] },
+	optional: false
+});
+// The same line as the list sends it.
+const exactRequest = (ingredientId: string, quantity: number) => ({
+	ingredientId,
+	amount: { type: 'exact', quantity, unitId: 'ml' },
+	optional: false
 });
 
 type TestIngredient = ReturnType<typeof buildIngredient>;
@@ -135,16 +150,14 @@ describe('IngredientsSelection', () => {
 			'1. gin = 0'
 		]);
 		expect(announcement(wrapper)).toContain('announcements.added');
-		expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([
-			[{ ingredientId: 'gin', quantity: 0 }]
-		]);
+		expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([[exactRequest('gin', 0)]]);
 	});
 
 	it('loads the drink ingredients with their quantities, in order', () => {
 		const wrapper = mountSelection({
 			initialIngredients: [
-				{ quantity: 50, ingredient: buildIngredient('rum', 'Rum') },
-				{ quantity: 20, ingredient: buildIngredient('gin', 'Gin') }
+				exactLine(50, buildIngredient('rum', 'Rum')),
+				exactLine(20, buildIngredient('gin', 'Gin'))
 			]
 		});
 
@@ -157,8 +170,8 @@ describe('IngredientsSelection', () => {
 	it('moves an ingredient with the arrows, announces it and emits the new order', async () => {
 		const wrapper = mountSelection({
 			initialIngredients: [
-				{ quantity: 50, ingredient: buildIngredient('rum', 'Rum') },
-				{ quantity: 20, ingredient: buildIngredient('gin', 'Gin') }
+				exactLine(50, buildIngredient('rum', 'Rum')),
+				exactLine(20, buildIngredient('gin', 'Gin'))
 			]
 		});
 
@@ -168,10 +181,7 @@ describe('IngredientsSelection', () => {
 		expect(mockMoveSelected).toHaveBeenCalledWith(1, 0);
 		expect(announcement(wrapper)).toContain('"position":1');
 		expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([
-			[
-				{ ingredientId: 'gin', quantity: 20 },
-				{ ingredientId: 'rum', quantity: 50 }
-			]
+			[exactRequest('gin', 20), exactRequest('rum', 50)]
 		]);
 	});
 
@@ -190,8 +200,8 @@ describe('IngredientsSelection', () => {
 	it('reorders on drop, keeps the DOM owned by Vue and announces the move', async () => {
 		const wrapper = mountSelection({
 			initialIngredients: [
-				{ quantity: 50, ingredient: buildIngredient('rum', 'Rum') },
-				{ quantity: 20, ingredient: buildIngredient('gin', 'Gin') }
+				exactLine(50, buildIngredient('rum', 'Rum')),
+				exactLine(20, buildIngredient('gin', 'Gin'))
 			]
 		});
 		const list = wrapper.find('ol').element;
@@ -215,16 +225,13 @@ describe('IngredientsSelection', () => {
 		]);
 		expect(announcement(wrapper)).toContain('"position":1');
 		expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([
-			[
-				{ ingredientId: 'gin', quantity: 20 },
-				{ ingredientId: 'rum', quantity: 50 }
-			]
+			[exactRequest('gin', 20), exactRequest('rum', 50)]
 		]);
 	});
 
 	it('ignores moves past the ends of the list', () => {
 		const wrapper = mountSelection({
-			initialIngredients: [{ quantity: 50, ingredient: buildIngredient('rum', 'Rum') }]
+			initialIngredients: [exactLine(50, buildIngredient('rum', 'Rum'))]
 		});
 
 		wrapper.findComponent(ItemStub).vm.$emit('moveUp');
@@ -234,7 +241,7 @@ describe('IngredientsSelection', () => {
 
 	it('removes an ingredient and announces it', async () => {
 		const wrapper = mountSelection({
-			initialIngredients: [{ quantity: 50, ingredient: buildIngredient('rum', 'Rum') }]
+			initialIngredients: [exactLine(50, buildIngredient('rum', 'Rum'))]
 		});
 
 		wrapper.findComponent(ItemStub).vm.$emit('remove');
@@ -247,17 +254,46 @@ describe('IngredientsSelection', () => {
 
 	it('updates the quantity of an ingredient', async () => {
 		const wrapper = mountSelection({
-			initialIngredients: [{ quantity: 50, ingredient: buildIngredient('rum', 'Rum') }]
+			initialIngredients: [exactLine(50, buildIngredient('rum', 'Rum'))]
 		});
 
 		wrapper.findComponent(ItemStub).vm.$emit('update:quantity', 60);
 		await wrapper.vm.$nextTick();
 
-		expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([
-			[{ ingredientId: 'rum', quantity: 60 }]
-		]);
+		expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([[exactRequest('rum', 60)]]);
 	});
 
+	it('sends back, as they came, the lines whose amount this list does not edit', async () => {
+		const mint = buildIngredient('mint', 'Mint');
+		const wrapper = mountSelection({
+			initialIngredients: [
+				exactLine(50, buildIngredient('rum', 'Rum')),
+				{
+					ingredient: mint,
+					amount: { type: 'qualitative', qualifier: 'top_up' },
+					optional: true
+				},
+				{
+					ingredient: buildIngredient('foam', 'Foam'),
+					amount: { type: 'none' },
+					optional: false
+				}
+			]
+		});
+		wrapper.findAllComponents(ItemStub)[0]!.vm.$emit('update:quantity', 60);
+		await wrapper.vm.$nextTick();
+		expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([
+			[
+				exactRequest('rum', 60),
+				{
+					ingredientId: 'mint',
+					amount: { type: 'qualitative', qualifier: 'top_up' },
+					optional: true
+				},
+				{ ingredientId: 'foam', amount: { type: 'none' }, optional: false }
+			]
+		]);
+	});
 	it('shows the list error', () => {
 		const wrapper = mountSelection({
 			checkError: (field: string) =>

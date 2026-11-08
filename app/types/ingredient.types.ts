@@ -9,7 +9,8 @@ export type IngredientsOverviewState = PaginatedOverviewState<'ingredients', Ing
 export type IngredientForm = {
 	translations: Translations<IngredientTranslation>;
 	categoryId: string;
-	unitId: string;
+	// Allowed units in display order. The form edits the first one and carries the rest unchanged.
+	unitIds: string[];
 };
 
 export type IngredientFormState = {

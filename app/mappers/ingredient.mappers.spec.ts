@@ -6,6 +6,7 @@ import {
 } from './ingredient.mappers';
 import type { IngredientForm } from '../types/ingredient.types';
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
+import type { Unit } from '~/domain/unit/unit.entity';
 
 const mockIngredient: Ingredient = {
 	id: 'ing-1',
@@ -20,19 +21,22 @@ const mockIngredient: Ingredient = {
 		createdAt: new Date(),
 		updatedAt: new Date()
 	},
-	unit: {
-		id: 'unit-1',
-		translations: {
-			en: { name: 'milliliter', namePlural: 'milliliters' },
-			pt: { name: 'mililitro', namePlural: 'mililitros' }
-		},
-		symbol: 'ml',
-		spaceBeforeSymbol: false,
-		allowDecimal: true,
-		kind: 'volume',
-		createdAt: new Date(),
-		updatedAt: new Date()
-	},
+	units: [
+		{
+			id: 'unit-1',
+			translations: {
+				en: { name: 'milliliter', namePlural: 'milliliters' },
+				pt: { name: 'mililitro', namePlural: 'mililitros', gender: 'masculine' }
+			},
+			symbol: 'ml',
+			spaceBeforeSymbol: false,
+			allowDecimal: true,
+			kind: 'volume',
+			createdAt: new Date(),
+			updatedAt: new Date()
+		}
+	],
+	kind: 'generic',
 	createdAt: new Date(),
 	updatedAt: new Date()
 };
@@ -43,7 +47,7 @@ const mockIngredientForm: IngredientForm = {
 		pt: { name: 'Rum' }
 	},
 	categoryId: 'cat-1',
-	unitId: 'unit-1'
+	unitIds: ['unit-1']
 };
 
 describe('mapIngredientToForm', () => {
@@ -56,7 +60,7 @@ describe('mapIngredientToForm', () => {
 				pt: { name: 'Rum' }
 			},
 			categoryId: 'cat-1',
-			unitId: 'unit-1'
+			unitIds: ['unit-1']
 		});
 	});
 
@@ -66,10 +70,30 @@ describe('mapIngredientToForm', () => {
 		expect(result.categoryId).toBe(mockIngredient.category.id);
 	});
 
-	it('extracts unitId from the unit object', () => {
-		const result = mapIngredientToForm(mockIngredient);
+	it('extracts the ids of every allowed unit, in order', () => {
+		const first = mockIngredient.units[0] as Unit;
+		const result = mapIngredientToForm({
+			...mockIngredient,
+			units: [first, { ...first, id: 'unit-2' }]
+		});
 
-		expect(result.unitId).toBe(mockIngredient.unit.id);
+		expect(result.unitIds).toEqual(['unit-1', 'unit-2']);
+	});
+
+	it('keeps the description and the gender of the translations', () => {
+		const result = mapIngredientToForm({
+			...mockIngredient,
+			translations: {
+				en: { name: 'Triple sec', description: 'Orange liqueur' },
+				pt: { name: 'Triple sec', gender: 'masculine', description: 'Licor de laranja' }
+			}
+		});
+
+		expect(result.translations.pt).toEqual({
+			name: 'Triple sec',
+			gender: 'masculine',
+			description: 'Licor de laranja'
+		});
 	});
 
 	it('does not include id or date fields', () => {
@@ -90,7 +114,7 @@ describe('mapFormToCreateIngredient', () => {
 				pt: { name: 'Rum' }
 			},
 			categoryId: 'cat-1',
-			unitId: 'unit-1'
+			unitIds: ['unit-1']
 		});
 	});
 });
@@ -106,7 +130,7 @@ describe('mapFormToUpdateIngredient', () => {
 				pt: { name: 'Rum' }
 			},
 			categoryId: 'cat-1',
-			unitId: 'unit-1'
+			unitIds: ['unit-1']
 		});
 	});
 

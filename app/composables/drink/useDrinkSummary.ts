@@ -1,6 +1,6 @@
 import type { Drink } from '~/domain/drink/drink.entity';
 import type { Language } from '~/domain/shared/translations.types';
-import { formatUnitQuantity } from '~/helpers/unit.helpers';
+import { formatDrinkAmount } from '~/helpers/drink.helpers';
 
 /**
  * Localized, display-ready pieces of a drink shared by the detail page and the card
@@ -14,12 +14,16 @@ export const useDrinkSummary = (drink: MaybeRefOrGetter<Drink>) => {
 	const method = computed(() => toValue(drink).translations[lang.value]?.method ?? '');
 
 	const ingredientItems = computed(() =>
-		toValue(drink).ingredients.map(({ quantity, ingredient }) => ({
-			id: ingredient.id,
-			measurement: formatUnitQuantity(quantity, ingredient.unit, lang.value),
-			connector: t('drinkDetailPage.ingredients.ofPreposition'),
-			name: ingredient.translations[lang.value]?.name ?? ''
-		}))
+		toValue(drink).ingredients.map(({ amount, ingredient }) => {
+			const measurement = formatDrinkAmount(amount, lang.value);
+			return {
+				id: ingredient.id,
+				measurement,
+				// Without a measurement there is nothing for the connector to join ("of Gin").
+				connector: measurement ? t('drinkDetailPage.ingredients.ofPreposition') : '',
+				name: ingredient.translations[lang.value]?.name ?? ''
+			};
+		})
 	);
 	const ingredientCountLabel = computed(() =>
 		t('drinkDetailPage.ingredients.count', toValue(drink).ingredients.length)

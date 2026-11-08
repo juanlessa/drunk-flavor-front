@@ -16,7 +16,9 @@ const buildIngredient = (id: string, name: string) => ({
 	id,
 	translations: { en: { name }, pt: { name } },
 	category: { translations: { en: { name: 'Spirit' }, pt: { name: 'Destilado' } } },
-	unit: { symbol: 'ml', translations: { en: { name: 'milliliter' }, pt: { name: 'mililitro' } } }
+	units: [
+		{ symbol: 'ml', translations: { en: { name: 'milliliter' }, pt: { name: 'mililitro' } } }
+	]
 });
 
 const mockOverviewState = ref({

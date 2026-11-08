@@ -18,8 +18,8 @@ describe('useIngredientForm', () => {
 			expect(form.formState.value.form.categoryId).toBe('');
 		});
 
-		it('starts with empty unitId', () => {
-			expect(form.formState.value.form.unitId).toBe('');
+		it('starts with no units', () => {
+			expect(form.formState.value.form.unitIds).toEqual([]);
 		});
 	});
 
@@ -31,12 +31,12 @@ describe('useIngredientForm', () => {
 					pt: { name: 'Rum' }
 				},
 				categoryId: 'cat-1',
-				unitId: 'unit-1'
+				unitIds: ['unit-1']
 			});
 
 			expect(form.formState.value.form.translations.en.name).toBe('Rum');
 			expect(form.formState.value.form.categoryId).toBe('cat-1');
-			expect(form.formState.value.form.unitId).toBe('unit-1');
+			expect(form.formState.value.form.unitIds).toEqual(['unit-1']);
 		});
 	});
 
@@ -48,14 +48,14 @@ describe('useIngredientForm', () => {
 					pt: { name: 'Rum' }
 				},
 				categoryId: 'cat-1',
-				unitId: 'unit-1'
+				unitIds: ['unit-1']
 			});
 
 			const other = useIngredientForm();
 
 			expect(other.formState.value.form.translations.en.name).toBe('');
 			expect(other.formState.value.form.categoryId).toBe('');
-			expect(other.formState.value.form.unitId).toBe('');
+			expect(other.formState.value.form.unitIds).toEqual([]);
 		});
 	});
 
@@ -86,7 +86,7 @@ describe('useIngredientForm', () => {
 			expect(form.formState.value.errors.length).toBeGreaterThan(0);
 		});
 
-		it('flags a missing unitId', () => {
+		it('flags a missing unit', () => {
 			form.formState.value.displayErrors = true;
 			form.formState.value.form = {
 				translations: {
@@ -94,12 +94,12 @@ describe('useIngredientForm', () => {
 					pt: { name: 'Rum' }
 				},
 				categoryId: 'cat-1',
-				unitId: ''
+				unitIds: []
 			};
 
 			form.validateForm();
 
-			expect(form.formState.value.errors.map(({ field }) => field)).toEqual(['unitId']);
+			expect(form.formState.value.errors.map(({ field }) => field)).toEqual(['unitIds']);
 		});
 
 		it('clears errors when form is valid', () => {
@@ -112,7 +112,7 @@ describe('useIngredientForm', () => {
 					pt: { name: 'Rum' }
 				},
 				categoryId: 'cat-1',
-				unitId: 'unit-1'
+				unitIds: ['unit-1']
 			};
 			form.validateForm();
 

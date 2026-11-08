@@ -15,14 +15,16 @@ const buildIngredient = (unit: { symbol?: string; allowDecimal: boolean }) =>
 		id: 'mint',
 		translations: { en: { name: 'Mint' }, pt: { name: 'Hortelã' } },
 		category: { translations: { en: { name: 'Herb' }, pt: { name: 'Erva' } } },
-		unit: {
-			symbol: unit.symbol,
-			allowDecimal: unit.allowDecimal,
-			translations: {
-				en: { name: 'leaf', namePlural: 'leaves' },
-				pt: { name: 'folha', namePlural: 'folhas' }
+		units: [
+			{
+				symbol: unit.symbol,
+				allowDecimal: unit.allowDecimal,
+				translations: {
+					en: { name: 'leaf', namePlural: 'leaves' },
+					pt: { name: 'folha', namePlural: 'folhas' }
+				}
 			}
-		}
+		]
 	}) as unknown as Ingredient;
 
 const InputNumberStub = {
