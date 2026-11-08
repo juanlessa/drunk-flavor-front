@@ -206,9 +206,17 @@ describe('PreparationActionEditor', () => {
 		it('picks the intensity, left on its default until chosen', () => {
 			const wrapper = mountEditor({ type: 'muddle' });
 
-			expect(select(wrapper, 'a-intensity').props('modelValue')).toBe('');
+			expect(select(wrapper, 'a-intensity').props('modelValue')).toBe('__default__');
 			select(wrapper, 'a-intensity').vm.$emit('update:modelValue', 'gentle');
 			expect(last(wrapper)).toEqual({ type: 'muddle', intensity: 'gentle' });
+		});
+
+		it('goes back to the default intensity, which takes it out of the action', () => {
+			const wrapper = mountEditor({ type: 'muddle', intensity: 'gentle' });
+
+			expect(optionValues(wrapper, 'a-intensity')[0]).toBe('__default__');
+			select(wrapper, 'a-intensity').vm.$emit('update:modelValue', '__default__');
+			expect(last(wrapper)).toEqual({ type: 'muddle' });
 		});
 
 		it('writes the seconds of a shake as a whole number, and none for zero', () => {
@@ -311,7 +319,16 @@ describe('PreparationActionEditor', () => {
 			expect(last(wrapper)).toEqual({ type: 'garnish', items: [saltRef] });
 			select(wrapper, 'a-style').vm.$emit('update:modelValue', 'float');
 			expect(last(wrapper)).toMatchObject({ style: 'float' });
-			expect(optionValues(wrapper, 'a-style')).toHaveLength(8);
+			// The eight styles and the default one, which is how to go back to none.
+			expect(optionValues(wrapper, 'a-style')).toHaveLength(9);
+			expect(optionValues(wrapper, 'a-style')[0]).toBe('__default__');
+		});
+
+		it('goes back to the default style, which takes it out of the garnish', () => {
+			const wrapper = mountEditor({ type: 'garnish', items: [], style: 'float' });
+
+			select(wrapper, 'a-style').vm.$emit('update:modelValue', '__default__');
+			expect(last(wrapper)).toEqual({ type: 'garnish', items: [] });
 		});
 	});
 

@@ -78,10 +78,9 @@
 			</template>
 			<InputSelect
 				:id="id('intensity')"
-				:model-value="muddle.intensity ?? ''"
-				:options="options('intensity.muddle', intensities)"
-				:placeholder="$t('organisms.preparationBuilder.fields.intensityDefault')"
-				@update:model-value="(value) => patch({ intensity: value })" />
+				:model-value="muddle.intensity ?? DEFAULT_OPTION"
+				:options="optionalOptions('intensity.muddle', intensities, 'intensityDefault')"
+				@update:model-value="(value) => patchOptional('intensity', value)" />
 		</InputWrapper>
 		<!-- shake -->
 		<div v-else-if="shake" class="grid grid-cols-1 gap-4 tablet:grid-cols-2">
@@ -93,10 +92,9 @@
 				</template>
 				<InputSelect
 					:id="id('intensity')"
-					:model-value="shake.intensity ?? ''"
-					:options="options('intensity.shake', intensities)"
-					:placeholder="$t('organisms.preparationBuilder.fields.intensityDefault')"
-					@update:model-value="(value) => patch({ intensity: value })" />
+					:model-value="shake.intensity ?? DEFAULT_OPTION"
+					:options="optionalOptions('intensity.shake', intensities, 'intensityDefault')"
+					@update:model-value="(value) => patchOptional('intensity', value)" />
 			</InputWrapper>
 			<InputWrapper>
 				<template #label>
@@ -128,10 +126,9 @@
 				</template>
 				<InputSelect
 					:id="id('intensity')"
-					:model-value="stir.intensity ?? ''"
-					:options="options('intensity.stir', intensities)"
-					:placeholder="$t('organisms.preparationBuilder.fields.intensityDefault')"
-					@update:model-value="(value) => patch({ intensity: value })" />
+					:model-value="stir.intensity ?? DEFAULT_OPTION"
+					:options="optionalOptions('intensity.stir', intensities, 'intensityDefault')"
+					@update:model-value="(value) => patchOptional('intensity', value)" />
 			</InputWrapper>
 			<InputWrapper>
 				<template #label>
@@ -248,10 +245,9 @@
 				</template>
 				<InputSelect
 					:id="id('style')"
-					:model-value="garnish.style ?? ''"
-					:options="options('garnishStyle', garnishStyles)"
-					:placeholder="$t('organisms.preparationBuilder.fields.styleDefault')"
-					@update:model-value="(value) => patch({ style: value })" />
+					:model-value="garnish.style ?? DEFAULT_OPTION"
+					:options="optionalOptions('garnishStyle', garnishStyles, 'styleDefault')"
+					@update:model-value="(value) => patchOptional('style', value)" />
 			</InputWrapper>
 		</template>
 		<!-- custom -->
@@ -360,6 +356,27 @@ const custom = ofType(PreparationActionTypes.custom);
  */
 const patch = (changes: Record<string, unknown>) =>
 	emit('update:action', { ...props.action, ...changes } as PreparationAction);
+
+// A select only shows an option it has, so an optional field gets its own "default" option to go back to.
+const DEFAULT_OPTION = '__default__';
+
+/** Like `patch`, but choosing the default option takes the field out of the action. */
+const patchOptional = (field: string, value: string) => {
+	const { [field]: _previous, ...rest } = props.action as Record<string, unknown>;
+	emit(
+		'update:action',
+		(value === DEFAULT_OPTION ? rest : { ...rest, [field]: value }) as PreparationAction
+	);
+};
+
+const optionalOptions = (
+	group: string,
+	values: readonly string[],
+	defaultLabelKey: string
+): InputSelectOption[] => [
+	{ label: t(`organisms.preparationBuilder.fields.${defaultLabelKey}`), value: DEFAULT_OPTION },
+	...options(group, values)
+];
 
 const options = (group: string, values: readonly string[]): InputSelectOption[] =>
 	values.map((value) => ({
