@@ -12,6 +12,7 @@
 				:placeholder="$t('organisms.ingredientForm.unitsSelection.addPlaceholder')"
 				:no-result="$t('organisms.ingredientForm.unitsSelection.noResult')"
 				infinite-scroll
+				server-filtered
 				:loading="loading"
 				:has-error="!!props.error"
 				@update:model-value="handleSelect"

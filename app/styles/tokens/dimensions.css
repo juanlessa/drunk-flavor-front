@@ -17,6 +17,10 @@
 	height: var(--size-option-control);
 }
 
+@utility min-h-option-control {
+	min-height: var(--size-option-control);
+}
+
 @utility option-control-insets {
 	padding-inline-start: var(--spacing-option-leading);
 	padding-inline-end: var(--spacing-option-trailing);

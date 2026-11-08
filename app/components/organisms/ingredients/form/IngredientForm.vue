@@ -153,6 +153,7 @@
 								v-model:search-term="categorySearchTerm"
 								:options="mapToSelectOptions(categoryOptions, locale)"
 								infinite-scroll
+								server-filtered
 								:loading="categoryLoading"
 								:has-error="!!checkError(`categoryId`)"
 								@update:model-value="handleCategorySelect"
