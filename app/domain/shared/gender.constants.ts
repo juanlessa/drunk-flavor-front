@@ -1,4 +1,4 @@
-import { Languages } from './translations.constants';
+import type { Language } from './translations.types';
 
 /** Grammatical gender of a word in a given language (needed to pick articles, e.g. "o gin", "a vodka"). */
 export const Genders = {
@@ -11,4 +11,4 @@ export const genders = Object.values(Genders);
  * The languages whose words need a grammatical gender (to pick the article in a written method, e.g. "o gin",
  * "a vodka"). The backend requires it in these languages and does not need it in the others.
  */
-export const genderedLanguages = [Languages.pt] as const;
+export const genderedLanguages = ['pt'] as const satisfies readonly Language[];

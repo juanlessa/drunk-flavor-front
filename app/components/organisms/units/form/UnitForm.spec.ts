@@ -37,6 +37,11 @@ const FormStub = {
 	template: '<form @submit.prevent="$emit(\'submit\')"><slot /><slot name="buttons" /></form>'
 };
 
+const GenderFieldStub = {
+	props: ['id', 'modelValue', 'error'],
+	emits: ['update:modelValue', 'blur'],
+	template: '<div :id="id" data-testid="gender" :data-value="modelValue" :data-error="error" />'
+};
 const mountForm = () =>
 	mount(UnitForm, {
 		props: { title: 'New unit', submitLabel: 'Create unit' },
@@ -64,6 +69,7 @@ const mountForm = () =>
 					props: ['modelValue', 'id'],
 					template: '<div :id="id">{{ modelValue }}</div>'
 				},
+				GenderField: GenderFieldStub,
 				InputSwitch: {
 					props: ['id', 'checked'],
 					emits: ['update:checked'],
@@ -170,5 +176,39 @@ describe('UnitForm', () => {
 		await cancel!.trigger('click');
 
 		expect(wrapper.emitted('cancel')).toHaveLength(1);
+	});
+	describe('gender', () => {
+		it('asks for the gender only in the Portuguese column', () => {
+			const ids = mountForm()
+				.findAll('[data-testid="gender"]')
+				.map((field) => field.attributes('id'));
+
+			expect(ids).toEqual(['pt-gender']);
+		});
+
+		it('shows the gender already chosen for the Portuguese name', () => {
+			mockFormState.value.form.translations.pt.gender = 'feminine';
+
+			expect(mountForm().find('#pt-gender').attributes('data-value')).toBe('feminine');
+		});
+
+		it('writes the picked gender in the Portuguese translation only', async () => {
+			const wrapper = mountForm();
+
+			wrapper.findComponent(GenderFieldStub).vm.$emit('update:modelValue', 'masculine');
+			await flushPromises();
+
+			expect(mockFormState.value.form.translations.pt.gender).toBe('masculine');
+			expect(mockFormState.value.form.translations.en).not.toHaveProperty('gender');
+		});
+
+		it('shows the error of the Portuguese gender and validates when the field loses focus', () => {
+			mockErrors.value = { 'translations.pt.gender': 'errors.units.gender' };
+			const wrapper = mountForm();
+
+			expect(wrapper.find('#pt-gender').attributes('data-error')).toBe('errors.units.gender');
+			wrapper.findComponent(GenderFieldStub).vm.$emit('blur');
+			expect(mockValidateForm).toHaveBeenCalled();
+		});
 	});
 });

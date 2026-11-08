@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { chunkArray } from './array';
+import { chunkArray, moveItem } from './array';
 
 describe('chunkArray', () => {
 	it('splits an array into chunks of the specified size', () => {
@@ -61,5 +61,34 @@ describe('chunkArray', () => {
 
 	it('throws error when chunk size is negative', () => {
 		expect(() => chunkArray([1, 2, 3], -1)).toThrow('Chunk size must be greater than 0');
+	});
+});
+
+describe('moveItem', () => {
+	it('moves an item up and down', () => {
+		expect(moveItem(['a', 'b', 'c'], 2, 1)).toEqual(['a', 'c', 'b']);
+		expect(moveItem(['a', 'b', 'c'], 0, 1)).toEqual(['b', 'a', 'c']);
+	});
+
+	it('moves an item to the ends', () => {
+		expect(moveItem(['a', 'b', 'c'], 2, 0)).toEqual(['c', 'a', 'b']);
+		expect(moveItem(['a', 'b', 'c'], 0, 2)).toEqual(['b', 'c', 'a']);
+	});
+
+	it.each([
+		{ from: 0, to: -1 },
+		{ from: 2, to: 3 },
+		{ from: 5, to: 0 },
+		{ from: 1, to: 1 }
+	])('keeps the order for the move from $from to $to', ({ from, to }) => {
+		expect(moveItem(['a', 'b', 'c'], from, to)).toEqual(['a', 'b', 'c']);
+	});
+
+	it('does not change the original array', () => {
+		const original = ['a', 'b', 'c'];
+
+		moveItem(original, 0, 2);
+
+		expect(original).toEqual(['a', 'b', 'c']);
 	});
 });

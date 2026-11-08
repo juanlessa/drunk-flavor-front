@@ -30,6 +30,32 @@ describe('mapUnitToForm', () => {
 	});
 });
 
+describe('gender', () => {
+	const gendered = buildForm({
+		translations: {
+			en: { name: 'leaf', namePlural: 'leaves' },
+			pt: { name: 'folha', namePlural: 'folhas', gender: 'feminine' }
+		}
+	});
+
+	it('keeps the gender of the unit in the form', () => {
+		const unit: Unit = {
+			id: 'unit-1',
+			translations: gendered.translations,
+			allowDecimal: false,
+			kind: 'count',
+			createdAt: new Date(),
+			updatedAt: new Date()
+		};
+
+		expect(mapUnitToForm(unit).translations.pt.gender).toBe('feminine');
+	});
+
+	it('sends the gender on create and on update', () => {
+		expect(mapFormToCreateUnit(gendered).translations.pt.gender).toBe('feminine');
+		expect(mapFormToUpdateUnit('unit-1', gendered).translations.pt.gender).toBe('feminine');
+	});
+});
 describe('mapFormToCreateUnit', () => {
 	it('omits an empty symbol', () => {
 		expect(mapFormToCreateUnit(buildForm({ symbol: '  ' })).symbol).toBeUndefined();

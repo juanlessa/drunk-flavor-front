@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { z } from 'zod/v4';
-import { getZodTranslationsSchema } from './getZodTranslationsSchema';
+import {
+	getZodGenderedTranslationsSchema,
+	getZodTranslationsSchema
+} from './getZodTranslationsSchema';
 
 describe('getZodTranslationsSchema', () => {
 	const nameSchema = z.object({ name: z.string().min(1) });
@@ -47,5 +50,46 @@ describe('getZodTranslationsSchema', () => {
 		});
 
 		expect(validResult.success).toBe(true);
+	});
+});
+
+describe('getZodGenderedTranslationsSchema', () => {
+	const nameSchema = z.object({ name: z.string().min(1) });
+	const genderSchema = z.enum(['masculine', 'feminine'], { error: 'gender.required' });
+	const schema = getZodGenderedTranslationsSchema(nameSchema, genderSchema);
+
+	it('requires the gender only in the languages that need it', () => {
+		const result = schema.safeParse({ en: { name: 'Gin' }, pt: { name: 'Gin' } });
+
+		expect(!result.success && result.error.issues.map(({ path }) => path)).toEqual([
+			['pt', 'gender']
+		]);
+	});
+
+	it('accepts the gender in the language that needs it and its absence in the others', () => {
+		expect(
+			schema.safeParse({ en: { name: 'Gin' }, pt: { name: 'Gin', gender: 'masculine' } })
+				.success
+		).toBe(true);
+	});
+
+	it('rejects a gender that does not exist, with the given message', () => {
+		const result = schema.safeParse({
+			en: { name: 'Gin' },
+			pt: { name: 'Gin', gender: 'neuter' }
+		});
+
+		expect(!result.success && result.error.issues.map(({ message }) => message)).toEqual([
+			'gender.required'
+		]);
+	});
+
+	it('keeps validating the other fields', () => {
+		const result = schema.safeParse({
+			en: { name: '' },
+			pt: { name: 'Gin', gender: 'masculine' }
+		});
+
+		expect(result.success).toBe(false);
 	});
 });

@@ -66,6 +66,15 @@
 		},
 		"managementItemCard": {
 			"deleteButton": { "label": "Delete {name}" }
+		},
+		"genderField": {
+			"label": "gender",
+			"placeholder": "select a gender",
+			"help": "Picks the article in the written method: \"o\" or \"a\".",
+			"options": {
+				"masculine": "Masculine (o)",
+				"feminine": "Feminine (a)"
+			}
 		}
 	},
 	"organisms": {
@@ -215,21 +224,63 @@
 			"backLink": "Ingredients",
 			"createTitle": "New ingredient",
 			"editTitle": "Edit ingredient",
-			"description": "What drinks are made of: each one has a category and a unit.",
+			"description": "What drinks are made of: its names, whether any brand works, and how it is measured.",
 			"namesSection": {
 				"title": "Names",
 				"description": "Saved with only the first letter capitalized, e.g. \"Lime juice\"."
 			},
+			"typeSection": {
+				"title": "Type",
+				"description": "Does any brand work, or does the recipe need a specific product?"
+			},
 			"classificationSection": {
-				"title": "Category and unit",
-				"description": "Where it is grouped and how its quantity is measured in drinks."
+				"title": "Classification",
+				"description": "Category and how the ingredient is measured."
 			},
 			"nameInput": { "label": "name" },
+			"descriptionInput": {
+				"label": "description (optional)",
+				"help": "A short note that tells it apart, e.g. \"Orange liqueur\".",
+				"counter": "{count} of {max} characters"
+			},
+			"kindInput": {
+				"legend": "ingredient type",
+				"options": {
+					"generic": {
+						"label": "Any brand",
+						"description": "Generic, like blue curaçao or triple sec."
+					},
+					"branded": {
+						"label": "Specific brand",
+						"description": "Needs one product, like Licor 43."
+					}
+				}
+			},
+			"brandInput": {
+				"label": "brand",
+				"help": "Kept with the capitals as you type it, e.g. \"Licor 43\"."
+			},
+			"measurableInput": {
+				"label": "can be measured",
+				"help": "Turn off for items listed without a number, like foam or a garnish."
+			},
 			"categoryInput": { "label": "category" },
-			"unitInput": { "label": "unit" },
+			"unitInput": { "label": "unit", "none": "No unit" },
+			"unitsSelection": {
+				"label": "units",
+				"addPlaceholder": "Add a unit",
+				"noResult": "No unit found",
+				"help": "The first one is the default. Drinks pick one of these for each use.",
+				"empty": "No unit added yet.",
+				"defaultBadge": "Default",
+				"moveUp": { "label": "Move {name} up" },
+				"moveDown": { "label": "Move {name} down" },
+				"remove": { "label": "Remove {name}" }
+			},
 			"preview": {
-				"label": "In a drink",
-				"empty": "Fill in the name and pick a unit to see how it reads in a drink."
+				"label": "Preview",
+				"empty": "Fill in the name to see how it reads in a drink.",
+				"emptyWithUnit": "Fill in the name and pick a unit to see how it reads in a drink."
 			},
 			"cancelButton": "Cancel",
 			"createButton": "Create ingredient",
@@ -702,12 +753,16 @@
 		"units": {
 			"name": "name is required",
 			"namePlural": "name plural is required",
-			"kind": "kind must be selected"
+			"kind": "kind must be selected",
+			"gender": "gender must be selected"
 		},
 		"ingredients": {
 			"name": "name is required",
 			"unit": "unit must be selected",
-			"category": "category must be selected"
+			"category": "category must be selected",
+			"gender": "gender must be selected",
+			"brand": "brand is required for a specific brand and has up to 60 characters",
+			"description": "description has up to 120 characters"
 		},
 		"drinks": {
 			"name": "name is required",
