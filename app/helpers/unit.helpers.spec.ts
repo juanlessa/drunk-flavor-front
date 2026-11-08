@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { formatUnitQuantity, getUnitPreviewItems, getUnitSummary } from './unit.helpers';
+import {
+	formatQuantityValue,
+	formatUnitQuantity,
+	getUnitPreviewItems,
+	getUnitSummary,
+	pickByQuantity
+} from './unit.helpers';
 
 const translations = {
 	en: { name: 'leaf', namePlural: 'leaves' },
@@ -108,6 +114,57 @@ describe('unit helpers', () => {
 
 			expect(formatUnitQuantity(1.5, unit, 'en')).toBe('1.5 ml');
 			expect(formatUnitQuantity(1.5, unit, 'pt')).toBe('1,5 ml');
+		});
+	});
+
+	describe('formatUnitQuantity plural rules', () => {
+		const unit = { symbol: undefined, translations };
+
+		it.each([
+			{ locale: 'en', quantity: 0, expected: '0 leaves' },
+			{ locale: 'en', quantity: 1, expected: '1 leaf' },
+			{ locale: 'en', quantity: 1.5, expected: '1.5 leaves' },
+			{ locale: 'en', quantity: 2, expected: '2 leaves' },
+			{ locale: 'pt', quantity: 0, expected: '0 folha' },
+			{ locale: 'pt', quantity: 0.5, expected: '0,5 folha' },
+			{ locale: 'pt', quantity: 1, expected: '1 folha' },
+			{ locale: 'pt', quantity: 1.5, expected: '1,5 folha' },
+			{ locale: 'pt', quantity: 2, expected: '2 folhas' }
+		] as const)(
+			'writes $quantity in $locale as "$expected"',
+			({ locale, quantity, expected }) => {
+				expect(formatUnitQuantity(quantity, unit, locale)).toBe(expected);
+			}
+		);
+
+		it('falls back to the names of a unit written with the ingredient name', () => {
+			const each = {
+				symbol: undefined,
+				useIngredientName: true,
+				translations: {
+					en: { name: 'unit', namePlural: 'units' },
+					pt: { name: 'unidade', namePlural: 'unidades' }
+				}
+			};
+
+			expect(formatUnitQuantity(3, each, 'en')).toBe('3 units');
+		});
+	});
+
+	describe('pickByQuantity', () => {
+		it('picks the singular where the language reads the quantity in the singular', () => {
+			expect(pickByQuantity(1, 'lime', 'limes', 'en')).toBe('lime');
+			expect(pickByQuantity(1.5, 'lime', 'limes', 'en')).toBe('limes');
+			expect(pickByQuantity(1.5, 'limão', 'limões', 'pt')).toBe('limão');
+			expect(pickByQuantity(2, 'limão', 'limões', 'pt')).toBe('limões');
+		});
+	});
+
+	describe('formatQuantityValue', () => {
+		it('writes the number for the locale', () => {
+			expect(formatQuantityValue(1.5, 'en')).toBe('1.5');
+			expect(formatQuantityValue(1.5, 'pt')).toBe('1,5');
+			expect(formatQuantityValue(1200, 'en')).toBe('1,200');
 		});
 	});
 });

@@ -7,6 +7,11 @@ import type { IngredientKinds } from './ingredient.constants';
 export type IngredientKind = (typeof IngredientKinds)[keyof typeof IngredientKinds];
 export type IngredientTranslation = {
 	name: string;
+	/**
+	 * Plural of the name, e.g. "limes" for "lime". Required in every language while one of the units of the
+	 * ingredient is written with the ingredient name; otherwise optional.
+	 */
+	namePlural?: string;
 	/** Short complement to the name, e.g. "Orange liqueur" for "Triple sec". */
 	description?: string;
 	/** Grammatical gender of the name in this language. The backend requires it in Portuguese. */

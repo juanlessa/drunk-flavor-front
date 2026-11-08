@@ -12,6 +12,8 @@ export type UnitForm = {
 	symbol: string;
 	spaceBeforeSymbol: boolean;
 	allowDecimal: boolean;
+	// Writes the quantity with the name of the ingredient ("3 limes"); needs a count unit without a symbol.
+	useIngredientName: boolean;
 	// An empty string means "not selected yet"; validation rejects it.
 	kind: UnitKind | '';
 };

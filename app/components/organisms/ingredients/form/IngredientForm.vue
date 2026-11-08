@@ -45,6 +45,27 @@
 										:value="checkError(`translations.${lang}.name`)" />
 								</template>
 							</InputWrapper>
+							<InputWrapper v-if="formState.form.requiresNamePlural">
+								<template #label>
+									<Label :for="`${lang}-name-plural`">
+										{{ $t('organisms.ingredientForm.namePluralInput.label') }}
+									</Label>
+								</template>
+								<InputText
+									:id="`${lang}-name-plural`"
+									v-model="formState.form.translations[lang].namePlural"
+									:name="`${lang}_namePlural`"
+									type="text"
+									:has-error="!!checkError(`translations.${lang}.namePlural`)"
+									@blur="validateForm" />
+								<Text class="text-body-sm text-content-muted">
+									{{ $t('organisms.ingredientForm.namePluralInput.help') }}
+								</Text>
+								<template #error>
+									<ErrorMessage
+										:value="checkError(`translations.${lang}.namePlural`)" />
+								</template>
+							</InputWrapper>
 							<InputWrapper>
 								<template #label>
 									<Label :for="`${lang}-description`">
@@ -138,7 +159,7 @@
 							v-model:checked="formState.form.measurable"
 							class="shrink-0"
 							aria-describedby="measurable-help"
-							@update:checked="validateForm" />
+							@update:checked="handleMeasurableUpdate" />
 					</div>
 					<div class="grid grid-cols-1 gap-4 tablet:grid-cols-2 items-start">
 						<InputWrapper>
@@ -295,7 +316,8 @@ const previewItems = computed(() => {
 		name,
 		selectedUnits.value[0],
 		locale.value,
-		t('drinkDetailPage.ingredients.ofPreposition')
+		t('drinkDetailPage.ingredients.ofPreposition'),
+		formState.value.form.translations[locale.value].namePlural ?? ''
 	);
 });
 const previewDescription = computed(
@@ -316,9 +338,20 @@ const handleKindUpdate = (value: string) => {
 const handleCategorySelect = (option: InputSelectOption) => {
 	formState.value.form.categoryId = option.value;
 };
+// The plural name is only asked for while a unit written with the ingredient name ("3 limes") is in use.
+const syncRequiresNamePlural = () => {
+	formState.value.form.requiresNamePlural =
+		formState.value.form.measurable &&
+		selectedUnits.value.some((unit) => unit.useIngredientName === true);
+};
 const handleUnitsUpdate = (units: Unit[]) => {
 	selectedUnits.value = units;
 	formState.value.form.unitIds = units.map((unit) => unit.id);
+	syncRequiresNamePlural();
+	validateForm();
+};
+const handleMeasurableUpdate = () => {
+	syncRequiresNamePlural();
 	validateForm();
 };
 const handleCancelButton = () => {

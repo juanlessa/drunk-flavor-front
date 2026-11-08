@@ -11,7 +11,7 @@ import type {
 export type IngredientsOverviewState = PaginatedOverviewState<'ingredients', Ingredient>;
 
 export type IngredientForm = {
-	// An empty description means "no description"; the mapper omits it (or removes the stored one).
+	// An empty description or plural name means "none"; the mapper omits it (or removes the stored one).
 	translations: Translations<IngredientTranslation>;
 	categoryId: string;
 	kind: IngredientKind;
@@ -21,6 +21,9 @@ export type IngredientForm = {
 	measurable: boolean;
 	// Allowed units in display order; the first one is the default.
 	unitIds: string[];
+	// Derived from the chosen units: true while one of them is written with the ingredient name ("3 limes"),
+	// which makes the plural name required. It is kept here so the validation needs only the form.
+	requiresNamePlural: boolean;
 };
 export type IngredientFormState = {
 	form: IngredientForm;

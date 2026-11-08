@@ -134,7 +134,8 @@
 								:id="toggle.id"
 								v-model:checked="formState.form[toggle.field]"
 								class="shrink-0"
-								:aria-describedby="`${toggle.id}-help`" />
+								:aria-describedby="`${toggle.id}-help`"
+								@update:checked="validateForm" />
 						</div>
 					</div>
 
@@ -178,13 +179,14 @@ import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSele
 
 type UnitFormToggle = {
 	id: string;
-	field: 'spaceBeforeSymbol' | 'allowDecimal';
-	i18nKey: 'spaceBeforeSymbolInput' | 'allowDecimalInput';
+	field: 'spaceBeforeSymbol' | 'allowDecimal' | 'useIngredientName';
+	i18nKey: 'spaceBeforeSymbolInput' | 'allowDecimalInput' | 'useIngredientNameInput';
 };
 
 const toggles: UnitFormToggle[] = [
 	{ id: 'space-before-symbol', field: 'spaceBeforeSymbol', i18nKey: 'spaceBeforeSymbolInput' },
-	{ id: 'allow-decimal', field: 'allowDecimal', i18nKey: 'allowDecimalInput' }
+	{ id: 'allow-decimal', field: 'allowDecimal', i18nKey: 'allowDecimalInput' },
+	{ id: 'use-ingredient-name', field: 'useIngredientName', i18nKey: 'useIngredientNameInput' }
 ];
 
 const props = defineProps({
@@ -214,8 +216,13 @@ const kindOptions = computed<InputSelectOption[]>(() =>
 	}))
 );
 
-// How a quantity in this unit will read, in the interface language, as the form is filled in.
-const previewItems = computed(() => getUnitPreviewItems(formState.value.form, locale.value));
+// How a quantity in this unit will read, in the interface language, as the form is filled in. A unit written
+// with the ingredient name has no wording of its own, so the preview explains it with an example instead.
+const previewItems = computed(() =>
+	formState.value.form.useIngredientName
+		? [t('organisms.unitForm.preview.ingredientName')]
+		: getUnitPreviewItems(formState.value.form, locale.value)
+);
 
 const isUnitKind = (value: string): value is UnitKind =>
 	(unitKinds as readonly string[]).includes(value);

@@ -8,5 +8,6 @@ export const initEmptyUnitForm = (): UnitForm => ({
 	symbol: '',
 	spaceBeforeSymbol: false,
 	allowDecimal: false,
+	useIngredientName: false,
 	kind: ''
 });

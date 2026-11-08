@@ -15,6 +15,7 @@ export const mapUnitToForm = (unit: Unit): UnitForm => ({
 	symbol: unit.symbol ?? '',
 	spaceBeforeSymbol: unit.spaceBeforeSymbol ?? false,
 	allowDecimal: unit.allowDecimal,
+	useIngredientName: unit.useIngredientName ?? false,
 	kind: unit.kind
 });
 
@@ -27,6 +28,7 @@ export const mapFormToCreateUnit = (unitForm: UnitForm): CreateUnit => {
 		symbol: symbol.length > 0 ? symbol : undefined,
 		spaceBeforeSymbol: unitForm.spaceBeforeSymbol,
 		allowDecimal: unitForm.allowDecimal,
+		useIngredientName: unitForm.useIngredientName,
 		// The form is only submitted after validation, which rejects an unselected kind.
 		kind: unitForm.kind as UnitKind
 	};

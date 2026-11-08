@@ -13,6 +13,7 @@ const buildState = (): UnitFormState => ({
 		symbol: 'ml',
 		spaceBeforeSymbol: true,
 		allowDecimal: true,
+		useIngredientName: false,
 		kind: 'volume'
 	},
 	errors: [],
@@ -136,10 +137,41 @@ describe('UnitForm', () => {
 		);
 	});
 
+	describe('written with the ingredient name', () => {
+		it('starts off and writes the switch in the form, validating', async () => {
+			const wrapper = mountForm();
+			expect(wrapper.find('#use-ingredient-name').attributes('aria-checked')).toBe('false');
+			await wrapper.find('#use-ingredient-name').trigger('click');
+			expect(mockFormState.value.form.useIngredientName).toBe(true);
+			expect(wrapper.find('#use-ingredient-name').attributes('aria-checked')).toBe('true');
+			expect(mockValidateForm).toHaveBeenCalled();
+		});
+		it('labels the switch and explains it', () => {
+			const text = mountForm().text();
+			expect(text).toContain('organisms.unitForm.useIngredientNameInput.label');
+			expect(text).toContain('organisms.unitForm.useIngredientNameInput.help');
+		});
+		it('explains the wording in the preview instead of writing the unit names', () => {
+			mockFormState.value.form.useIngredientName = true;
+			const preview = mountForm().find('[data-testid="unit-preview"]').text();
+			expect(preview).toContain('organisms.unitForm.preview.ingredientName');
+			expect(preview).not.toContain('1 milliliter');
+		});
+		it('shows the errors of the kind and of the symbol on their own fields', () => {
+			mockFormState.value.form.useIngredientName = true;
+			mockErrors.value = {
+				kind: 'errors.units.ingredientNameKind',
+				symbol: 'errors.units.ingredientNameSymbol'
+			};
+			const text = mountForm().text();
+			expect(text).toContain('errors.units.ingredientNameKind');
+			expect(text).toContain('errors.units.ingredientNameSymbol');
+		});
+	});
 	it('describes each switch with its help text', () => {
 		const wrapper = mountForm();
 
-		for (const id of ['space-before-symbol', 'allow-decimal']) {
+		for (const id of ['space-before-symbol', 'allow-decimal', 'use-ingredient-name']) {
 			const describedBy = wrapper.find(`#${id}`).attributes('aria-describedby');
 			expect(wrapper.find(`#${describedBy}`).exists()).toBe(true);
 		}

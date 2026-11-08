@@ -207,8 +207,18 @@ const selectedUnitId = computed(() => {
 });
 const selectedUnit = computed(() => units.value.find(({ id }) => id === selectedUnitId.value));
 
-const unitName = (unit: { symbol?: string; translations: Record<string, { name: string }> }) =>
-	unit.symbol || unit.translations[locale.value]?.name || '';
+// A unit written with the ingredient name is shown as that name ("limes"), since it has no wording of its own.
+const unitName = (unit: {
+	symbol?: string;
+	useIngredientName?: boolean;
+	translations: Record<string, { name: string }>;
+}) => {
+	if (unit.useIngredientName) {
+		const { name, namePlural } = props.line.ingredient.translations[locale.value];
+		return namePlural || name;
+	}
+	return unit.symbol || unit.translations[locale.value]?.name || '';
+};
 
 const unitOptions = computed<InputSelectOption[]>(() =>
 	units.value.map((unit) => ({ label: unitName(unit), value: unit.id }))

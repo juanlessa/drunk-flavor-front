@@ -12,6 +12,7 @@ const buildForm = (overrides: Partial<IngredientForm> = {}): IngredientForm => (
 	brand: '',
 	measurable: true,
 	unitIds: ['unit-1'],
+	requiresNamePlural: false,
 	...overrides
 });
 const withPt = (pt: Partial<IngredientForm['translations']['pt']>) => ({
@@ -58,6 +59,40 @@ describe('ingredientFormValidator', () => {
 		});
 	});
 
+	describe('plural name', () => {
+		const withPlurals = (en: string | undefined, pt: string | undefined, required = true) =>
+			buildForm({
+				requiresNamePlural: required,
+				translations: {
+					en: { name: 'Lime', description: '', namePlural: en },
+					pt: { name: 'Limão', description: '', namePlural: pt, gender: 'masculine' }
+				}
+			});
+		it('is optional while no unit is written with the ingredient name', () => {
+			expect(fieldsOf(withPlurals('', '', false))).toEqual([]);
+			expect(fieldsOf(withPlurals(undefined, undefined, false))).toEqual([]);
+		});
+		it('is required in every language while a unit is written with the ingredient name', () => {
+			expect(ingredientFormValidator(withPlurals('', ''))).toEqual([
+				{ field: 'translations.en.namePlural', message: 'errors.ingredients.namePlural' },
+				{ field: 'translations.pt.namePlural', message: 'errors.ingredients.namePlural' }
+			]);
+		});
+		it('flags only the language that lacks it, treating blank spaces and undefined as missing', () => {
+			expect(fieldsOf(withPlurals('Limes', '   '))).toEqual(['translations.pt.namePlural']);
+			expect(fieldsOf(withPlurals(undefined, 'Limões'))).toEqual([
+				'translations.en.namePlural'
+			]);
+		});
+		it('accepts both plural names', () => {
+			expect(fieldsOf(withPlurals('Limes', 'Limões'))).toEqual([]);
+		});
+		it('is not asked for once the ingredient cannot be measured', () => {
+			expect(fieldsOf({ ...withPlurals('', ''), measurable: false, unitIds: [] })).toEqual(
+				[]
+			);
+		});
+	});
 	describe('brand', () => {
 		it('is not needed for an ingredient of any brand', () => {
 			expect(fieldsOf(buildForm({ kind: 'generic', brand: '' }))).toEqual([]);

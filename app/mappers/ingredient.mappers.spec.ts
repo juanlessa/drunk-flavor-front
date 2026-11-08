@@ -42,14 +42,15 @@ const buildIngredient = (overrides: Partial<Ingredient> = {}): Ingredient => ({
 });
 const buildForm = (overrides: Partial<IngredientForm> = {}): IngredientForm => ({
 	translations: {
-		en: { name: 'Rum', description: '' },
-		pt: { name: 'Rum', description: '', gender: 'masculine' }
+		en: { name: 'Rum', namePlural: '', description: '' },
+		pt: { name: 'Rum', namePlural: '', description: '', gender: 'masculine' }
 	},
 	categoryId: 'cat-1',
 	kind: 'generic',
 	brand: '',
 	measurable: true,
 	unitIds: ['unit-1'],
+	requiresNamePlural: false,
 	...overrides
 });
 
@@ -89,8 +90,8 @@ describe('mapIngredientToForm', () => {
 		);
 
 		expect(result.translations).toEqual({
-			en: { name: 'Triple sec', description: 'Orange liqueur' },
-			pt: { name: 'Triple sec', gender: 'masculine', description: '' }
+			en: { name: 'Triple sec', namePlural: '', description: 'Orange liqueur' },
+			pt: { name: 'Triple sec', namePlural: '', gender: 'masculine', description: '' }
 		});
 	});
 
@@ -177,8 +178,8 @@ describe('mapFormToUpdateIngredient', () => {
 		expect(result).toEqual({
 			id: 'ing-1',
 			translations: {
-				en: { name: 'Rum', description: null },
-				pt: { name: 'Rum', description: null, gender: 'masculine' }
+				en: { name: 'Rum', namePlural: null, description: null },
+				pt: { name: 'Rum', namePlural: null, description: null, gender: 'masculine' }
 			},
 			categoryId: 'cat-1',
 			unitIds: ['unit-1'],
@@ -219,5 +220,58 @@ describe('mapFormToUpdateIngredient', () => {
 
 	it('includes the provided id', () => {
 		expect(mapFormToUpdateIngredient('custom-id', buildForm()).id).toBe('custom-id');
+	});
+});
+describe('plural name', () => {
+	const eachUnit = { ...buildUnit('unit-each'), useIngredientName: true };
+	const limeTranslations = {
+		en: { name: 'Lime', namePlural: 'Limes' },
+		pt: { name: 'Limão', namePlural: 'Limões', gender: 'masculine' as const }
+	};
+	it('puts the plural names in the form, with an empty text for none', () => {
+		const withPlurals = mapIngredientToForm(
+			buildIngredient({ translations: limeTranslations })
+		);
+		expect(withPlurals.translations.en.namePlural).toBe('Limes');
+		expect(withPlurals.translations.pt.namePlural).toBe('Limões');
+		expect(mapIngredientToForm(buildIngredient()).translations.en.namePlural).toBe('');
+	});
+	it('asks for the plural name while any unit is written with the ingredient name', () => {
+		expect(
+			mapIngredientToForm(buildIngredient({ units: [buildUnit('unit-1'), eachUnit] }))
+				.requiresNamePlural
+		).toBe(true);
+		expect(mapIngredientToForm(buildIngredient()).requiresNamePlural).toBe(false);
+		expect(mapIngredientToForm(buildIngredient({ units: [] })).requiresNamePlural).toBe(false);
+	});
+	it('sends a trimmed plural name on create and leaves out an empty one', () => {
+		const result = mapFormToCreateIngredient(
+			buildForm({
+				translations: {
+					en: { name: 'Lime', namePlural: ' Limes ', description: '' },
+					pt: { name: 'Limão', namePlural: '   ', description: '', gender: 'masculine' }
+				}
+			})
+		);
+		expect(result.translations.en.namePlural).toBe('Limes');
+		expect(result.translations.pt).not.toHaveProperty('namePlural');
+	});
+	it('sends a trimmed plural name on update and null to remove an empty one', () => {
+		const result = mapFormToUpdateIngredient(
+			'ing-1',
+			buildForm({
+				translations: {
+					en: { name: 'Lime', namePlural: ' Limes ', description: '' },
+					pt: { name: 'Limão', namePlural: '', description: '', gender: 'masculine' }
+				}
+			})
+		);
+		expect(result.translations.en.namePlural).toBe('Limes');
+		expect(result.translations.pt.namePlural).toBeNull();
+	});
+	it('does not send the derived flag to the backend', () => {
+		const form = buildForm({ requiresNamePlural: true });
+		expect(mapFormToCreateIngredient(form)).not.toHaveProperty('requiresNamePlural');
+		expect(mapFormToUpdateIngredient('ing-1', form)).not.toHaveProperty('requiresNamePlural');
 	});
 });

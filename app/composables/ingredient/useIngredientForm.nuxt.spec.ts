@@ -12,6 +12,7 @@ const buildForm = (overrides: Partial<IngredientForm> = {}): IngredientForm => (
 	brand: '',
 	measurable: true,
 	unitIds: ['unit-1'],
+	requiresNamePlural: false,
 	...overrides
 });
 

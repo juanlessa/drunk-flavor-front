@@ -9,27 +9,43 @@ import { languages } from '~/domain/shared/translations.constants';
 import type { Translations } from '~/domain/shared/translations.types';
 import type { IngredientForm } from '~/types/ingredient.types';
 
-/** The translations as the form edits them: a missing description is an empty text. */
+/** The translations as the form edits them: a missing description or plural name is an empty text. */
 const toFormTranslations = (source: Translations<IngredientTranslation>) =>
 	languages.reduce((acc, lang) => {
-		acc[lang] = { ...source[lang], description: source[lang].description ?? '' };
+		acc[lang] = {
+			...source[lang],
+			namePlural: source[lang].namePlural ?? '',
+			description: source[lang].description ?? ''
+		};
 		return acc;
 	}, {} as Translations<IngredientTranslation>);
 
-/** A description left empty is not sent, so the backend never receives an empty text. */
+/** A description or plural name left empty is not sent, so the backend never receives an empty text. */
 const toCreateTranslations = (source: Translations<IngredientTranslation>) =>
 	languages.reduce((acc, lang) => {
-		const { description, ...rest } = source[lang];
-		const trimmed = description?.trim();
-		acc[lang] = trimmed ? { ...rest, description: trimmed } : rest;
+		const { description, namePlural, ...rest } = source[lang];
+		const trimmedDescription = description?.trim();
+		const trimmedPlural = namePlural?.trim();
+		acc[lang] = {
+			...rest,
+			...(trimmedPlural && { namePlural: trimmedPlural }),
+			...(trimmedDescription && { description: trimmedDescription })
+		};
 		return acc;
 	}, {} as Translations<IngredientTranslation>);
 
-/** On update an empty description is `null`, which removes the stored one (omitting it would keep it). */
+/**
+ * On update an empty description or plural name is `null`, which removes the stored one (omitting it would
+ * keep it).
+ */
 const toUpdateTranslations = (source: Translations<IngredientTranslation>) =>
 	languages.reduce((acc, lang) => {
-		const { description, ...rest } = source[lang];
-		acc[lang] = { ...rest, description: description?.trim() || null };
+		const { description, namePlural, ...rest } = source[lang];
+		acc[lang] = {
+			...rest,
+			namePlural: namePlural?.trim() || null,
+			description: description?.trim() || null
+		};
 		return acc;
 	}, {} as Translations<UpdateIngredientTranslation>);
 
@@ -39,7 +55,8 @@ export const mapIngredientToForm = (ingredient: Ingredient): IngredientForm => (
 	kind: ingredient.kind,
 	brand: ingredient.brand ?? '',
 	measurable: ingredient.units.length > 0,
-	unitIds: ingredient.units.map((unit) => unit.id)
+	unitIds: ingredient.units.map((unit) => unit.id),
+	requiresNamePlural: ingredient.units.some((unit) => unit.useIngredientName === true)
 });
 
 /** Not measurable means no units, whatever was picked before the switch was turned off. */

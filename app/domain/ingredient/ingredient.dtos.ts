@@ -10,9 +10,13 @@ export type CreateIngredient = {
 	/** Required for `branded` ingredients and not allowed for the others. */
 	brand?: string;
 };
-/** On update, a `null` description removes the current one and an omitted one keeps it. */
-export type UpdateIngredientTranslation = Omit<IngredientTranslation, 'description'> & {
+/** On update, a `null` description or plural name removes the current one and an omitted one keeps it. */
+export type UpdateIngredientTranslation = Omit<
+	IngredientTranslation,
+	'description' | 'namePlural'
+> & {
 	description?: string | null;
+	namePlural?: string | null;
 };
 export type UpdateIngredient = Omit<CreateIngredient, 'translations' | 'brand'> & {
 	id: string;
