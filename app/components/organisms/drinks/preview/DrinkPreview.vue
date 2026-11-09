@@ -42,7 +42,19 @@
 						class="text-caption font-bold uppercase tracking-wide text-content-muted">
 						{{ $t('drinkDetailPage.ingredients.title') }}
 					</h4>
-					<span class="text-caption text-content-muted">{{ ingredientCountLabel }}</span>
+					<Badge
+						v-if="matchStatus"
+						:tone="matchStatus.tone"
+						class="shrink-0"
+						data-testid="drink-match-status">
+						<span v-if="matchStatus.tone === 'success'" aria-hidden="true" class="mr-1"
+							>✓</span
+						>
+						{{ matchStatus.label }}
+					</Badge>
+					<span v-else class="text-caption text-content-muted">
+						{{ ingredientCountLabel }}
+					</span>
 				</div>
 				<ul class="flex flex-col gap-1">
 					<li
@@ -52,10 +64,19 @@
 						<span
 							class="size-1.5 shrink-0 translate-y-[-0.15em] rounded-full bg-accent"
 							aria-hidden="true"></span>
-						<span class="min-w-0 text-content-secondary">
+						<span class="min-w-0 flex-1 text-content-secondary">
 							<span class="font-bold text-content">{{ item.measurement }}</span>
 							{{ item.connector }} {{ item.name }}
 						</span>
+						<Badge
+							v-if="item.missing"
+							tone="warning"
+							class="shrink-0 self-center"
+							:value="$t('drinkDetailPage.ingredients.missing')" />
+						<Badge
+							v-else-if="item.optional"
+							class="shrink-0 self-center"
+							:value="$t('drinkDetailPage.ingredients.optional')" />
 					</li>
 				</ul>
 			</section>
@@ -84,10 +105,14 @@ const props = defineProps({
 	drink: {
 		type: Object as PropType<Drink>,
 		default: () => initEmptyDrink()
+	},
+	/** The required ingredients missing from the person's bar, when the card was matched by ingredients. */
+	missingIngredientIds: {
+		type: Array as PropType<readonly string[]>,
+		default: undefined
 	}
 });
 
-const { t } = useI18n();
 const titleId = useId();
 const ingredientsId = useId();
 const methodId = useId();
@@ -95,15 +120,14 @@ const methodId = useId();
 const {
 	name,
 	method,
-	ingredientItems: allIngredientItems,
+	ingredientItems,
+	ingredientCountLabel,
 	hasRatings,
 	ratingSummaryText,
-	ratingSummaryLabel
-} = useDrinkSummary(() => props.drink);
-
-// Like the card, the preview leaves optional ingredients out.
-const ingredientItems = computed(() => allIngredientItems.value.filter((item) => !item.optional));
-const ingredientCountLabel = computed(() =>
-	t('drinkDetailPage.ingredients.count', ingredientItems.value.length)
+	ratingSummaryLabel,
+	matchStatus
+} = useDrinkSummary(
+	() => props.drink,
+	() => props.missingIngredientIds
 );
 </script>

@@ -82,7 +82,21 @@
 							<Heading :id="ingredientsId" as="h2" size="titleSm">
 								{{ $t('drinkDetailPage.ingredients.title') }}
 							</Heading>
-							<Text as="span" class="text-caption text-content-muted">
+							<!-- Opened from the bar: whether it can be made replaces the ingredient count. -->
+							<Badge
+								v-if="matchStatus"
+								:tone="matchStatus.tone"
+								class="shrink-0 self-center"
+								data-testid="drink-match-status">
+								<span
+									v-if="matchStatus.tone === 'success'"
+									aria-hidden="true"
+									class="mr-1"
+									>✓</span
+								>
+								{{ matchStatus.label }}
+							</Badge>
+							<Text v-else as="span" class="text-caption text-content-muted">
 								{{ ingredientCountLabel }}
 							</Text>
 						</div>
@@ -103,7 +117,12 @@
 											{{ item.connector }} {{ item.name }}
 										</span>
 										<Badge
-											v-if="item.optional"
+											v-if="item.missing"
+											tone="warning"
+											class="shrink-0 self-center"
+											:value="$t('drinkDetailPage.ingredients.missing')" />
+										<Badge
+											v-else-if="item.optional"
 											class="shrink-0 self-center"
 											:value="$t('drinkDetailPage.ingredients.optional')" />
 									</div>
@@ -197,6 +216,14 @@ const props = defineProps({
 	drink: {
 		type: Object as PropType<Drink>,
 		default: () => initEmptyDrink()
+	},
+	/**
+	 * The required ingredients missing from the person's bar, when the drink was opened from it. Left out
+	 * everywhere else; with it, the page says whether the drink can be made and marks what is missing.
+	 */
+	missingIngredientIds: {
+		type: Array as PropType<readonly string[]>,
+		default: undefined
 	}
 });
 
@@ -213,8 +240,12 @@ const {
 	ingredientItems,
 	garnishItems,
 	ingredientCountLabel,
+	matchStatus,
 	hasRatings,
 	ratingSummaryText,
 	ratingSummaryLabel
-} = useDrinkSummary(() => props.drink);
+} = useDrinkSummary(
+	() => props.drink,
+	() => props.missingIngredientIds
+);
 </script>

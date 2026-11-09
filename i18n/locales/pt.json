@@ -347,7 +347,7 @@
 		"myBar": {
 			"backLink": "Todos os drinks",
 			"title": "Drinks com o que você tem",
-			"description": "Marque os ingredientes que estão em casa e veja quais drinks dá para preparar agora, ou com uma ida rápida ao mercado.",
+			"description": "Marque os ingredientes que você tem e veja quais drinks dá para preparar agora, ou planeje os próximos ingredientes a comprar.",
 			"panelLabel": "Seu bar",
 			"ingredients": {
 				"label": "Seus ingredientes",
@@ -376,7 +376,6 @@
 			},
 			"results": {
 				"title": "Drinks para você",
-				"hint": "Os mais completos primeiro",
 				"groups": {
 					"ready": "Prontos para fazer",
 					"missing": "Falta {count} ingrediente | Faltam {count} ingredientes"
@@ -1181,6 +1180,9 @@
 			"ofPreposition": "de",
 			"count": "{count} ingrediente | {count} ingredientes",
 			"optional": "opcional",
+			"missing": "falta",
+			"matchReady": "Dá pra fazer",
+			"matchMissing": "Falta {count} ingrediente | Faltam {count} ingredientes",
 			"brand": "Marca"
 		},
 		"garnishes": {

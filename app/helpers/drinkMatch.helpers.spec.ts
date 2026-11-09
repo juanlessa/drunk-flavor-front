@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Drink, DrinkMatch } from '~/domain/drink/drink.entity';
 import {
 	getMissingIngredientNames,
+	getMissingRequiredIngredientIds,
 	getWiderMaxMissing,
 	groupMatchesByMissingCount
 } from './drinkMatch.helpers';
@@ -82,6 +83,25 @@ describe('getMissingIngredientNames', () => {
 	});
 });
 
+describe('getMissingRequiredIngredientIds', () => {
+	const line = (id: string, optional = false) => ({ ingredient: { id }, optional });
+	const drink = {
+		ingredients: [line('rum'), line('lime'), line('mint'), line('soda', true), line('rum')]
+	} as unknown as Pick<Drink, 'ingredients'>;
+
+	it('lists the required ingredients the person does not have, in recipe order', () => {
+		expect(getMissingRequiredIngredientIds(drink, ['lime'])).toEqual(['rum', 'mint']);
+	});
+	it('never counts an optional ingredient as missing', () => {
+		expect(getMissingRequiredIngredientIds(drink, ['rum', 'lime', 'mint'])).toEqual([]);
+	});
+	it('lists an ingredient that appears twice in the recipe only once', () => {
+		expect(getMissingRequiredIngredientIds(drink, ['lime', 'mint'])).toEqual(['rum']);
+	});
+	it('lists every required ingredient when the person has none of them', () => {
+		expect(getMissingRequiredIngredientIds(drink, [])).toEqual(['rum', 'lime', 'mint']);
+	});
+});
 describe('getWiderMaxMissing', () => {
 	it.each([
 		[0, 1],

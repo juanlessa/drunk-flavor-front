@@ -1,13 +1,7 @@
 <template>
 	<section :aria-labelledby="titleId" class="flex min-w-0 flex-col gap-4">
-		<div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-			<h2 :id="titleId" class="text-title-sm font-bold text-content">
-				{{ $t('organisms.myBar.results.title') }}
-			</h2>
-			<span v-if="props.matches.length" class="text-body-sm text-content-muted">
-				{{ $t('organisms.myBar.results.hint') }}
-			</span>
-		</div>
+		<!-- Not shown, but it names the section and keeps the outline: the page h1, then the panel and this. -->
+		<h2 :id="titleId" class="sr-only">{{ $t('organisms.myBar.results.title') }}</h2>
 
 		<div
 			v-if="!props.hasIngredients"

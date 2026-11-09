@@ -344,7 +344,7 @@
 		"myBar": {
 			"backLink": "All drinks",
 			"title": "Drinks you can make",
-			"description": "Add the ingredients you have at home and see which drinks you can make now, or with a quick trip to the store.",
+			"description": "Add the ingredients you have and see which drinks you can make now, or plan the next ingredients to buy.",
 			"panelLabel": "Your bar",
 			"ingredients": {
 				"label": "Your ingredients",
@@ -373,7 +373,6 @@
 			},
 			"results": {
 				"title": "Drinks for you",
-				"hint": "Most complete first",
 				"groups": {
 					"ready": "Ready to make",
 					"missing": "Missing {count} ingredient | Missing {count} ingredients"
@@ -1178,6 +1177,9 @@
 			"ofPreposition": "of",
 			"count": "{count} ingredient | {count} ingredients",
 			"optional": "optional",
+			"missing": "missing",
+			"matchReady": "Ready to make",
+			"matchMissing": "Missing {count} ingredient | Missing {count} ingredients",
 			"brand": "Brand"
 		},
 		"garnishes": {

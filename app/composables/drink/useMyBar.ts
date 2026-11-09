@@ -11,7 +11,8 @@ export const MY_BAR_STORAGE_KEY = 'drunkflavor:my-bar';
  * The ingredients a person has and how the bar matches drinks with them. Kept in the browser, so the bar is
  * there on the next visit without an account, and in step between tabs.
  *
- * It reads the browser storage, so call it on the client only (the bar is rendered inside `<ClientOnly>`).
+ * It reads the browser storage, which the server does not have: there it is always empty, so render from it
+ * only on the client (inside `<ClientOnly>`, or once mounted) to keep the hydration in step.
  */
 export const useMyBar = () => {
 	const bar = useLocalStorage<MyBarStorage>(

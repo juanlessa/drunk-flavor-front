@@ -10,7 +10,7 @@
 				{{ $t('drinkDetailPage.backLink') }}
 			</Anchor>
 		</div>
-		<DrinkDetail v-else :drink="drink">
+		<DrinkDetail v-else :drink="drink" :missing-ingredient-ids="missingIngredientIds">
 			<template #rating>
 				<DrinkRatingSection :drink-id="drink.id" @summary-change="handleSummaryChange" />
 			</template>
@@ -24,6 +24,7 @@
 import type { RatingSummary } from '~/domain/rating/rating.entity';
 import { SITE_NAME } from '~/constants/site.constants';
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
+import { getLocaleAgnosticPageKey } from '~/helpers/route.helpers';
 import { formatIngredientList, getDrinkShareImage } from '~/helpers/seo.helpers';
 import {
 	buildBreadcrumbJsonLd,
@@ -32,7 +33,9 @@ import {
 } from '~/helpers/structuredData.helpers';
 
 definePageMeta({
-	middleware: 'guest'
+	middleware: 'guest',
+	// Switching the language keeps the page mounted, so it still knows the drink was opened from the bar.
+	key: (route) => getLocaleAgnosticPageKey(route)
 });
 
 const SERVICE_UNAVAILABLE_STATUS = 503;
@@ -62,6 +65,8 @@ if (error.value) {
 }
 
 const { t, locale } = useI18n();
+// Only when the drink was opened from the bar; the plain recipe everywhere else.
+const missingIngredientIds = useBarMissingIngredients(drink);
 
 const drinkName = computed(() => drink.value?.translations[locale.value]?.name ?? '');
 const seoDescription = computed(() => {

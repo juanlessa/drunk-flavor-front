@@ -31,6 +31,23 @@ export const getMissingIngredientNames = (
 	return [...names.values()];
 };
 
+/**
+ * The ingredients of a drink the person does not have, worked out with the same rule as the API's match: the
+ * ingredients of the non-optional lines, each once, in recipe order, minus the ones they have. Optional
+ * ingredients and garnishes are never missing.
+ */
+export const getMissingRequiredIngredientIds = (
+	drink: Pick<Drink, 'ingredients'>,
+	availableIds: readonly string[]
+): string[] => {
+	const available = new Set(availableIds);
+	const missing = new Set<string>();
+	for (const { ingredient, optional } of drink.ingredients) {
+		if (!optional && !available.has(ingredient.id)) missing.add(ingredient.id);
+	}
+	return [...missing];
+};
+
 const WIDER_MAX_MISSING: Record<string, DrinkMatchMaxMissing | undefined> = {
 	'0': 1,
 	'1': 2,

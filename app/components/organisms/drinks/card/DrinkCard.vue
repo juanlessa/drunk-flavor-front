@@ -26,17 +26,7 @@
 						</Text>
 						<Text
 							class="mt-1 text-body-sm text-content-secondary leading-short line-clamp-2">
-							<template
-								v-for="(item, index) in ingredientPreviewItems"
-								:key="item.id">
-								<template v-if="index > 0"> · </template>
-								<span
-									v-if="item.missing"
-									class="font-bold text-warning underline decoration-dotted underline-offset-2">
-									{{ item.name }}
-								</span>
-								<template v-else>{{ item.name }}</template>
-							</template>
+							{{ ingredientPreviewText }}
 						</Text>
 					</div>
 					<div class="mt-auto pt-1 min-w-0 flex items-center justify-between gap-2">
@@ -87,7 +77,7 @@
 			</Card>
 		</template>
 
-		<DrinkPreview :drink="drink" />
+		<DrinkPreview :drink="drink" :missing-ingredient-ids="props.missingIngredientIds" />
 	</HoverCard>
 </template>
 <script setup lang="ts">
@@ -154,13 +144,8 @@ const requiredIngredients = computed(() =>
 const ingredientNames = computed(() =>
 	requiredIngredients.value.map((ingredient) => ingredient.translations[locale.value].name)
 );
-const missingIds = computed(() => new Set(props.missingIngredientIds ?? []));
-const ingredientPreviewItems = computed(() =>
-	requiredIngredients.value.slice(0, MAX_PREVIEW_INGREDIENTS).map((ingredient, index) => ({
-		id: `${ingredient.id}-${index}`,
-		name: ingredient.translations[locale.value].name,
-		missing: missingIds.value.has(ingredient.id)
-	}))
+const ingredientPreviewText = computed(() =>
+	ingredientNames.value.slice(0, MAX_PREVIEW_INGREDIENTS).join(' · ')
 );
 const matchStatus = computed<{ tone: 'success' | 'warning'; label: string } | undefined>(() => {
 	if (!props.missingIngredientIds) return undefined;

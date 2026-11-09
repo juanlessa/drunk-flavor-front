@@ -33,12 +33,18 @@ const buildDrink = (): Drink => ({
 	]
 });
 
+const DrinkPreviewStub = {
+	name: 'DrinkPreview',
+	props: ['drink', 'missingIngredientIds'],
+	template: '<div />'
+};
+
 const mountCard = (props: Record<string, unknown> = {}) =>
 	mount(DrinkCard, {
 		props: { drink: buildDrink(), ...props },
 		global: {
 			stubs: {
-				HoverCard: { template: '<div><slot name="trigger" /></div>' },
+				HoverCard: { template: '<div><slot name="trigger" /><slot /></div>' },
 				Card: { template: '<div><slot /></div>' },
 				Heading: { template: '<h3><slot /></h3>' },
 				Text: {
@@ -52,7 +58,7 @@ const mountCard = (props: Record<string, unknown> = {}) =>
 				NuxtLink: { props: ['to'], template: '<a :href="to"><slot /></a>' },
 				ImageThumbnail: true,
 				StarIcon: true,
-				DrinkPreview: true
+				DrinkPreview: DrinkPreviewStub
 			},
 			mocks: { $t: (key: string) => key, $i18n: { locale: 'en' } }
 		}
@@ -60,8 +66,6 @@ const mountCard = (props: Record<string, unknown> = {}) =>
 
 const badge = (wrapper: ReturnType<typeof mountCard>) =>
 	wrapper.find('[data-testid="match-badge"]');
-const highlighted = (wrapper: ReturnType<typeof mountCard>) =>
-	wrapper.findAll('span.text-warning').map((span) => span.text());
 
 describe('DrinkCard', () => {
 	it('shows the ingredient count and no match status outside a match', () => {
@@ -69,7 +73,6 @@ describe('DrinkCard', () => {
 
 		expect(badge(wrapper).exists()).toBe(false);
 		expect(wrapper.text()).toContain('organisms.drinkCard.ingredientsCount');
-		expect(highlighted(wrapper)).toEqual([]);
 	});
 
 	it('says the drink can be made when nothing is missing', () => {
@@ -81,14 +84,31 @@ describe('DrinkCard', () => {
 		expect(wrapper.text()).not.toContain('organisms.drinkCard.ingredientsCount');
 	});
 
-	it('names the one missing ingredient and highlights it in the preview', () => {
+	it('names the one missing ingredient', () => {
 		const wrapper = mountCard({ missingIngredientIds: ['campari'] });
 
 		expect(badge(wrapper).attributes('data-tone')).toBe('warning');
 		expect(badge(wrapper).text()).toBe(
 			'organisms.drinkCard.matchMissing #1 {"names":"Campari","count":1}'
 		);
-		expect(highlighted(wrapper)).toEqual(['Campari']);
+	});
+
+	it('previews the required ingredients as plain names, missing or not', () => {
+		const wrapper = mountCard({ missingIngredientIds: ['campari'] });
+
+		expect(wrapper.text()).toContain('Gin · Campari · Vermouth');
+		expect(wrapper.text()).not.toContain('Orange');
+	});
+
+	it.each([
+		{ title: 'matched by ingredients', missingIngredientIds: ['campari'] },
+		{ title: 'not matched', missingIngredientIds: undefined }
+	])('hands what is missing to the hover preview when $title', ({ missingIngredientIds }) => {
+		const wrapper = mountCard({ missingIngredientIds });
+
+		expect(wrapper.findComponent(DrinkPreviewStub).props('missingIngredientIds')).toEqual(
+			missingIngredientIds
+		);
 	});
 
 	it('lists every missing ingredient in recipe order with the plural wording', () => {
@@ -97,6 +117,5 @@ describe('DrinkCard', () => {
 		expect(badge(wrapper).text()).toBe(
 			'organisms.drinkCard.matchMissing #2 {"names":"Gin, Vermouth","count":2}'
 		);
-		expect(highlighted(wrapper)).toEqual(['Gin', 'Vermouth']);
 	});
 });
