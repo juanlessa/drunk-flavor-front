@@ -6,6 +6,7 @@ const { NODE_ENV, NUXT_PUBLIC_API_BASE, NUXT_PUBLIC_IMAGE_HOST } = parseEnvs();
 const isProduction = NODE_ENV === 'production';
 
 const GOOGLE_IDENTITY_ORIGIN_PATH = 'https://accounts.google.com/gsi/';
+const GOOGLE_AVATAR_IMAGE_ORIGIN = 'https://*.googleusercontent.com';
 
 type SecurityHeaders = Exclude<NonNullable<SecurityModuleOptions['headers']>, false>;
 type CspDirectives = NonNullable<SecurityHeaders['contentSecurityPolicy']>;
@@ -32,7 +33,7 @@ const weakCspDirectives: CspDirectives = {
 };
 
 const productionCspDirectives: CspDirectives = {
-	'img-src': ["'self'", 'data:', 'blob:', NUXT_PUBLIC_IMAGE_HOST],
+	'img-src': ["'self'", 'data:', 'blob:', NUXT_PUBLIC_IMAGE_HOST, GOOGLE_AVATAR_IMAGE_ORIGIN],
 	// The Google Identity Services client library calls its own endpoints under /gsi/.
 	'connect-src': ["'self'", NUXT_PUBLIC_API_BASE, GOOGLE_IDENTITY_ORIGIN_PATH],
 	'upgrade-insecure-requests': true
