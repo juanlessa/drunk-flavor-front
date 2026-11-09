@@ -3,7 +3,11 @@ import type { PreparationPlan } from '../preparation/preparation.entity';
 import type { EntityMetadata } from '../shared/entity.types';
 import type { Translations } from '../shared/translations.types';
 import type { Unit } from '../unit/unit.entity';
-import type { DrinkIngredientAmountTypes, DrinkIngredientQualifiers } from './drink.constants';
+import type {
+	DrinkIngredientAmountTypes,
+	DrinkIngredientQualifiers,
+	drinkMatchMaxMissing
+} from './drink.constants';
 
 export type DrinkTranslation = { name: string; method: string };
 export type FileMetadata = { name: string; mimetype: string; url: string };
@@ -55,4 +59,15 @@ export type Drink = EntityMetadata & {
 	preparation?: PreparationPlan;
 	avgRating: number;
 	ratingsCount: number;
+};
+
+/** How many required ingredients may be missing when matching drinks by ingredients. */
+export type DrinkMatchMaxMissing = (typeof drinkMatchMaxMissing)[number];
+
+/** A drink found by the ingredients a person has, with the required ingredients that are missing. */
+export type DrinkMatch = {
+	drink: Drink;
+	missingCount: number;
+	/** Ids of ingredients of the drink; their names are in `drink.ingredients`. */
+	missingIngredientIds: string[];
 };

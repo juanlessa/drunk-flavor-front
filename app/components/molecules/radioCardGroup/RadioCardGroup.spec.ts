@@ -50,6 +50,27 @@ describe('RadioCardGroup', () => {
 		wrapper.unmount();
 	});
 
+	it('keeps the descriptions for assistive technology only in the filter layout', () => {
+		const wrapper = mountGroup({ layout: 'filter' });
+		const description = wrapper
+			.findAll('span')
+			.find((span) => span.text() === 'Generic, like triple sec.');
+
+		expect(description?.classes()).toContain('sr-only');
+		expect(description?.classes()).not.toContain('tablet:not-sr-only');
+		wrapper.unmount();
+	});
+
+	it('shows the descriptions everywhere in the default layout', () => {
+		const wrapper = mountGroup();
+		const description = wrapper
+			.findAll('span')
+			.find((span) => span.text() === 'Generic, like triple sec.');
+
+		expect(description?.classes()).not.toContain('sr-only');
+		wrapper.unmount();
+	});
+
 	it('ties each card to its radio, so a click anywhere on the card chooses it', () => {
 		const wrapper = mountGroup();
 

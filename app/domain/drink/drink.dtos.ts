@@ -2,7 +2,12 @@ import type { PreparationPlan } from '../preparation/preparation.entity';
 import type { ApiFieldError } from '../shared/api.types';
 import type { Translations } from '../shared/translations.types';
 import type { DrinkIngredientAmountTypes } from './drink.constants';
-import type { DrinkIngredientQualifier, DrinkTranslation } from './drink.entity';
+import type {
+	DrinkIngredientQualifier,
+	DrinkMatch,
+	DrinkMatchMaxMissing,
+	DrinkTranslation
+} from './drink.entity';
 
 /** The amount of a recipe line as it is sent: the unit is referenced by `unitId`, one of the ingredient's units. */
 export type DrinkIngredientAmountRequest =
@@ -64,3 +69,13 @@ export type GeneratedMethod = {
 	/** Unusual but valid choices in the plan; they do not stop the method from being written. */
 	warnings: ApiFieldError[];
 };
+
+/** What is matched: the ingredients a person has and how many required ingredients may be missing. */
+export type MatchDrinks = {
+	ingredientIds: string[];
+	maxMissing: DrinkMatchMaxMissing;
+};
+/** The page asked for, sent in the URL like in every other listing. */
+export type MatchDrinksQuery = { page: number; limit: number };
+/** The most complete drinks come first; there is no total count, the last page is the one that comes short. */
+export type MatchDrinksResponse = { items: DrinkMatch[] };

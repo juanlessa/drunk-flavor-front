@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getLocaleAgnosticPageKey } from './route.helpers';
+import { getBaseRouteName, getLocaleAgnosticPageKey } from './route.helpers';
 
 describe('getLocaleAgnosticPageKey', () => {
 	it('gives the same key to the same page in every language', () => {
@@ -37,5 +37,19 @@ describe('getLocaleAgnosticPageKey', () => {
 
 	it('falls back to the path when the route has no name', () => {
 		expect(getLocaleAgnosticPageKey({ path: '/somewhere', params: {} })).toBe('/somewhere:{}');
+	});
+});
+
+describe('getBaseRouteName', () => {
+	it.each([
+		['bar___pt', 'bar'],
+		['drinks-id___en', 'drinks-id'],
+		['index', 'index']
+	])('reads %s as %s', (name, expected) => {
+		expect(getBaseRouteName(name)).toBe(expected);
+	});
+	it('has no name for a route without one', () => {
+		expect(getBaseRouteName(undefined)).toBeUndefined();
+		expect(getBaseRouteName(Symbol('route'))).toBeUndefined();
 	});
 });

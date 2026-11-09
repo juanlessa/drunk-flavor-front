@@ -2,12 +2,18 @@
 	<article class="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 pt-3 pb-6 tablet:px-6">
 		<!-- The back link sits closer to the header than the cards sit to each other. -->
 		<div class="flex flex-col gap-3">
-			<Anchor
-				:to="localePath('/')"
-				class="self-start inline-flex items-center gap-1 text-body-sm">
+			<!--
+				Back to wherever the drink was opened from (the home, the bar). A plain anchor, not the Anchor
+				atom: RouterLink would navigate to the href before the click handler could go back instead.
+				The href is the fallback for a new tab or a page opened directly.
+			-->
+			<a
+				:href="homePath"
+				class="self-start inline-flex items-center gap-1 text-body-sm font-regular text-content cursor-pointer"
+				@click="goBack">
 				<ArrowLeftIcon class="size-4" aria-hidden="true" />
-				{{ $t('drinkDetailPage.backLink') }}
-			</Anchor>
+				{{ $t('drinkDetailPage.back') }}
+			</a>
 
 			<!-- With a cover the title sits on the photo; without one it is a plain header. -->
 			<header
@@ -76,7 +82,21 @@
 							<Heading :id="ingredientsId" as="h2" size="titleSm">
 								{{ $t('drinkDetailPage.ingredients.title') }}
 							</Heading>
-							<Text as="span" class="text-caption text-content-muted">
+							<!-- Opened from the bar: whether it can be made replaces the ingredient count. -->
+							<Badge
+								v-if="matchStatus"
+								:tone="matchStatus.tone"
+								class="shrink-0 self-center"
+								data-testid="drink-match-status">
+								<span
+									v-if="matchStatus.tone === 'success'"
+									aria-hidden="true"
+									class="mr-1"
+									>✓</span
+								>
+								{{ matchStatus.label }}
+							</Badge>
+							<Text v-else as="span" class="text-caption text-content-muted">
 								{{ ingredientCountLabel }}
 							</Text>
 						</div>
@@ -97,7 +117,12 @@
 											{{ item.connector }} {{ item.name }}
 										</span>
 										<Badge
-											v-if="item.optional"
+											v-if="item.missing"
+											tone="warning"
+											class="shrink-0 self-center"
+											:value="$t('drinkDetailPage.ingredients.missing')" />
+										<Badge
+											v-else-if="item.optional"
 											class="shrink-0 self-center"
 											:value="$t('drinkDetailPage.ingredients.optional')" />
 									</div>
@@ -191,10 +216,20 @@ const props = defineProps({
 	drink: {
 		type: Object as PropType<Drink>,
 		default: () => initEmptyDrink()
+	},
+	/**
+	 * The required ingredients missing from the person's bar, when the drink was opened from it. Left out
+	 * everywhere else; with it, the page says whether the drink can be made and marks what is missing.
+	 */
+	missingIngredientIds: {
+		type: Array as PropType<readonly string[]>,
+		default: undefined
 	}
 });
 
 const localePath = useLocalePath();
+const homePath = computed(() => localePath('/').toString());
+const goBack = useGoBack(homePath);
 const ingredientsId = useId();
 const methodId = useId();
 const garnishesId = useId();
@@ -205,8 +240,12 @@ const {
 	ingredientItems,
 	garnishItems,
 	ingredientCountLabel,
+	matchStatus,
 	hasRatings,
 	ratingSummaryText,
 	ratingSummaryLabel
-} = useDrinkSummary(() => props.drink);
+} = useDrinkSummary(
+	() => props.drink,
+	() => props.missingIngredientIds
+);
 </script>

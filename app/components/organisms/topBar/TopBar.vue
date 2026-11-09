@@ -23,7 +23,29 @@
 					class="hidden h-7 w-auto tablet:h-8 dark:block" />
 			</NuxtLink>
 
-			<!-- Desktop: management links inline, then the global controls and the account. -->
+			<!-- Desktop: the public pages, the management links inline, then the global controls and the account. -->
+			<nav
+				class="hidden desktop:flex items-center gap-1"
+				:aria-label="$t('organisms.topBar.publicNav.label')">
+				<template v-for="link in PUBLIC_LINKS" :key="link.path">
+					<span
+						v-if="isCurrentPage(link)"
+						aria-current="page"
+						class="h-9 px-3.5 inline-flex items-center rounded-full bg-accent-subtle text-body-sm font-bold text-accent-content">
+						{{ $t(link.i18nKey) }}
+					</span>
+					<NuxtLink
+						v-else
+						:to="localePath(link.path)"
+						class="h-9 px-3.5 inline-flex items-center rounded-full text-body-sm font-medium text-content-secondary hover:bg-surface-hover hover:text-content focus-visible:outline-hidden focus-visible:shadow-focus-ring">
+						{{ $t(link.i18nKey) }}
+					</NuxtLink>
+				</template>
+			</nav>
+			<span
+				v-if="manageLinks.length"
+				class="hidden desktop:block h-6 w-px bg-stroke"
+				aria-hidden="true"></span>
 			<nav
 				v-if="manageLinks.length"
 				class="hidden desktop:flex items-center gap-1"
@@ -104,6 +126,30 @@
 							</div>
 						</div>
 
+						<nav
+							class="flex flex-col"
+							:aria-label="$t('organisms.topBar.publicNav.label')">
+							<template v-for="link in PUBLIC_LINKS" :key="link.path">
+								<span
+									v-if="isCurrentPage(link)"
+									aria-current="page"
+									:class="[
+										menuItemClass,
+										'bg-accent-subtle font-bold text-accent-content'
+									]">
+									{{ $t(link.i18nKey) }}
+								</span>
+								<NuxtLink
+									v-else
+									:to="localePath(link.path)"
+									:class="[
+										menuItemClass,
+										'text-content-secondary hover:bg-surface-hover'
+									]">
+									{{ $t(link.i18nKey) }}
+								</NuxtLink>
+							</template>
+						</nav>
 						<nav
 							v-if="manageLinks.length"
 							class="flex flex-col"
@@ -198,6 +244,8 @@ type ILink = {
 	can?: { action: AppActions; subject: AppSubjects };
 };
 
+/** Pages for everyone, signed in or not, in display order. */
+const PUBLIC_LINKS: ILink[] = [{ i18nKey: 'organisms.topBar.myBar', path: '/bar' }];
 /** Management areas, in display order; each one only shows when the user can manage it. */
 const MANAGEMENT_LINKS: ILink[] = [
 	{

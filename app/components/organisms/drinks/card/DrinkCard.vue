@@ -26,11 +26,28 @@
 						</Text>
 						<Text
 							class="mt-1 text-body-sm text-content-secondary leading-short line-clamp-2">
-							{{ ingredientPreview }}
+							{{ ingredientPreviewText }}
 						</Text>
 					</div>
 					<div class="mt-auto pt-1 min-w-0 flex items-center justify-between gap-2">
-						<Text as="span" class="min-w-0 text-caption text-content-muted truncate">
+						<!-- Matched by ingredients: what is missing replaces the ingredient count. -->
+						<Badge
+							v-if="matchStatus"
+							:tone="matchStatus.tone"
+							class="min-w-0 max-w-full truncate"
+							:title="matchStatus.label">
+							<span
+								v-if="matchStatus.tone === 'success'"
+								aria-hidden="true"
+								class="mr-1"
+								>✓</span
+							>
+							<span class="truncate">{{ matchStatus.label }}</span>
+						</Badge>
+						<Text
+							v-else
+							as="span"
+							class="min-w-0 text-caption text-content-muted truncate">
 							{{ ingredientCountLabel }}
 						</Text>
 						<div
@@ -60,17 +77,26 @@
 			</Card>
 		</template>
 
-		<DrinkPreview :drink="drink" />
+		<DrinkPreview :drink="drink" :missing-ingredient-ids="props.missingIngredientIds" />
 	</HoverCard>
 </template>
 <script setup lang="ts">
 import type { Drink } from '~/domain/drink/drink.entity';
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
+import { getMissingIngredientNames } from '~/helpers/drinkMatch.helpers';
 
 const props = defineProps({
 	drink: {
 		type: Object as PropType<Drink>,
 		default: () => initEmptyDrink()
+	},
+	/**
+	 * The required ingredients of the drink the person does not have, when the drink was matched by ingredients.
+	 * Left out everywhere else; with it, the card says whether the drink can be made and what is missing.
+	 */
+	missingIngredientIds: {
+		type: Array as PropType<readonly string[]>,
+		default: undefined
 	}
 });
 
@@ -112,14 +138,28 @@ watch(
 const MAX_PREVIEW_INGREDIENTS = 3;
 
 // Optional ingredients are left out of the card: it summarizes what the drink needs.
-const ingredientNames = computed(() =>
-	props.drink.ingredients
-		.filter((item) => !item.optional)
-		.map((item) => item.ingredient.translations[locale.value].name)
+const requiredIngredients = computed(() =>
+	props.drink.ingredients.filter((item) => !item.optional).map((item) => item.ingredient)
 );
-const ingredientPreview = computed(() =>
+const ingredientNames = computed(() =>
+	requiredIngredients.value.map((ingredient) => ingredient.translations[locale.value].name)
+);
+const ingredientPreviewText = computed(() =>
 	ingredientNames.value.slice(0, MAX_PREVIEW_INGREDIENTS).join(' · ')
 );
+const matchStatus = computed<{ tone: 'success' | 'warning'; label: string } | undefined>(() => {
+	if (!props.missingIngredientIds) return undefined;
+	const names = getMissingIngredientNames(props.drink, props.missingIngredientIds, locale.value);
+	if (names.length === 0) return { tone: 'success', label: t('organisms.drinkCard.matchReady') };
+	return {
+		tone: 'warning',
+		label: t(
+			'organisms.drinkCard.matchMissing',
+			{ names: names.join(', '), count: names.length },
+			names.length
+		)
+	};
+});
 const ingredientCountLabel = computed(() => {
 	// When the preview is hidden (wrapped name), show the total instead of the remaining count.
 	const hiddenCount = isNameWrapped.value

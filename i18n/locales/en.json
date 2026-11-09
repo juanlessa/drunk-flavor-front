@@ -5,6 +5,10 @@
 			"tagline": "Cocktail recipes and drinks",
 			"description": "Discover cocktail recipes with ingredients, measures and step-by-step methods, rated by the community."
 		},
+		"myBar": {
+			"title": "My bar: drinks you can make",
+			"description": "Add the ingredients you have at home and see which cocktails you can make now, or with a quick trip to the store."
+		},
 		"drink": {
 			"recipeCategory": "Drink",
 			"description": "{name} recipe: {ingredients}. Ingredients, measures and method.",
@@ -333,7 +337,75 @@
 			"remainingIngredients": "+{count} ingredient | +{count} ingredients",
 			"noRatings": "No ratings yet",
 			"ratingSummaryLabelOne": "{value} out of 5 stars, based on 1 rating",
-			"ratingSummaryLabelMany": "{value} out of 5 stars, based on {count} ratings"
+			"ratingSummaryLabelMany": "{value} out of 5 stars, based on {count} ratings",
+			"matchReady": "Ready to make",
+			"matchMissing": "Missing: {names} | Missing {count}: {names}"
+		},
+		"myBar": {
+			"backLink": "All drinks",
+			"title": "Drinks you can make",
+			"description": "Add the ingredients you have and see which drinks you can make now, or plan the next ingredients to buy.",
+			"panelLabel": "Your bar",
+			"ingredients": {
+				"label": "Your ingredients",
+				"count": "({count})",
+				"searchLabel": "Add an ingredient",
+				"searchPlaceholder": "Add an ingredient, e.g. lime",
+				"noResult": "No ingredients found",
+				"clear": "Clear all",
+				"remove": "Remove {name}",
+				"savedHint": "Saved in this browser for your next visit.",
+				"full": "You can add up to {max} ingredients."
+			},
+			"announcements": {
+				"added": "{name} added to your bar.",
+				"removed": "{name} removed from your bar.",
+				"cleared": "Your bar is empty."
+			},
+			"mode": {
+				"label": "Show drinks",
+				"options": {
+					"0": "Only what I have",
+					"1": "Missing up to 1",
+					"2": "Missing up to 2",
+					"any": "Any with something I have"
+				}
+			},
+			"results": {
+				"title": "Drinks for you",
+				"groups": {
+					"ready": "Ready to make",
+					"missing": "Missing {count} ingredient | Missing {count} ingredients"
+				},
+				"loadMore": "Show more drinks",
+				"loading": "Loading drinks…"
+			},
+			"start": {
+				"title": "Start with what you have at home",
+				"description": "Add the ingredients you have and see which drinks you can make."
+			},
+			"empty": {
+				"title": {
+					"0": "No drink with only these ingredients",
+					"1": "No drink missing up to 1 ingredient",
+					"2": "No drink missing up to 2 ingredients",
+					"any": "No drink uses these ingredients yet"
+				},
+				"description": {
+					"1": "How about the drinks that need just one more ingredient, or adding what else you have at home?",
+					"2": "How about the drinks missing up to 2 ingredients, or adding what else you have at home?",
+					"any": "How about any drink with something you have, or adding what else you have at home?",
+					"none": "Try adding other ingredients you have at home."
+				},
+				"widen": {
+					"1": "Show drinks missing 1",
+					"2": "Show drinks missing up to 2",
+					"any": "Show any with something I have"
+				},
+				"addMore": "Add ingredients"
+			},
+			"errorTitle": "Error",
+			"errorMessage": "Unable to load the drinks."
 		},
 		"drinkForm": {
 			"backLink": "Drinks",
@@ -670,6 +742,8 @@
 			"categories": "Categories",
 			"units": "Units",
 			"drinks": "Drinks",
+			"myBar": "My bar",
+			"publicNav": { "label": "Explore" },
 			"ingredients": "Ingredients",
 			"users": "Users",
 			"signin": "Sign in",
@@ -1091,6 +1165,7 @@
 		}
 	},
 	"drinkDetailPage": {
+		"back": "Back",
 		"backLink": "All drinks",
 		"loading": "Loading drink...",
 		"loadError": {
@@ -1102,6 +1177,9 @@
 			"ofPreposition": "of",
 			"count": "{count} ingredient | {count} ingredients",
 			"optional": "optional",
+			"missing": "missing",
+			"matchReady": "Ready to make",
+			"matchMissing": "Missing {count} ingredient | Missing {count} ingredients",
 			"brand": "Brand"
 		},
 		"garnishes": {
