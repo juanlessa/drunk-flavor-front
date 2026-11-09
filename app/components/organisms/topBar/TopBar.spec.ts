@@ -69,6 +69,8 @@ const desktopNav = (wrapper: ReturnType<typeof mountTopBar>) =>
 	wrapper.find('nav[aria-label="organisms.topBar.primaryNav.label"]');
 const mobileMenu = (wrapper: ReturnType<typeof mountTopBar>) =>
 	wrapper.find('[data-testid="mobile-menu"]');
+const publicNavs = (wrapper: ReturnType<typeof mountTopBar>) =>
+	wrapper.findAll('nav[aria-label="organisms.topBar.publicNav.label"]');
 
 describe('TopBar', () => {
 	beforeEach(() => {
@@ -85,6 +87,35 @@ describe('TopBar', () => {
 			.map((link) => link.attributes('href'));
 
 		expect(links).toEqual(['/drinks', '/categories', '/units', '/ingredients', '/users']);
+	});
+
+	it.each([
+		{ title: 'members', isAuthenticated: true },
+		{ title: 'guests', isAuthenticated: false }
+	])(
+		'offers the public pages to $title, on desktop and in the mobile menu',
+		({ isAuthenticated }) => {
+			authState.value = isAuthenticated ? { isAuthenticated, user } : { isAuthenticated };
+			allowed.value = [];
+			const navs = publicNavs(mountTopBar());
+
+			expect(navs).toHaveLength(2);
+			for (const nav of navs) {
+				expect(nav.findAll('a').map((link) => link.attributes('href'))).toEqual(['/bar']);
+				expect(nav.text()).toBe('organisms.topBar.myBar');
+			}
+		}
+	);
+
+	it('marks the bar as the current page when it is open', () => {
+		route.path = '/bar';
+		const wrapper = mountTopBar();
+
+		expect(wrapper.findAll('[aria-current="page"]').map((item) => item.text())).toEqual([
+			'organisms.topBar.myBar',
+			'organisms.topBar.myBar'
+		]);
+		expect(wrapper.find('a[href="/bar"]').exists()).toBe(false);
 	});
 
 	it('marks the current page without a link in the desktop and mobile navigation', () => {

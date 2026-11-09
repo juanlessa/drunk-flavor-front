@@ -2,12 +2,18 @@
 	<article class="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 pt-3 pb-6 tablet:px-6">
 		<!-- The back link sits closer to the header than the cards sit to each other. -->
 		<div class="flex flex-col gap-3">
-			<Anchor
-				:to="localePath('/')"
-				class="self-start inline-flex items-center gap-1 text-body-sm">
+			<!--
+				Back to wherever the drink was opened from (the home, the bar). A plain anchor, not the Anchor
+				atom: RouterLink would navigate to the href before the click handler could go back instead.
+				The href is the fallback for a new tab or a page opened directly.
+			-->
+			<a
+				:href="homePath"
+				class="self-start inline-flex items-center gap-1 text-body-sm font-regular text-content cursor-pointer"
+				@click="goBack">
 				<ArrowLeftIcon class="size-4" aria-hidden="true" />
-				{{ $t('drinkDetailPage.backLink') }}
-			</Anchor>
+				{{ $t('drinkDetailPage.back') }}
+			</a>
 
 			<!-- With a cover the title sits on the photo; without one it is a plain header. -->
 			<header
@@ -195,6 +201,8 @@ const props = defineProps({
 });
 
 const localePath = useLocalePath();
+const homePath = computed(() => localePath('/').toString());
+const goBack = useGoBack(homePath);
 const ingredientsId = useId();
 const methodId = useId();
 const garnishesId = useId();

@@ -5,6 +5,10 @@
 			"tagline": "Receitas de drinks e coquetéis",
 			"description": "Descubra receitas de drinks com ingredientes, medidas e modo de preparo, avaliadas pela comunidade."
 		},
+		"myBar": {
+			"title": "Meu bar: drinks com o que você tem",
+			"description": "Marque os ingredientes que estão em casa e veja quais drinks dá para preparar agora, ou com uma ida rápida ao mercado."
+		},
 		"drink": {
 			"recipeCategory": "Bebida",
 			"description": "Receita de {name}: {ingredients}. Ingredientes, medidas e modo de preparo.",
@@ -336,7 +340,76 @@
 			"remainingIngredients": "+{count} ingrediente | +{count} ingredientes",
 			"noRatings": "Ainda sem avaliações",
 			"ratingSummaryLabelOne": "{value} de 5 estrelas, com base em 1 avaliação",
-			"ratingSummaryLabelMany": "{value} de 5 estrelas, com base em {count} avaliações"
+			"ratingSummaryLabelMany": "{value} de 5 estrelas, com base em {count} avaliações",
+			"matchReady": "Dá pra fazer",
+			"matchMissing": "Falta: {names} | Faltam {count}: {names}"
+		},
+		"myBar": {
+			"backLink": "Todos os drinks",
+			"title": "Drinks com o que você tem",
+			"description": "Marque os ingredientes que estão em casa e veja quais drinks dá para preparar agora, ou com uma ida rápida ao mercado.",
+			"panelLabel": "Seu bar",
+			"ingredients": {
+				"label": "Seus ingredientes",
+				"count": "({count})",
+				"searchLabel": "Adicionar ingrediente",
+				"searchPlaceholder": "Adicionar ingrediente, ex. limão",
+				"noResult": "Nenhum ingrediente encontrado",
+				"clear": "Limpar tudo",
+				"remove": "Remover {name}",
+				"savedHint": "Ficam salvos neste navegador para a próxima visita.",
+				"full": "Você pode adicionar até {max} ingredientes."
+			},
+			"announcements": {
+				"added": "{name} adicionado ao seu bar.",
+				"removed": "{name} removido do seu bar.",
+				"cleared": "Seu bar está vazio."
+			},
+			"mode": {
+				"label": "Mostrar drinks",
+				"options": {
+					"0": "Só com o que tenho",
+					"1": "Falta até 1",
+					"2": "Faltam até 2",
+					"any": "Qualquer um com algo meu"
+				}
+			},
+			"results": {
+				"title": "Drinks para você",
+				"hint": "Os mais completos primeiro",
+				"groups": {
+					"ready": "Prontos para fazer",
+					"missing": "Falta {count} ingrediente | Faltam {count} ingredientes"
+				},
+				"loadMore": "Mostrar mais drinks",
+				"loading": "Carregando drinks…"
+			},
+			"start": {
+				"title": "Comece pelo que você tem em casa",
+				"description": "Adicione os ingredientes que você tem e veja quais drinks dá para preparar."
+			},
+			"empty": {
+				"title": {
+					"0": "Nenhum drink só com esses ingredientes",
+					"1": "Nenhum drink faltando até 1 ingrediente",
+					"2": "Nenhum drink faltando até 2 ingredientes",
+					"any": "Nenhum drink usa esses ingredientes ainda"
+				},
+				"description": {
+					"1": "Que tal ver os drinks que precisam de só mais um ingrediente, ou adicionar o que mais você tem em casa?",
+					"2": "Que tal ver os drinks faltando até 2 ingredientes, ou adicionar o que mais você tem em casa?",
+					"any": "Que tal ver qualquer drink com algo que você tem, ou adicionar o que mais você tem em casa?",
+					"none": "Tente adicionar outros ingredientes que você tem em casa."
+				},
+				"widen": {
+					"1": "Ver drinks faltando 1",
+					"2": "Ver drinks faltando até 2",
+					"any": "Ver qualquer um com algo meu"
+				},
+				"addMore": "Adicionar ingredientes"
+			},
+			"errorTitle": "Erro",
+			"errorMessage": "Não foi possível carregar os drinks."
 		},
 		"drinkForm": {
 			"backLink": "Drinks",
@@ -673,6 +746,8 @@
 			"categories": "Categorias",
 			"units": "Unidades",
 			"drinks": "Drinks",
+			"myBar": "Meu bar",
+			"publicNav": { "label": "Explorar" },
 			"ingredients": "Ingredientes",
 			"users": "Usuários",
 			"signin": "Entrar",
@@ -1094,6 +1169,7 @@
 		}
 	},
 	"drinkDetailPage": {
+		"back": "Voltar",
 		"backLink": "Todos os drinks",
 		"loading": "Carregando drink...",
 		"loadError": {

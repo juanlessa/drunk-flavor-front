@@ -18,3 +18,11 @@ export const DrinkMethodModes = {
 	manual: 'manual'
 } as const;
 export const drinkMethodModes = Object.values(DrinkMethodModes);
+
+/**
+ * How many of the required ingredients of a drink may be missing from the ones a person has, when matching drinks
+ * by ingredients: none, up to one, up to two, or any number (`any`) as long as the drink uses one of them.
+ */
+export const drinkMatchMaxMissing = [0, 1, 2, 'any'] as const;
+/** The most ingredients the match accepts at once. */
+export const DRINK_MATCH_MAX_INGREDIENTS = 50;

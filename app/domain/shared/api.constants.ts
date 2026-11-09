@@ -26,3 +26,10 @@ export const ApiErrorCodes = {
  * allowlist rejects the preflight a cross-origin script would need to send it.
  */
 export const GOOGLE_CODE_REQUEST_HEADERS = { 'X-Requested-With': 'XmlHttpRequest' } as const;
+
+/**
+ * The HTTP QUERY method (RFC 10008): a safe, idempotent read whose input travels in the body. The fetch types
+ * (h3) predate it and only list the older methods, while ofetch sends any method as written, so its type is
+ * widened here once instead of at every call.
+ */
+export const HTTP_QUERY_METHOD = 'QUERY' as unknown as 'GET';

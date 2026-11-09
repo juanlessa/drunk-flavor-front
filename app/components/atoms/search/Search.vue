@@ -14,7 +14,7 @@
 			<slot name="prefix"></slot>
 			<Combobox.Input
 				:id="props.id"
-				class="flex-1 py-1 text-body font-regular outline-hidden border-none text-content !bg-transparent selection:bg-accent selection:text-content-on-accent placeholder-content-muted"
+				class="min-w-0 flex-1 py-1 text-body font-regular outline-hidden border-none text-content !bg-transparent selection:bg-accent selection:text-content-on-accent placeholder-content-muted"
 				:placeholder="props.placeholder" />
 			<Combobox.Cancel :aria-label="$t('atoms.search.clearButton.label')">
 				<ThinCloseIcon aria-hidden="true" />
