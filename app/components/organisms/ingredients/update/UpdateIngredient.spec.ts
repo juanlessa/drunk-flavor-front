@@ -144,8 +144,8 @@ describe('UpdateIngredient', () => {
 			expect(mockApiUpdate).toHaveBeenCalledWith({
 				id: 'ing-1',
 				translations: {
-					en: { name: 'Sugar', description: null },
-					pt: { name: 'Açúcar', description: null, gender: 'masculine' }
+					en: { name: 'Sugar', namePlural: null, description: null },
+					pt: { name: 'Açúcar', namePlural: null, description: null, gender: 'masculine' }
 				},
 				categoryId: 'cat-1',
 				unitIds: ['unit-1'],

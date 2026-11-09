@@ -185,9 +185,14 @@
 				"label": "allow decimals",
 				"help": "Accepts quantities like 1.5; off for whole units only."
 			},
+			"useIngredientNameInput": {
+				"label": "write with the ingredient name",
+				"help": "Writes \"3 limes\" instead of \"3 units of lime\". Needs the count kind and no symbol."
+			},
 			"preview": {
 				"label": "Preview",
-				"empty": "Fill in the names or the symbol to see how quantities will read."
+				"empty": "Fill in the names or the symbol to see how quantities will read.",
+				"ingredientName": "Written with the ingredient name, e.g. \"1 lime\", \"3 limes\"."
 			},
 			"cancelButton": "Cancel",
 			"createButton": "Create unit",
@@ -238,6 +243,10 @@
 				"description": "Category and how the ingredient is measured."
 			},
 			"nameInput": { "label": "name" },
+			"namePluralInput": {
+				"label": "plural name",
+				"help": "Needed because a unit of this ingredient is written with its name, e.g. \"3 limes\"."
+			},
 			"descriptionInput": {
 				"label": "description (optional)",
 				"help": "A short note that tells it apart, e.g. \"Orange liqueur\".",
@@ -1033,10 +1042,13 @@
 			"name": "name is required",
 			"namePlural": "name plural is required",
 			"kind": "kind must be selected",
-			"gender": "gender must be selected"
+			"gender": "gender must be selected",
+			"ingredientNameKind": "a unit written with the ingredient name must be of the count kind",
+			"ingredientNameSymbol": "a unit written with the ingredient name cannot have a symbol"
 		},
 		"ingredients": {
 			"name": "name is required",
+			"namePlural": "plural name is required for a unit written with the ingredient name",
 			"unit": "unit must be selected",
 			"category": "category must be selected",
 			"gender": "gender must be selected",

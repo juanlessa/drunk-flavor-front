@@ -15,4 +15,9 @@ export type Unit = EntityMetadata & {
 	spaceBeforeSymbol?: boolean;
 	allowDecimal: boolean;
 	kind: UnitKind;
+	/**
+	 * When true, a quantity in this unit is written with the (plural) name of the ingredient instead of the name
+	 * of the unit, e.g. "3 limes" rather than "3 units of lime". Absent means false.
+	 */
+	useIngredientName?: boolean;
 };

@@ -7,6 +7,7 @@ export type CreateUnit = {
 	spaceBeforeSymbol?: boolean;
 	allowDecimal: boolean;
 	kind: UnitKind;
+	useIngredientName?: boolean;
 };
 
 export type UpdateUnit = Omit<CreateUnit, 'symbol'> & {

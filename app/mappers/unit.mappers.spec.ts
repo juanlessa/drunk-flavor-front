@@ -11,6 +11,7 @@ const buildForm = (overrides: Partial<UnitForm> = {}): UnitForm => ({
 	symbol: 'ml',
 	spaceBeforeSymbol: false,
 	allowDecimal: true,
+	useIngredientName: false,
 	kind: 'volume',
 	...overrides
 });
@@ -76,5 +77,30 @@ describe('mapFormToUpdateUnit', () => {
 
 	it('sends the symbol when it is set', () => {
 		expect(mapFormToUpdateUnit('unit-1', buildForm()).symbol).toBe('ml');
+	});
+});
+describe('useIngredientName', () => {
+	const buildUnit = (useIngredientName?: boolean): Unit => ({
+		id: 'unit-1',
+		translations: buildForm().translations,
+		allowDecimal: false,
+		kind: 'count',
+		...(useIngredientName === undefined ? {} : { useIngredientName }),
+		createdAt: new Date(),
+		updatedAt: new Date()
+	});
+	it('maps a missing flag to false and keeps true', () => {
+		expect(mapUnitToForm(buildUnit()).useIngredientName).toBe(false);
+		expect(mapUnitToForm(buildUnit(true)).useIngredientName).toBe(true);
+	});
+	it('sends the flag on create and on update, false included', () => {
+		expect(mapFormToCreateUnit(buildForm({ useIngredientName: true })).useIngredientName).toBe(
+			true
+		);
+		expect(mapFormToCreateUnit(buildForm()).useIngredientName).toBe(false);
+		expect(
+			mapFormToUpdateUnit('unit-1', buildForm({ useIngredientName: true })).useIngredientName
+		).toBe(true);
+		expect(mapFormToUpdateUnit('unit-1', buildForm()).useIngredientName).toBe(false);
 	});
 });

@@ -14,6 +14,7 @@ export const unitSymbolValidation = z.string().trim();
 export const unitSpaceBeforeSymbolValidation = z.boolean();
 export const unitAllowDecimalValidation = z.boolean();
 export const unitGenderValidation = z.enum(Genders, { error: 'errors.units.gender' });
+export const unitUseIngredientNameValidation = z.boolean();
 export const unitKindValidation = z.enum(UnitKinds, { error: 'errors.units.kind' });
 
 export const unitTranslationSchema = z.object({
@@ -21,12 +22,32 @@ export const unitTranslationSchema = z.object({
 	namePlural: unitNamePluralValidation
 });
 
-export const unitFormSchema = z.object({
-	translations: getZodGenderedTranslationsSchema(unitTranslationSchema, unitGenderValidation),
-	symbol: unitSymbolValidation,
-	spaceBeforeSymbol: unitSpaceBeforeSymbolValidation,
-	allowDecimal: unitAllowDecimalValidation,
-	kind: unitKindValidation
-});
+export const unitFormSchema = z
+	.object({
+		translations: getZodGenderedTranslationsSchema(unitTranslationSchema, unitGenderValidation),
+		symbol: unitSymbolValidation,
+		spaceBeforeSymbol: unitSpaceBeforeSymbolValidation,
+		allowDecimal: unitAllowDecimalValidation,
+		useIngredientName: unitUseIngredientNameValidation,
+		kind: unitKindValidation
+	})
+	.superRefine(({ useIngredientName, kind, symbol }, ctx) => {
+		// A unit written with the ingredient name is a plain count: a symbol or another kind makes no sense.
+		if (!useIngredientName) return;
+		if (kind !== UnitKinds.count) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'errors.units.ingredientNameKind',
+				path: ['kind']
+			});
+		}
+		if (symbol.trim().length > 0) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'errors.units.ingredientNameSymbol',
+				path: ['symbol']
+			});
+		}
+	});
 
 export const unitFormValidator = validateSchema<UnitForm>(unitFormSchema);

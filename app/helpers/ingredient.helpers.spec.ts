@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
 import type { Unit } from '~/domain/unit/unit.entity';
 import {
+	getIngredientNameForQuantity,
 	getIngredientPreviewItems,
 	getIngredientSummary,
 	getPrimaryUnit
@@ -89,5 +90,75 @@ describe('getIngredientPreviewItems', () => {
 	it('is empty until both the name and the unit are known', () => {
 		expect(getIngredientPreviewItems('', milliliter, 'en', 'of')).toEqual([]);
 		expect(getIngredientPreviewItems('Gin', undefined, 'en', 'of')).toEqual([]);
+	});
+});
+describe('getIngredientPreviewItems for a unit written with the ingredient name', () => {
+	const each = {
+		symbol: undefined,
+		spaceBeforeSymbol: false,
+		allowDecimal: false,
+		useIngredientName: true,
+		translations: {
+			en: { name: 'unit', namePlural: 'units' },
+			pt: { name: 'unidade', namePlural: 'unidades' }
+		}
+	};
+	it('writes the name and the plural name with no "of"', () => {
+		expect(getIngredientPreviewItems(' Lime ', each, 'en', 'of', ' Limes ')).toEqual([
+			'1 Lime',
+			'2 Limes'
+		]);
+		expect(getIngredientPreviewItems('Limão', each, 'pt', 'de', 'Limões')).toEqual([
+			'1 Limão',
+			'2 Limões'
+		]);
+	});
+	it('adds the decimal example by the plural rules of the language when decimals are allowed', () => {
+		const decimal = { ...each, allowDecimal: true };
+		expect(getIngredientPreviewItems('Lime', decimal, 'en', 'of', 'Limes')).toEqual([
+			'1 Lime',
+			'2 Limes',
+			'1.5 Limes'
+		]);
+		expect(getIngredientPreviewItems('Limão', decimal, 'pt', 'de', 'Limões')).toEqual([
+			'1 Limão',
+			'2 Limões',
+			'1,5 Limão'
+		]);
+	});
+	it('leaves out the plural examples until the plural name is filled in', () => {
+		expect(getIngredientPreviewItems('Lime', each, 'en', 'of')).toEqual(['1 Lime']);
+		expect(getIngredientPreviewItems('Lime', each, 'en', 'of', '   ')).toEqual(['1 Lime']);
+	});
+	it('is empty until the name is known', () => {
+		expect(getIngredientPreviewItems('', each, 'en', 'of', 'Limes')).toEqual([]);
+	});
+	it('ignores the plural name for a unit that is not written with the ingredient name', () => {
+		const wedge = { ...each, useIngredientName: false };
+		expect(getIngredientPreviewItems('Lime', wedge, 'en', 'of', 'Limes')).toEqual([
+			'1 unit of Lime',
+			'2 units of Lime'
+		]);
+	});
+});
+describe('getIngredientNameForQuantity', () => {
+	const lime = {
+		translations: {
+			en: { name: 'Lime', namePlural: 'Limes' },
+			pt: { name: 'Limão', namePlural: 'Limões' }
+		}
+	};
+	it('uses the name where the quantity reads in the singular and the plural name elsewhere', () => {
+		expect(getIngredientNameForQuantity(lime, 1, 'en')).toBe('Lime');
+		expect(getIngredientNameForQuantity(lime, 3, 'en')).toBe('Limes');
+		expect(getIngredientNameForQuantity(lime, 1.5, 'pt')).toBe('Limão');
+		expect(getIngredientNameForQuantity(lime, 3, 'pt')).toBe('Limões');
+	});
+	it('falls back to the name when there is no plural name', () => {
+		const gin = {
+			translations: { en: { name: 'Gin' }, pt: { name: 'Gin', namePlural: '  ' } }
+		};
+		expect(getIngredientNameForQuantity(gin, 3, 'en')).toBe('Gin');
+		expect(getIngredientNameForQuantity(gin, 3, 'pt')).toBe('Gin');
 	});
 });

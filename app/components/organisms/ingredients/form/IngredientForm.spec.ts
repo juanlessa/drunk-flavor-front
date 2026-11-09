@@ -62,7 +62,8 @@ const createEmptyForm = (): IngredientFormValues => ({
 	kind: 'generic',
 	brand: '',
 	measurable: true,
-	unitIds: []
+	unitIds: [],
+	requiresNamePlural: false
 });
 const mockFormState = ref({
 	form: createEmptyForm(),
@@ -151,6 +152,18 @@ const teaspoon = {
 	spaceBeforeSymbol: true,
 	allowDecimal: true,
 	kind: 'volume',
+	createdAt: new Date(),
+	updatedAt: new Date()
+};
+const eachUnit = {
+	id: 'unit-each',
+	translations: {
+		en: { name: 'unit', namePlural: 'units' },
+		pt: { name: 'unidade', namePlural: 'unidades' }
+	},
+	allowDecimal: false,
+	kind: 'count',
+	useIngredientName: true,
 	createdAt: new Date(),
 	updatedAt: new Date()
 };
@@ -350,14 +363,15 @@ describe('IngredientForm', () => {
 			mountIngredientForm({ ingredient });
 			expect(mockUpdateFormState).toHaveBeenCalledWith({
 				translations: {
-					en: { name: 'Sugar', description: '' },
-					pt: { name: 'Açúcar', description: '', gender: 'masculine' }
+					en: { name: 'Sugar', namePlural: '', description: '' },
+					pt: { name: 'Açúcar', namePlural: '', description: '', gender: 'masculine' }
 				},
 				categoryId: 'cat-1',
 				kind: 'branded',
 				brand: 'Domino',
 				measurable: true,
-				unitIds: ['unit-1']
+				unitIds: ['unit-1'],
+				requiresNamePlural: false
 			});
 		});
 
@@ -377,6 +391,67 @@ describe('IngredientForm', () => {
 		});
 	});
 
+	describe('plural name', () => {
+		it('is not asked for while no unit is written with the ingredient name', () => {
+			const wrapper = mountIngredientForm();
+			expect(wrapper.find('#en-name-plural').exists()).toBe(false);
+			expect(wrapper.find('#pt-name-plural').exists()).toBe(false);
+		});
+		it('is asked for in every language while the form needs it', () => {
+			mockFormState.value.form.requiresNamePlural = true;
+			const wrapper = mountIngredientForm();
+			expect(wrapper.find('#en-name-plural').exists()).toBe(true);
+			expect(wrapper.find('#pt-name-plural').exists()).toBe(true);
+			expect(wrapper.text()).toContain('organisms.ingredientForm.namePluralInput.help');
+		});
+		it('shows the error of each language on its own field', () => {
+			mockFormState.value.form.requiresNamePlural = true;
+			mockCheckError.mockImplementation((field) =>
+				field === 'translations.en.namePlural' ? 'errors.ingredients.namePlural' : ''
+			);
+			const wrapper = mountIngredientForm();
+			expect(wrapper.find('#en-name-plural').attributes('data-error')).toBe('true');
+			expect(wrapper.find('#pt-name-plural').attributes('data-error')).toBe('false');
+			expect(wrapper.text()).toContain('errors.ingredients.namePlural');
+		});
+		it('becomes required when a unit written with the ingredient name is picked', async () => {
+			const wrapper = mountIngredientForm();
+			wrapper
+				.findComponent(UnitsSelectionStub)
+				.vm.$emit('update:units', [teaspoon, eachUnit]);
+			await wrapper.vm.$nextTick();
+			expect(mockFormState.value.form.requiresNamePlural).toBe(true);
+			expect(wrapper.find('#en-name-plural').exists()).toBe(true);
+		});
+		it('stops being required when that unit is removed', async () => {
+			const wrapper = mountIngredientForm();
+			const units = wrapper.findComponent(UnitsSelectionStub);
+			units.vm.$emit('update:units', [eachUnit]);
+			await wrapper.vm.$nextTick();
+			units.vm.$emit('update:units', [teaspoon]);
+			await wrapper.vm.$nextTick();
+			expect(mockFormState.value.form.requiresNamePlural).toBe(false);
+			expect(wrapper.find('#en-name-plural').exists()).toBe(false);
+		});
+		it('stops being required when the ingredient cannot be measured', async () => {
+			const wrapper = mountIngredientForm();
+			wrapper.findComponent(UnitsSelectionStub).vm.$emit('update:units', [eachUnit]);
+			await wrapper.vm.$nextTick();
+			expect(mockFormState.value.form.requiresNamePlural).toBe(true);
+			await wrapper.find('#measurable').trigger('click');
+			expect(mockFormState.value.form.requiresNamePlural).toBe(false);
+			await wrapper.find('#measurable').trigger('click');
+			expect(mockFormState.value.form.requiresNamePlural).toBe(true);
+		});
+		it('writes the preview with the plural name for a unit written with the ingredient name', async () => {
+			mockFormState.value.form.translations.en.name = 'Lime';
+			mockFormState.value.form.translations.en.namePlural = 'Limes';
+			const wrapper = mountIngredientForm();
+			wrapper.findComponent(UnitsSelectionStub).vm.$emit('update:units', [eachUnit]);
+			await wrapper.vm.$nextTick();
+			expect(findPreview(wrapper)).toContain('1 Lime · 2 Limes');
+		});
+	});
 	describe('category', () => {
 		it('writes the picked category in the form', async () => {
 			const wrapper = mountIngredientForm();

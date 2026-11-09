@@ -182,9 +182,14 @@
 				"label": "permitir decimais",
 				"help": "Aceita quantidades como 1,5; desligado para unidades inteiras."
 			},
+			"useIngredientNameInput": {
+				"label": "escrever com o nome do ingrediente",
+				"help": "Escreve \"3 limões\" em vez de \"3 unidades de limão\". Exige o tipo count e nenhum símbolo."
+			},
 			"preview": {
 				"label": "Prévia",
-				"empty": "Preencha os nomes ou o símbolo para ver como as quantidades vão aparecer."
+				"empty": "Preencha os nomes ou o símbolo para ver como as quantidades vão aparecer.",
+				"ingredientName": "Escrita com o nome do ingrediente, ex. \"1 limão\", \"3 limões\"."
 			},
 			"cancelButton": "Cancelar",
 			"createButton": "Criar unidade",
@@ -238,6 +243,10 @@
 				"description": "Categoria e como o ingrediente é medido."
 			},
 			"nameInput": { "label": "nome" },
+			"namePluralInput": {
+				"label": "nome no plural",
+				"help": "Necessário porque uma unidade deste ingrediente é escrita com o nome dele, ex. \"3 limões\"."
+			},
 			"descriptionInput": {
 				"label": "descrição (opcional)",
 				"help": "Um complemento curto que ajuda a diferenciar, ex. \"Licor de laranja\".",
@@ -1036,10 +1045,13 @@
 			"name": "nome é obrigatório",
 			"namePlural": "nome no plural é obrigatório",
 			"kind": "tipo deve ser selecionado",
-			"gender": "gênero deve ser selecionado"
+			"gender": "gênero deve ser selecionado",
+			"ingredientNameKind": "uma unidade escrita com o nome do ingrediente deve ser do tipo count",
+			"ingredientNameSymbol": "uma unidade escrita com o nome do ingrediente não pode ter símbolo"
 		},
 		"ingredients": {
 			"name": "nome é obrigatório",
+			"namePlural": "o nome no plural é obrigatório para uma unidade escrita com o nome do ingrediente",
 			"unit": "unidade deve ser selecionada",
 			"category": "categoria deve ser selecionada",
 			"gender": "gênero deve ser selecionado",

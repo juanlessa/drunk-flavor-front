@@ -45,7 +45,7 @@
 						<Combobox.ItemIndicator class="option-indicator-layout">
 						</Combobox.ItemIndicator>
 						<span class="flex flex-col py-1">
-							<span>{{ option.label }}</span>
+							<span class="min-w-0 wrap-break-word">{{ option.label }}</span>
 							<!-- Inherits the item colour, so it stays readable on the highlighted option. -->
 							<span v-if="option.description" class="text-body-sm opacity-80">
 								{{ option.description }}

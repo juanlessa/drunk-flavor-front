@@ -7,7 +7,7 @@
 		<Select.Trigger
 			:id="props.id"
 			:class="selectInputContainerStyle({ hasError: props.hasError, border: props.border })">
-			<Select.Value :placeholder="props.placeholder" />
+			<Select.Value class="min-w-0 truncate" :placeholder="props.placeholder" />
 			<Select.Icon as-child>
 				<ChevronDownIcon />
 			</Select.Icon>
@@ -25,11 +25,11 @@
 						<Select.Item
 							v-for="(option, index) in props.options"
 							:key="index"
-							class="text-body text-content rounded-option flex items-center h-option-control option-control-insets relative select-none data-[disabled]:text-content-subtle data-[disabled]:pointer-events-none data-[highlighted]:outline-hidden data-[highlighted]:bg-accent-strong data-[highlighted]:text-content-on-accent"
+							class="text-body text-content rounded-option flex items-center min-h-option-control py-1 option-control-insets relative select-none data-[disabled]:text-content-subtle data-[disabled]:pointer-events-none data-[highlighted]:outline-hidden data-[highlighted]:bg-accent-strong data-[highlighted]:text-content-on-accent"
 							:value="option.value">
 							<Select.ItemIndicator class="option-indicator-layout">
 							</Select.ItemIndicator>
-							<Select.ItemText>
+							<Select.ItemText class="min-w-0 wrap-break-word">
 								{{ option.label }}
 							</Select.ItemText>
 						</Select.Item>

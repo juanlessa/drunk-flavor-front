@@ -1,6 +1,6 @@
 import type { Drink, DrinkRecipeItem } from '~/domain/drink/drink.entity';
 import type { Language } from '~/domain/shared/translations.types';
-import { formatDrinkAmount } from '~/helpers/drink.helpers';
+import { formatDrinkRecipeItem } from '~/helpers/drink.helpers';
 
 /**
  * Localized, display-ready pieces of a drink shared by the detail page and the card
@@ -13,14 +13,16 @@ export const useDrinkSummary = (drink: MaybeRefOrGetter<Drink>) => {
 	const name = computed(() => toValue(drink).translations[lang.value]?.name ?? '');
 	const method = computed(() => toValue(drink).translations[lang.value]?.method ?? '');
 
-	const toItem = ({ amount, ingredient }: DrinkRecipeItem, optional: boolean) => {
-		const measurement = formatDrinkAmount(amount, lang.value);
+	const toItem = (item: DrinkRecipeItem, optional: boolean) => {
+		const { ingredient } = item;
+		const { measurement, name, joinedByPreposition } = formatDrinkRecipeItem(item, lang.value);
 		return {
 			id: ingredient.id,
 			measurement,
-			// Without a measurement there is nothing for the connector to join ("of Gin").
-			connector: measurement ? t('drinkDetailPage.ingredients.ofPreposition') : '',
-			name: ingredient.translations[lang.value]?.name ?? '',
+			// Without a measurement there is nothing for the connector to join ("of Gin"), and a unit written
+			// with the ingredient name joins it without one ("3 limes").
+			connector: joinedByPreposition ? t('drinkDetailPage.ingredients.ofPreposition') : '',
+			name,
 			description: ingredient.translations[lang.value]?.description ?? '',
 			brand: ingredient.brand ?? '',
 			optional
