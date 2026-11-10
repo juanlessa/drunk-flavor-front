@@ -43,11 +43,10 @@
 								@create="handleCreateIngredient" />
 							<ManagementItemCard
 								v-else
-								:selectable="canChange('update', entry.item)"
 								:readonly="!canChange('delete', entry.item)"
 								:title="entry.item.translations[locale].name"
 								:description="getIngredientSummary(entry.item, locale)"
-								@select="handleEditIngredient(entry.item.id)"
+								@select="handleOpenIngredient(entry.item)"
 								@delete="triggerDeleteModal(entry.item)" />
 						</template>
 					</div>
@@ -71,6 +70,8 @@
 </template>
 <script setup lang="ts">
 import { initEmptyIngredient } from '~/domain/ingredient/ingredient.factory';
+import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
+import type { Authored } from '~/domain/shared/entity.types';
 import { getIngredientSummary } from '~/helpers/ingredient.helpers';
 import {
 	CARD_GRID_METRICS_PX,
@@ -102,5 +103,10 @@ const handleCreateIngredient = () => {
 };
 const handleEditIngredient = (id: string) => {
 	$router.push(localePath(`/ingredients/${id}/edit`));
+};
+// Records of other people open their read-only view, since there is nothing to edit.
+const handleOpenIngredient = (ingredient: Authored<Ingredient>) => {
+	if (canChange('update', ingredient)) handleEditIngredient(ingredient.id);
+	else $router.push(localePath(`/ingredients/${ingredient.id}`));
 };
 </script>

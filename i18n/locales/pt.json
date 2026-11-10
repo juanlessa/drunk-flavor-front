@@ -83,6 +83,10 @@
 			},
 			"emptyOwn": { "message": "Você ainda não criou nada aqui." }
 		},
+		"readOnlyField": {
+			"yes": "Sim",
+			"no": "Não"
+		},
 		"genderField": {
 			"label": "gênero",
 			"placeholder": "selecione um gênero",
@@ -94,6 +98,20 @@
 		}
 	},
 	"organisms": {
+		"readOnlyView": {
+			"badge": "Somente leitura",
+			"notice": "Este item foi criado por outro usuário. Você pode consultá-lo, mas só quem o criou (ou um admin) pode editá-lo.",
+			"backButton": "Voltar para {section}"
+		},
+		"ingredientView": {
+			"detailsSection": { "title": "Detalhes", "description": "Categoria, tipo e marca." },
+			"unitsSection": {
+				"title": "Unidades",
+				"description": "Na ordem em que aparecem no drink."
+			},
+			"unitsField": "permitidas",
+			"noUnits": "Sem unidades"
+		},
 		"categoriesControlOverview": {
 			"listLabel": "Categorias",
 			"searchLabel": "Buscar categorias",

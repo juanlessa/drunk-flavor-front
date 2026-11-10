@@ -1,5 +1,6 @@
 <template>
 	<UnitForm
+		v-if="unitForm && canUpdate"
 		:unit-form="unitForm"
 		:title="$t('organisms.unitForm.editTitle')"
 		:submit-label="$t('organisms.unitForm.saveButton')"
@@ -17,19 +18,31 @@ const props = defineProps({
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
+const localePath = useLocalePath();
 const { addToast } = useToast();
 
-const unitForm = ref<UnitForm | undefined>(undefined);
+// Read with authorship: only who may change the record gets the form, anyone else is sent to the read-only view.
+const {
+	record: unit,
+	canUpdate,
+	error
+} = useAuthoredRecord({
+	key: `unit-edit-${props.unitId}`,
+	subject: 'Unit',
+	fetch: () => $api.units.getWithAuthorship(props.unitId)
+});
+const unitForm = computed(() => (unit.value ? mapUnitToForm(unit.value) : undefined));
 
-const { data, error } = await useAsyncData(() => $api.units.get(props.unitId));
-
-if (error.value) {
-	console.error('Failed to fetch unit:', error.value);
-}
-
-if (data.value) {
-	unitForm.value = mapUnitToForm(data.value);
-}
+watch(error, (newError) => {
+	if (newError) console.error('Failed to fetch unit:', newError);
+});
+watch(
+	canUpdate,
+	(allowed) => {
+		if (allowed === false) $router.replace(localePath(`/units/${props.unitId}`));
+	},
+	{ immediate: true }
+);
 
 const handleCancel = () => {
 	$router.back();

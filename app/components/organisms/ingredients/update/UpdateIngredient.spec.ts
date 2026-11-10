@@ -10,19 +10,21 @@ const IngredientFormStub = {
 };
 
 const mockRouterBack = vi.fn();
-const mockApiGet = vi.fn();
+const mockRouterReplace = vi.fn();
+const mockCanUpdate = ref<boolean | undefined>(true);
 const mockApiUpdate = vi.fn();
 const mockAddToast = vi.fn();
 
 vi.stubGlobal('useNuxtApp', () => ({
-	$api: { ingredients: { get: mockApiGet, update: mockApiUpdate } },
-	$router: { back: mockRouterBack }
+	$api: { ingredients: { getWithAuthorship: vi.fn(), update: mockApiUpdate } },
+	$router: { back: mockRouterBack, replace: mockRouterReplace }
 }));
 
 vi.stubGlobal('useToast', () => ({
 	addToast: mockAddToast
 }));
 
+vi.stubGlobal('useLocalePath', () => (path: string) => path);
 vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 
 const ingredientData = {
@@ -57,8 +59,9 @@ const ingredientData = {
 	updatedAt: new Date()
 };
 
-vi.stubGlobal('useAsyncData', () => ({
-	data: ref(ingredientData),
+vi.stubGlobal('useAuthoredRecord', () => ({
+	record: ref(ingredientData),
+	canUpdate: mockCanUpdate,
 	error: ref(null)
 }));
 
@@ -96,6 +99,7 @@ const mountUpdateIngredient = async () => {
 describe('UpdateIngredient', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		mockCanUpdate.value = true;
 		mockApiUpdate.mockResolvedValue({});
 	});
 
@@ -121,6 +125,32 @@ describe('UpdateIngredient', () => {
 		});
 	});
 
+	describe('permission', () => {
+		it('sends who cannot edit to the read-only view and shows no form', async () => {
+			mockCanUpdate.value = false;
+
+			const wrapper = await mountUpdateIngredient();
+
+			expect(mockRouterReplace).toHaveBeenCalledWith('/ingredients/ing-1');
+			expect(wrapper.find('[data-testid="ingredient-form"]').exists()).toBe(false);
+		});
+
+		it('waits for the answer before showing the form or redirecting', async () => {
+			mockCanUpdate.value = undefined;
+
+			const wrapper = await mountUpdateIngredient();
+
+			expect(mockRouterReplace).not.toHaveBeenCalled();
+			expect(wrapper.find('[data-testid="ingredient-form"]').exists()).toBe(false);
+		});
+
+		it('keeps the form for who can edit', async () => {
+			const wrapper = await mountUpdateIngredient();
+
+			expect(mockRouterReplace).not.toHaveBeenCalled();
+			expect(wrapper.find('[data-testid="ingredient-form"]').exists()).toBe(true);
+		});
+	});
 	describe('cancel', () => {
 		it('navigates back on cancel', async () => {
 			const wrapper = await mountUpdateIngredient();

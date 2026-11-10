@@ -246,27 +246,30 @@ type ILink = {
 
 /** Pages for everyone, signed in or not, in display order. */
 const PUBLIC_LINKS: ILink[] = [{ i18nKey: 'organisms.topBar.myBar', path: '/bar' }];
-/** Management areas, in display order; each one only shows when the user can manage it. */
+/**
+ * Management areas, in display order. Each one shows when the user passes the same check that guards
+ * its page (`definePageMeta({ can })`), so a link never leads to a page that sends the user away.
+ */
 const MANAGEMENT_LINKS: ILink[] = [
 	{
 		i18nKey: 'organisms.topBar.drinks',
 		path: '/drinks',
-		can: { action: 'manage', subject: 'Drink' }
+		can: { action: 'listWithAuthorship', subject: 'Drink' }
 	},
 	{
 		i18nKey: 'organisms.topBar.categories',
 		path: '/categories',
-		can: { action: 'manage', subject: 'Category' }
+		can: { action: 'listWithAuthorship', subject: 'Category' }
 	},
 	{
 		i18nKey: 'organisms.topBar.units',
 		path: '/units',
-		can: { action: 'manage', subject: 'Unit' }
+		can: { action: 'listWithAuthorship', subject: 'Unit' }
 	},
 	{
 		i18nKey: 'organisms.topBar.ingredients',
 		path: '/ingredients',
-		can: { action: 'manage', subject: 'Ingredient' }
+		can: { action: 'listWithAuthorship', subject: 'Ingredient' }
 	},
 	{
 		i18nKey: 'organisms.topBar.users',

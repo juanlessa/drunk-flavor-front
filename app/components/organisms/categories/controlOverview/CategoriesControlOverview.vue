@@ -43,7 +43,6 @@
 								@create="handleCreateCategory" />
 							<ManagementItemCard
 								v-else
-								:selectable="canChange('update', entry.item)"
 								:readonly="!canChange('delete', entry.item)"
 								:title="entry.item.translations[locale].name"
 								:description="
@@ -51,7 +50,7 @@
 										`organisms.categoriesControlOverview.${entry.item.isAlcoholic ? 'alcoholic' : 'nonAlcoholic'}`
 									)
 								"
-								@select="handleEditCategory(entry.item.id)"
+								@select="handleOpenCategory(entry.item)"
 								@delete="triggerDeleteModal(entry.item)" />
 						</template>
 					</div>
@@ -75,6 +74,8 @@
 </template>
 <script setup lang="ts">
 import { initEmptyCategory } from '~/domain/category/category.factory';
+import type { Category } from '~/domain/category/category.entity';
+import type { Authored } from '~/domain/shared/entity.types';
 import {
 	CARD_GRID_METRICS_PX,
 	virtualGridRowStyle
@@ -105,5 +106,10 @@ const handleCreateCategory = () => {
 };
 const handleEditCategory = (id: string) => {
 	$router.push(localePath(`/categories/${id}/edit`));
+};
+// Records of other people open their read-only view, since there is nothing to edit.
+const handleOpenCategory = (category: Authored<Category>) => {
+	if (canChange('update', category)) handleEditCategory(category.id);
+	else $router.push(localePath(`/categories/${category.id}`));
 };
 </script>

@@ -1,5 +1,6 @@
 <template>
 	<CategoryForm
+		v-if="categoryForm && canUpdate"
 		:category-form="categoryForm"
 		:title="$t('organisms.categoryForm.editTitle')"
 		:submit-label="$t('organisms.categoryForm.saveButton')"
@@ -16,19 +17,33 @@ const props = defineProps({
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
+const localePath = useLocalePath();
 const { addToast } = useToast();
 
-const categoryForm = ref<CategoryForm | undefined>(undefined);
+// Read with authorship: only who may change the record gets the form, anyone else is sent to the read-only view.
+const {
+	record: category,
+	canUpdate,
+	error
+} = useAuthoredRecord({
+	key: `category-edit-${props.categoryId}`,
+	subject: 'Category',
+	fetch: () => $api.categories.getWithAuthorship(props.categoryId)
+});
+const categoryForm = computed(() =>
+	category.value ? mapCategoryToForm(category.value) : undefined
+);
 
-const { data, error } = await useAsyncData(() => $api.categories.get(props.categoryId));
-
-if (error.value) {
-	console.error('Failed to fetch category:', error.value);
-}
-
-if (data.value) {
-	categoryForm.value = mapCategoryToForm(data.value);
-}
+watch(error, (newError) => {
+	if (newError) console.error('Failed to fetch category:', newError);
+});
+watch(
+	canUpdate,
+	(allowed) => {
+		if (allowed === false) $router.replace(localePath(`/categories/${props.categoryId}`));
+	},
+	{ immediate: true }
+);
 
 const handleCancel = () => {
 	$router.back();

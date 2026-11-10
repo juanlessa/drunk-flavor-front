@@ -43,7 +43,6 @@
 								@create="handleCreateUnit" />
 							<ManagementItemCard
 								v-else
-								:selectable="canChange('update', entry.item)"
 								:readonly="!canChange('delete', entry.item)"
 								:title="entry.item.translations[locale].name"
 								:description="
@@ -54,7 +53,7 @@
 										)
 									)
 								"
-								@select="handleEditUnit(entry.item.id)"
+								@select="handleOpenUnit(entry.item)"
 								@delete="triggerDeleteModal(entry.item)" />
 						</template>
 					</div>
@@ -78,6 +77,8 @@
 </template>
 <script setup lang="ts">
 import { initEmptyUnit } from '~/domain/unit/unit.factory';
+import type { Unit } from '~/domain/unit/unit.entity';
+import type { Authored } from '~/domain/shared/entity.types';
 import { getUnitSummary } from '~/helpers/unit.helpers';
 import {
 	CARD_GRID_METRICS_PX,
@@ -108,5 +109,10 @@ const handleCreateUnit = () => {
 };
 const handleEditUnit = (id: string) => {
 	$router.push(localePath(`/units/${id}/edit`));
+};
+// Records of other people open their read-only view, since there is nothing to edit.
+const handleOpenUnit = (unit: Authored<Unit>) => {
+	if (canChange('update', unit)) handleEditUnit(unit.id);
+	else $router.push(localePath(`/units/${unit.id}`));
 };
 </script>

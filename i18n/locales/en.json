@@ -83,6 +83,10 @@
 			},
 			"emptyOwn": { "message": "You haven't created anything here yet." }
 		},
+		"readOnlyField": {
+			"yes": "Yes",
+			"no": "No"
+		},
 		"genderField": {
 			"label": "gender",
 			"placeholder": "select a gender",
@@ -94,6 +98,20 @@
 		}
 	},
 	"organisms": {
+		"readOnlyView": {
+			"badge": "Read-only",
+			"notice": "This item was created by another user. You can view it, but only its creator (or an admin) can edit it.",
+			"backButton": "Back to {section}"
+		},
+		"ingredientView": {
+			"detailsSection": { "title": "Details", "description": "Category, kind and brand." },
+			"unitsSection": {
+				"title": "Units",
+				"description": "In the order they appear in the drink."
+			},
+			"unitsField": "allowed",
+			"noUnits": "No units"
+		},
 		"categoriesControlOverview": {
 			"listLabel": "Categories",
 			"searchLabel": "Search categories",
