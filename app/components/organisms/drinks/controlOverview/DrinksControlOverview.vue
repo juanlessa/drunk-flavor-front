@@ -118,9 +118,9 @@ const handleCreateDrink = () => {
 const handleEditDrink = (id: string) => {
 	$router.push(localePath(`/drinks/${id}/edit`));
 };
-// Drinks of other people open their public page, since there is nothing to edit.
+// Drinks of other people open their read-only view, since there is nothing to edit.
 const handleOpenDrink = (drink: Authored<Drink>) => {
 	if (canChange('update', drink)) handleEditDrink(drink.id);
-	else $router.push(localePath(`/drinks/${drink.id}`));
+	else $router.push(localePath(`/drinks/${drink.id}/view`));
 };
 </script>

@@ -103,6 +103,15 @@
 			"notice": "This item was created by another user. You can view it, but only its creator (or an admin) can edit it.",
 			"backButton": "Back to {section}"
 		},
+		"drinkView": {
+			"required": "Required",
+			"optional": "Optional",
+			"empty": { "ingredients": "No ingredients.", "garnishes": "No garnishes." },
+			"imagesDescription": "Thumbnail and cover of the drink.",
+			"noImage": "No image",
+			"thumbnailAlt": "Thumbnail of {name}",
+			"coverAlt": "Cover of {name}"
+		},
 		"ingredientView": {
 			"detailsSection": { "title": "Details", "description": "Category, kind and brand." },
 			"unitsSection": {

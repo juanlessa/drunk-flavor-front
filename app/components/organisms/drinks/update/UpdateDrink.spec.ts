@@ -15,6 +15,8 @@ const mockUpdate = vi.fn();
 const mockUpdateCover = vi.fn();
 const mockUpdateThumbnail = vi.fn();
 const mockRouterBack = vi.fn();
+const mockRouterReplace = vi.fn();
+const mockCanUpdate = ref<boolean | undefined>(true);
 const mockAddToast = vi.fn();
 
 const drink = {
@@ -29,15 +31,20 @@ const drink = {
 vi.stubGlobal('useNuxtApp', () => ({
 	$api: {
 		drinks: {
-			get: vi.fn(),
+			getWithAuthorship: vi.fn(),
 			update: mockUpdate,
 			updateCover: mockUpdateCover,
 			updateThumbnail: mockUpdateThumbnail
 		}
 	},
-	$router: { back: mockRouterBack }
+	$router: { back: mockRouterBack, replace: mockRouterReplace }
 }));
-vi.stubGlobal('useAsyncData', () => ({ data: ref(drink), error: ref(null) }));
+vi.stubGlobal('useAuthoredRecord', () => ({
+	record: ref(drink),
+	canUpdate: mockCanUpdate,
+	error: ref(null)
+}));
+vi.stubGlobal('useLocalePath', () => (path: string) => path);
 vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 vi.stubGlobal('useToast', () => ({ addToast: mockAddToast }));
 
@@ -59,6 +66,7 @@ const updateForm: DrinkForm = {
 describe('UpdateDrink', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		mockCanUpdate.value = true;
 		mockUpdate.mockResolvedValue(undefined);
 		mockUpdateCover.mockResolvedValue(undefined);
 		mockUpdateThumbnail.mockResolvedValue(undefined);
@@ -70,6 +78,24 @@ describe('UpdateDrink', () => {
 		expect(form.props('drink')).toEqual(drink);
 		expect(form.props('title')).toBe('organisms.drinkForm.editTitle');
 		expect(form.props('submitLabel')).toBe('organisms.drinkForm.saveButton');
+	});
+
+	it('sends who cannot edit to the read-only view and shows no form', async () => {
+		mockCanUpdate.value = false;
+
+		const wrapper = await mountUpdate();
+
+		expect(mockRouterReplace).toHaveBeenCalledWith('/drinks/drink-1/view');
+		expect(wrapper.find('[data-testid="drink-form"]').exists()).toBe(false);
+	});
+
+	it('waits for the permission before showing the form or redirecting', async () => {
+		mockCanUpdate.value = undefined;
+
+		const wrapper = await mountUpdate();
+
+		expect(mockRouterReplace).not.toHaveBeenCalled();
+		expect(wrapper.find('[data-testid="drink-form"]').exists()).toBe(false);
 	});
 
 	it('updates the drink and uploads only the images that were replaced', async () => {

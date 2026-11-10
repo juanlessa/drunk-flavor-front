@@ -1,5 +1,6 @@
 <template>
 	<DrinkForm
+		v-if="drink && canUpdate"
 		:server-errors="serverErrors"
 		:drink="drink"
 		:title="$t('organisms.drinkForm.editTitle')"
@@ -9,7 +10,6 @@
 </template>
 <script setup lang="ts">
 import { mapFormToUpdateDrink } from '~/mappers/drink.mappers';
-import type { Drink } from '~/domain/drink/drink.entity';
 import type { ApiFieldError } from '~/domain/shared/api.types';
 import { readApiFieldErrors } from '~/domain/shared/api.helpers';
 import type { DrinkFormAndMedia } from '~/types/drink.types';
@@ -20,21 +20,32 @@ const props = defineProps({
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
+const localePath = useLocalePath();
 const { addToast } = useToast();
 // What the API said about the plan when saving failed, so the form can show where it went wrong.
 const serverErrors = ref<ApiFieldError[]>([]);
 
-const drink = ref<Drink | undefined>(undefined);
+// Read with authorship: only who may change the drink gets the form, anyone else is sent to the read-only view.
+const {
+	record: drink,
+	canUpdate,
+	error
+} = useAuthoredRecord({
+	key: `drink-edit-${props.drinkId}`,
+	subject: 'Drink',
+	fetch: () => $api.drinks.getWithAuthorship(props.drinkId)
+});
 
-const { data, error } = await useAsyncData(() => $api.drinks.get(props.drinkId));
-
-if (error.value) {
-	console.error('Failed to fetch drink:', error.value);
-}
-
-if (data.value) {
-	drink.value = data.value;
-}
+watch(error, (newError) => {
+	if (newError) console.error('Failed to fetch drink:', newError);
+});
+watch(
+	canUpdate,
+	(allowed) => {
+		if (allowed === false) $router.replace(localePath(`/drinks/${props.drinkId}/view`));
+	},
+	{ immediate: true }
+);
 
 const handleCancel = () => {
 	$router.back();

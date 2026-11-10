@@ -103,6 +103,15 @@
 			"notice": "Este item foi criado por outro usuário. Você pode consultá-lo, mas só quem o criou (ou um admin) pode editá-lo.",
 			"backButton": "Voltar para {section}"
 		},
+		"drinkView": {
+			"required": "Obrigatório",
+			"optional": "Opcional",
+			"empty": { "ingredients": "Nenhum ingrediente.", "garnishes": "Nenhuma guarnição." },
+			"imagesDescription": "Miniatura e capa do drink.",
+			"noImage": "Sem imagem",
+			"thumbnailAlt": "Miniatura de {name}",
+			"coverAlt": "Capa de {name}"
+		},
 		"ingredientView": {
 			"detailsSection": { "title": "Detalhes", "description": "Categoria, tipo e marca." },
 			"unitsSection": {

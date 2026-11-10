@@ -278,6 +278,18 @@ describe('DrinksControlOverview', () => {
 
 		expect(mountOverview().text()).toContain('organisms.drinksControlOverview.emptyMessage');
 	});
+	it('opens the read-only view of a drink the user cannot edit', async () => {
+		mockCan.mockImplementation((_action, subject) => subject.createdBy === 'me');
+		mockOverviewState.value.drinks = [
+			{ ...mockOverviewState.value.drinks[0]!, id: 'theirs', createdBy: 'other' }
+		];
+		const wrapper = mountOverview();
+
+		await wrapper.find('[data-testid="card-select"]').trigger('click');
+
+		expect(mockRouterPush).toHaveBeenCalledWith('/drinks/theirs/view');
+	});
+
 	describe('groups', () => {
 		const groupRows = (wrapper: ReturnType<typeof mountOverview>) =>
 			wrapper
