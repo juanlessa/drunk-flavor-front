@@ -4,7 +4,7 @@ export const useCategoriesOverview = () => {
 	const { remove, ...overview } = usePaginatedOverview({
 		key: 'categoriesOverview',
 		itemsKey: 'categories',
-		list: (query) => $api.categories.list(query),
+		list: (query) => $api.categories.listWithAuthorship(query),
 		remove: (id) => $api.categories.delete(id),
 		errorI18nPrefix: 'organisms.categoriesControlOverview'
 	});

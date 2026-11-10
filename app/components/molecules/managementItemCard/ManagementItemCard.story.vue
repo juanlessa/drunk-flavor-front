@@ -40,6 +40,16 @@
 			</div>
 		</Variant>
 
+		<Variant title="read-only">
+			<div class="p-4 max-w-sm flex flex-col gap-4">
+				<ManagementItemCard title="Gin" description="Spirit · ml" readonly />
+				<ManagementItemCard
+					title="Gin"
+					description="Not selectable"
+					readonly
+					:selectable="false" />
+			</div>
+		</Variant>
 		<Variant title="with skeleton">
 			<div class="p-4 max-w-sm flex flex-col gap-4">
 				<ManagementItemCard title="Angostura bitters" description="Bitters · dash" />

@@ -4,7 +4,7 @@ export const useIngredientsOverview = () => {
 	const { remove, ...overview } = usePaginatedOverview({
 		key: 'ingredientsOverview',
 		itemsKey: 'ingredients',
-		list: (query) => $api.ingredients.list(query),
+		list: (query) => $api.ingredients.listWithAuthorship(query),
 		remove: (id) => $api.ingredients.delete(id),
 		errorI18nPrefix: 'organisms.ingredientsControlOverview'
 	});

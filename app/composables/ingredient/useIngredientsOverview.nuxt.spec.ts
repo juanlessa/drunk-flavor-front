@@ -7,7 +7,7 @@ import { useIngredientsOverview } from './useIngredientsOverview';
 const receivedQueries: Record<string, unknown>[] = [];
 const deletedIds: string[] = [];
 
-registerEndpoint('/ingredients', {
+registerEndpoint('/ingredients/me', {
 	method: 'GET',
 	handler: (event) => {
 		receivedQueries.push(getQuery(event));

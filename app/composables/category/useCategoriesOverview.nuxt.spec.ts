@@ -7,7 +7,7 @@ import { useCategoriesOverview } from './useCategoriesOverview';
 const receivedQueries: Record<string, unknown>[] = [];
 const deletedIds: string[] = [];
 
-registerEndpoint('/categories', {
+registerEndpoint('/categories/me', {
 	method: 'GET',
 	handler: (event) => {
 		receivedQueries.push(getQuery(event));

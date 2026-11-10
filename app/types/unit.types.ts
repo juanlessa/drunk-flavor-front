@@ -1,10 +1,11 @@
 import type { PaginatedOverviewState } from '~/types/overview.types';
+import type { Authored } from '~/domain/shared/entity.types';
 import type { Translations } from '~/domain/shared/translations.types';
 import type { FieldError } from '~/types/form.types';
 import type { SearchSelectState } from '~/types/searchSelect.types';
 import type { Unit, UnitKind, UnitTranslation } from '~/domain/unit/unit.entity';
 
-export type UnitsOverviewState = PaginatedOverviewState<'units', Unit>;
+export type UnitsOverviewState = PaginatedOverviewState<'units', Authored<Unit>>;
 
 export type UnitForm = {
 	translations: Translations<UnitTranslation>;

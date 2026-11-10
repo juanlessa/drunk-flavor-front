@@ -69,7 +69,19 @@
 			"clearButton": { "label": "clear file" }
 		},
 		"managementItemCard": {
+			"readonly": { "label": "{name} was created by someone else and cannot be changed" },
 			"deleteButton": { "label": "Delete {name}" }
+		},
+		"managementGroupRow": {
+			"own": {
+				"title": "Your items",
+				"description": "Items you created."
+			},
+			"others": {
+				"title": "Created by others",
+				"description": "Items created by other people."
+			},
+			"emptyOwn": { "message": "You haven't created anything here yet." }
 		},
 		"genderField": {
 			"label": "gender",

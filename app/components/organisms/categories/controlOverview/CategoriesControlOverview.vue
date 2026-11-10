@@ -15,7 +15,8 @@
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:label="$t('organisms.categoriesControlOverview.listLabel')"
-				:items="overviewState.categories"
+				:items="entries"
+				:chunk="chunk"
 				:item-height="CARD_GRID_METRICS_PX.managementRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
@@ -24,21 +25,35 @@
 				@load-more="loadNextPage">
 				<template #default="{ list, rowAttrs }">
 					<div
-						v-for="{ data: categoryRow, index } in list"
+						v-for="{ data: row, index } in list"
 						:key="index"
 						v-bind="rowAttrs(index)"
 						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
-						<ManagementItemCard
-							v-for="category in categoryRow"
-							:key="category.id"
-							:title="category.translations[locale].name"
-							:description="
-								$t(
-									`organisms.categoriesControlOverview.${category.isAlcoholic ? 'alcoholic' : 'nonAlcoholic'}`
-								)
-							"
-							@select="handleEditCategory(category.id)"
-							@delete="triggerDeleteModal(category)" />
+						<template v-for="entry in row" :key="entry.key">
+							<ManagementGroupRow
+								v-if="entry.kind === 'header'"
+								variant="header"
+								:group="entry.group" />
+							<ManagementGroupRow
+								v-else-if="entry.kind === 'empty-own'"
+								variant="empty-own"
+								:create-label="
+									$t('organisms.categoriesControlOverview.createButton.value')
+								"
+								@create="handleCreateCategory" />
+							<ManagementItemCard
+								v-else
+								:selectable="canChange('update', entry.item)"
+								:readonly="!canChange('delete', entry.item)"
+								:title="entry.item.translations[locale].name"
+								:description="
+									$t(
+										`organisms.categoriesControlOverview.${entry.item.isAlcoholic ? 'alcoholic' : 'nonAlcoholic'}`
+									)
+								"
+								@select="handleEditCategory(entry.item.id)"
+								@delete="triggerDeleteModal(entry.item)" />
+						</template>
 					</div>
 				</template>
 				<template #loading>
@@ -70,6 +85,12 @@ const { locale } = useI18n();
 const localePath = useLocalePath();
 const { overviewState, searchTerm, isEmpty, deleteCategory, loadNextPage } =
 	useCategoriesOverview();
+
+const { entries, chunk, canChange } = useManagementGroups({
+	items: () => overviewState.value.categories,
+	subject: 'Category',
+	searching: () => !!overviewState.value.filter.search
+});
 
 const gridColumns = useGridColumns();
 const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } = useDeleteModal({

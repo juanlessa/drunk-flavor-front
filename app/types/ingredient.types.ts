@@ -1,4 +1,5 @@
 import type { PaginatedOverviewState } from '~/types/overview.types';
+import type { Authored } from '~/domain/shared/entity.types';
 import type { FieldError } from './form.types';
 import type { QueryParams } from '../domain/shared/query.types';
 import type { Translations } from '../domain/shared/translations.types';
@@ -8,7 +9,7 @@ import type {
 	IngredientTranslation
 } from '~/domain/ingredient/ingredient.entity';
 
-export type IngredientsOverviewState = PaginatedOverviewState<'ingredients', Ingredient>;
+export type IngredientsOverviewState = PaginatedOverviewState<'ingredients', Authored<Ingredient>>;
 
 export type IngredientForm = {
 	// An empty description or plural name means "none"; the mapper omits it (or removes the stored one).

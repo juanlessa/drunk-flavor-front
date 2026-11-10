@@ -1,4 +1,5 @@
 import type { PaginatedOverviewState } from '~/types/overview.types';
+import type { Authored } from '~/domain/shared/entity.types';
 import type { DrinkMethodModes } from '~/domain/drink/drink.constants';
 import type { DrinkIngredientAmountRequest } from '~/domain/drink/drink.dtos';
 import type { Drink, DrinkListSort, DrinkTranslation } from '~/domain/drink/drink.entity';
@@ -18,7 +19,7 @@ export type DrinksOverviewState = {
 	loading: boolean;
 };
 
-export type DrinksControlOverviewState = PaginatedOverviewState<'drinks', Drink>;
+export type DrinksControlOverviewState = PaginatedOverviewState<'drinks', Authored<Drink>>;
 
 export type DrinkMethodMode = (typeof DrinkMethodModes)[keyof typeof DrinkMethodModes];
 
