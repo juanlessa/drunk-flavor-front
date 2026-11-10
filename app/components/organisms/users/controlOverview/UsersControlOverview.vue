@@ -1,5 +1,5 @@
 <template>
-	<div class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-6 tablet:px-6">
+	<div ref="root" class="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-6 tablet:px-6">
 		<div>
 			<Label for="users-search" class="sr-only">
 				{{ $t('organisms.usersControlOverview.searchLabel') }}
@@ -34,6 +34,7 @@
 
 <script setup lang="ts">
 import { useInfiniteScroll } from '@vueuse/core';
+import { findScrollParent } from '~/helpers/scroll.helpers';
 
 const SKELETON_ROWS = 3;
 const SCROLL_DISTANCE_PX = 200;
@@ -45,8 +46,14 @@ const { overviewState, searchTerm, isEmpty, loadNextPage } = useUsersOverview();
 const { isInvitee, load: loadPendingTransfer } = usePendingOwnershipTransfer();
 onMounted(loadPendingTransfer);
 
-// The whole page scrolls (header and search included), so the window is the scroll container.
-useInfiniteScroll(import.meta.client ? window : undefined, loadNextPage, {
+// The content area of the layout scrolls (search included), so it is the scroll container; the window
+// is the fallback when no ancestor scrolls.
+const root = ref<HTMLElement | null>(null);
+const scrollTarget = shallowRef<HTMLElement | Window | undefined>(undefined);
+onMounted(() => {
+	scrollTarget.value = findScrollParent(root.value) ?? window;
+});
+useInfiniteScroll(scrollTarget, loadNextPage, {
 	distance: SCROLL_DISTANCE_PX,
 	canLoadMore: () => !overviewState.value.filter.isLastPage
 });

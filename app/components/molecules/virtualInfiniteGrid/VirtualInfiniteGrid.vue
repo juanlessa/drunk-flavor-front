@@ -1,16 +1,15 @@
 <template>
-	<!-- Fills its nearest positioned ancestor, so the height comes from the layout, not from JS. -->
 	<!--
-		A labelled list, and focusable so keyboard users can scroll it when it has no focusable
-		content (e.g. while only the loading skeleton is shown). The rows are its list items.
+		A labelled list whose rows are its list items. It does not scroll by itself: the page does, so
+		it has the height of all its rows and keyboard users scroll the page as anywhere else.
+		The scroll anchoring of the browser is off, because the rows are swapped while the page scrolls.
 	-->
 	<div
 		v-bind="containerProps"
 		role="list"
-		tabindex="0"
 		:aria-label="props.label"
 		:aria-busy="props.loading"
-		class="absolute inset-0 focus-visible:outline-2 focus-visible:outline-focus-ring focus-visible:-outline-offset-2"
+		class="relative w-full [overflow-anchor:none]"
 		:style="virtualGridStyle">
 		<div
 			v-bind="wrapperProps"
