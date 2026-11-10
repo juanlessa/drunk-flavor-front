@@ -1,32 +1,35 @@
 <template>
-	<!-- Same horizontal insets as the grid rows, so the toolbar lines up with the cards. -->
+	<!-- Same insets and maximum width as a grid row, so the toolbar is measured from the same edges as the cards. -->
 	<div class="w-full px-4 py-4">
-		<div
-			class="max-w-screen-desktop mx-auto flex flex-col gap-3 tablet:flex-row tablet:items-center">
-			<div class="w-full tablet:flex-1 tablet:max-w-sm">
-				<Label :for="props.searchId" class="sr-only">{{ props.searchLabel }}</Label>
-				<InputText
-					:id="props.searchId"
-					v-model="searchTerm"
-					name="search"
-					:placeholder="props.searchPlaceholder">
-					<template #prefix>
-						<SearchIcon
-							class="shrink-0 fill-current text-content-muted"
-							aria-hidden="true" />
-					</template>
-				</InputText>
-			</div>
-			<!-- On mobile the order sits under the search and takes the whole width. -->
-			<div class="flex items-center gap-2 tablet:ml-auto tablet:shrink-0">
-				<Label :for="props.sortId" class="shrink-0 whitespace-nowrap">
-					{{ props.sortLabel }}
-				</Label>
-				<div class="min-w-0 flex-1 tablet:w-56 tablet:flex-none">
-					<InputSelect
+		<div class="w-full max-w-screen-desktop mx-auto">
+			<!--
+				The cards take 45% (tablet) or 30% (desktop) of the row each, centered, so the block they
+				form is narrower than the row. The toolbar takes the width of that block (columns x share
+				+ gaps) to start and end where the cards do.
+			-->
+			<div
+				class="mx-auto flex flex-col gap-3 tablet:flex-row tablet:items-center tablet:w-[calc(90%+1rem)] desktop:w-[calc(90%+2rem)]">
+				<div class="w-full tablet:flex-1 tablet:min-w-0">
+					<Label :for="props.searchId" class="sr-only">{{ props.searchLabel }}</Label>
+					<InputText
+						:id="props.searchId"
+						v-model="searchTerm"
+						name="search"
+						:placeholder="props.searchPlaceholder">
+						<template #prefix>
+							<SearchIcon
+								class="shrink-0 fill-current text-content-muted"
+								aria-hidden="true" />
+						</template>
+					</InputText>
+				</div>
+				<!-- Mobile: compact, under the search, aligned right. From tablet: end of the row. -->
+				<div class="max-w-full w-fit self-end tablet:self-auto tablet:w-80 tablet:shrink-0">
+					<SortSelect
 						:id="props.sortId"
 						v-model="sort"
 						name="sort"
+						:label="props.sortLabel"
 						:options="props.sortOptions" />
 				</div>
 			</div>

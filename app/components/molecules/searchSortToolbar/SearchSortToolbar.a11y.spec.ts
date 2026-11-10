@@ -1,10 +1,11 @@
 import { mount } from '@vue/test-utils';
 import { describe, it } from 'vitest';
 import { expectNoA11yViolations } from '~/test/axe';
-import InputSelect from '~/components/atoms/inputSelect/InputSelect.vue';
 import InputText from '~/components/atoms/inputText/InputText.vue';
 import Label from '~/components/atoms/label/Label.vue';
 import ChevronDownIcon from '~/components/icons/ChevronDownIcon.vue';
+import SortIcon from '~/components/icons/SortIcon.vue';
+import SortSelect from '~/components/molecules/sortSelect/SortSelect.vue';
 import SearchIcon from '~/components/icons/SearchIcon.vue';
 import SearchSortToolbar from './SearchSortToolbar.vue';
 
@@ -28,7 +29,14 @@ describe('SearchSortToolbar accessibility', () => {
 			const wrapper = mount(SearchSortToolbar, {
 				props: { ...props, sort: 'rating', ...extra },
 				global: {
-					components: { InputSelect, InputText, Label, ChevronDownIcon, SearchIcon }
+					components: {
+						SortSelect,
+						InputText,
+						Label,
+						ChevronDownIcon,
+						SearchIcon,
+						SortIcon
+					}
 				},
 				attachTo: document.body
 			});

@@ -29,11 +29,11 @@ const mountToolbar = (props: Record<string, unknown> = {}) =>
 					template:
 						'<input :id="id" :placeholder="placeholder" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" />'
 				},
-				InputSelect: {
-					props: ['modelValue', 'id', 'options'],
+				SortSelect: {
+					props: ['modelValue', 'id', 'options', 'label'],
 					emits: ['update:modelValue'],
 					template:
-						'<select :id="id" :value="modelValue" @change="$emit(\'update:modelValue\', $event.target.value)"><option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option></select>'
+						'<div><span>{{ label }}</span><select :id="id" :value="modelValue" @change="$emit(\'update:modelValue\', $event.target.value)"><option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option></select></div>'
 				},
 				SearchIcon: true
 			}
@@ -50,14 +50,10 @@ describe('SearchSortToolbar', () => {
 		);
 	});
 
-	it('labels the sort field with a visible label', () => {
+	it('labels the sort control with a visible label', () => {
 		const wrapper = mountToolbar();
-
-		const label = wrapper.find('label[for="drinks-sort"]');
-		expect(label.text()).toBe('Sort by');
-		expect(label.classes()).not.toContain('sr-only');
+		expect(wrapper.text()).toContain('Sort by');
 	});
-
 	it('hides the search label from sight only', () => {
 		const wrapper = mountToolbar();
 
