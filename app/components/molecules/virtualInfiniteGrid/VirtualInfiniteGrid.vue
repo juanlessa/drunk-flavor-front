@@ -34,7 +34,14 @@ const props = defineProps({
 	/** False once the last page was fetched, so scrolling to the end stops asking for more. */
 	canLoadMore: { type: Boolean, default: true },
 	/** Distance in px from the bottom that triggers `loadMore`. Defaults to two rows. */
-	distance: { type: Number, default: undefined }
+	distance: { type: Number, default: undefined },
+	/** Custom split of `items` into rows (defaults to equal rows of `gridColumns` items). */
+	chunk: {
+		type: Function as PropType<
+			(items: AcceptableValue[], columns: number) => AcceptableValue[][]
+		>,
+		default: undefined
+	}
 });
 const emit = defineEmits<{
 	(e: 'loadMore'): void;
@@ -54,6 +61,7 @@ const { list, containerProps, wrapperProps, getRowAttrs } = useVirtualInfiniteGr
 	loading: () => props.loading,
 	canLoadMore: () => props.canLoadMore,
 	distance: props.distance,
+	chunk: props.chunk ? (items, columns) => props.chunk!(items, columns) : undefined,
 	onLoadMore: () => emit('loadMore')
 });
 </script>

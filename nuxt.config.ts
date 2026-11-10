@@ -32,7 +32,8 @@ const NOINDEX_PATHS = [
 	'/users/**',
 	'/drinks',
 	'/drinks/new',
-	'/drinks/*/edit'
+	'/drinks/*/edit',
+	'/drinks/*/view'
 ];
 
 /**
@@ -49,7 +50,8 @@ const PRIVATE_PATHS = [
 	'/ownership-transfer',
 	'/drinks$',
 	'/drinks/new',
-	'/drinks/*/edit'
+	'/drinks/*/edit',
+	'/drinks/*/view'
 ];
 
 // https://nuxt.com/docs/api/configuration/nuxt-config

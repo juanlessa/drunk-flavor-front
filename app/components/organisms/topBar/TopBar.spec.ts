@@ -1,6 +1,9 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { reactive, ref } from 'vue';
+import { defineAbilityForUser } from '~/domain/accessControl';
+import type { AppAbility } from '~/domain/accessControl/accessControl.types';
+import type { User } from '~/domain/user/user.entity';
+import { reactive, ref, shallowRef } from 'vue';
 import TopBar from './TopBar.vue';
 
 const user = {
@@ -26,8 +29,13 @@ vi.stubGlobal('useNuxtApp', () => ({
 vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 vi.stubGlobal('useToast', () => ({ addToast: vi.fn() }));
 vi.stubGlobal('useLocalePath', () => (path: string) => path);
+// Set to check the links against the real permissions of a role instead of the `allowed` list.
+const realAbility = shallowRef<AppAbility | undefined>(undefined);
 vi.stubGlobal('useAppAbility', () => ({
-	can: (_action: string, subject: string) => allowed.value.includes(subject)
+	can: (...args: Parameters<AppAbility['can']>) =>
+		realAbility.value
+			? realAbility.value.can(...args)
+			: allowed.value.includes(args[1] as string)
 }));
 vi.stubGlobal('navigateTo', mockNavigateTo);
 const route = reactive({ path: '/' });
@@ -77,6 +85,7 @@ describe('TopBar', () => {
 		vi.clearAllMocks();
 		route.path = '/';
 		authState.value = { isAuthenticated: true, user };
+		realAbility.value = undefined;
 		allowed.value = ['Drink', 'Category', 'Unit', 'Ingredient', 'User'];
 		mockSignout.mockResolvedValue(undefined);
 	});
@@ -148,6 +157,21 @@ describe('TopBar', () => {
 		).toEqual(['/drinks']);
 	});
 
+	// The links use the same check as the guards of their pages, so each role sees exactly the areas it can open.
+	it.each([
+		['owner', ['/drinks', '/categories', '/units', '/ingredients', '/users']],
+		['admin', ['/drinks', '/categories', '/units', '/ingredients', '/users']],
+		['partner', ['/drinks', '/categories', '/units', '/ingredients']],
+		['member', []]
+	] as const)('shows the %s the management areas of its role', (role, paths) => {
+		realAbility.value = defineAbilityForUser({ ...user, id: 'user-1', role } as User);
+		const wrapper = mountTopBar();
+		const nav = desktopNav(wrapper);
+
+		expect(nav.exists() ? nav.findAll('a').map((link) => link.attributes('href')) : []).toEqual(
+			paths
+		);
+	});
 	it('hides the management navigation for members', () => {
 		allowed.value = [];
 		const wrapper = mountTopBar();

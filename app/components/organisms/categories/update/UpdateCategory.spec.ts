@@ -10,19 +10,21 @@ const CategoryFormStub = {
 };
 
 const mockRouterBack = vi.fn();
-const mockApiGet = vi.fn();
+const mockRouterReplace = vi.fn();
+const mockCanUpdate = ref<boolean | undefined>(true);
 const mockApiUpdate = vi.fn();
 const mockAddToast = vi.fn();
 
 vi.stubGlobal('useNuxtApp', () => ({
-	$api: { categories: { get: mockApiGet, update: mockApiUpdate } },
-	$router: { back: mockRouterBack }
+	$api: { categories: { getWithAuthorship: vi.fn(), update: mockApiUpdate } },
+	$router: { back: mockRouterBack, replace: mockRouterReplace }
 }));
 
 vi.stubGlobal('useToast', () => ({
 	addToast: mockAddToast
 }));
 
+vi.stubGlobal('useLocalePath', () => (path: string) => path);
 vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 
 const categoryData = {
@@ -32,8 +34,9 @@ const categoryData = {
 	updatedAt: new Date()
 };
 
-vi.stubGlobal('useAsyncData', () => ({
-	data: ref(categoryData),
+vi.stubGlobal('useAuthoredRecord', () => ({
+	record: ref(categoryData),
+	canUpdate: mockCanUpdate,
 	error: ref(null)
 }));
 
@@ -63,6 +66,7 @@ const mountUpdateCategory = async () => {
 describe('UpdateCategory', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		mockCanUpdate.value = true;
 		mockApiUpdate.mockResolvedValue({});
 	});
 
@@ -90,6 +94,32 @@ describe('UpdateCategory', () => {
 		});
 	});
 
+	describe('permission', () => {
+		it('sends who cannot edit to the read-only view and shows no form', async () => {
+			mockCanUpdate.value = false;
+
+			const wrapper = await mountUpdateCategory();
+
+			expect(mockRouterReplace).toHaveBeenCalledWith('/categories/cat-1');
+			expect(wrapper.find('[data-testid="category-form"]').exists()).toBe(false);
+		});
+
+		it('waits for the answer before showing the form or redirecting', async () => {
+			mockCanUpdate.value = undefined;
+
+			const wrapper = await mountUpdateCategory();
+
+			expect(mockRouterReplace).not.toHaveBeenCalled();
+			expect(wrapper.find('[data-testid="category-form"]').exists()).toBe(false);
+		});
+
+		it('keeps the form for who can edit', async () => {
+			const wrapper = await mountUpdateCategory();
+
+			expect(mockRouterReplace).not.toHaveBeenCalled();
+			expect(wrapper.find('[data-testid="category-form"]').exists()).toBe(true);
+		});
+	});
 	describe('cancel', () => {
 		it('navigates back on cancel', async () => {
 			const wrapper = await mountUpdateCategory();

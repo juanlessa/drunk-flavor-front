@@ -26,3 +26,20 @@ export const drinkMethodModes = Object.values(DrinkMethodModes);
 export const drinkMatchMaxMissing = [0, 1, 2, 'any'] as const;
 /** The most ingredients the match accepts at once. */
 export const DRINK_MATCH_MAX_INGREDIENTS = 50;
+
+/**
+ * The orders of the drinks list, as a person picks them:
+ * - `rating`: the best rated first, by the score that also weighs how many ratings back the average;
+ * - `name`: alphabetical, in the language being read;
+ * - `recent`: the latest added first.
+ */
+export const DrinkListSorts = {
+	rating: 'rating',
+	name: 'name',
+	recent: 'recent'
+} as const;
+export const drinkListSorts = Object.values(DrinkListSorts);
+export const DEFAULT_DRINK_LIST_SORT = DrinkListSorts.rating;
+
+/** The longest search term the API accepts. */
+export const DRINK_SEARCH_MAX_LENGTH = 64;

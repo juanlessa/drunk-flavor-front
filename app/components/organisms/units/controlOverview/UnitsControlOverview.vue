@@ -15,7 +15,8 @@
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:label="$t('organisms.unitsControlOverview.listLabel')"
-				:items="overviewState.units"
+				:items="entries"
+				:chunk="chunk"
 				:item-height="CARD_GRID_METRICS_PX.managementRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
@@ -24,22 +25,37 @@
 				@load-more="loadNextPage">
 				<template #default="{ list, rowAttrs }">
 					<div
-						v-for="{ data: unitRow, index } in list"
+						v-for="{ data: row, index } in list"
 						:key="index"
 						v-bind="rowAttrs(index)"
 						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
-						<ManagementItemCard
-							v-for="unit in unitRow"
-							:key="unit.id"
-							:title="unit.translations[locale].name"
-							:description="
-								getUnitSummary(
-									unit,
-									$t(`organisms.unitsControlOverview.kinds.${unit.kind}`)
-								)
-							"
-							@select="handleEditUnit(unit.id)"
-							@delete="triggerDeleteModal(unit)" />
+						<template v-for="entry in row" :key="entry.key">
+							<ManagementGroupRow
+								v-if="entry.kind === 'header'"
+								variant="header"
+								:group="entry.group" />
+							<ManagementGroupRow
+								v-else-if="entry.kind === 'empty-own'"
+								variant="empty-own"
+								:create-label="
+									$t('organisms.unitsControlOverview.createButton.value')
+								"
+								@create="handleCreateUnit" />
+							<ManagementItemCard
+								v-else
+								:readonly="!canChange('delete', entry.item)"
+								:title="entry.item.translations[locale].name"
+								:description="
+									getUnitSummary(
+										entry.item,
+										$t(
+											`organisms.unitsControlOverview.kinds.${entry.item.kind}`
+										)
+									)
+								"
+								@select="handleOpenUnit(entry.item)"
+								@delete="triggerDeleteModal(entry.item)" />
+						</template>
 					</div>
 				</template>
 				<template #loading>
@@ -61,6 +77,8 @@
 </template>
 <script setup lang="ts">
 import { initEmptyUnit } from '~/domain/unit/unit.factory';
+import type { Unit } from '~/domain/unit/unit.entity';
+import type { Authored } from '~/domain/shared/entity.types';
 import { getUnitSummary } from '~/helpers/unit.helpers';
 import {
 	CARD_GRID_METRICS_PX,
@@ -71,6 +89,12 @@ const { $router } = useNuxtApp();
 const { locale } = useI18n();
 const localePath = useLocalePath();
 const { overviewState, searchTerm, isEmpty, deleteUnit, loadNextPage } = useUnitsOverview();
+
+const { entries, chunk, canChange } = useManagementGroups({
+	items: () => overviewState.value.units,
+	subject: 'Unit',
+	searching: () => !!overviewState.value.filter.search
+});
 
 const gridColumns = useGridColumns();
 const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } = useDeleteModal({
@@ -85,5 +109,10 @@ const handleCreateUnit = () => {
 };
 const handleEditUnit = (id: string) => {
 	$router.push(localePath(`/units/${id}/edit`));
+};
+// Records of other people open their read-only view, since there is nothing to edit.
+const handleOpenUnit = (unit: Authored<Unit>) => {
+	if (canChange('update', unit)) handleEditUnit(unit.id);
+	else $router.push(localePath(`/units/${unit.id}`));
 };
 </script>

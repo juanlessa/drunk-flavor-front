@@ -7,7 +7,7 @@ import { useUnitsOverview } from './useUnitsOverview';
 const receivedQueries: Record<string, unknown>[] = [];
 const deletedIds: string[] = [];
 
-registerEndpoint('/units', {
+registerEndpoint('/units/me', {
 	method: 'GET',
 	handler: (event) => {
 		receivedQueries.push(getQuery(event));

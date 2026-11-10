@@ -7,7 +7,7 @@ import { useDrinksControlOverview } from './useDrinksControlOverview';
 const receivedQueries: Record<string, unknown>[] = [];
 const deletedIds: string[] = [];
 
-registerEndpoint('/drinks', {
+registerEndpoint('/drinks/me', {
 	method: 'GET',
 	handler: (event) => {
 		receivedQueries.push(getQuery(event));

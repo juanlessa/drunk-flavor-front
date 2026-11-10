@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { computed, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
+import { useManagementGroups } from '~/composables/app/useManagementGroups';
 import { useDeleteModal } from '~/composables/ui/useDeleteModal';
 import DrinksControlOverview from './DrinksControlOverview.vue';
 
@@ -22,13 +23,20 @@ const buildDrink = (id: string, name: string, ingredients: number, thumbnailUrl?
 });
 
 const mockOverviewState = ref({
-	drinks: [] as ReturnType<typeof buildDrink>[],
+	drinks: [] as (ReturnType<typeof buildDrink> & { createdBy?: string })[],
 	filter: { page: 1, limit: 30, isLastPage: false },
 	searchTerm: '',
 	loading: false
 });
 
-vi.stubGlobal('useNuxtApp', () => ({ $router: { push: mockRouterPush } }));
+const mockCan = vi.fn<(action: string, subject: { createdBy?: string }) => boolean>();
+
+vi.stubGlobal('useNuxtApp', () => ({
+	$router: { push: mockRouterPush },
+	$auth: { state: ref({ user: { id: 'me' } }) }
+}));
+vi.stubGlobal('useAppAbility', () => ({ can: mockCan }));
+vi.stubGlobal('useManagementGroups', useManagementGroups);
 vi.stubGlobal('useLocalePath', () => (path: string) => path);
 vi.stubGlobal('useI18n', () => ({
 	t: (key: string, params?: { name?: string }) => (params?.name ? `${key}:${params.name}` : key),
@@ -55,21 +63,32 @@ vi.stubGlobal(
 );
 
 // Renders every item in a single row and exposes the configured column count.
-const VirtualInfiniteGridStub = {
-	props: ['items', 'gridColumns', 'loading'],
+const VirtualInfiniteGridStub = defineComponent({
+	props: ['items', 'gridColumns', 'loading', 'chunk'],
+	setup(props: {
+		items: unknown[];
+		gridColumns: number;
+		chunk: (items: unknown[], columns: number) => unknown[][];
+	}) {
+		return {
+			rows: computed(() =>
+				props.chunk(props.items, props.gridColumns).map((data, index) => ({ data, index }))
+			)
+		};
+	},
 	template: `
 		<div data-testid="grid" :data-columns="gridColumns">
-			<slot :list="[{ data: items, index: 0 }]" :row-attrs="() => ({})" />
+			<slot :list="rows" :row-attrs="() => ({})" />
 			<slot v-if="loading" name="loading" />
 		</div>
 	`
-};
+});
 
 const ManagementItemCardStub = {
-	props: ['title', 'description'],
+	props: ['title', 'description', 'selectable', 'readonly'],
 	emits: ['select', 'delete'],
 	template: `
-		<div data-testid="card">
+		<div data-testid="card" :data-readonly="readonly" :data-selectable="selectable">
 			<slot name="media" />
 			<button data-testid="card-select" @click="$emit('select')">{{ title }} | {{ description }}</button>
 			<button data-testid="card-delete" @click="$emit('delete')" />
@@ -85,6 +104,18 @@ const ManagementItemCardSkeletonStub = {
 const ImageThumbnailStub = {
 	props: ['src', 'srcFallback', 'srcFallbackDark', 'alt'],
 	template: '<img data-testid="thumbnail" :src="src || srcFallback" :alt="alt" />'
+};
+
+const ManagementGroupRowStub = {
+	props: ['variant', 'group', 'createLabel'],
+	emits: ['create'],
+	template: `
+		<div data-testid="group-row" :data-variant="variant" :data-group="group">
+			<button v-if="variant === 'empty-own'" data-testid="empty-create" @click="$emit('create')">
+				{{ createLabel }}
+			</button>
+		</div>
+	`
 };
 
 const ManagementToolbarStub = {
@@ -116,6 +147,7 @@ const mountOverview = () =>
 				ClientOnly: { template: '<div><slot /></div>' },
 				VirtualInfiniteGrid: VirtualInfiniteGridStub,
 				ManagementItemCard: ManagementItemCardStub,
+				ManagementGroupRow: ManagementGroupRowStub,
 				ManagementItemCardSkeleton: ManagementItemCardSkeletonStub,
 				ManagementToolbar: ManagementToolbarStub,
 				ImageThumbnail: ImageThumbnailStub,
@@ -131,6 +163,7 @@ const mountOverview = () =>
 describe('DrinksControlOverview', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		mockCan.mockReturnValue(true);
 		mockSearchTerm.value = '';
 		mockIsEmpty.value = false;
 		mockScreenType.value = 'desktop';
@@ -244,5 +277,86 @@ describe('DrinksControlOverview', () => {
 		mockIsEmpty.value = true;
 
 		expect(mountOverview().text()).toContain('organisms.drinksControlOverview.emptyMessage');
+	});
+	it('opens the read-only view of a drink the user cannot edit', async () => {
+		mockCan.mockImplementation((_action, subject) => subject.createdBy === 'me');
+		mockOverviewState.value.drinks = [
+			{ ...mockOverviewState.value.drinks[0]!, id: 'theirs', createdBy: 'other' }
+		];
+		const wrapper = mountOverview();
+
+		await wrapper.find('[data-testid="card-select"]').trigger('click');
+
+		expect(mockRouterPush).toHaveBeenCalledWith('/drinks/theirs/view');
+	});
+
+	describe('groups', () => {
+		const groupRows = (wrapper: ReturnType<typeof mountOverview>) =>
+			wrapper
+				.findAll('[data-testid="group-row"]')
+				.map(
+					(row) =>
+						row.attributes('data-variant') + ':' + (row.attributes('data-group') ?? '')
+				);
+
+		beforeEach(() => {
+			mockOverviewState.value.drinks = [
+				{ ...buildDrink('theirs', 'Theirs', 2), createdBy: 'other' },
+				{ ...buildDrink('mine', 'Mine', 2), createdBy: 'me' }
+			];
+		});
+
+		it('lists the own items first, each group under its header', () => {
+			const wrapper = mountOverview();
+
+			expect(groupRows(wrapper)).toEqual(['header:own', 'header:others']);
+			expect(wrapper.findAll('[data-testid="card-select"]')[0]!.text()).toContain('Mine');
+			expect(wrapper.findAll('[data-testid="card-select"]')[1]!.text()).toContain('Theirs');
+		});
+
+		it('marks as read-only the records the user cannot delete', () => {
+			mockCan.mockImplementation((_action, subject) => subject.createdBy === 'me');
+
+			const cards = mountOverview().findAll('[data-testid="card"]');
+
+			expect(cards.map((card) => card.attributes('data-readonly'))).toEqual([
+				'false',
+				'true'
+			]);
+		});
+
+		it('checks the permissions against the record of each card', () => {
+			mountOverview();
+
+			expect(mockCan).toHaveBeenCalledWith(
+				'delete',
+				expect.objectContaining({ __typename: 'Drink', createdBy: 'me' })
+			);
+			expect(mockCan).toHaveBeenCalledWith(
+				'delete',
+				expect.objectContaining({ __typename: 'Drink', createdBy: 'other' })
+			);
+		});
+
+		it('offers to create the first item when the user owns none', async () => {
+			mockOverviewState.value.drinks = mockOverviewState.value.drinks.slice(0, 1);
+			const wrapper = mountOverview();
+
+			expect(groupRows(wrapper)).toEqual(['header:own', 'empty-own:', 'header:others']);
+
+			await wrapper.find('[data-testid="empty-create"]').trigger('click');
+
+			expect(mockRouterPush).toHaveBeenCalledWith('/drinks/new');
+		});
+
+		it('hides the empty placeholder while searching', () => {
+			mockOverviewState.value.drinks = mockOverviewState.value.drinks.slice(0, 1);
+			mockOverviewState.value.filter = {
+				...mockOverviewState.value.filter,
+				search: { name: 'x' }
+			} as typeof mockOverviewState.value.filter;
+
+			expect(groupRows(mountOverview())).toEqual(['header:others']);
+		});
 	});
 });

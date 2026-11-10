@@ -7,11 +7,19 @@ const TrashIconStub = { template: '<svg data-testid="trash-icon" />' };
 const deleteButtonSelector =
 	'button[aria-label="molecules.managementItemCard.deleteButton.label:Gin"]';
 
-const mountCard = (props: { title: string; description?: string }) =>
+const mountCard = (props: {
+	title: string;
+	description?: string;
+	selectable?: boolean;
+	readonly?: boolean;
+}) =>
 	mount(ManagementItemCard, {
 		props,
 		global: {
-			stubs: { TrashIcon: TrashIconStub },
+			stubs: {
+				TrashIcon: TrashIconStub,
+				LockIcon: { template: '<svg data-testid="lock-icon" />' }
+			},
 			mocks: {
 				$t: (key: string, params?: { name?: string }) =>
 					params?.name ? `${key}:${params.name}` : key
@@ -86,6 +94,33 @@ describe('ManagementItemCard', () => {
 
 			expect(wrapper.emitted('delete')).toHaveLength(1);
 			expect(wrapper.emitted('select')).toBeUndefined();
+		});
+	});
+	describe('read-only', () => {
+		it('shows a named lock instead of the delete button', () => {
+			const wrapper = mountCard({ title: 'Gin', readonly: true });
+			expect(wrapper.find(deleteButtonSelector).exists()).toBe(false);
+			expect(wrapper.find('[data-testid="lock-icon"]').exists()).toBe(true);
+			expect(wrapper.find('[role="img"]').attributes('aria-label')).toBe(
+				'molecules.managementItemCard.readonly.label:Gin'
+			);
+		});
+		it('still emits select when the card can be opened', async () => {
+			const wrapper = mountCard({ title: 'Gin', readonly: true });
+			await wrapper.findAll('button').at(0)!.trigger('click');
+			expect(wrapper.emitted('select')).toHaveLength(1);
+		});
+	});
+	describe('not selectable', () => {
+		it('renders the content as plain text, not as a button', async () => {
+			const wrapper = mountCard({ title: 'Gin', selectable: false });
+			expect(wrapper.findAll('button')).toHaveLength(1);
+			await wrapper.find('div > div').trigger('click');
+			expect(wrapper.emitted('select')).toBeUndefined();
+		});
+		it('has no button at all when it is also read-only', () => {
+			const wrapper = mountCard({ title: 'Gin', selectable: false, readonly: true });
+			expect(wrapper.find('button').exists()).toBe(false);
 		});
 	});
 });

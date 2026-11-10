@@ -15,7 +15,8 @@
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:label="$t('organisms.ingredientsControlOverview.listLabel')"
-				:items="overviewState.ingredients"
+				:items="entries"
+				:chunk="chunk"
 				:item-height="CARD_GRID_METRICS_PX.managementRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
@@ -24,17 +25,30 @@
 				@load-more="loadNextPage">
 				<template #default="{ list, rowAttrs }">
 					<div
-						v-for="{ data: ingredientRow, index } in list"
+						v-for="{ data: row, index } in list"
 						:key="index"
 						v-bind="rowAttrs(index)"
 						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
-						<ManagementItemCard
-							v-for="ingredient in ingredientRow"
-							:key="ingredient.id"
-							:title="ingredient.translations[locale].name"
-							:description="getIngredientSummary(ingredient, locale)"
-							@select="handleEditIngredient(ingredient.id)"
-							@delete="triggerDeleteModal(ingredient)" />
+						<template v-for="entry in row" :key="entry.key">
+							<ManagementGroupRow
+								v-if="entry.kind === 'header'"
+								variant="header"
+								:group="entry.group" />
+							<ManagementGroupRow
+								v-else-if="entry.kind === 'empty-own'"
+								variant="empty-own"
+								:create-label="
+									$t('organisms.ingredientsControlOverview.createButton.value')
+								"
+								@create="handleCreateIngredient" />
+							<ManagementItemCard
+								v-else
+								:readonly="!canChange('delete', entry.item)"
+								:title="entry.item.translations[locale].name"
+								:description="getIngredientSummary(entry.item, locale)"
+								@select="handleOpenIngredient(entry.item)"
+								@delete="triggerDeleteModal(entry.item)" />
+						</template>
 					</div>
 				</template>
 				<template #loading>
@@ -56,6 +70,8 @@
 </template>
 <script setup lang="ts">
 import { initEmptyIngredient } from '~/domain/ingredient/ingredient.factory';
+import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
+import type { Authored } from '~/domain/shared/entity.types';
 import { getIngredientSummary } from '~/helpers/ingredient.helpers';
 import {
 	CARD_GRID_METRICS_PX,
@@ -67,6 +83,12 @@ const { locale } = useI18n();
 const localePath = useLocalePath();
 const { overviewState, searchTerm, isEmpty, deleteIngredient, loadNextPage } =
 	useIngredientsOverview();
+
+const { entries, chunk, canChange } = useManagementGroups({
+	items: () => overviewState.value.ingredients,
+	subject: 'Ingredient',
+	searching: () => !!overviewState.value.filter.search
+});
 
 const gridColumns = useGridColumns();
 const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } = useDeleteModal({
@@ -81,5 +103,10 @@ const handleCreateIngredient = () => {
 };
 const handleEditIngredient = (id: string) => {
 	$router.push(localePath(`/ingredients/${id}/edit`));
+};
+// Records of other people open their read-only view, since there is nothing to edit.
+const handleOpenIngredient = (ingredient: Authored<Ingredient>) => {
+	if (canChange('update', ingredient)) handleEditIngredient(ingredient.id);
+	else $router.push(localePath(`/ingredients/${ingredient.id}`));
 };
 </script>

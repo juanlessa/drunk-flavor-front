@@ -1,7 +1,8 @@
 import type { PaginatedOverviewState } from '~/types/overview.types';
+import type { Authored } from '~/domain/shared/entity.types';
 import type { DrinkMethodModes } from '~/domain/drink/drink.constants';
 import type { DrinkIngredientAmountRequest } from '~/domain/drink/drink.dtos';
-import type { Drink, DrinkTranslation } from '~/domain/drink/drink.entity';
+import type { Drink, DrinkListSort, DrinkTranslation } from '~/domain/drink/drink.entity';
 import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
 import type { PreparationPlan } from '~/domain/preparation/preparation.entity';
 import type { ApiFieldError } from '~/domain/shared/api.types';
@@ -12,10 +13,13 @@ import type { FieldError } from './form.types';
 export type DrinksOverviewState = {
 	drinks: Drink[];
 	filter: Filter;
+	/** What is typed in the search field; `filter.search` follows it after the debounce. */
+	searchTerm: string;
+	sort: DrinkListSort;
 	loading: boolean;
 };
 
-export type DrinksControlOverviewState = PaginatedOverviewState<'drinks', Drink>;
+export type DrinksControlOverviewState = PaginatedOverviewState<'drinks', Authored<Drink>>;
 
 export type DrinkMethodMode = (typeof DrinkMethodModes)[keyof typeof DrinkMethodModes];
 

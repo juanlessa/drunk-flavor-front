@@ -1,7 +1,24 @@
 <template>
+	<!-- The page is a visual grid with no display heading, so the required h1 is screen-reader only. -->
+	<Heading as="h1" class="sr-only">{{ $t('organisms.drinksOverview.heading') }}</Heading>
+	<SearchSortToolbar
+		v-model:search-term="searchTerm"
+		v-model:sort="sort"
+		search-id="drinks-search"
+		sort-id="drinks-sort"
+		:search-label="$t('organisms.drinksOverview.searchLabel')"
+		:search-placeholder="$t('organisms.drinksOverview.searchPlaceholder')"
+		:sort-label="$t('organisms.drinksOverview.sortLabel')"
+		:sort-options="sortOptions" />
+	<!-- The API gives no total, so there is no count: the list only says when it has nothing to show. -->
+	<Text v-if="isEmpty" role="status" class="px-4 py-8 text-center text-content-muted">
+		{{
+			isSearching
+				? $t('organisms.drinksOverview.emptySearchMessage', { term: searchTerm.trim() })
+				: $t('organisms.drinksOverview.emptyMessage')
+		}}
+	</Text>
 	<div class="relative flex-1">
-		<!-- The page is a visual grid with no display heading, so the required h1 is screen-reader only. -->
-		<Heading as="h1" class="sr-only">{{ $t('organisms.drinksOverview.heading') }}</Heading>
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:label="$t('organisms.drinksOverview.listLabel')"
@@ -68,12 +85,22 @@
 	</div>
 </template>
 <script setup lang="ts">
+import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
 import {
 	CARD_GRID_METRICS_PX,
 	virtualGridRowStyle
 } from '~/components/molecules/virtualInfiniteGrid/VirtualInfiniteGrid.contract';
+import { drinkListSorts } from '~/domain/drink/drink.constants';
 
-const { overviewState, loadNextPage } = await useDrinksOverview();
+const { t } = useI18n();
+const { overviewState, searchTerm, sort, isSearching, isEmpty, loadNextPage } =
+	await useDrinksOverview();
 
 const gridColumns = useGridColumns();
+const sortOptions = computed<InputSelectOption[]>(() =>
+	drinkListSorts.map((option) => ({
+		value: option,
+		label: t(`organisms.drinksOverview.sortOptions.${option}`)
+	}))
+);
 </script>

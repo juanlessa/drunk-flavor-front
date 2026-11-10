@@ -69,7 +69,23 @@
 			"clearButton": { "label": "clear file" }
 		},
 		"managementItemCard": {
+			"readonly": { "label": "{name} was created by someone else and cannot be changed" },
 			"deleteButton": { "label": "Delete {name}" }
+		},
+		"managementGroupRow": {
+			"own": {
+				"title": "Your items",
+				"description": "Items you created."
+			},
+			"others": {
+				"title": "Created by others",
+				"description": "Items created by other people."
+			},
+			"emptyOwn": { "message": "You haven't created anything here yet." }
+		},
+		"readOnlyField": {
+			"yes": "Yes",
+			"no": "No"
 		},
 		"genderField": {
 			"label": "gender",
@@ -82,6 +98,29 @@
 		}
 	},
 	"organisms": {
+		"readOnlyView": {
+			"badge": "Read-only",
+			"notice": "This item was created by another user. You can view it, but only its creator (or an admin) can edit it.",
+			"backButton": "Back to {section}"
+		},
+		"drinkView": {
+			"required": "Required",
+			"optional": "Optional",
+			"empty": { "ingredients": "No ingredients.", "garnishes": "No garnishes." },
+			"imagesDescription": "Thumbnail and cover of the drink.",
+			"noImage": "No image",
+			"thumbnailAlt": "Thumbnail of {name}",
+			"coverAlt": "Cover of {name}"
+		},
+		"ingredientView": {
+			"detailsSection": { "title": "Details", "description": "Category, kind and brand." },
+			"unitsSection": {
+				"title": "Units",
+				"description": "In the order they appear in the drink."
+			},
+			"unitsField": "allowed",
+			"noUnits": "No units"
+		},
 		"categoriesControlOverview": {
 			"listLabel": "Categories",
 			"searchLabel": "Search categories",
@@ -312,6 +351,16 @@
 		"drinksOverview": {
 			"listLabel": "Cocktail recipes",
 			"heading": "Cocktail recipes",
+			"searchLabel": "Search drinks",
+			"searchPlaceholder": "Search drinks by name",
+			"sortLabel": "Sort by",
+			"sortOptions": {
+				"rating": "Best rated",
+				"name": "Name (A–Z)",
+				"recent": "Newest"
+			},
+			"emptyMessage": "No drinks found.",
+			"emptySearchMessage": "No drinks found for “{term}”.",
 			"errorTitle": "Error",
 			"errorMessage": "Unable to load the drinks."
 		},

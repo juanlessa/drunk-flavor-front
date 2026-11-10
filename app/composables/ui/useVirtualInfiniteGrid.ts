@@ -24,6 +24,11 @@ export type UseVirtualInfiniteGridOptions<T> = {
 	distance?: number;
 	/** Extra rows rendered outside the viewport. */
 	overscan?: number;
+	/**
+	 * Splits the items into rows. Defaults to equal rows of `columns` items; provide it when some
+	 * items (e.g. a group header) must sit alone in their own row. Every row has the same height.
+	 */
+	chunk?: (items: T[], columns: number) => T[][];
 	/** Return the promise of the request when there is one. */
 	onLoadMore: () => void | Promise<void>;
 };
@@ -44,7 +49,9 @@ export type UseVirtualInfiniteGridOptions<T> = {
 export const useVirtualInfiniteGrid = <T>(options: UseVirtualInfiniteGridOptions<T>) => {
 	const columns = computed(() => Math.max(1, Math.floor(toValue(options.columns) ?? 1)));
 	const rowPitch = computed(() => toValue(options.rowHeight) + (toValue(options.gap) ?? 0));
-	const rows = computed(() => chunkArray(toValue(options.items), columns.value));
+	const rows = computed(() =>
+		(options.chunk ?? chunkArray)(toValue(options.items), columns.value)
+	);
 
 	const { list, scrollTo, containerProps, wrapperProps } = useVirtualList(rows, {
 		itemHeight: () => rowPitch.value,

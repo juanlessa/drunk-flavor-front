@@ -1,5 +1,6 @@
 <template>
 	<IngredientForm
+		v-if="ingredient && canUpdate"
 		:ingredient="ingredient"
 		:title="$t('organisms.ingredientForm.editTitle')"
 		:submit-label="$t('organisms.ingredientForm.saveButton')"
@@ -8,7 +9,6 @@
 </template>
 <script setup lang="ts">
 import { mapFormToUpdateIngredient } from '~/mappers/ingredient.mappers';
-import type { Ingredient } from '~/domain/ingredient/ingredient.entity';
 import type { IngredientForm } from '~/types/ingredient.types';
 
 const props = defineProps({
@@ -17,19 +17,30 @@ const props = defineProps({
 
 const { $api, $router } = useNuxtApp();
 const { t } = useI18n();
+const localePath = useLocalePath();
 const { addToast } = useToast();
 
-const ingredient = ref<Ingredient | undefined>(undefined);
+// Read with authorship: only who may change the record gets the form, anyone else is sent to the read-only view.
+const {
+	record: ingredient,
+	canUpdate,
+	error
+} = useAuthoredRecord({
+	key: `ingredient-edit-${props.ingredientId}`,
+	subject: 'Ingredient',
+	fetch: () => $api.ingredients.getWithAuthorship(props.ingredientId)
+});
 
-const { data, error } = await useAsyncData(() => $api.ingredients.get(props.ingredientId));
-
-if (error.value) {
-	console.error('Failed to fetch ingredient:', error.value);
-}
-
-if (data.value) {
-	ingredient.value = data.value;
-}
+watch(error, (newError) => {
+	if (newError) console.error('Failed to fetch ingredient:', newError);
+});
+watch(
+	canUpdate,
+	(allowed) => {
+		if (allowed === false) $router.replace(localePath(`/ingredients/${props.ingredientId}`));
+	},
+	{ immediate: true }
+);
 
 const handleCancel = () => {
 	$router.back();

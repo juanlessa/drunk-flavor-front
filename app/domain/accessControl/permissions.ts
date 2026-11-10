@@ -5,6 +5,9 @@ import type { AppAbility } from './accessControl.types';
 
 type PermissionsByRole = (user: User, builder: AbilityBuilder<AppAbility>) => void;
 
+/** Every subject of the catalog. */
+const CATALOG_SUBJECTS = ['Category', 'Unit', 'Ingredient', 'Drink'] as const;
+
 const defineAdministratorPermissions: PermissionsByRole = (user, { can, cannot }) => {
 	can('manage', 'all');
 	can('manage', 'User');
@@ -15,10 +18,12 @@ export const permissions: Record<Role, PermissionsByRole> = {
 	owner: defineAdministratorPermissions,
 	admin: defineAdministratorPermissions,
 	partner(user, { can }) {
-		can('manage', 'Category');
-		can('manage', 'Unit');
-		can('manage', 'Ingredient');
-		can('manage', 'Drink');
+		// A partner contributes to the whole catalog but changes only what they created. The check by type
+		// alone ("may update a Drink?") passes; the check of a record tells whether it is theirs.
+		for (const subject of CATALOG_SUBJECTS) {
+			can(['create', 'list', 'listWithAuthorship', 'get', 'getWithAuthorship'], subject);
+			can(['update', 'delete'], subject, { createdBy: { $eq: user.id } });
+		}
 		can(['create', 'list', 'get'], 'Comment');
 		can(['create', 'list', 'get'], 'Rating');
 		can(['update', 'delete'], 'Comment', { userId: { $eq: user.id } });

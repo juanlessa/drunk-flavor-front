@@ -15,7 +15,8 @@
 		<ClientOnly>
 			<VirtualInfiniteGrid
 				:label="$t('organisms.drinksControlOverview.listLabel')"
-				:items="overviewState.drinks"
+				:items="entries"
+				:chunk="chunk"
 				:item-height="CARD_GRID_METRICS_PX.managementRowHeight"
 				:items-gap="CARD_GRID_METRICS_PX.gap"
 				:grid-columns="gridColumns"
@@ -24,32 +25,45 @@
 				@load-more="loadNextPage">
 				<template #default="{ list, rowAttrs }">
 					<div
-						v-for="{ data: drinkRow, index } in list"
+						v-for="{ data: row, index } in list"
 						:key="index"
 						v-bind="rowAttrs(index)"
 						:class="virtualGridRowStyle({ fixedHeight: true, columns: true })">
-						<ManagementItemCard
-							v-for="drink in drinkRow"
-							:key="drink.id"
-							:title="drink.translations[locale].name"
-							:description="
-								$t(
-									'organisms.drinksControlOverview.ingredientsCount',
-									drink.ingredients.length
-								)
-							"
-							@select="handleEditDrink(drink.id)"
-							@delete="triggerDeleteModal(drink)">
-							<template #media>
-								<!-- Decorative: the drink name is right next to it. -->
-								<ImageThumbnail
-									class="size-11 shrink-0 rounded-control"
-									:src="drink.thumbnail?.url ?? ''"
-									alt=""
-									src-fallback="/thumbnail-placeholder.png"
-									src-fallback-dark="/thumbnail-placeholder-dark.png" />
-							</template>
-						</ManagementItemCard>
+						<template v-for="entry in row" :key="entry.key">
+							<ManagementGroupRow
+								v-if="entry.kind === 'header'"
+								variant="header"
+								:group="entry.group" />
+							<ManagementGroupRow
+								v-else-if="entry.kind === 'empty-own'"
+								variant="empty-own"
+								:create-label="
+									$t('organisms.drinksControlOverview.createButton.value')
+								"
+								@create="handleCreateDrink" />
+							<ManagementItemCard
+								v-else
+								:readonly="!canChange('delete', entry.item)"
+								:title="entry.item.translations[locale].name"
+								:description="
+									$t(
+										'organisms.drinksControlOverview.ingredientsCount',
+										entry.item.ingredients.length
+									)
+								"
+								@select="handleOpenDrink(entry.item)"
+								@delete="triggerDeleteModal(entry.item)">
+								<template #media>
+									<!-- Decorative: the drink name is right next to it. -->
+									<ImageThumbnail
+										class="size-11 shrink-0 rounded-control"
+										:src="entry.item.thumbnail?.url ?? ''"
+										alt=""
+										src-fallback="/thumbnail-placeholder.png"
+										src-fallback-dark="/thumbnail-placeholder-dark.png" />
+								</template>
+							</ManagementItemCard>
+						</template>
 					</div>
 				</template>
 				<template #loading>
@@ -71,6 +85,8 @@
 </template>
 <script setup lang="ts">
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
+import type { Drink } from '~/domain/drink/drink.entity';
+import type { Authored } from '~/domain/shared/entity.types';
 import {
 	CARD_GRID_METRICS_PX,
 	virtualGridRowStyle
@@ -81,6 +97,12 @@ const { locale } = useI18n();
 const localePath = useLocalePath();
 const { overviewState, searchTerm, isEmpty, deleteDrink, loadNextPage } =
 	useDrinksControlOverview();
+
+const { entries, chunk, canChange } = useManagementGroups({
+	items: () => overviewState.value.drinks,
+	subject: 'Drink',
+	searching: () => !!overviewState.value.filter.search
+});
 
 const gridColumns = useGridColumns();
 const { isOpen, triggerDeleteModal, handleCancel, handleDelete, modalContent } = useDeleteModal({
@@ -95,5 +117,10 @@ const handleCreateDrink = () => {
 };
 const handleEditDrink = (id: string) => {
 	$router.push(localePath(`/drinks/${id}/edit`));
+};
+// Drinks of other people open their read-only view, since there is nothing to edit.
+const handleOpenDrink = (drink: Authored<Drink>) => {
+	if (canChange('update', drink)) handleEditDrink(drink.id);
+	else $router.push(localePath(`/drinks/${drink.id}/view`));
 };
 </script>
