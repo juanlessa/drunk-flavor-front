@@ -1,13 +1,15 @@
 <template>
-	<ReadOnlyView
+	<ReadOnlyFormView
 		v-if="ingredient && canUpdate === false"
 		:title="ingredient.translations[locale].name"
 		:back-to="localePath('/ingredients')"
 		:back-label="$t('organisms.ingredientForm.backLink')"
 		@back="$router.push(localePath('/ingredients'))">
+		<!-- Mirrors IngredientForm: the same sections, texts and spacing, with values instead of inputs. -->
 		<FormSection
 			:title="$t('organisms.ingredientForm.namesSection.title')"
 			:description="$t('organisms.ingredientForm.namesSection.description')">
+			<!-- Stacked with a divider on mobile, side by side from tablet up. -->
 			<div
 				class="grid grid-cols-1 divide-y divide-stroke tablet:grid-cols-2 tablet:gap-6 tablet:divide-y-0">
 				<div
@@ -18,70 +20,125 @@
 						{{ $t(`languages.${lang}`) }}
 					</h3>
 					<dl class="flex flex-col gap-4">
-						<ReadOnlyField
+						<ReadOnlyInput
 							:label="$t('organisms.ingredientForm.nameInput.label')"
 							:value="ingredient.translations[lang].name" />
-						<ReadOnlyField
-							v-if="ingredient.translations[lang].namePlural"
+						<!-- Asked for by the form only while a unit is written with the ingredient name. -->
+						<ReadOnlyInput
+							v-if="requiresNamePlural"
 							:label="$t('organisms.ingredientForm.namePluralInput.label')"
-							:value="ingredient.translations[lang].namePlural" />
-						<ReadOnlyField
+							:value="ingredient.translations[lang].namePlural ?? ''"
+							:help="$t('organisms.ingredientForm.namePluralInput.help')" />
+						<!-- The form's character counter is only useful while typing. -->
+						<ReadOnlyInput
 							:label="$t('organisms.ingredientForm.descriptionInput.label')"
-							:value="ingredient.translations[lang].description ?? ''" />
-						<ReadOnlyField
+							:value="ingredient.translations[lang].description ?? ''"
+							:help="$t('organisms.ingredientForm.descriptionInput.help')" />
+						<ReadOnlyInput
 							v-if="isGenderedLanguage(lang)"
 							:label="$t('molecules.genderField.label')"
-							:value="genderLabel(ingredient.translations[lang].gender)" />
+							:value="genderLabel(ingredient.translations[lang].gender)"
+							:help="$t('molecules.genderField.help')" />
 					</dl>
 				</div>
 			</div>
 		</FormSection>
+
 		<FormSection
-			:title="$t('organisms.ingredientView.detailsSection.title')"
-			:description="$t('organisms.ingredientView.detailsSection.description')">
-			<dl class="grid grid-cols-1 gap-4 tablet:grid-cols-3">
-				<ReadOnlyField :label="$t('organisms.ingredientForm.categoryInput.label')">
-					<Badge tone="accent" :value="ingredient.category.translations[locale].name" />
-				</ReadOnlyField>
-				<ReadOnlyField
-					:label="$t('organisms.ingredientForm.kindInput.legend')"
-					:value="
-						$t(`organisms.ingredientForm.kindInput.options.${ingredient.kind}.label`)
-					" />
-				<ReadOnlyField
-					v-if="ingredient.kind === IngredientKinds.branded"
+			:title="$t('organisms.ingredientForm.typeSection.title')"
+			:description="$t('organisms.ingredientForm.typeSection.description')">
+			<ReadOnlyChoiceCards
+				:model-value="ingredient.kind"
+				:options="kindOptions"
+				:label="$t('organisms.ingredientForm.kindInput.legend')" />
+			<dl v-if="ingredient.kind === IngredientKinds.branded">
+				<ReadOnlyInput
 					:label="$t('organisms.ingredientForm.brandInput.label')"
-					:value="ingredient.brand ?? ''" />
+					:value="ingredient.brand ?? ''"
+					:help="$t('organisms.ingredientForm.brandInput.help')" />
 			</dl>
 		</FormSection>
+
 		<FormSection
-			:title="$t('organisms.ingredientView.unitsSection.title')"
-			:description="$t('organisms.ingredientView.unitsSection.description')">
-			<dl>
-				<ReadOnlyField :label="$t('organisms.ingredientView.unitsField')">
-					<ol v-if="ingredient.units.length" class="flex flex-wrap gap-2">
-						<li
-							v-for="(unit, index) in ingredient.units"
-							:key="unit.id"
-							class="inline-flex items-center gap-2 rounded-md border border-stroke bg-surface px-3 py-1.5 text-body-sm">
-							<span
-								class="inline-flex size-5 items-center justify-center rounded-full bg-accent-subtle text-caption text-accent-content">
-								{{ index + 1 }}
-							</span>
-							{{ unit.symbol || unit.translations[locale].name }}
-						</li>
-					</ol>
-					<template v-else>{{ $t('organisms.ingredientView.noUnits') }}</template>
-				</ReadOnlyField>
+			:title="$t('organisms.ingredientForm.classificationSection.title')"
+			:description="$t('organisms.ingredientForm.classificationSection.description')">
+			<div class="flex items-center justify-between gap-4" data-testid="toggle-measurable">
+				<div class="min-w-0">
+					<p class="text-body font-regular text-content">
+						{{ $t('organisms.ingredientForm.measurableInput.label') }}
+					</p>
+					<Text class="text-body-sm text-content-muted">
+						{{ $t('organisms.ingredientForm.measurableInput.help') }}
+					</Text>
+				</div>
+				<ReadOnlySwitch :checked="measurable" />
+			</div>
+			<dl class="grid grid-cols-1 gap-4 tablet:grid-cols-2 items-start">
+				<ReadOnlyInput
+					:label="$t('organisms.ingredientForm.categoryInput.label')"
+					:value="ingredient.category.translations[locale].name" />
+				<ReadOnlyInput
+					v-if="measurable"
+					:label="$t('organisms.ingredientForm.unitsSelection.label')"
+					data-testid="units-field">
+					<!-- The default unit takes the place of the input value; the others follow, as in the form. -->
+					<span
+						class="inline-flex flex-wrap items-center gap-2"
+						data-testid="default-unit">
+						<span>1. {{ nameOf(defaultUnit!) }}</span>
+						<Badge
+							tone="accent"
+							:value="$t('organisms.ingredientForm.unitsSelection.defaultBadge')" />
+					</span>
+					<template v-if="otherUnits.length" #after>
+						<ol
+							class="flex flex-col gap-2"
+							:aria-label="$t('organisms.ingredientForm.unitsSelection.label')"
+							data-testid="other-units">
+							<li
+								v-for="(unit, index) in otherUnits"
+								:key="unit.id"
+								class="rounded-md border border-stroke bg-surface p-3">
+								<!-- The same text style as the default unit, in the value above. -->
+								<p class="truncate text-body font-regular text-content">
+									{{ index + 2 }}. {{ nameOf(unit) }}
+								</p>
+							</li>
+						</ol>
+					</template>
+				</ReadOnlyInput>
+				<ReadOnlyInput
+					v-else
+					:label="$t('organisms.ingredientForm.unitInput.label')"
+					:value="$t('organisms.ingredientForm.unitInput.none')" />
 			</dl>
+			<div class="rounded-md bg-accent-subtle px-4 py-3" data-testid="ingredient-preview">
+				<p class="text-caption font-bold uppercase tracking-wide text-accent-content">
+					{{ $t('organisms.ingredientForm.preview.label') }}
+				</p>
+				<Text v-if="previewItems.length" class="mt-1 font-medium">
+					{{ previewItems.join(' · ') }}
+				</Text>
+				<Text v-else class="mt-1 text-body-sm text-content-muted">
+					{{ $t(previewEmptyKey) }}
+				</Text>
+				<Text
+					v-if="previewItems.length && previewDescription"
+					class="mt-1 text-body-sm text-content-muted">
+					{{ previewDescription }}
+				</Text>
+			</div>
 		</FormSection>
-	</ReadOnlyView>
+	</ReadOnlyFormView>
 </template>
 <script setup lang="ts">
-import { IngredientKinds } from '~/domain/ingredient/ingredient.constants';
+import type { RadioCardOption } from '~/components/molecules/radioCardGroup/RadioCardGroup.types';
+import { IngredientKinds, ingredientKinds } from '~/domain/ingredient/ingredient.constants';
 import { isGenderedLanguage } from '~/domain/shared/gender.helpers';
 import type { Gender } from '~/domain/shared/gender.types';
 import { languages } from '~/domain/shared/translations.constants';
+import type { Unit } from '~/domain/unit/unit.entity';
+import { getIngredientPreviewItems } from '~/helpers/ingredient.helpers';
 
 const props = defineProps({
 	ingredientId: { type: String, required: true }
@@ -102,8 +159,48 @@ const {
 	fetch: () => $api.ingredients.getWithAuthorship(props.ingredientId)
 });
 
+// An ingredient without units is not measurable, as in the form.
+const units = computed(() => ingredient.value?.units ?? []);
+const measurable = computed(() => units.value.length > 0);
+const defaultUnit = computed(() => units.value[0]);
+const otherUnits = computed(() => units.value.slice(1));
+const requiresNamePlural = computed(() => units.value.some((unit) => unit.useIngredientName));
+
+// The same options as the form's kind cards.
+const kindOptions = computed<RadioCardOption[]>(() =>
+	ingredientKinds.map((kind) => ({
+		value: kind,
+		label: t(`organisms.ingredientForm.kindInput.options.${kind}.label`),
+		description: t(`organisms.ingredientForm.kindInput.options.${kind}.description`)
+	}))
+);
+
 const genderLabel = (gender?: Gender) =>
 	gender ? t(`molecules.genderField.options.${gender}`) : '';
+const nameOf = (unit: Unit) => unit.translations[locale.value].name;
+
+// The same sample the form shows while it is filled in.
+const previewItems = computed(() => {
+	if (!ingredient.value) return [];
+	const translation = ingredient.value.translations[locale.value];
+	const name = translation.name.trim();
+	if (!measurable.value) return name ? [name] : [];
+	return getIngredientPreviewItems(
+		name,
+		defaultUnit.value,
+		locale.value,
+		t('drinkDetailPage.ingredients.ofPreposition'),
+		translation.namePlural ?? ''
+	);
+});
+const previewDescription = computed(
+	() => ingredient.value?.translations[locale.value].description?.trim() ?? ''
+);
+const previewEmptyKey = computed(() =>
+	measurable.value
+		? 'organisms.ingredientForm.preview.emptyWithUnit'
+		: 'organisms.ingredientForm.preview.empty'
+);
 
 watch(error, (newError) => {
 	if (newError) console.error('Failed to fetch ingredient:', newError);

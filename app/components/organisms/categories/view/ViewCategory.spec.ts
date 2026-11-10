@@ -27,15 +27,19 @@ vi.stubGlobal('useAuthoredRecord', () => ({
 	error: ref(null)
 }));
 
-const ReadOnlyViewStub = {
+const ReadOnlyFormViewStub = {
 	props: ['title', 'backTo', 'backLabel'],
 	emits: ['back'],
 	template:
 		'<div data-testid="read-only-view"><h1>{{ title }}</h1><slot /><button data-testid="back" @click="$emit(\'back\')" /></div>'
 };
-const ReadOnlyFieldStub = {
-	props: ['label', 'value', 'flag'],
+const ReadOnlyInputStub = {
+	props: ['label', 'value'],
 	template: '<div data-testid="field" :data-label="label">{{ value }}<slot /></div>'
+};
+const ReadOnlySwitchStub = {
+	props: ['checked'],
+	template: '<span data-testid="switch" :data-checked="String(checked)" />'
 };
 
 const mountView = async () => {
@@ -43,10 +47,10 @@ const mountView = async () => {
 		props: { categoryId: 'cat-1' },
 		global: {
 			stubs: {
-				ReadOnlyView: ReadOnlyViewStub,
-				ReadOnlyField: ReadOnlyFieldStub,
+				ReadOnlyFormView: ReadOnlyFormViewStub,
+				ReadOnlyInput: ReadOnlyInputStub,
+				ReadOnlySwitch: ReadOnlySwitchStub,
 				FormSection: { template: '<section><slot /></section>' },
-				Badge: { props: ['value'], template: '<span>{{ value }}</span>' },
 				Text: { template: '<p><slot /></p>' }
 			},
 			mocks: { $t: (key: string) => key }
@@ -70,6 +74,27 @@ describe('ViewCategory', () => {
 		const values = wrapper.findAll('[data-testid="field"]').map((field) => field.text());
 		expect(values).toContain('Liqueur');
 		expect(values).toContain('Licor');
+	});
+
+	it('uses the labels of the form', async () => {
+		const wrapper = await mountView();
+
+		const labels = wrapper
+			.findAll('[data-testid="field"]')
+			.map((f) => f.attributes('data-label'));
+		expect(labels).toEqual([
+			'organisms.categoryForm.nameInput.label',
+			'organisms.categoryForm.nameInput.label'
+		]);
+	});
+
+	it('shows the alcoholic switch of the form, with its texts, as a read-only yes or no', async () => {
+		const wrapper = await mountView();
+
+		const row = wrapper.find('[data-testid="toggle-isAlcoholic"]');
+		expect(row.text()).toContain('organisms.categoryForm.isAlcoholicInput.label');
+		expect(row.text()).toContain('organisms.categoryForm.isAlcoholicInput.help');
+		expect(row.find('[data-testid="switch"]').attributes('data-checked')).toBe('true');
 	});
 
 	it('goes back to the list', async () => {

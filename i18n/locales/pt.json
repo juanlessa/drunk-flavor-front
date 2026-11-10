@@ -83,6 +83,9 @@
 			},
 			"emptyOwn": { "message": "Você ainda não criou nada aqui." }
 		},
+		"readOnlyChoiceCards": {
+			"selected": "Selecionado"
+		},
 		"readOnlyField": {
 			"yes": "Sim",
 			"no": "Não"
@@ -98,28 +101,19 @@
 		}
 	},
 	"organisms": {
+		"readOnlyFormView": {
+			"notice": "Este item foi criado por outro usuário. Você pode consultá-lo, mas não editar."
+		},
 		"readOnlyView": {
 			"badge": "Somente leitura",
 			"notice": "Este item foi criado por outro usuário. Você pode consultá-lo, mas só quem o criou (ou um admin) pode editá-lo.",
 			"backButton": "Voltar para {section}"
 		},
 		"drinkView": {
-			"required": "Obrigatório",
-			"optional": "Opcional",
 			"empty": { "ingredients": "Nenhum ingrediente.", "garnishes": "Nenhuma guarnição." },
-			"imagesDescription": "Miniatura e capa do drink.",
 			"noImage": "Sem imagem",
 			"thumbnailAlt": "Miniatura de {name}",
 			"coverAlt": "Capa de {name}"
-		},
-		"ingredientView": {
-			"detailsSection": { "title": "Detalhes", "description": "Categoria, tipo e marca." },
-			"unitsSection": {
-				"title": "Unidades",
-				"description": "Na ordem em que aparecem no drink."
-			},
-			"unitsField": "permitidas",
-			"noUnits": "Sem unidades"
 		},
 		"categoriesControlOverview": {
 			"listLabel": "Categorias",
@@ -292,7 +286,7 @@
 			},
 			"descriptionInput": {
 				"label": "descrição (opcional)",
-				"help": "Um complemento curto que ajuda a diferenciar, ex. \"Licor de laranja\".",
+				"help": "Um complemento curto",
 				"counter": "{count} de {max} caracteres"
 			},
 			"kindInput": {
@@ -322,7 +316,6 @@
 				"label": "unidades",
 				"addPlaceholder": "Adicionar uma unidade",
 				"noResult": "Nenhuma unidade encontrada",
-				"help": "A primeira é a padrão. Os drinks escolhem uma delas a cada uso.",
 				"empty": "Nenhuma unidade adicionada.",
 				"defaultBadge": "Padrão",
 				"moveUp": { "label": "Mover {name} para cima" },

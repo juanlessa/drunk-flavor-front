@@ -83,6 +83,9 @@
 			},
 			"emptyOwn": { "message": "You haven't created anything here yet." }
 		},
+		"readOnlyChoiceCards": {
+			"selected": "Selected"
+		},
 		"readOnlyField": {
 			"yes": "Yes",
 			"no": "No"
@@ -98,28 +101,19 @@
 		}
 	},
 	"organisms": {
+		"readOnlyFormView": {
+			"notice": "This item was created by another user. You can view it, but not edit it."
+		},
 		"readOnlyView": {
 			"badge": "Read-only",
 			"notice": "This item was created by another user. You can view it, but only its creator (or an admin) can edit it.",
 			"backButton": "Back to {section}"
 		},
 		"drinkView": {
-			"required": "Required",
-			"optional": "Optional",
 			"empty": { "ingredients": "No ingredients.", "garnishes": "No garnishes." },
-			"imagesDescription": "Thumbnail and cover of the drink.",
 			"noImage": "No image",
 			"thumbnailAlt": "Thumbnail of {name}",
 			"coverAlt": "Cover of {name}"
-		},
-		"ingredientView": {
-			"detailsSection": { "title": "Details", "description": "Category, kind and brand." },
-			"unitsSection": {
-				"title": "Units",
-				"description": "In the order they appear in the drink."
-			},
-			"unitsField": "allowed",
-			"noUnits": "No units"
 		},
 		"categoriesControlOverview": {
 			"listLabel": "Categories",
@@ -292,7 +286,7 @@
 			},
 			"descriptionInput": {
 				"label": "description (optional)",
-				"help": "A short note that tells it apart, e.g. \"Orange liqueur\".",
+				"help": "A short note",
 				"counter": "{count} of {max} characters"
 			},
 			"kindInput": {
@@ -322,7 +316,6 @@
 				"label": "units",
 				"addPlaceholder": "Add a unit",
 				"noResult": "No unit found",
-				"help": "The first one is the default. Drinks pick one of these for each use.",
 				"empty": "No unit added yet.",
 				"defaultBadge": "Default",
 				"moveUp": { "label": "Move {name} up" },
