@@ -312,6 +312,16 @@
 		"drinksOverview": {
 			"listLabel": "Cocktail recipes",
 			"heading": "Cocktail recipes",
+			"searchLabel": "Search drinks",
+			"searchPlaceholder": "Search drinks by name",
+			"sortLabel": "Sort by",
+			"sortOptions": {
+				"rating": "Best rated",
+				"name": "Name (A–Z)",
+				"recent": "Newest"
+			},
+			"emptyMessage": "No drinks found.",
+			"emptySearchMessage": "No drinks found for “{term}”.",
 			"errorTitle": "Error",
 			"errorMessage": "Unable to load the drinks."
 		},

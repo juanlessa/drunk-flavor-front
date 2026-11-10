@@ -1,5 +1,6 @@
 import type { $Fetch } from 'nitropack';
 import { HTTP_QUERY_METHOD } from '../shared/api.constants';
+import type { Authored } from '../shared/entity.types';
 import type { QueryParams } from '../shared/query.types';
 import { serializeListQuery } from '../shared/query.helpers';
 import type {
@@ -40,6 +41,17 @@ export const drinksRepository = ($fetch: $Fetch) => ({
 	},
 	async get(id: string, options?: { signal?: AbortSignal }) {
 		return $fetch<Drink>(`${path}/${id}`, { signal: options?.signal });
+	},
+	/**
+	 * For the people who contribute to the catalog (partner, admin, owner): the drinks they created come first, and
+	 * each one carries who created and last edited it. Takes the same search, sort and paging as `list`.
+	 */
+	async listWithAuthorship(query: QueryParams) {
+		return $fetch<Authored<Drink>[]>(`${path}/me`, { query: serializeListQuery(query) });
+	},
+	/** One drink with who created and last edited it. Same roles as `listWithAuthorship`. */
+	async getWithAuthorship(id: string, options?: { signal?: AbortSignal }) {
+		return $fetch<Authored<Drink>>(`${path}/me/${id}`, { signal: options?.signal });
 	},
 	/**
 	 * The drinks that can be made, or nearly, with the given ingredients, the most complete first.

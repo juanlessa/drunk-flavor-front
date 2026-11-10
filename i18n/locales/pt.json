@@ -315,6 +315,16 @@
 		"drinksOverview": {
 			"listLabel": "Receitas de drinks",
 			"heading": "Receitas de drinks",
+			"searchLabel": "Buscar drinks",
+			"searchPlaceholder": "Buscar drinks por nome",
+			"sortLabel": "Ordenar por",
+			"sortOptions": {
+				"rating": "Mais bem avaliados",
+				"name": "Nome (A–Z)",
+				"recent": "Mais recentes"
+			},
+			"emptyMessage": "Nenhum drink encontrado.",
+			"emptySearchMessage": "Nenhum drink encontrado para “{term}”.",
 			"errorTitle": "Erro",
 			"errorMessage": "Não foi possível carregar os drinks."
 		},

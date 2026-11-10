@@ -6,6 +6,6 @@
 <script setup lang="ts">
 definePageMeta({
 	middleware: 'auth',
-	can: { action: 'manage', subject: 'Category' }
+	can: { action: 'listWithAuthorship', subject: 'Category' }
 });
 </script>

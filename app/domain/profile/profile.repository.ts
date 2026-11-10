@@ -33,6 +33,13 @@ export const profileRepository = ($fetch: $Fetch) => ({
 			body
 		});
 	},
+	/**
+	 * Disconnects Google from the account. The account needs a password to keep a way to sign in, and a recent
+	 * authentication.
+	 */
+	async unlinkGoogleIdentity() {
+		return $fetch<undefined>('/me/identities/google', { method: 'DELETE' });
+	},
 	async reauthenticateGoogle(body: ReauthenticateGoogle) {
 		return $fetch<undefined>('/me/reauthentication/google', {
 			method: 'POST',

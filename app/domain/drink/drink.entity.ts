@@ -6,6 +6,7 @@ import type { Unit } from '../unit/unit.entity';
 import type {
 	DrinkIngredientAmountTypes,
 	DrinkIngredientQualifiers,
+	DrinkListSorts,
 	drinkMatchMaxMissing
 } from './drink.constants';
 
@@ -71,3 +72,6 @@ export type DrinkMatch = {
 	/** Ids of ingredients of the drink; their names are in `drink.ingredients`. */
 	missingIngredientIds: string[];
 };
+
+/** The order a person picks for the drinks list. */
+export type DrinkListSort = (typeof DrinkListSorts)[keyof typeof DrinkListSorts];
