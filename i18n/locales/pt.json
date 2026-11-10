@@ -804,6 +804,7 @@
 			"primaryNav": { "label": "Gestão" },
 			"mobileNav": { "label": "Menu" },
 			"manageSection": "Gerenciar",
+			"adminSection": "Administração",
 			"accountSection": "Conta",
 			"profileShortcut": "Abrir seu perfil",
 			"userMenu": { "label": "Menu da conta" },
