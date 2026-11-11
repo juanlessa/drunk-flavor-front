@@ -31,7 +31,7 @@
 				<ManagementItemCard title="Mojito" description="5 ingredients">
 					<template #media>
 						<img
-							src="/light-logo.png"
+							src="/images/logo-mark.svg"
 							alt=""
 							class="size-11 shrink-0 rounded-control object-cover" />
 					</template>

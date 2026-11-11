@@ -18,7 +18,7 @@
 import { reactive } from 'vue';
 
 const state = reactive({
-	src: '/logo.png',
+	src: '/images/logo-mark.svg',
 	alt: 'Drunk Flavor',
 	height: '3rem'
 });

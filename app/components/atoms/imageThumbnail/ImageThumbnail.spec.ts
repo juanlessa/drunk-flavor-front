@@ -4,7 +4,7 @@ import { nextTick } from 'vue';
 import ImageThumbnail from './ImageThumbnail.vue';
 
 const PRIMARY_SRC = 'https://example.com/thumb.png';
-const FALLBACK_SRC = '/light-logo.png';
+const FALLBACK_SRC = '/images/logo-mark.svg';
 const ALT_TEXT = 'thumbnail';
 const LOAD_DELAY = 150;
 

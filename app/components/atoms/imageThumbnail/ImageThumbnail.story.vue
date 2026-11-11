@@ -39,8 +39,8 @@
 import { reactive } from 'vue';
 
 const state = reactive({
-	src: '/logo.png',
-	srcFallback: '/light-logo.png',
+	src: '/images/logo-mark.svg',
+	srcFallback: '/images/logo-mark.svg',
 	alt: 'thumbnail'
 });
 </script>

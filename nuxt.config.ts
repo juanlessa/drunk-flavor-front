@@ -1,6 +1,7 @@
 import tailwindcss from '@tailwindcss/vite';
 import { parseEnvs } from './env/index';
 import { securityOptions } from './config/security';
+import { pwaOptions } from './config/pwa';
 
 const { NODE_ENV, HISTOIRE, NUXT_PUBLIC_SITE_URL } = parseEnvs();
 
@@ -159,8 +160,10 @@ export default defineNuxtConfig({
 		'@nuxt/test-utils/module',
 		'@nuxt/eslint',
 		'nuxt-security',
-		...(HISTOIRE ? [] : ['@nuxtjs/i18n', '@nuxtjs/robots', '@nuxtjs/sitemap'])
+		...(HISTOIRE ? [] : ['@nuxtjs/i18n', '@nuxtjs/robots', '@nuxtjs/sitemap', '@vite-pwa/nuxt'])
 	],
 
-	security: securityOptions
+	security: securityOptions,
+
+	pwa: pwaOptions
 });
