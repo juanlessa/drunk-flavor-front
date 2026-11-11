@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getBaseRouteName, getLocaleAgnosticPageKey } from './route.helpers';
+import { getBaseRouteName, getLocaleAgnosticPageKey, shouldScrollToTop } from './route.helpers';
 
 describe('getLocaleAgnosticPageKey', () => {
 	it('gives the same key to the same page in every language', () => {
@@ -37,6 +37,35 @@ describe('getLocaleAgnosticPageKey', () => {
 
 	it('falls back to the path when the route has no name', () => {
 		expect(getLocaleAgnosticPageKey({ path: '/somewhere', params: {} })).toBe('/somewhere:{}');
+	});
+});
+
+describe('shouldScrollToTop', () => {
+	it('scrolls to the top when going to another page', () => {
+		expect(
+			shouldScrollToTop(
+				{ name: 'terms___en', path: '/en/terms', params: {} },
+				{ name: 'index___en', path: '/en', params: {} }
+			)
+		).toBe(true);
+	});
+
+	it('scrolls to the top when going to the same page with other params', () => {
+		expect(
+			shouldScrollToTop(
+				{ name: 'drinks-id___en', path: '/en/drinks/b', params: { id: 'b' } },
+				{ name: 'drinks-id___en', path: '/en/drinks/a', params: { id: 'a' } }
+			)
+		).toBe(true);
+	});
+
+	it('keeps the position when only the language changes', () => {
+		expect(
+			shouldScrollToTop(
+				{ name: 'bar___pt', path: '/pt/bar', params: {} },
+				{ name: 'bar___en', path: '/en/bar', params: {} }
+			)
+		).toBe(false);
 	});
 });
 

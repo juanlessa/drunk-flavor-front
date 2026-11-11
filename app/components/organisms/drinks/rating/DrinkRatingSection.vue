@@ -3,7 +3,7 @@
 	<Card class="@container">
 		<section
 			id="ratings"
-			class="p-5 tablet:p-6 scroll-mt-4 flex flex-col items-center @detail-layout:items-start gap-4"
+			class="p-5 tablet:p-6 scroll-mt-top-bar flex flex-col items-center @detail-layout:items-start gap-4"
 			:aria-labelledby="headingId">
 			<Heading
 				:id="headingId"

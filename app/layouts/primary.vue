@@ -1,23 +1,19 @@
 <template>
-	<Box direction="col" class="w-screen h-dvh overflow-hidden gap-2 bg-surface-sunken">
-		<!-- The top bar and the footer stay in place; only the content between them scrolls. -->
-		<div class="shrink-0">
+	<Box direction="col" class="w-full min-h-dvh gap-2 bg-surface-sunken">
+		<!--
+			The page itself scrolls (not an inner box), so mobile browsers can collapse their own bars and
+			the usual scroll gestures keep working. The top bar sticks to the top; the footer comes after
+			the content and is reached by scrolling, or sits at the bottom edge when the content is short.
+		-->
+		<div class="sticky top-0 z-sticky">
 			<TopBar />
 		</div>
-		<div ref="scroller" class="flex min-h-0 flex-1 flex-col overflow-y-auto">
-			<Box
-				as="main"
-				direction="col"
-				class="flex-1 w-full max-w-screen-desktop mx-auto bg-surface">
-				<slot></slot>
-			</Box>
-		</div>
-		<div class="shrink-0">
-			<Footer />
-		</div>
+		<Box
+			as="main"
+			direction="col"
+			class="flex-1 w-full max-w-screen-desktop mx-auto bg-surface">
+			<slot></slot>
+		</Box>
+		<Footer />
 	</Box>
 </template>
-<script setup lang="ts">
-const scroller = ref<HTMLElement | null>(null);
-useScrollResetOnNavigation(scroller);
-</script>

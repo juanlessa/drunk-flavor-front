@@ -24,7 +24,7 @@
 import type { RatingSummary } from '~/domain/rating/rating.entity';
 import { SITE_NAME } from '~/constants/site.constants';
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
-import { getLocaleAgnosticPageKey } from '~/helpers/route.helpers';
+import { getLocaleAgnosticPageKey, shouldScrollToTop } from '~/helpers/route.helpers';
 import { formatIngredientList, getDrinkShareImage } from '~/helpers/seo.helpers';
 import {
 	buildBreadcrumbJsonLd,
@@ -35,7 +35,8 @@ import {
 definePageMeta({
 	middleware: 'guest',
 	// Switching the language keeps the page mounted, so it still knows the drink was opened from the bar.
-	key: (route) => getLocaleAgnosticPageKey(route)
+	key: (route) => getLocaleAgnosticPageKey(route),
+	scrollToTop: shouldScrollToTop
 });
 
 const SERVICE_UNAVAILABLE_STATUS = 503;

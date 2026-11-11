@@ -11,6 +11,32 @@
 	--spacing-form-page-inset: 1.5rem;
 	--size-drink-card-tablet-max-inline: 45%;
 	--size-drink-card-desktop-max-inline: 30%;
+	/*
+	 * Height of the sticky top bar, its bottom border included: 56px on mobile, 64px from tablet up.
+	 * Keep it in sync with the header height in TopBar.vue. Whatever sticks below the bar or has to
+	 * stop below it when scrolled into view (anchor targets) uses it as an offset.
+	 */
+	--size-top-bar-block: calc(3.5rem + 1px);
+}
+
+@media (width >= theme(--breakpoint-tablet)) {
+	:root {
+		--size-top-bar-block: calc(4rem + 1px);
+	}
+}
+
+/* Sticks 1rem below the top bar, for side panels that stay in view while the page scrolls. */
+@utility top-below-top-bar {
+	top: calc(var(--size-top-bar-block) + 1rem);
+}
+
+/*
+ * For anchor targets (#id links): the page stops 1rem below the sticky top bar instead of behind it.
+ * Set it on the targets, not as `scroll-padding` on the page: that would also make the browser treat
+ * the bar's own buttons as out of view and scroll the page every time one of them takes focus.
+ */
+@utility scroll-mt-top-bar {
+	scroll-margin-top: calc(var(--size-top-bar-block) + 1rem);
 }
 
 @utility h-option-control {

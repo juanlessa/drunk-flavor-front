@@ -1,7 +1,5 @@
 <template>
-	<Box
-		direction="col"
-		class="bg-surface-chrome w-screen items-center border-t border-stroke-muted">
+	<Box direction="col" class="bg-surface-chrome w-full items-center border-t border-stroke-muted">
 		<Box
 			as="footer"
 			direction="row"

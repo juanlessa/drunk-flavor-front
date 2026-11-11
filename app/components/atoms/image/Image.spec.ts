@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import Image from './Image.vue';
 
 const mountImage = (props: Record<string, unknown> = {}) =>
-	mount(Image, { props: { src: '/logo.png', alt: 'alt text', ...props } });
+	mount(Image, { props: { src: '/images/logo-mark.svg', alt: 'alt text', ...props } });
 
 describe('Image', () => {
 	describe('rendering', () => {
@@ -14,9 +14,9 @@ describe('Image', () => {
 		});
 
 		it('applies the src', () => {
-			const wrapper = mountImage({ src: '/light-logo.png' });
+			const wrapper = mountImage({ src: '/images/other-mark.svg' });
 
-			expect(wrapper.find('img').attributes('src')).toBe('/light-logo.png');
+			expect(wrapper.find('img').attributes('src')).toBe('/images/other-mark.svg');
 		});
 
 		it('applies the alt text', () => {

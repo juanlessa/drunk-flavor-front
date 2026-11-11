@@ -7,7 +7,7 @@
 		-->
 		<MyBarPanel
 			ref="panel"
-			class="tablet:top-4 tablet:[@media(min-height:52rem)]:sticky"
+			class="tablet:top-below-top-bar tablet:[@media(min-height:52rem)]:sticky"
 			:ingredients="ingredients"
 			:max-missing="maxMissing"
 			:is-full="isFull"

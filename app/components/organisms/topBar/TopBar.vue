@@ -1,8 +1,9 @@
 <template>
-	<Box
-		direction="col"
-		class="bg-surface-chrome w-screen items-center border-b border-stroke-muted">
-		<!-- 56px on mobile, 64px from tablet up; the logo keeps about half of that height. -->
+	<Box direction="col" class="bg-surface-chrome w-full items-center border-b border-stroke-muted">
+		<!--
+			56px on mobile, 64px from tablet up (--size-top-bar-block adds the border).
+			The logo keeps about half of that height.
+		-->
 		<header
 			class="h-14 tablet:h-16 w-full max-w-screen-desktop px-4 tablet:px-6 flex items-center gap-4 desktop:gap-8">
 			<NuxtLink

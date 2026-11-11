@@ -2,7 +2,7 @@
 	<Card>
 		<section
 			id="comments"
-			class="flex flex-col gap-4 p-5 tablet:p-6 scroll-mt-4"
+			class="flex flex-col gap-4 p-5 tablet:p-6 scroll-mt-top-bar"
 			:aria-labelledby="headingId">
 			<Heading :id="headingId" as="h2" size="titleSm">
 				{{ $t('drinkDetailPage.comments.title') }}

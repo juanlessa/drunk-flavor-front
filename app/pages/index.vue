@@ -5,13 +5,14 @@
 </template>
 <script setup lang="ts">
 import { SITE_NAME } from '~/constants/site.constants';
-import { getLocaleAgnosticPageKey } from '~/helpers/route.helpers';
+import { getLocaleAgnosticPageKey, shouldScrollToTop } from '~/helpers/route.helpers';
 import { buildSiteJsonLd, serializeJsonLd } from '~/helpers/structuredData.helpers';
 
 definePageMeta({
 	middleware: 'guest',
 	// Switching the language keeps this page mounted, so the loaded drinks and the scroll position stay.
-	key: (route) => getLocaleAgnosticPageKey(route)
+	key: (route) => getLocaleAgnosticPageKey(route),
+	scrollToTop: shouldScrollToTop
 });
 
 const { t, locale } = useI18n();
