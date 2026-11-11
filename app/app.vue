@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<NuxtPwaManifest />
 		<NuxtPage />
 		<ToastNotification />
 	</div>
@@ -13,15 +12,7 @@ const localeHead = useLocaleHead();
 
 useHead(() => ({
 	htmlAttrs: { ...localeHead.value.htmlAttrs },
-	link: [
-		...(localeHead.value.link ?? []),
-		// Google Search shows the favicon from the home page's `<link rel="icon">` tags. It reads
-		// ICO and PNG (not SVG), and wants a square image whose side is a multiple of 48px.
-		{ rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
-		{ rel: 'icon', href: '/icons/icon-192.png', type: 'image/png', sizes: '192x192' },
-		// iOS ignores the manifest icons and needs its own touch icon for "Add to Home Screen".
-		{ rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }
-	],
+	link: [...(localeHead.value.link ?? [])],
 	meta: [
 		...(localeHead.value.meta ?? []),
 		// Opens the home-screen app without browser chrome on iOS (and on older Android browsers).
@@ -31,6 +22,24 @@ useHead(() => ({
 	],
 	titleTemplate: (title?: string) => (title ? `${title} | ${SITE_NAME}` : SITE_NAME)
 }));
+
+// Icons and manifest never change, so they are rendered on the server only. nuxt-security adds a
+// nonce to every server-rendered <link>; a client-side copy has none, does not match it during
+// hydration and ends up in the page a second time.
+useHead(
+	{
+		link: [
+			// Google Search shows the favicon from the home page's `<link rel="icon">` tags. It reads
+			// ICO and PNG (not SVG), and wants a square image whose side is a multiple of 48px.
+			{ rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
+			{ rel: 'icon', href: '/icons/icon-192.png', type: 'image/png', sizes: '192x192' },
+			// iOS ignores the manifest icons and needs its own touch icon for "Add to Home Screen".
+			{ rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+			{ rel: 'manifest', href: '/manifest.webmanifest' }
+		]
+	},
+	{ mode: 'server' }
+);
 
 const { t } = useI18n();
 const siteUrl = useSiteConfig().url;
