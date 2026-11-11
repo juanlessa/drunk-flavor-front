@@ -9,7 +9,7 @@ import {
 	type MaybeRefOrGetter
 } from 'vue';
 import { useEventListener, useResizeObserver } from '@vueuse/core';
-import { findScrollParent } from '~/helpers/scroll.helpers';
+import { findScrollParent, getTopBarInset } from '~/helpers/scroll.helpers';
 import { chunkArray } from '~/helpers/array';
 /** Rows ahead of the viewport at which the next page starts loading. */
 const PREFETCH_ROWS = 2;
@@ -44,8 +44,8 @@ const clamp = (value: number, min: number, max: number) => Math.min(Math.max(val
  * Virtualizes `items` as rows of `columns` items and asks for more when the page scroll gets near the
  * end of the list.
  *
- * The list does not scroll by itself: its nearest scrolling ancestor does (the content area of the
- * layout), or the window when there is none. The rows outside the visible area are not rendered and
+ * The list does not scroll by itself: its nearest scrolling ancestor does, or the window when there
+ * is none (which is what scrolls in the layouts). The rows outside the visible area are not rendered and
  * the space they would take is kept as padding on the wrapper, so the list always has the height of
  * all loaded rows.
  *
@@ -142,8 +142,12 @@ export const useVirtualInfiniteGrid = <T>(options: UseVirtualInfiniteGridOptions
 		if (!element) return;
 		const areaTop = scroller.value?.getBoundingClientRect().top ?? 0;
 		const offset = element.getBoundingClientRect().top - areaTop + index * rowPitch.value;
-		if (scroller.value) scroller.value.scrollTo({ top: scroller.value.scrollTop + offset });
-		else window.scrollTo({ top: window.scrollY + offset });
+		if (scroller.value) {
+			scroller.value.scrollTo({ top: scroller.value.scrollTop + offset });
+			return;
+		}
+		// The window scrolls under the sticky top bar: stop below it, not behind it.
+		window.scrollTo({ top: window.scrollY + offset - getTopBarInset() });
 	};
 	// `aria-setsize` is -1 while more pages can load, which is how ARIA says "the total is unknown".
 	const getRowAttrs = (rowIndex: number) => ({

@@ -4,12 +4,13 @@
 	</NuxtLayout>
 </template>
 <script setup lang="ts">
-import { getLocaleAgnosticPageKey } from '~/helpers/route.helpers';
+import { getLocaleAgnosticPageKey, shouldScrollToTop } from '~/helpers/route.helpers';
 
 definePageMeta({
 	middleware: 'guest',
 	// Switching the language keeps the bar mounted, with its ingredients and the drinks already loaded.
-	key: (route) => getLocaleAgnosticPageKey(route)
+	key: (route) => getLocaleAgnosticPageKey(route),
+	scrollToTop: shouldScrollToTop
 });
 
 const { t } = useI18n();

@@ -20,3 +20,11 @@ export const getLocaleAgnosticPageKey = (route: KeyableRoute): string => {
 	const baseName = getBaseRouteName(route.name) ?? route.path;
 	return `${baseName}:${JSON.stringify(route.params)}`;
 };
+
+/**
+ * Whether going from one route to the other should scroll the window back to the top (the `scrollToTop`
+ * page meta of Nuxt). It should for another page, but not for the same page in another language: that
+ * page stays mounted (see `getLocaleAgnosticPageKey`), so it keeps the reader's position too.
+ */
+export const shouldScrollToTop = (to: KeyableRoute, from: KeyableRoute): boolean =>
+	getLocaleAgnosticPageKey(to) !== getLocaleAgnosticPageKey(from);

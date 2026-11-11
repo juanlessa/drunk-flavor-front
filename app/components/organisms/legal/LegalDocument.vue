@@ -17,7 +17,7 @@
 			:key="section.id"
 			as="section"
 			direction="col"
-			class="gap-4 scroll-mt-6">
+			class="gap-4 scroll-mt-top-bar">
 			<Heading as="h2" size="titleLg">{{ section.title }}</Heading>
 
 			<Text v-for="paragraph in section.paragraphs" :key="paragraph">
