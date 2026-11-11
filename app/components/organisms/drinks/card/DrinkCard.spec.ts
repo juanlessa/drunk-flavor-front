@@ -56,8 +56,10 @@ const mountCard = (props: Record<string, unknown> = {}) =>
 					template: '<span data-testid="match-badge" :data-tone="tone"><slot /></span>'
 				},
 				NuxtLink: { props: ['to'], template: '<a :href="to"><slot /></a>' },
-				ImageThumbnail: true,
+				// Renders the fallback slot, as the real one does for a drink without a picture.
+				ImageThumbnail: { props: ['src'], template: '<div><slot name="fallback" /></div>' },
 				StarIcon: true,
+				HurricaneGlassIcon: true,
 				DrinkPreview: DrinkPreviewStub
 			},
 			mocks: { $t: (key: string) => key, $i18n: { locale: 'en' } }
@@ -68,6 +70,15 @@ const badge = (wrapper: ReturnType<typeof mountCard>) =>
 	wrapper.find('[data-testid="match-badge"]');
 
 describe('DrinkCard', () => {
+	it('shows the line drawing of a glass for a drink without a picture', () => {
+		const fallback = mountCard().find('[data-testid="drink-thumbnail-fallback"]');
+
+		expect(fallback.exists()).toBe(true);
+		expect(fallback.classes()).toEqual(
+			expect.arrayContaining(['bg-accent-subtle', 'text-accent-content'])
+		);
+	});
+
 	it('shows the ingredient count and no match status outside a match', () => {
 		const wrapper = mountCard();
 

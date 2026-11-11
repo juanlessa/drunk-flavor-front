@@ -58,9 +58,11 @@
 									<ImageThumbnail
 										class="size-11 shrink-0 rounded-control"
 										:src="entry.item.thumbnail?.url ?? ''"
-										alt=""
-										src-fallback="/thumbnail-placeholder.png"
-										src-fallback-dark="/thumbnail-placeholder-dark.png" />
+										alt="">
+										<template #fallback>
+											<DrinkThumbnailFallback />
+										</template>
+									</ImageThumbnail>
 								</template>
 							</ManagementItemCard>
 						</template>
@@ -85,6 +87,7 @@
 </template>
 <script setup lang="ts">
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
+import DrinkThumbnailFallback from '../thumbnailFallback/DrinkThumbnailFallback.vue';
 import type { Drink } from '~/domain/drink/drink.entity';
 import type { Authored } from '~/domain/shared/entity.types';
 import {

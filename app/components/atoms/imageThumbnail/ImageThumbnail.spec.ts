@@ -4,7 +4,7 @@ import { nextTick } from 'vue';
 import ImageThumbnail from './ImageThumbnail.vue';
 
 const PRIMARY_SRC = 'https://example.com/thumb.png';
-const FALLBACK_SRC = '/thumbnail-placeholder.png';
+const FALLBACK_SRC = '/light-logo.png';
 const ALT_TEXT = 'thumbnail';
 const LOAD_DELAY = 150;
 
@@ -165,6 +165,45 @@ describe('ImageThumbnail', () => {
 
 			expect(wrapper.find('img').attributes('src')).toBe(FALLBACK_SRC);
 			expect(reportError).not.toHaveBeenCalled();
+			wrapper.unmount();
+		});
+	});
+
+	describe('with a fallback slot', () => {
+		const mountWithSlot = (src: string) =>
+			mount(ImageThumbnail, {
+				props: { src, alt: ALT_TEXT },
+				slots: { fallback: '<span data-testid="fallback-slot" />' },
+				global: { stubs: { AnimatedPlaceHolder: AnimatedPlaceHolderStub } },
+				attachTo: document.body
+			});
+
+		it('shows the slot right away when src is empty', () => {
+			mockImages();
+			const wrapper = mountWithSlot('');
+
+			expect(wrapper.find('[data-testid="fallback-slot"]').exists()).toBe(true);
+			expect(wrapper.find('img').exists()).toBe(false);
+			wrapper.unmount();
+		});
+
+		it('shows the slot when the primary image fails', async () => {
+			mockImages([PRIMARY_SRC]);
+			const wrapper = mountWithSlot(PRIMARY_SRC);
+			await settleLoads();
+
+			expect(wrapper.find('[data-testid="fallback-slot"]').exists()).toBe(true);
+			expect(wrapper.find('img').exists()).toBe(false);
+			wrapper.unmount();
+		});
+
+		it('shows the primary image instead of the slot when it loads', async () => {
+			mockImages();
+			const wrapper = mountWithSlot(PRIMARY_SRC);
+			await settleLoads();
+
+			expect(wrapper.find('img').attributes('src')).toBe(PRIMARY_SRC);
+			expect(wrapper.find('[data-testid="fallback-slot"]').exists()).toBe(false);
 			wrapper.unmount();
 		});
 	});
