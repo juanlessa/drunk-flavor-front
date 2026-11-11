@@ -864,6 +864,26 @@
 				"errorMessage": "Não foi possível conectar o Google. Verifique a conta Google e tente novamente.",
 				"googleErrorMessage": "Não foi possível abrir a autenticação Google. Tente novamente."
 			},
+			"passwordRemoval": {
+				"title": "Remover senha",
+				"description": "Entre apenas com o provedor conectado. Você não poderá mais entrar com email e senha.",
+				"openButton": "Remover senha",
+				"dialogTitle": "Remover sua senha?",
+				"dialogDescription": "Você só poderá entrar com o provedor conectado. Você pode criar uma nova senha depois.",
+				"confirmButton": "Remover senha",
+				"successMessage": "Sua senha foi removida.",
+				"errorMessage": "Não foi possível remover sua senha. Tente novamente."
+			},
+			"googleDisconnection": {
+				"title": "Desconectar Google",
+				"description": "Deixe de usar o Google para entrar. Você continuará entrando com seu email e senha.",
+				"openButton": "Desconectar Google",
+				"dialogTitle": "Desconectar o Google?",
+				"dialogDescription": "Você não poderá mais entrar com o Google. Seu email e senha continuam funcionando.",
+				"confirmButton": "Desconectar",
+				"successMessage": "O Google foi desconectado da sua conta.",
+				"errorMessage": "Não foi possível desconectar o Google. Tente novamente."
+			},
 			"deletion": {
 				"title": "Excluir conta",
 				"description": "Exclua permanentemente sua conta. Esta ação não pode ser desfeita.",

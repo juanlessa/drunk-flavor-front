@@ -26,7 +26,11 @@ vi.mock('radix-vue/namespaced', () => {
 const reauthenticatePassword = vi.fn();
 const reauthenticateGoogle = vi.fn();
 const addToast = vi.fn();
-const authenticationMethods = { password: { enabled: true }, providers: ['google'] };
+const authenticationMethods = {
+	password: { enabled: true, removable: true },
+	providers: ['google'],
+	disconnectableProviders: ['google']
+};
 vi.stubGlobal('useNuxtApp', () => ({
 	$api: { profile: { reauthenticatePassword, reauthenticateGoogle } },
 	$auth: { state: ref({ user: { email: 'jane@example.com', authenticationMethods } }) }

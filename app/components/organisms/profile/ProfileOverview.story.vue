@@ -34,14 +34,26 @@ const baseProfile = {
 } as const;
 const hybridProfile: Profile = {
 	...baseProfile,
-	authenticationMethods: { password: { enabled: true }, providers: ['google'] }
+	authenticationMethods: {
+		password: { enabled: true, removable: true },
+		providers: ['google'],
+		disconnectableProviders: ['google']
+	}
 };
 const providerOnlyProfile: Profile = {
 	...baseProfile,
-	authenticationMethods: { password: { enabled: false }, providers: ['google'] }
+	authenticationMethods: {
+		password: { enabled: false, removable: false },
+		providers: ['google'],
+		disconnectableProviders: []
+	}
 };
 const localProfile: Profile = {
 	...baseProfile,
-	authenticationMethods: { password: { enabled: true }, providers: [] }
+	authenticationMethods: {
+		password: { enabled: true, removable: false },
+		providers: [],
+		disconnectableProviders: []
+	}
 };
 </script>

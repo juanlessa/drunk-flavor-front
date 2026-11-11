@@ -861,6 +861,26 @@
 				"errorMessage": "Unable to connect Google. Check the Google account and try again.",
 				"googleErrorMessage": "Unable to open Google authentication. Please try again."
 			},
+			"passwordRemoval": {
+				"title": "Remove password",
+				"description": "Sign in only with your connected provider. You will no longer be able to sign in with email and password.",
+				"openButton": "Remove password",
+				"dialogTitle": "Remove your password?",
+				"dialogDescription": "You will only be able to sign in with your connected provider. You can create a new password later.",
+				"confirmButton": "Remove password",
+				"successMessage": "Your password was removed.",
+				"errorMessage": "Unable to remove your password. Please try again."
+			},
+			"googleDisconnection": {
+				"title": "Disconnect Google",
+				"description": "Stop using Google to sign in. You will keep signing in with your email and password.",
+				"openButton": "Disconnect Google",
+				"dialogTitle": "Disconnect Google?",
+				"dialogDescription": "You will no longer be able to sign in with Google. Your email and password keep working.",
+				"confirmButton": "Disconnect",
+				"successMessage": "Google was disconnected from your account.",
+				"errorMessage": "Unable to disconnect Google. Please try again."
+			},
 			"deletion": {
 				"title": "Delete account",
 				"description": "Permanently delete your account. This action cannot be undone.",

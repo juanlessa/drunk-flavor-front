@@ -6,8 +6,11 @@
 		</header>
 		<ProfileDetailsForm :profile="props.profile" />
 		<PasswordSection :has-password="props.profile.authenticationMethods.password.enabled" />
+		<RemovePasswordSection v-if="props.profile.authenticationMethods.password.removable" />
 		<GoogleConnectionSection
 			:connected="props.profile.authenticationMethods.providers.includes('google')" />
+		<DisconnectGoogleSection
+			v-if="props.profile.authenticationMethods.disconnectableProviders.includes('google')" />
 		<!-- The owner manages ownership here and cannot delete the account (the backend refuses it). -->
 		<OwnershipSection v-if="isOwner" />
 		<DeleteAccountSection v-else />

@@ -91,7 +91,11 @@ const viewer = {
 	status: 'active',
 	createdAt: new Date(),
 	updatedAt: new Date(),
-	authenticationMethods: { password: { enabled: true }, providers: [] }
+	authenticationMethods: {
+		password: { enabled: true, removable: false },
+		providers: [],
+		disconnectableProviders: []
+	}
 } as Profile;
 
 describe('useDrinkComments', () => {

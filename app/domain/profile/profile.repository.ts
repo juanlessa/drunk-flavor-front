@@ -26,6 +26,13 @@ export const profileRepository = ($fetch: $Fetch) => ({
 	async updatePassword(body: UpdatePassword) {
 		return $fetch<undefined>('/me/password', { method: 'PATCH', body });
 	},
+	/**
+	 * Removes the password. The account needs a connected provider to keep a way to sign in, and a recent
+	 * authentication.
+	 */
+	async removePassword() {
+		return $fetch<undefined>('/me/password', { method: 'DELETE' });
+	},
 	async linkGoogleIdentity(body: LinkGoogleIdentity) {
 		return $fetch<undefined>('/me/identities/google', {
 			method: 'POST',

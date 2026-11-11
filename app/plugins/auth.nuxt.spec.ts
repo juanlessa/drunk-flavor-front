@@ -11,7 +11,11 @@ const profileResponse = {
 	status: 'active' as const,
 	createdAt: '2025-01-01T00:00:00.000Z',
 	updatedAt: '2025-01-02T00:00:00.000Z',
-	authenticationMethods: { password: { enabled: true }, providers: [] }
+	authenticationMethods: {
+		password: { enabled: true, removable: false },
+		providers: [],
+		disconnectableProviders: []
+	}
 };
 
 describe('auth plugin', () => {

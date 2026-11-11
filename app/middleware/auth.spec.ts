@@ -30,7 +30,11 @@ const buildIncompleteProfile = (): Profile => ({
 	emailVerified: true,
 	status: 'incomplete_profile',
 	role: 'member',
-	authenticationMethods: { password: { enabled: false }, providers: ['google'] }
+	authenticationMethods: {
+		password: { enabled: false, removable: false },
+		providers: ['google'],
+		disconnectableProviders: []
+	}
 });
 
 const buildProfile = (overrides: Partial<CompleteUser>): Profile => ({
@@ -43,7 +47,11 @@ const buildProfile = (overrides: Partial<CompleteUser>): Profile => ({
 	emailVerified: true,
 	status: 'active',
 	role: 'member',
-	authenticationMethods: { password: { enabled: true }, providers: [] },
+	authenticationMethods: {
+		password: { enabled: true, removable: false },
+		providers: [],
+		disconnectableProviders: []
+	},
 	...overrides
 });
 
