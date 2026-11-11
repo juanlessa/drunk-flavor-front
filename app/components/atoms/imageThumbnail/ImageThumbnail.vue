@@ -6,6 +6,8 @@
 			:src="props.src"
 			:alt="props.alt" />
 
+		<!-- Content given by the parent replaces the fallback images, e.g. an icon drawn with the theme colors. -->
+		<slot v-else-if="isPrimaryDone && $slots.fallback" name="fallback" />
 		<template v-else-if="isFallbackReady">
 			<img
 				:class="[
@@ -31,7 +33,8 @@ import { useImage } from '@vueuse/core';
 
 const props = defineProps({
 	src: { type: String, required: true },
-	srcFallback: { type: String, required: true },
+	/** Image shown when `src` fails. Not needed when the `fallback` slot is given. */
+	srcFallback: { type: String, default: '' },
 	srcFallbackDark: { type: String, default: undefined },
 	alt: { type: String, required: true }
 });

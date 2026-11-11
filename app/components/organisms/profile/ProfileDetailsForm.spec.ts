@@ -27,7 +27,11 @@ const profile: Profile = {
 	status: 'active',
 	createdAt: new Date(),
 	updatedAt: new Date(),
-	authenticationMethods: { password: { enabled: true }, providers: [] }
+	authenticationMethods: {
+		password: { enabled: true, removable: false },
+		providers: [],
+		disconnectableProviders: []
+	}
 };
 
 const FieldStub = {

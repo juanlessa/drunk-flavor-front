@@ -18,9 +18,6 @@
 				@update:model-value="handleSelect"
 				@load-more="loadNextPage"
 				@blur="emit('blur')" />
-			<Text class="text-body-sm text-content-muted">
-				{{ $t('organisms.ingredientForm.unitsSelection.help') }}
-			</Text>
 			<template #error>
 				<ErrorMessage :value="props.error" />
 			</template>

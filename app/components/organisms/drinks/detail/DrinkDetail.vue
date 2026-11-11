@@ -44,9 +44,11 @@
 					v-if="props.drink.thumbnail"
 					class="size-20 tablet:size-24 shrink-0 rounded-media"
 					:src="props.drink.thumbnail.url"
-					alt=""
-					src-fallback="/thumbnail-placeholder.png"
-					src-fallback-dark="/thumbnail-placeholder-dark.png" />
+					alt="">
+					<template #fallback>
+						<DrinkThumbnailFallback />
+					</template>
+				</ImageThumbnail>
 				<div class="min-w-0 flex flex-col gap-2">
 					<Heading as="h1" size="headlineSm" class="tablet:text-headline wrap-break-word">
 						{{ name }}
@@ -209,6 +211,7 @@
 import { useId } from 'vue';
 import ArrowLeftIcon from '~/components/icons/ArrowLeftIcon.vue';
 import StarIcon from '~/components/icons/StarIcon.vue';
+import DrinkThumbnailFallback from '../thumbnailFallback/DrinkThumbnailFallback.vue';
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
 import type { Drink } from '~/domain/drink/drink.entity';
 

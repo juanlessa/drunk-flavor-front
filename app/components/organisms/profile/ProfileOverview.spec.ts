@@ -13,7 +13,11 @@ const profile: Profile = {
 	status: 'active',
 	createdAt: new Date(),
 	updatedAt: new Date(),
-	authenticationMethods: { password: { enabled: true }, providers: ['google'] }
+	authenticationMethods: {
+		password: { enabled: true, removable: true },
+		providers: ['google'],
+		disconnectableProviders: ['google']
+	}
 };
 
 const mountOverview = (overrides: Partial<Profile> = {}) =>
@@ -32,6 +36,8 @@ const mountOverview = (overrides: Partial<Profile> = {}) =>
 					props: ['connected'],
 					template: '<div data-testid="google" :data-connected="connected" />'
 				},
+				RemovePasswordSection: { template: '<div data-testid="remove-password" />' },
+				DisconnectGoogleSection: { template: '<div data-testid="disconnect-google" />' },
 				DeleteAccountSection: { template: '<div data-testid="deletion" />' },
 				OwnershipSection: { template: '<div data-testid="ownership" />' }
 			},
@@ -48,6 +54,26 @@ describe('ProfileOverview', () => {
 		expect(wrapper.find('[data-testid="google"]').attributes('data-connected')).toBe('true');
 		expect(wrapper.find('[data-testid="deletion"]').exists()).toBe(true);
 		expect(wrapper.find('[data-testid="ownership"]').exists()).toBe(false);
+	});
+
+	it('shows the removal sections only for the removals the backend allows', () => {
+		const wrapper = mountOverview({
+			authenticationMethods: {
+				password: { enabled: false, removable: false },
+				providers: ['google'],
+				disconnectableProviders: []
+			}
+		});
+
+		expect(wrapper.find('[data-testid="remove-password"]').exists()).toBe(false);
+		expect(wrapper.find('[data-testid="disconnect-google"]').exists()).toBe(false);
+	});
+
+	it('offers both removals for an account with a password and a provider', () => {
+		const wrapper = mountOverview();
+
+		expect(wrapper.find('[data-testid="remove-password"]').exists()).toBe(true);
+		expect(wrapper.find('[data-testid="disconnect-google"]').exists()).toBe(true);
 	});
 
 	it('shows the ownership section instead of account deletion for the owner', () => {

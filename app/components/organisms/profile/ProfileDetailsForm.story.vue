@@ -25,6 +25,10 @@ const profile: Profile = {
 	status: 'active',
 	createdAt: new Date(),
 	updatedAt: new Date(),
-	authenticationMethods: { password: { enabled: true }, providers: ['google'] }
+	authenticationMethods: {
+		password: { enabled: true, removable: true },
+		providers: ['google'],
+		disconnectableProviders: ['google']
+	}
 };
 </script>

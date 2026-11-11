@@ -33,15 +33,20 @@ vi.stubGlobal('useAuthoredRecord', () => ({
 	error: ref(null)
 }));
 
-const ReadOnlyViewStub = {
+const ReadOnlyFormViewStub = {
 	props: ['title', 'backTo', 'backLabel'],
 	emits: ['back'],
 	template:
 		'<div data-testid="read-only-view"><h1>{{ title }}</h1><slot /><button data-testid="back" @click="$emit(\'back\')" /></div>'
 };
-const ReadOnlyFieldStub = {
-	props: ['label', 'value', 'flag'],
-	template: '<div data-testid="field" :data-label="label">{{ value }}<slot /></div>'
+const ReadOnlyInputStub = {
+	props: ['label', 'value', 'help'],
+	template:
+		'<div data-testid="field" :data-label="label" :data-help="help">{{ value }}<slot /></div>'
+};
+const ReadOnlySwitchStub = {
+	props: ['checked'],
+	template: '<span data-testid="switch" :data-checked="String(checked)" />'
 };
 
 const mountView = async () => {
@@ -49,10 +54,13 @@ const mountView = async () => {
 		props: { unitId: 'unit-1' },
 		global: {
 			stubs: {
-				ReadOnlyView: ReadOnlyViewStub,
-				ReadOnlyField: ReadOnlyFieldStub,
-				FormSection: { template: '<section><slot /></section>' },
-				Badge: { props: ['value'], template: '<span>{{ value }}</span>' },
+				ReadOnlyFormView: ReadOnlyFormViewStub,
+				ReadOnlyInput: ReadOnlyInputStub,
+				ReadOnlySwitch: ReadOnlySwitchStub,
+				FormSection: {
+					props: ['title', 'description'],
+					template: '<section :data-title="title"><slot /></section>'
+				},
 				Text: { template: '<p><slot /></p>' }
 			},
 			mocks: { $t: (key: string) => key }
@@ -76,6 +84,40 @@ describe('ViewUnit', () => {
 		const values = wrapper.findAll('[data-testid="field"]').map((field) => field.text());
 		expect(values).toEqual(expect.arrayContaining(['Milliliter', 'Mililitros', 'ml']));
 		expect(wrapper.find('[data-testid="unit-preview"]').exists()).toBe(true);
+	});
+
+	it('uses the labels and the help of the form', async () => {
+		const wrapper = await mountView();
+		const labels = wrapper
+			.findAll('[data-testid="field"]')
+			.map((f) => f.attributes('data-label'));
+		expect(labels).toEqual([
+			'organisms.unitForm.nameInput.label',
+			'organisms.unitForm.namePluralInput.label',
+			'organisms.unitForm.nameInput.label',
+			'organisms.unitForm.namePluralInput.label',
+			'molecules.genderField.label',
+			'organisms.unitForm.symbolInput.label',
+			'organisms.unitForm.kindInput.label'
+		]);
+		const gender = wrapper.find('[data-label="molecules.genderField.label"]');
+		expect(gender.attributes('data-help')).toBe('molecules.genderField.help');
+		expect(gender.text()).toBe('molecules.genderField.options.masculine');
+	});
+
+	it('shows each switch of the form, with its texts, as a read-only yes or no', async () => {
+		const wrapper = await mountView();
+		const expected = [
+			['spaceBeforeSymbol', 'spaceBeforeSymbolInput', 'true'],
+			['allowDecimal', 'allowDecimalInput', 'true'],
+			['useIngredientName', 'useIngredientNameInput', 'false']
+		];
+		for (const [field, key, checked] of expected) {
+			const row = wrapper.find(`[data-testid="toggle-${field}"]`);
+			expect(row.text()).toContain(`organisms.unitForm.${key}.label`);
+			expect(row.text()).toContain(`organisms.unitForm.${key}.help`);
+			expect(row.find('[data-testid="switch"]').attributes('data-checked')).toBe(checked);
+		}
 	});
 
 	it('goes back to the list', async () => {

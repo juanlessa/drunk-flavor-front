@@ -95,7 +95,45 @@ describe('TopBar', () => {
 			.findAll('a')
 			.map((link) => link.attributes('href'));
 
-		expect(links).toEqual(['/drinks', '/categories', '/units', '/ingredients', '/users']);
+		expect(links).toEqual(['/drinks', '/ingredients', '/categories', '/units', '/users']);
+	});
+
+	it('divides the catalog from the administration in the desktop bar', () => {
+		const nav = desktopNav(mountTopBar());
+		const children = nav.element.children;
+		const divider = nav.find('[data-testid="manage-group-divider"]');
+
+		expect(divider.exists()).toBe(true);
+		expect(divider.attributes('aria-hidden')).toBe('true');
+		// Right between the last catalog area and the administration.
+		const index = Array.from(children).indexOf(divider.element);
+		expect(children[index - 1]?.getAttribute('href')).toBe('/units');
+		expect(children[index + 1]?.getAttribute('href')).toBe('/users');
+	});
+
+	it('puts users in an administration section of the mobile menu', () => {
+		const menu = mobileMenu(mountTopBar());
+		const sections = menu.findAll('nav[aria-labelledby]');
+		const manage = sections.find((nav) =>
+			nav.text().includes('organisms.topBar.manageSection')
+		);
+		const admin = sections.find((nav) => nav.text().includes('organisms.topBar.adminSection'));
+
+		expect(manage?.findAll('a').map((link) => link.attributes('href'))).toEqual([
+			'/drinks',
+			'/ingredients',
+			'/categories',
+			'/units'
+		]);
+		expect(admin?.findAll('a').map((link) => link.attributes('href'))).toEqual(['/users']);
+	});
+
+	it('has no divider nor administration section without access to the users', () => {
+		allowed.value = ['Drink', 'Category', 'Unit', 'Ingredient'];
+		const wrapper = mountTopBar();
+
+		expect(wrapper.find('[data-testid="manage-group-divider"]').exists()).toBe(false);
+		expect(mobileMenu(wrapper).text()).not.toContain('organisms.topBar.adminSection');
 	});
 
 	it.each([
@@ -159,9 +197,9 @@ describe('TopBar', () => {
 
 	// The links use the same check as the guards of their pages, so each role sees exactly the areas it can open.
 	it.each([
-		['owner', ['/drinks', '/categories', '/units', '/ingredients', '/users']],
-		['admin', ['/drinks', '/categories', '/units', '/ingredients', '/users']],
-		['partner', ['/drinks', '/categories', '/units', '/ingredients']],
+		['owner', ['/drinks', '/ingredients', '/categories', '/units', '/users']],
+		['admin', ['/drinks', '/ingredients', '/categories', '/units', '/users']],
+		['partner', ['/drinks', '/ingredients', '/categories', '/units']],
 		['member', []]
 	] as const)('shows the %s the management areas of its role', (role, paths) => {
 		realAbility.value = defineAbilityForUser({ ...user, id: 'user-1', role } as User);

@@ -43,26 +43,34 @@
 				</template>
 			</nav>
 			<span
-				v-if="manageLinks.length"
+				v-if="manageGroups.length"
 				class="hidden desktop:block h-6 w-px bg-stroke"
 				aria-hidden="true"></span>
+			<!-- The catalog areas, then the administration, apart behind a divider. -->
 			<nav
-				v-if="manageLinks.length"
+				v-if="manageGroups.length"
 				class="hidden desktop:flex items-center gap-1"
 				:aria-label="$t('organisms.topBar.primaryNav.label')">
-				<template v-for="link in manageLinks" :key="link.path">
+				<template v-for="(group, groupIndex) in manageGroups" :key="groupIndex">
 					<span
-						v-if="isCurrentPage(link)"
-						aria-current="page"
-						class="h-9 px-3.5 inline-flex items-center rounded-full bg-accent-subtle text-body-sm font-bold text-accent-content">
-						{{ $t(link.i18nKey) }}
-					</span>
-					<NuxtLink
-						v-else
-						:to="localePath(link.path)"
-						class="h-9 px-3.5 inline-flex items-center rounded-full text-body-sm font-medium text-content-secondary hover:bg-surface-hover hover:text-content focus-visible:outline-hidden focus-visible:shadow-focus-ring">
-						{{ $t(link.i18nKey) }}
-					</NuxtLink>
+						v-if="groupIndex > 0"
+						class="mx-1 h-6 w-px bg-stroke"
+						aria-hidden="true"
+						data-testid="manage-group-divider"></span>
+					<template v-for="link in group" :key="link.path">
+						<span
+							v-if="isCurrentPage(link)"
+							aria-current="page"
+							class="h-9 px-3.5 inline-flex items-center rounded-full bg-accent-subtle text-body-sm font-bold text-accent-content">
+							{{ $t(link.i18nKey) }}
+						</span>
+						<NuxtLink
+							v-else
+							:to="localePath(link.path)"
+							class="h-9 px-3.5 inline-flex items-center rounded-full text-body-sm font-medium text-content-secondary hover:bg-surface-hover hover:text-content focus-visible:outline-hidden focus-visible:shadow-focus-ring">
+							{{ $t(link.i18nKey) }}
+						</NuxtLink>
+					</template>
 				</template>
 			</nav>
 
@@ -178,6 +186,35 @@
 								</NuxtLink>
 							</template>
 						</nav>
+						<!-- Administration: its own section, divided from the catalog above it. -->
+						<nav
+							v-if="adminLinks.length"
+							class="flex flex-col border-t border-stroke pt-2"
+							:aria-labelledby="adminHeadingId">
+							<h2 :id="adminHeadingId" :class="sectionHeadingClass">
+								{{ $t('organisms.topBar.adminSection') }}
+							</h2>
+							<template v-for="link in adminLinks" :key="link.path">
+								<span
+									v-if="isCurrentPage(link)"
+									aria-current="page"
+									:class="[
+										menuItemClass,
+										'bg-accent-subtle font-bold text-accent-content'
+									]">
+									{{ $t(link.i18nKey) }}
+								</span>
+								<NuxtLink
+									v-else
+									:to="localePath(link.path)"
+									:class="[
+										menuItemClass,
+										'text-content-secondary hover:bg-surface-hover'
+									]">
+									{{ $t(link.i18nKey) }}
+								</NuxtLink>
+							</template>
+						</nav>
 
 						<!-- Guests already have the sign-in button in the bar. -->
 						<nav v-if="user" class="flex flex-col" :aria-labelledby="accountHeadingId">
@@ -246,15 +283,21 @@ type ILink = {
 
 /** Pages for everyone, signed in or not, in display order. */
 const PUBLIC_LINKS: ILink[] = [{ i18nKey: 'organisms.topBar.myBar', path: '/bar' }];
-/**
+/*
  * Management areas, in display order. Each one shows when the user passes the same check that guards
  * its page (`definePageMeta({ can })`), so a link never leads to a page that sends the user away.
  */
-const MANAGEMENT_LINKS: ILink[] = [
+/** The catalog: the drinks and what they are made of. */
+const CATALOG_LINKS: ILink[] = [
 	{
 		i18nKey: 'organisms.topBar.drinks',
 		path: '/drinks',
 		can: { action: 'listWithAuthorship', subject: 'Drink' }
+	},
+	{
+		i18nKey: 'organisms.topBar.ingredients',
+		path: '/ingredients',
+		can: { action: 'listWithAuthorship', subject: 'Ingredient' }
 	},
 	{
 		i18nKey: 'organisms.topBar.categories',
@@ -265,12 +308,10 @@ const MANAGEMENT_LINKS: ILink[] = [
 		i18nKey: 'organisms.topBar.units',
 		path: '/units',
 		can: { action: 'listWithAuthorship', subject: 'Unit' }
-	},
-	{
-		i18nKey: 'organisms.topBar.ingredients',
-		path: '/ingredients',
-		can: { action: 'listWithAuthorship', subject: 'Ingredient' }
-	},
+	}
+];
+/** The administration of the platform, shown apart from the catalog. */
+const ADMIN_LINKS: ILink[] = [
 	{
 		i18nKey: 'organisms.topBar.users',
 		path: '/users',
@@ -287,6 +328,7 @@ const localePath = useLocalePath();
 const route = useRoute();
 const { can } = useAppAbility();
 const manageHeadingId = useId();
+const adminHeadingId = useId();
 const accountHeadingId = useId();
 
 const isSigningOut = ref(false);
@@ -315,14 +357,17 @@ const userName = computed(() =>
 	user.value ? getUserFullName(user.value) || user.value.email : ''
 );
 
-const manageLinks = computed<ILink[]>(() =>
+const allowedLinks = (links: ILink[]) =>
 	user.value
-		? MANAGEMENT_LINKS.filter(
+		? links.filter(
 				(link) =>
 					!link.can || can(...([link.can.action, link.can.subject] as AppCanParameters))
 			)
-		: []
-);
+		: [];
+const manageLinks = computed(() => allowedLinks(CATALOG_LINKS));
+const adminLinks = computed(() => allowedLinks(ADMIN_LINKS));
+/** The non-empty groups, in display order, for the desktop bar that divides them. */
+const manageGroups = computed(() => [manageLinks.value, adminLinks.value].filter((g) => g.length));
 
 // Only the exact page is "current": from /users/:id the users link still leads back to the list.
 const isCurrentPage = (link: ILink) => route.path === localePath(link.path).toString();

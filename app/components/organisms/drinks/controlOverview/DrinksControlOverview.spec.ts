@@ -102,8 +102,10 @@ const ManagementItemCardSkeletonStub = {
 };
 
 const ImageThumbnailStub = {
-	props: ['src', 'srcFallback', 'srcFallbackDark', 'alt'],
-	template: '<img data-testid="thumbnail" :src="src || srcFallback" :alt="alt" />'
+	props: ['src', 'alt'],
+	// The real one shows its fallback slot when there is no picture.
+	template:
+		'<img v-if="src" data-testid="thumbnail" :src="src" :alt="alt" /><div v-else data-testid="thumbnail"><slot name="fallback" /></div>'
 };
 
 const ManagementGroupRowStub = {
@@ -191,12 +193,12 @@ describe('DrinksControlOverview', () => {
 		);
 	});
 
-	it('shows the thumbnail, falling back to the placeholder when the drink has none', () => {
+	it('shows the thumbnail, or the glass drawing when the drink has none', () => {
 		const thumbnails = mountOverview().findAll('[data-testid="thumbnail"]');
 
 		expect(thumbnails[0]!.attributes('src')).toBe('/mojito-thumb.png');
-		expect(thumbnails[1]!.attributes('src')).toBe('/thumbnail-placeholder.png');
 		expect(thumbnails[0]!.attributes('alt')).toBe('');
+		expect(thumbnails[1]!.find('[data-testid="drink-thumbnail-fallback"]').exists()).toBe(true);
 	});
 
 	it('opens the edit form of the selected drink', async () => {

@@ -40,7 +40,7 @@ import { reactive } from 'vue';
 
 const state = reactive({
 	src: '/logo.png',
-	srcFallback: '/thumbnail-placeholder.png',
+	srcFallback: '/light-logo.png',
 	alt: 'thumbnail'
 });
 </script>

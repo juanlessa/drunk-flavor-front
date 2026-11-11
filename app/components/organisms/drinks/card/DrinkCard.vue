@@ -6,9 +6,11 @@
 				<ImageThumbnail
 					class="h-full aspect-square shrink-0 rounded-control"
 					:src="drink.thumbnail?.url ?? ''"
-					alt="drink thumbnail"
-					src-fallback="/thumbnail-placeholder.png"
-					src-fallback-dark="/thumbnail-placeholder-dark.png" />
+					alt="drink thumbnail">
+					<template #fallback>
+						<DrinkThumbnailFallback />
+					</template>
+				</ImageThumbnail>
 				<div class="flex-1 min-w-0 flex flex-col overflow-hidden">
 					<Heading ref="nameRef" class="text-center line-clamp-2 shrink-0">
 						<!-- Stretched link: a real anchor (crawlable, opens in a new tab) that covers the whole card. -->
@@ -81,6 +83,7 @@
 	</HoverCard>
 </template>
 <script setup lang="ts">
+import DrinkThumbnailFallback from '../thumbnailFallback/DrinkThumbnailFallback.vue';
 import type { Drink } from '~/domain/drink/drink.entity';
 import { initEmptyDrink } from '~/domain/drink/drink.factory';
 import { getMissingIngredientNames } from '~/helpers/drinkMatch.helpers';

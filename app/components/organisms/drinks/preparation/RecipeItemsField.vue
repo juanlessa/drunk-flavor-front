@@ -15,14 +15,18 @@
 		<!-- Several items: the chosen ones as rows, and a select that adds the next. -->
 		<template v-else>
 			<ul v-if="props.modelValue.length" class="flex flex-col gap-2">
+				<!--
+					Mobile: the name and the remove button on the first line, the unit switch on its own
+					line below, so the name keeps the width. From tablet up: all on one line.
+				-->
 				<li
 					v-for="item in props.modelValue"
 					:key="getRecipeItemKey(item)"
-					class="flex items-center gap-2 rounded-md border bg-surface px-3 py-2"
+					class="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border bg-surface px-3 py-2"
 					:class="isMissing(item) ? 'border-danger-stroke' : 'border-stroke'">
 					<div class="min-w-0 flex-1">
 						<p
-							class="truncate text-body"
+							class="wrap-break-word text-body tablet:truncate"
 							:class="isMissing(item) ? 'text-danger' : 'text-content'">
 							{{ describe(item) }}
 						</p>
@@ -30,7 +34,9 @@
 							{{ $t('organisms.preparationBuilder.items.missing') }}
 						</p>
 					</div>
-					<div v-if="item.unitId" class="flex shrink-0 items-center gap-2">
+					<div
+						v-if="item.unitId"
+						class="order-last flex basis-full items-center gap-2 tablet:order-none tablet:basis-auto tablet:shrink-0">
 						<Label
 							:for="`${props.id}-unit-${getRecipeItemKey(item)}`"
 							class="text-body-sm">

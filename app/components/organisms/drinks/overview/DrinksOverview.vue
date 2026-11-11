@@ -63,10 +63,11 @@
 				- Items wrap and are centered like the grid's rows (`justify-center`), so an incomplete
 				  last row sits in the middle instead of against the left edge. The number of columns is
 				  not known on the server, so the wrapping itself decides it from the item widths.
-				Clipped inside the container, so it never changes the page height.
+				It stays in the flow, because the page scrolls and the list takes its height from its rows: with
+				the same geometry the grid has the same height, so the footer does not move when it takes over.
 			-->
 			<template #fallback>
-				<div class="absolute inset-0 overflow-hidden px-4">
+				<div class="px-4">
 					<ul
 						class="mx-auto flex w-full max-w-screen-desktop list-none flex-wrap content-start justify-center gap-4 [&>li>*]:max-w-none">
 						<li

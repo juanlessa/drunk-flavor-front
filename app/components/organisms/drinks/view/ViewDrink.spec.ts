@@ -61,7 +61,7 @@ vi.stubGlobal('useAuthoredRecord', () => ({
 	error: ref(null)
 }));
 
-const ReadOnlyViewStub = {
+const ReadOnlyFormViewStub = {
 	props: ['title', 'backTo', 'backLabel'],
 	emits: ['back'],
 	template:
@@ -73,19 +73,21 @@ const mountView = async () => {
 		props: { drinkId: 'drink-1' },
 		global: {
 			stubs: {
-				ReadOnlyView: ReadOnlyViewStub,
-				ReadOnlyField: {
+				ReadOnlyFormView: ReadOnlyFormViewStub,
+				ReadOnlyInput: {
 					props: ['label', 'value'],
 					template:
 						'<div data-testid="field" :data-label="label">{{ value }}<slot /></div>'
 				},
-				FormSection: {
-					props: ['title'],
-					template: '<section :data-title="title"><slot /></section>'
+				ReadOnlyRecipeLine: {
+					props: ['line', 'index', 'kind'],
+					template:
+						'<li data-testid="recipe-line" :data-kind="kind" :data-index="index">{{ line.ingredient.translations.en.name }}</li>'
 				},
-				Badge: {
-					props: ['value'],
-					template: '<span data-testid="badge">{{ value }}</span>'
+				FormSection: {
+					props: ['title', 'description'],
+					template:
+						'<section :data-title="title" :data-description="description"><slot /></section>'
 				},
 				Text: { template: '<p><slot /></p>' }
 			},
@@ -109,22 +111,60 @@ describe('ViewDrink', () => {
 		expect(wrapper.find('[data-testid="read-only-view"] h1').text()).toBe('Carajillo');
 	});
 
-	it('lists the ingredients and garnishes in order, with their amounts', async () => {
-		const lines = (await mountView()).findAll('[data-testid="recipe-line"]');
+	it('lists the ingredients and the garnishes, in order, as the lines of the form', async () => {
+		const wrapper = await mountView();
 
-		expect(lines).toHaveLength(3);
-		expect(lines[0]!.text()).toContain('1. Licor 43');
-		expect(lines[0]!.text()).toContain('75 ml');
-		expect(lines[1]!.text()).toContain('organisms.recipeLines.qualifier.options.to_taste');
-		expect(lines[2]!.text()).toContain('organisms.recipeLines.amountType.options.none');
+		const ingredients = wrapper.findAll(
+			'[data-testid="ingredients-section"] [data-testid="recipe-line"]'
+		);
+		expect(ingredients.map((line) => line.text())).toEqual(['Licor 43', 'Ice']);
+		expect(ingredients.map((line) => line.attributes('data-index'))).toEqual(['0', '1']);
+		const garnishes = wrapper.findAll(
+			'[data-testid="garnishes-section"] [data-testid="recipe-line"]'
+		);
+		expect(garnishes.map((line) => line.text())).toEqual(['Coffee bean']);
+		expect(garnishes[0]!.attributes('data-kind')).toBe('garnishes');
 	});
 
-	it('marks each ingredient as required or optional, and garnishes not at all', async () => {
-		const lines = (await mountView()).findAll('[data-testid="recipe-line"]');
+	it('leaves the ingredient search out', async () => {
+		const wrapper = await mountView();
 
-		expect(lines[0]!.find('[data-testid="badge"]').text()).toBe('organisms.drinkView.required');
-		expect(lines[1]!.find('[data-testid="badge"]').text()).toBe('organisms.drinkView.optional');
-		expect(lines[2]!.find('[data-testid="badge"]').exists()).toBe(false);
+		expect(wrapper.find('input').exists()).toBe(false);
+		expect(wrapper.text()).not.toContain('searchLabel');
+	});
+
+	it('says when there are no garnishes', async () => {
+		drink.value = { ...buildDrink(), garnishes: [] };
+
+		const wrapper = await mountView();
+
+		expect(wrapper.find('[data-testid="garnishes-section"]').text()).toBe(
+			'organisms.drinkView.empty.garnishes'
+		);
+	});
+
+	it('shows the method as written by hand, without the mode choice', async () => {
+		const wrapper = await mountView();
+
+		// The attributes given to each method field replace the test id of the stub.
+		expect(wrapper.find('[data-testid="method-en"]').attributes('data-label')).toBe(
+			'organisms.drinkForm.methodInput.label · languages.en'
+		);
+		expect(wrapper.find('[data-testid="method-pt"]').attributes('data-label')).toBe(
+			'organisms.drinkForm.methodInput.label · languages.pt'
+		);
+		expect(wrapper.text()).not.toContain('organisms.drinkForm.methodMode');
+	});
+
+	it('uses the texts of the form for the images', async () => {
+		const wrapper = await mountView();
+
+		const images = wrapper.find('[data-title="organisms.drinkForm.imagesSection.title"]');
+		expect(images.attributes('data-description')).toBe(
+			'organisms.drinkForm.imagesSection.description'
+		);
+		expect(images.text()).toContain('organisms.drinkForm.thumbnailInput.help');
+		expect(images.text()).toContain('organisms.drinkForm.coverInput.help');
 	});
 
 	it('shows the method of every language', async () => {
