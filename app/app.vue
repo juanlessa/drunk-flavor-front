@@ -15,9 +15,10 @@ useHead(() => ({
 	htmlAttrs: { ...localeHead.value.htmlAttrs },
 	link: [
 		...(localeHead.value.link ?? []),
-		// Browsers that support SVG favicons pick the vector mark; the rest use the .ico.
+		// Google Search shows the favicon from the home page's `<link rel="icon">` tags. It reads
+		// ICO and PNG (not SVG), and wants a square image whose side is a multiple of 48px.
 		{ rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
-		{ rel: 'icon', href: '/images/logo-mark.svg', type: 'image/svg+xml', sizes: 'any' },
+		{ rel: 'icon', href: '/icons/icon-192.png', type: 'image/png', sizes: '192x192' },
 		// iOS ignores the manifest icons and needs its own touch icon for "Add to Home Screen".
 		{ rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }
 	],
