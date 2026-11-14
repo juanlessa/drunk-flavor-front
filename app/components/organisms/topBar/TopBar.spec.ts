@@ -4,6 +4,7 @@ import { defineAbilityForUser } from '~/domain/accessControl';
 import type { AppAbility } from '~/domain/accessControl/accessControl.types';
 import type { User } from '~/domain/user/user.entity';
 import { reactive, ref, shallowRef } from 'vue';
+import { useSessionKnown } from '~/composables/auth/useSessionKnown';
 import TopBar from './TopBar.vue';
 
 const user = {
@@ -26,6 +27,7 @@ vi.stubGlobal('useNuxtApp', () => ({
 	...nuxtApp,
 	$auth: { state: authState, signout: mockSignout }
 }));
+vi.stubGlobal('useSessionKnown', useSessionKnown);
 vi.stubGlobal('useI18n', () => ({ t: (key: string) => key }));
 vi.stubGlobal('useToast', () => ({ addToast: vi.fn() }));
 vi.stubGlobal('useLocalePath', () => (path: string) => path);
@@ -148,8 +150,14 @@ describe('TopBar', () => {
 
 			expect(navs).toHaveLength(2);
 			for (const nav of navs) {
-				expect(nav.findAll('a').map((link) => link.attributes('href'))).toEqual(['/bar']);
-				expect(nav.text()).toBe('organisms.topBar.myBar');
+				expect(nav.findAll('a').map((link) => link.attributes('href'))).toEqual([
+					'/bar',
+					'/favorites'
+				]);
+				expect(nav.findAll('a').map((link) => link.text())).toEqual([
+					'organisms.topBar.myBar',
+					'organisms.topBar.favorites'
+				]);
 			}
 		}
 	);
@@ -181,6 +189,15 @@ describe('TopBar', () => {
 		expect(wrapper.find('a[href="/bar"]').exists()).toBe(false);
 	});
 
+	it('marks the favorites as the current page when they are open', () => {
+		route.path = '/favorites';
+		const wrapper = mountTopBar();
+		expect(wrapper.findAll('[aria-current="page"]').map((item) => item.text())).toEqual([
+			'organisms.topBar.favorites',
+			'organisms.topBar.favorites'
+		]);
+		expect(wrapper.find('a[href="/favorites"]').exists()).toBe(false);
+	});
 	it('marks the current page without a link in the desktop and mobile navigation', () => {
 		route.path = '/ingredients';
 		const wrapper = mountTopBar();

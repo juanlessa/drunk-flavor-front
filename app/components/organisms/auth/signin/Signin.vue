@@ -3,6 +3,19 @@
 		<AuthPageHeader
 			:title="$t('organisms.signin.title')"
 			:description="$t('organisms.signin.subtitle')" />
+		<!-- Why the person is here, when a tap on a heart sent them: the drink is saved as soon as they are in. -->
+		<div
+			v-if="isFavoriteIntent"
+			class="flex items-center gap-3 rounded-card border border-favorite/35 bg-favorite-subtle px-4 py-3 text-body-sm text-content"
+			role="status"
+			data-testid="signin-favorite-context">
+			<span
+				class="grid size-8 shrink-0 place-items-center rounded-full bg-surface text-favorite"
+				aria-hidden="true">
+				<HeartIcon filled class="size-4" />
+			</span>
+			<span>{{ $t('organisms.signin.favoriteContext') }}</span>
+		</div>
 		<!-- Google first: a single tap for most people; the divider only shows when it is there. -->
 		<ClientOnly>
 			<GoogleSignIn
@@ -26,6 +39,8 @@
 </template>
 
 <script setup lang="ts">
+import HeartIcon from '~/components/icons/HeartIcon.vue';
+import { FAVORITE_INTENT } from '~/domain/favorite/favorite.constants';
 const { $auth, $router } = useNuxtApp();
 const { t } = useI18n();
 const route = useRoute();
@@ -37,6 +52,7 @@ type Provider = 'google';
 /** Actions a page asked to resume once the visitor is signed in. */
 const POST_SIGNIN_INTENTS = ['rate', 'comment'];
 
+const isFavoriteIntent = computed(() => route.query.intent === FAVORITE_INTENT);
 const providerAvailability = ref<Record<Provider, boolean>>({ google: false });
 const hasAvailableProvider = computed(() =>
 	Object.values(providerAvailability.value).some(Boolean)

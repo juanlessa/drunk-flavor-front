@@ -103,6 +103,13 @@
 	--color-rating: var(--color-amber-500);
 	--color-rating-hover: var(--color-amber-400);
 	--color-rating-empty: var(--color-neutral-300);
+	/* A saved drink. Same family as the rating tokens: a state color that is not a status. */
+	--color-favorite: var(--color-red-600);
+	--color-favorite-hover: var(--color-red-700);
+	--color-favorite-subtle: var(--color-red-50);
+	--color-favorite-content: var(--color-red-700);
+	/* On a photo scrim, where the heart needs the lighter red in both themes. */
+	--color-favorite-on-media: var(--color-red-400);
 
 	--color-accent: var(--color-blue-700);
 	--color-accent-hover: var(--color-blue-800);

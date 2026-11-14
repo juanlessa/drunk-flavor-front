@@ -271,7 +271,7 @@
 	</Box>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, onMounted, useId } from 'vue';
+import { useId } from 'vue';
 import type {
 	AppActions,
 	AppCanParameters,
@@ -286,7 +286,10 @@ type ILink = {
 };
 
 /** Pages for everyone, signed in or not, in display order. */
-const PUBLIC_LINKS: ILink[] = [{ i18nKey: 'organisms.topBar.myBar', path: '/bar' }];
+const PUBLIC_LINKS: ILink[] = [
+	{ i18nKey: 'organisms.topBar.myBar', path: '/bar' },
+	{ i18nKey: 'organisms.topBar.favorites', path: '/favorites' }
+];
 /*
  * Management areas, in display order. Each one shows when the user passes the same check that guards
  * its page (`definePageMeta({ can })`), so a link never leads to a page that sends the user away.
@@ -346,13 +349,7 @@ const isMenuOpen = ref(false);
  * a neutral placeholder and the real state appears right after mount. Later navigations remount the
  * bar with the state known from the start, so nothing flickers.
  */
-const isSessionKnown = ref(false);
-onBeforeMount(() => {
-	isSessionKnown.value = !nuxtApp.isHydrating;
-});
-onMounted(() => {
-	isSessionKnown.value = true;
-});
+const isSessionKnown = useSessionKnown();
 
 const user = computed(() =>
 	isSessionKnown.value && $auth.state.value.isAuthenticated ? $auth.state.value.user : undefined

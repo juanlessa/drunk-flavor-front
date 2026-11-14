@@ -9,6 +9,10 @@
 			"title": "Meu bar: drinks com o que você tem",
 			"description": "Marque os ingredientes que estão em casa e veja quais drinks dá para preparar agora, ou com uma ida rápida ao mercado."
 		},
+		"favorites": {
+			"title": "Favoritos",
+			"description": "As receitas de drinks que você salvou no DrunkFlavor."
+		},
 		"drink": {
 			"recipeCategory": "Bebida",
 			"description": "Receita de {name}: {ingredients}. Ingredientes, medidas e modo de preparo.",
@@ -45,6 +49,10 @@
 		}
 	},
 	"molecules": {
+		"favoriteButton": {
+			"label": "Favoritar",
+			"ariaLabel": "Favoritar {name}"
+		},
 		"googleIdentityButton": {
 			"text": {
 				"continue_with": "Continuar com o Google",
@@ -783,12 +791,48 @@
 				"step": "Passo {number}"
 			}
 		},
+		"favorites": {
+			"backLink": "Todos os drinks",
+			"title": "Favoritos",
+			"description": "Os drinks que você salvou, do mais recente ao mais antigo. Toque no coração para remover um.",
+			"descriptionSignedOut": "Salve os drinks que você ama e encontre todos aqui, em qualquer dispositivo.",
+			"listLabel": "Seus drinks favoritos",
+			"loading": "Carregando seus favoritos...",
+			"loadMore": "Carregar mais",
+			"loadError": {
+				"title": "Não foi possível carregar seus favoritos",
+				"message": "Verifique sua conexão e tente novamente.",
+				"retry": "Tentar novamente"
+			},
+			"empty": {
+				"title": "Nenhum favorito ainda",
+				"description": "Toque no coração de qualquer drink para guardá-lo aqui.",
+				"hint": "em cada card de drink",
+				"action": "Explorar drinks"
+			},
+			"signedOut": {
+				"title": "Entre para ver seus favoritos",
+				"description": "Seus favoritos ficam salvos na sua conta, então acompanham você do celular ao notebook.",
+				"signIn": "Entrar",
+				"browse": "Ver drinks"
+			},
+			"toast": {
+				"errorTitle": "Erro",
+				"error": "Não foi possível atualizar seus favoritos. Tente novamente.",
+				"loadError": "Não foi possível carregar seus favoritos.",
+				"limitTitle": "Limite de favoritos atingido",
+				"limit": "Você pode salvar até {max} drinks. Remova um para adicionar outro.",
+				"resumedTitle": "Salvo",
+				"resumed": "O drink foi adicionado aos seus favoritos."
+			}
+		},
 		"topBar": {
 			"profile": "Perfil",
 			"categories": "Categorias",
 			"units": "Unidades",
 			"drinks": "Drinks",
 			"myBar": "Meu bar",
+			"favorites": "Favoritos",
 			"publicNav": { "label": "Explorar" },
 			"ingredients": "Ingredientes",
 			"users": "Usuários",
@@ -903,6 +947,7 @@
 		"signin": {
 			"title": "Bem-vindo de volta",
 			"subtitle": "Entre para avaliar e comentar seus drinks favoritos.",
+			"favoriteContext": "Entre para salvar este drink nos seus favoritos. Vamos adicioná-lo assim que você entrar.",
 			"divider": "ou",
 			"signupPrompt": { "message": "Não tem uma conta?", "link": "Criar conta" },
 			"error": { "title": "Erro" }
