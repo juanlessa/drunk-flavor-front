@@ -11,7 +11,22 @@
 				class="hidden tablet:inline shrink-0 whitespace-nowrap text-content-muted">
 				{{ props.label }}
 			</span>
-			<Select.Value class="min-w-0 flex-1 truncate text-left font-bold" />
+			<!--
+				The trigger is as wide as the longest option, so it does not change size with the one picked: every
+				label is laid out in the same grid cell, unseen, and the picked one is drawn over them.
+			-->
+			<span class="grid min-w-0 flex-1">
+				<span
+					v-for="option in props.options"
+					:key="option.value"
+					class="invisible col-start-1 row-start-1 h-0 overflow-hidden whitespace-nowrap font-bold"
+					aria-hidden="true"
+					data-testid="sort-select-sizer">
+					{{ option.label }}
+				</span>
+				<Select.Value
+					class="col-start-1 row-start-1 min-w-0 truncate text-left font-bold" />
+			</span>
 			<Select.Icon as-child>
 				<ChevronDownIcon class="shrink-0" />
 			</Select.Icon>

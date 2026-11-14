@@ -45,4 +45,16 @@ describe('SearchSortToolbar accessibility', () => {
 			wrapper.unmount();
 		}
 	);
+	it('has no violations with a link in the leading slot', async () => {
+		const wrapper = mount(SearchSortToolbar, {
+			props: { ...props, sort: 'rating' },
+			slots: { leading: '<a href="/bar">My bar</a>' },
+			global: {
+				components: { SortSelect, InputText, Label, ChevronDownIcon, SearchIcon, SortIcon }
+			},
+			attachTo: document.body
+		});
+		await expectNoA11yViolations(wrapper.element);
+		wrapper.unmount();
+	});
 });

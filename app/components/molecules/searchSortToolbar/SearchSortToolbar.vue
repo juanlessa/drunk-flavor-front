@@ -23,14 +23,21 @@
 						</template>
 					</InputText>
 				</div>
-				<!-- Mobile: compact, under the search, aligned right. From tablet: end of the row. -->
-				<div class="max-w-full w-fit self-end tablet:self-auto tablet:w-80 tablet:shrink-0">
-					<SortSelect
-						:id="props.sortId"
-						v-model="sort"
-						name="sort"
-						:label="props.sortLabel"
-						:options="props.sortOptions" />
+				<!--
+					Mobile: under the search, the optional `leading` content on the left and the compact sort on the
+					right. From tablet the row dissolves, so the sort sits at the end of the search row.
+				-->
+				<div class="flex items-center justify-between gap-3 tablet:contents">
+					<slot name="leading" />
+					<div
+						class="ml-auto min-w-0 max-w-full w-fit tablet:ml-0 tablet:w-80 tablet:shrink-0">
+						<SortSelect
+							:id="props.sortId"
+							v-model="sort"
+							name="sort"
+							:label="props.sortLabel"
+							:options="props.sortOptions" />
+					</div>
 				</div>
 			</div>
 		</div>

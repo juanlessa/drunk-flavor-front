@@ -24,9 +24,12 @@
 					class="hidden h-7 w-auto tablet:h-8 dark:block" />
 			</NuxtLink>
 
-			<!-- Desktop: the public pages, the management links inline, then the global controls and the account. -->
+			<!--
+				From tablet: the public pages beside the logo. From desktop: also the management links inline, then
+				the global controls and the account. The menu panel keeps the public pages only below tablet.
+			-->
 			<nav
-				class="hidden desktop:flex items-center gap-1"
+				class="hidden tablet:flex items-center gap-1"
 				:aria-label="$t('organisms.topBar.publicNav.label')">
 				<template v-for="link in PUBLIC_LINKS" :key="link.path">
 					<span
@@ -136,7 +139,7 @@
 						</div>
 
 						<nav
-							class="flex flex-col"
+							class="flex flex-col tablet:hidden"
 							:aria-label="$t('organisms.topBar.publicNav.label')">
 							<template v-for="link in PUBLIC_LINKS" :key="link.path">
 								<span

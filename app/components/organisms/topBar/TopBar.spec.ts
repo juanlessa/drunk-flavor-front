@@ -154,6 +154,22 @@ describe('TopBar', () => {
 		}
 	);
 
+	it('shows the public pages beside the logo from tablet, and in the menu only below tablet', () => {
+		const wrapper = mountTopBar();
+		const [bar, menu] = publicNavs(wrapper);
+		expect(bar?.classes()).toEqual(expect.arrayContaining(['hidden', 'tablet:flex']));
+		expect(bar?.classes()).not.toContain('desktop:flex');
+		expect(mobileMenu(wrapper).element.contains(bar?.element ?? null)).toBe(false);
+		expect(mobileMenu(wrapper).element.contains(menu?.element ?? null)).toBe(true);
+		expect(menu?.classes()).toContain('tablet:hidden');
+	});
+
+	it('keeps the management links for desktop only', () => {
+		expect(desktopNav(mountTopBar()).classes()).toEqual(
+			expect.arrayContaining(['hidden', 'desktop:flex'])
+		);
+	});
+
 	it('marks the bar as the current page when it is open', () => {
 		route.path = '/bar';
 		const wrapper = mountTopBar();

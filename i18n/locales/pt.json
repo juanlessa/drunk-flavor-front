@@ -350,6 +350,7 @@
 			"searchLabel": "Buscar drinks",
 			"searchPlaceholder": "Buscar drinks por nome",
 			"sortLabel": "Ordenar por",
+			"myBarLink": "Meu bar",
 			"sortOptions": {
 				"rating": "Mais bem avaliados",
 				"name": "Nome (A–Z)",

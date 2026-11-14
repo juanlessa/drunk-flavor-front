@@ -33,4 +33,23 @@ describe('SortSelect', () => {
 		expect(wrapper.find(`[id="${labelId}"]`).text()).toBe('Sort by');
 		wrapper.unmount();
 	});
+	it('reserves the room of every option, hidden from sight and from assistive technology', () => {
+		const wrapper = mountSelect('rating');
+		const sizers = wrapper.findAll('[data-testid="sort-select-sizer"]');
+		expect(sizers.map((sizer) => sizer.text())).toEqual(['Best rated', 'Name (A–Z)']);
+		for (const sizer of sizers) {
+			expect(sizer.attributes('aria-hidden')).toBe('true');
+			expect(sizer.classes()).toContain('invisible');
+		}
+		wrapper.unmount();
+	});
+	it('reserves the same room whichever option is picked', () => {
+		const first = mountSelect('rating');
+		const second = mountSelect('name');
+		const labelsOf = (wrapper: ReturnType<typeof mountSelect>) =>
+			wrapper.findAll('[data-testid="sort-select-sizer"]').map((sizer) => sizer.text());
+		expect(labelsOf(first)).toEqual(labelsOf(second));
+		first.unmount();
+		second.unmount();
+	});
 });
