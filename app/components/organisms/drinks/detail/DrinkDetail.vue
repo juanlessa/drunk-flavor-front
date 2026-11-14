@@ -24,6 +24,11 @@
 					alt=""
 					class="block w-full h-64 tablet:h-72 object-cover" />
 				<div class="absolute inset-0 bg-media-scrim" aria-hidden="true"></div>
+				<FavoriteButton
+					:drink-id="props.drink.id"
+					:drink-name="name"
+					variant="media"
+					class="top-4 right-4 tablet:top-5 tablet:right-5" />
 				<div
 					class="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-5 tablet:p-8 text-white">
 					<!-- Plain h1: the Heading atom's content color would fight the white text on the photo. -->
@@ -64,6 +69,11 @@
 						<span aria-hidden="true">{{ ratingSummaryText }}</span>
 					</a>
 				</div>
+				<FavoriteButton
+					:drink-id="props.drink.id"
+					:drink-name="name"
+					variant="pill"
+					class="ml-auto shrink-0 self-start" />
 			</header>
 		</div>
 

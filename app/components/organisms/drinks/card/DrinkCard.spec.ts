@@ -58,6 +58,12 @@ const mountCard = (props: Record<string, unknown> = {}) =>
 				NuxtLink: { props: ['to'], template: '<a :href="to"><slot /></a>' },
 				// Renders the fallback slot, as the real one does for a drink without a picture.
 				ImageThumbnail: { props: ['src'], template: '<div><slot name="fallback" /></div>' },
+				// The heart has its own spec; here it only has to receive the drink.
+				FavoriteButton: {
+					props: ['drinkId', 'drinkName'],
+					template:
+						'<button data-testid="favorite" :data-id="drinkId" :data-name="drinkName" />'
+				},
 				StarIcon: true,
 				HurricaneGlassIcon: true,
 				DrinkPreview: DrinkPreviewStub
@@ -79,6 +85,11 @@ describe('DrinkCard', () => {
 		);
 	});
 
+	it('puts the heart of the drink over the thumbnail, named after the drink', () => {
+		const favorite = mountCard().find('[data-testid="favorite"]');
+		expect(favorite.attributes('data-id')).toBe('negroni');
+		expect(favorite.attributes('data-name')).toBe('Negroni');
+	});
 	it('shows the ingredient count and no match status outside a match', () => {
 		const wrapper = mountCard();
 

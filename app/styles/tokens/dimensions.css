@@ -25,6 +25,31 @@
 	}
 }
 
+/*
+ * Width of the content of a page, as the cards of the home take it: from tablet up the cards are 45% (two per row)
+ * or 30% (three per row) of the row, so together with their gaps they fill 90% of it plus the gaps, centered. Every
+ * list and toolbar takes this same width, so the pages line up with each other and not only with the home.
+ *
+ * The row is the page width up to the desktop breakpoint (the same cap the rows of the grid have), which is why the
+ * percentage goes through `min()`: it gives the same width whether it sits in the capped row or in the wider
+ * wrapper around it.
+ */
+:root {
+	--size-page-content: 100%;
+}
+@media (width >= theme(--breakpoint-tablet)) {
+	:root {
+		--size-page-content: calc(min(100%, var(--breakpoint-desktop)) * 0.9 + 1rem);
+	}
+}
+@media (width >= theme(--breakpoint-desktop)) {
+	:root {
+		--size-page-content: calc(min(100%, var(--breakpoint-desktop)) * 0.9 + 2rem);
+	}
+}
+@utility w-page-content {
+	width: var(--size-page-content);
+}
 /* Sticks 1rem below the top bar, for side panels that stay in view while the page scrolls. */
 @utility top-below-top-bar {
 	top: calc(var(--size-top-bar-block) + 1rem);

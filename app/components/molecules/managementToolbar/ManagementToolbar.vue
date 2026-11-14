@@ -1,7 +1,7 @@
 <template>
-	<!-- Same horizontal insets as the grid rows, so the toolbar lines up with the cards. -->
+	<!-- Same insets and width as the grid rows (`w-page-content`), so the toolbar lines up with the cards. -->
 	<div class="w-full px-4 py-4">
-		<div class="max-w-screen-desktop mx-auto flex items-center gap-3">
+		<div class="mx-auto flex w-page-content items-center gap-3">
 			<div class="flex-1 tablet:max-w-sm">
 				<Label :for="props.searchId" class="sr-only">{{ props.searchLabel }}</Label>
 				<InputText

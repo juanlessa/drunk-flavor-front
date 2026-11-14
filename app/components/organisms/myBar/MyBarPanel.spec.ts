@@ -9,7 +9,7 @@ const gin = buildIngredient('gin', 'Gin');
 const lime = buildIngredient('lime', 'Lime');
 const mint = buildIngredient('mint', 'Mint');
 const mockOptions = ref([gin, lime, mint]);
-const mockUseIngredientSearch = vi.fn((_scope?: string) => ({
+const mockUseIngredientSearch = vi.fn((_scope?: string, _options?: { inUse?: boolean }) => ({
 	options: computed(() => mockOptions.value),
 	searchTerm: ref(''),
 	loading: ref(false),
@@ -64,7 +64,11 @@ describe('MyBarPanel', () => {
 	it('searches the ingredients on its own, apart from the other ingredient searches', () => {
 		mountPanel();
 
-		expect(mockUseIngredientSearch).toHaveBeenCalledWith('myBar');
+		expect(mockUseIngredientSearch.mock.calls[0]?.[0]).toBe('myBar');
+	});
+	it('offers only the ingredients that some drink uses', () => {
+		mountPanel();
+		expect(mockUseIngredientSearch).toHaveBeenCalledWith('myBar', { inUse: true });
 	});
 
 	it('leaves the ingredients already in the bar out of the search', () => {

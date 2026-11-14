@@ -5,7 +5,7 @@
 			The logo keeps about half of that height.
 		-->
 		<header
-			class="h-14 tablet:h-16 w-full max-w-screen-desktop px-4 tablet:px-6 flex items-center gap-4 desktop:gap-8">
+			class="h-14 tablet:h-16 w-full max-w-screen-desktop px-4 tablet:px-6 flex items-center gap-4 desktop:gap-6">
 			<NuxtLink
 				:to="localePath('/')"
 				class="shrink-0 rounded-option focus-visible:outline-hidden focus-visible:shadow-focus-ring">
@@ -24,9 +24,12 @@
 					class="hidden h-7 w-auto tablet:h-8 dark:block" />
 			</NuxtLink>
 
-			<!-- Desktop: the public pages, the management links inline, then the global controls and the account. -->
+			<!--
+				From tablet: the public pages beside the logo. From desktop: also the management links inline, then
+				the global controls and the account. The menu panel keeps the public pages only below tablet.
+			-->
 			<nav
-				class="hidden desktop:flex items-center gap-1"
+				class="hidden tablet:flex items-center gap-1"
 				:aria-label="$t('organisms.topBar.publicNav.label')">
 				<template v-for="link in PUBLIC_LINKS" :key="link.path">
 					<span
@@ -136,7 +139,7 @@
 						</div>
 
 						<nav
-							class="flex flex-col"
+							class="flex flex-col tablet:hidden"
 							:aria-label="$t('organisms.topBar.publicNav.label')">
 							<template v-for="link in PUBLIC_LINKS" :key="link.path">
 								<span
@@ -268,7 +271,7 @@
 	</Box>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, onMounted, useId } from 'vue';
+import { useId } from 'vue';
 import type {
 	AppActions,
 	AppCanParameters,
@@ -283,7 +286,10 @@ type ILink = {
 };
 
 /** Pages for everyone, signed in or not, in display order. */
-const PUBLIC_LINKS: ILink[] = [{ i18nKey: 'organisms.topBar.myBar', path: '/bar' }];
+const PUBLIC_LINKS: ILink[] = [
+	{ i18nKey: 'organisms.topBar.myBar', path: '/bar' },
+	{ i18nKey: 'organisms.topBar.favorites', path: '/favorites' }
+];
 /*
  * Management areas, in display order. Each one shows when the user passes the same check that guards
  * its page (`definePageMeta({ can })`), so a link never leads to a page that sends the user away.
@@ -343,13 +349,7 @@ const isMenuOpen = ref(false);
  * a neutral placeholder and the real state appears right after mount. Later navigations remount the
  * bar with the state known from the start, so nothing flickers.
  */
-const isSessionKnown = ref(false);
-onBeforeMount(() => {
-	isSessionKnown.value = !nuxtApp.isHydrating;
-});
-onMounted(() => {
-	isSessionKnown.value = true;
-});
+const isSessionKnown = useSessionKnown();
 
 const user = computed(() =>
 	isSessionKnown.value && $auth.state.value.isAuthenticated ? $auth.state.value.user : undefined

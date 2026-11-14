@@ -2,6 +2,7 @@ import type { IngredientSearchState } from '~/types/ingredient.types';
 import type { InputSelectOption } from '~/components/atoms/inputSelect/InputSelect.types';
 import { watchDebounced } from '@vueuse/core';
 import { INTERACTION_TIMING_MS } from '~/constants/durations.constants';
+import type { ListIngredientsOptions } from '~/domain/ingredient/ingredient.dtos';
 import type { Language } from '~/domain/shared/translations.types';
 import { buildTranslatedNameQuery } from '~/helpers/query.helpers';
 
@@ -25,8 +26,14 @@ const initState = (locale: Language): IngredientSearchState => ({
  *
  * `scope` keeps the state and the request of one search apart from another, so two lists on the same page
  * (the ingredients and the garnishes of a drink) can each search on their own.
+ *
+ * Every ingredient is searched unless `listOptions.inUse` is set, which narrows the search to the ingredients that
+ * at least one drink uses (the bar, where an ingredient no drink uses would only lead to an empty result).
  */
-export const useIngredientSearch = (scope = 'default') => {
+export const useIngredientSearch = (
+	scope = 'default',
+	listOptions: ListIngredientsOptions = {}
+) => {
 	const { $api } = useNuxtApp();
 	const { addToast } = useToast();
 	const { t, locale } = useI18n();
@@ -36,7 +43,7 @@ export const useIngredientSearch = (scope = 'default') => {
 
 	const { data, error, status } = useAsyncData(
 		`ingredientMultiselectSearch:${scope}`,
-		() => $api.ingredients.list(state.value.filter.query),
+		() => $api.ingredients.list(state.value.filter.query, listOptions),
 		{
 			server: false,
 			lazy: true,

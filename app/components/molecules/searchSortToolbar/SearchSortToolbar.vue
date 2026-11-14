@@ -2,13 +2,9 @@
 	<!-- Same insets and maximum width as a grid row, so the toolbar is measured from the same edges as the cards. -->
 	<div class="w-full px-4 py-4">
 		<div class="w-full max-w-screen-desktop mx-auto">
-			<!--
-				The cards take 45% (tablet) or 30% (desktop) of the row each, centered, so the block they
-				form is narrower than the row. The toolbar takes the width of that block (columns x share
-				+ gaps) to start and end where the cards do.
-			-->
+			<!-- Takes the width of the page content (`w-page-content`), so it starts and ends where the cards do. -->
 			<div
-				class="mx-auto flex flex-col gap-3 tablet:flex-row tablet:items-center tablet:w-[calc(90%+1rem)] desktop:w-[calc(90%+2rem)]">
+				class="mx-auto flex w-page-content flex-col gap-3 tablet:flex-row tablet:items-center">
 				<div class="w-full tablet:flex-1 tablet:min-w-0">
 					<Label :for="props.searchId" class="sr-only">{{ props.searchLabel }}</Label>
 					<InputText
@@ -23,14 +19,21 @@
 						</template>
 					</InputText>
 				</div>
-				<!-- Mobile: compact, under the search, aligned right. From tablet: end of the row. -->
-				<div class="max-w-full w-fit self-end tablet:self-auto tablet:w-80 tablet:shrink-0">
-					<SortSelect
-						:id="props.sortId"
-						v-model="sort"
-						name="sort"
-						:label="props.sortLabel"
-						:options="props.sortOptions" />
+				<!--
+					Mobile: under the search, the optional `leading` content on the left and the compact sort on the
+					right. From tablet the row dissolves, so the sort sits at the end of the search row.
+				-->
+				<div class="flex items-center justify-between gap-3 tablet:contents">
+					<slot name="leading" />
+					<div
+						class="ml-auto min-w-0 max-w-full w-fit tablet:ml-0 tablet:w-80 tablet:shrink-0">
+						<SortSelect
+							:id="props.sortId"
+							v-model="sort"
+							name="sort"
+							:label="props.sortLabel"
+							:options="props.sortOptions" />
+					</div>
 				</div>
 			</div>
 		</div>

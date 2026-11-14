@@ -26,6 +26,8 @@ export const permissions: Record<Role, PermissionsByRole> = {
 		}
 		can(['create', 'list', 'get'], 'Comment');
 		can(['create', 'list', 'get'], 'Rating');
+		// A favorite is always the person's own (the routes are under `/me`), so there is no record to check.
+		can(['create', 'list', 'delete'], 'Favorite');
 		can(['update', 'delete'], 'Comment', { userId: { $eq: user.id } });
 		can(['update', 'delete'], 'Rating', { userId: { $eq: user.id } });
 	},
@@ -36,6 +38,7 @@ export const permissions: Record<Role, PermissionsByRole> = {
 		can(['list', 'get'], 'Drink');
 		can(['create', 'list', 'get'], 'Comment');
 		can(['create', 'list', 'get'], 'Rating');
+		can(['create', 'list', 'delete'], 'Favorite');
 		can(['update', 'delete'], 'Comment', { userId: { $eq: user.id } });
 		can(['update', 'delete'], 'Rating', { userId: { $eq: user.id } });
 	}

@@ -9,6 +9,10 @@
 			"title": "My bar: drinks you can make",
 			"description": "Add the ingredients you have at home and see which cocktails you can make now, or with a quick trip to the store."
 		},
+		"favorites": {
+			"title": "Favorites",
+			"description": "The cocktail recipes you saved on DrunkFlavor."
+		},
 		"drink": {
 			"recipeCategory": "Drink",
 			"description": "{name} recipe: {ingredients}. Ingredients, measures and method.",
@@ -45,6 +49,10 @@
 		}
 	},
 	"molecules": {
+		"favoriteButton": {
+			"label": "Favorite",
+			"ariaLabel": "Favorite {name}"
+		},
 		"googleIdentityButton": {
 			"text": {
 				"continue_with": "Continue with Google",
@@ -347,6 +355,7 @@
 			"searchLabel": "Search drinks",
 			"searchPlaceholder": "Search drinks by name",
 			"sortLabel": "Sort by",
+			"myBarLink": "My bar",
 			"sortOptions": {
 				"rating": "Best rated",
 				"name": "Name (A–Z)",
@@ -779,12 +788,48 @@
 				"step": "Step {number}"
 			}
 		},
+		"favorites": {
+			"backLink": "All drinks",
+			"title": "Favorites",
+			"description": "The drinks you saved, newest first. Tap the heart to remove one.",
+			"descriptionSignedOut": "Save the drinks you love and find them here on any device.",
+			"listLabel": "Your favorite drinks",
+			"loading": "Loading your favorites...",
+			"loadMore": "Load more",
+			"loadError": {
+				"title": "We couldn't load your favorites",
+				"message": "Check your connection and try again.",
+				"retry": "Try again"
+			},
+			"empty": {
+				"title": "No favorites yet",
+				"description": "Tap the heart on any drink to keep it here.",
+				"hint": "on every drink card",
+				"action": "Explore drinks"
+			},
+			"signedOut": {
+				"title": "Sign in to see your favorites",
+				"description": "Your favorites are saved to your account, so they follow you from your phone to your laptop.",
+				"signIn": "Sign in",
+				"browse": "Browse drinks"
+			},
+			"toast": {
+				"errorTitle": "Error",
+				"error": "Unable to update your favorites. Try again.",
+				"loadError": "Unable to load your favorites.",
+				"limitTitle": "Favorites limit reached",
+				"limit": "You can save up to {max} drinks. Remove one to add another.",
+				"resumedTitle": "Saved",
+				"resumed": "The drink was added to your favorites."
+			}
+		},
 		"topBar": {
 			"profile": "Profile",
 			"categories": "Categories",
 			"units": "Units",
 			"drinks": "Drinks",
 			"myBar": "My bar",
+			"favorites": "Favorites",
 			"publicNav": { "label": "Explore" },
 			"ingredients": "Ingredients",
 			"users": "Users",
@@ -899,6 +944,7 @@
 		"signin": {
 			"title": "Welcome back",
 			"subtitle": "Sign in to rate and comment on your favorite drinks.",
+			"favoriteContext": "Sign in to save this drink to your favorites. We will add it as soon as you are in.",
 			"divider": "or",
 			"signupPrompt": { "message": "Don't have an account?", "link": "Sign up" },
 			"error": { "title": "Error" }

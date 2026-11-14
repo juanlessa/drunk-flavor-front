@@ -98,4 +98,38 @@ describe('SearchSortToolbar', () => {
 
 		expect((wrapper.find('#drinks-search').element as HTMLInputElement).value).toBe('');
 	});
+	describe('leading slot', () => {
+		const mountWithLeading = () =>
+			mount(SearchSortToolbar, {
+				props: {
+					searchId: 'drinks-search',
+					searchLabel: 'Search drinks',
+					sortId: 'drinks-sort',
+					sortLabel: 'Sort by',
+					sortOptions,
+					sort: 'rating'
+				},
+				slots: { leading: '<a href="/bar" data-testid="leading">My bar</a>' },
+				global: {
+					stubs: {
+						Label: true,
+						InputText: true,
+						SortSelect: { template: '<div data-testid="sort" />' },
+						SearchIcon: true
+					}
+				}
+			});
+		it('shows the leading content before the sort, in the same row', () => {
+			const wrapper = mountWithLeading();
+			const row = wrapper.get('[data-testid="leading"]').element.parentElement;
+			expect(row?.contains(wrapper.get('[data-testid="sort"]').element)).toBe(true);
+			expect(row?.firstElementChild).toBe(wrapper.get('[data-testid="leading"]').element);
+		});
+		it('keeps the sort alone in the row, aligned right, when there is no leading content', () => {
+			const wrapper = mountToolbar();
+			const sortBox = wrapper.get('#drinks-sort').element.closest('.ml-auto');
+			expect(sortBox).not.toBeNull();
+			expect(wrapper.find('[data-testid="leading"]').exists()).toBe(false);
+		});
+	});
 });

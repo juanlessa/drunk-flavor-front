@@ -41,6 +41,8 @@ useHead(
 	{ mode: 'server' }
 );
 
+// Loads the favorites with the session and saves the drink a signed-out visitor tapped before signing in.
+useFavoritesSync();
 const { t } = useI18n();
 const siteUrl = useSiteConfig().url;
 

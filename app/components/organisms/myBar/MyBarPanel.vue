@@ -119,7 +119,9 @@ const searchId = useId();
 const modeId = useId();
 const announcement = ref('');
 
-const { options, searchTerm, loading, loadNextPage } = useIngredientSearch('myBar');
+const { options, searchTerm, loading, loadNextPage } = useIngredientSearch('myBar', {
+	inUse: true
+});
 
 // The search only knows what it fetched; the ingredients already in the bar are left out here.
 const searchOptions = computed<InputSelectOption[]>(() =>

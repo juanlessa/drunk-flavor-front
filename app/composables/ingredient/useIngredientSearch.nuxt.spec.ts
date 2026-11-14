@@ -53,4 +53,23 @@ describe('useIngredientSearch', () => {
 
 		expect(requests.at(-1)?.sort).toMatch(/translations\.\w+\.name/);
 	});
+	describe('which ingredients are searched', () => {
+		const searchRequest = async (inUseSearch: ReturnType<typeof useIngredientSearch>) => {
+			requests.length = 0;
+			inUseSearch.searchTerm.value = 'gin';
+			await vi.waitFor(
+				() => expect(requests.at(-1)?.search).toBe(JSON.stringify({ name: 'gin' })),
+				{ timeout: 2000 }
+			);
+			return requests.at(-1);
+		};
+		it('asks only for the ingredients in use when it is set to', async () => {
+			const request = await searchRequest(useIngredientSearch('inUse', { inUse: true }));
+			expect(request?.inUse).toBe('true');
+		});
+		it('asks for every ingredient by default', async () => {
+			const request = await searchRequest(useIngredientSearch('everyIngredient'));
+			expect(request).not.toHaveProperty('inUse');
+		});
+	});
 });

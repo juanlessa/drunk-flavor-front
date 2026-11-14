@@ -11,7 +11,15 @@ export type AppActions =
 	| 'delete'
 	| 'moderate';
 export type AppSubjects =
-	'User' | 'Category' | 'Unit' | 'Ingredient' | 'Drink' | 'Comment' | 'Rating' | 'all';
+	| 'User'
+	| 'Category'
+	| 'Unit'
+	| 'Ingredient'
+	| 'Drink'
+	| 'Comment'
+	| 'Rating'
+	| 'Favorite'
+	| 'all';
 
 export type CommentSubject = { __typename: 'Comment'; userId: string };
 export type RatingSubject = { __typename: 'Rating'; userId: string };

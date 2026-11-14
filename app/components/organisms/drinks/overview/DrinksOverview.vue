@@ -9,7 +9,17 @@
 		:search-label="$t('organisms.drinksOverview.searchLabel')"
 		:search-placeholder="$t('organisms.drinksOverview.searchPlaceholder')"
 		:sort-label="$t('organisms.drinksOverview.sortLabel')"
-		:sort-options="sortOptions" />
+		:sort-options="sortOptions">
+		<!-- Below tablet the top bar has no room for the pages, so the bar is one tap away from here. -->
+		<template #leading>
+			<NuxtLink
+				:to="localePath('/bar')"
+				class="tablet:hidden inline-flex shrink-0 items-center gap-2 rounded-control border border-stroke bg-surface px-3 py-2 text-body font-bold text-accent-content control-border-width transition-colors duration-short hover:bg-surface-hover focus-visible:outline-hidden focus-visible:shadow-focus-ring">
+				<HurricaneGlassIcon class="size-4 shrink-0" aria-hidden="true" />
+				{{ $t('organisms.drinksOverview.myBarLink') }}
+			</NuxtLink>
+		</template>
+	</SearchSortToolbar>
 	<!-- The API gives no total, so there is no count: the list only says when it has nothing to show. -->
 	<Text v-if="isEmpty" role="status" class="px-4 py-8 text-center text-content-muted">
 		{{
@@ -94,6 +104,7 @@ import {
 import { drinkListSorts } from '~/domain/drink/drink.constants';
 
 const { t } = useI18n();
+const localePath = useLocalePath();
 const { overviewState, searchTerm, sort, isSearching, isEmpty, loadNextPage } =
 	await useDrinksOverview();
 

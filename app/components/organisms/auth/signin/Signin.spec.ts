@@ -80,6 +80,20 @@ describe('Signin', () => {
 		expect(mockRouterPush).toHaveBeenCalledWith('/');
 	});
 
+	it('explains why the person is here when a tap on a heart sent them', () => {
+		expect(mountSignin().find('[data-testid="signin-favorite-context"]').exists()).toBe(false);
+		mockRoute.query = { intent: 'favorite' };
+		expect(mountSignin().find('[data-testid="signin-favorite-context"]').exists()).toBe(true);
+		mockRoute.query = {};
+	});
+	it('comes back to the page of the heart, with the drink to save, after signing in', async () => {
+		mockRoute.query = { redirect: '/drinks/abc?favorite=drink-1', intent: 'favorite' };
+		const wrapper = mountSignin();
+		await wrapper.findComponent(CredentialsSignInStub).vm.$emit('success');
+		await flushPromises();
+		expect(mockRouterPush).toHaveBeenCalledWith('/drinks/abc?favorite=drink-1');
+		mockRoute.query = {};
+	});
 	it('shows the error message emitted by a sign-in method', async () => {
 		const wrapper = mountSignin();
 
