@@ -28,3 +28,11 @@ export type UpdateIngredient = Omit<CreateIngredient, 'translations' | 'brand'> 
 	/** Omitted keeps the current brand; `null` removes it. */
 	brand?: string | null;
 };
+
+export type ListIngredientsOptions = {
+	/**
+	 * Only the ingredients that at least one drink uses, as a required or an optional ingredient (a garnish does not
+	 * count). The search, sort and paging then apply to those. Without it every ingredient is listed.
+	 */
+	inUse?: boolean;
+};

@@ -18,7 +18,11 @@ export type DrinkListQueryInput = {
  * `ratingScore` (the average weighed by how many ratings back it), `createdAt` and the translated name.
  * The keys of a sort keep the order they are sent in: the first one sorts, the next ones break the ties.
  * The search on `name` looks in the names of every language, ignoring accents and case, and takes up to
- * `DRINK_SEARCH_MAX_LENGTH` characters.
+ * `DRINK_SEARCH_MAX_LENGTH` characters. Every word of the term must start a word of the drink, and the drinks are
+ * ranked by where the words are found: 1) the name of the drink, 2) the name of its ingredients (garnishes are not
+ * searched), 3) the name of the category of its ingredients. A drink ranks as its worst word, and the sort only
+ * breaks the ties between the drinks of the same rank, so a searched list shows the name matches first whatever
+ * the sort picked. Without a term the list follows the sort alone.
  */
 export const buildDrinkListQuery = ({
 	term,

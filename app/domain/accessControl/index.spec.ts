@@ -138,6 +138,20 @@ describe('defineAbilityForUser', () => {
 		expect(ability.can('delete', otherComment)).toBe(false);
 	});
 
+	it.each(['member', 'partner', 'admin', 'owner'] as const)(
+		'lets %s add, list and remove their favorites',
+		(role) => {
+			const ability = defineAbilityForUser(buildProfile({ role }));
+			expect(ability.can('create', 'Favorite')).toBe(true);
+			expect(ability.can('list', 'Favorite')).toBe(true);
+			expect(ability.can('delete', 'Favorite')).toBe(true);
+		}
+	);
+	it('grants no favorites to an anonymous (undefined) user', () => {
+		const ability = defineAbilityForUser(undefined);
+		expect(ability.can('create', 'Favorite')).toBe(false);
+		expect(ability.can('list', 'Favorite')).toBe(false);
+	});
 	it('grants no abilities for an anonymous (undefined) user', () => {
 		const ability = defineAbilityForUser(undefined);
 
