@@ -5,7 +5,7 @@
 			The logo keeps about half of that height.
 		-->
 		<header
-			class="h-14 tablet:h-16 w-full max-w-screen-desktop px-4 tablet:px-6 flex items-center gap-4 desktop:gap-8">
+			class="h-14 tablet:h-16 w-full max-w-screen-desktop px-4 tablet:px-6 flex items-center gap-4 desktop:gap-6">
 			<NuxtLink
 				:to="localePath('/')"
 				class="shrink-0 rounded-option focus-visible:outline-hidden focus-visible:shadow-focus-ring">

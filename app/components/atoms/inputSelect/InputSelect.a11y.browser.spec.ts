@@ -1,4 +1,4 @@
-import { afterAll, describe, it } from 'vitest';
+import { afterAll, describe, expect, it } from 'vitest';
 import { THEMES, applyTheme, auditInBrowser, clickElement } from '~/test/browserAxe';
 import InputSelect from './InputSelect.vue';
 
@@ -9,6 +9,10 @@ const options = [
 	{ label: 'Rum', value: 'rum' }
 ];
 
+const manyOptions = Array.from({ length: 20 }, (_, index) => ({
+	label: `Drink ${index + 1}`,
+	value: `drink-${index + 1}`
+}));
 describe.each(THEMES)('InputSelect accessibility in the %s theme', (theme) => {
 	it.each<Record<string, unknown>>([{}, { modelValue: 'rum' }, { hasError: true }])(
 		'has no violations when closed with props %o',
@@ -32,6 +36,37 @@ describe.each(THEMES)('InputSelect accessibility in the %s theme', (theme) => {
 			expectPresent: '[role="option"]',
 			disableRules: ['aria-hidden-focus'],
 			prepare: () => clickElement('button[role="combobox"]')
+		});
+	});
+	it('has no violations when open with a list long enough to scroll', async () => {
+		await auditInBrowser(InputSelect, theme, {
+			props: { options: manyOptions, placeholder: 'Select one' },
+			label: true,
+			root: 'body',
+			expectPresent: '[role="option"]',
+			disableRules: ['aria-hidden-focus'],
+			prepare: () => clickElement('button[role="combobox"]')
+		});
+	});
+	// The same limit as InputSelectSearchable: the list stops growing and scrolls, instead of filling the screen.
+	it('limits the height of a long list and scrolls it', async () => {
+		await auditInBrowser(InputSelect, theme, {
+			props: { options: manyOptions, placeholder: 'Select one' },
+			label: true,
+			root: 'body',
+			expectPresent: '[role="option"]',
+			disableRules: ['aria-hidden-focus'],
+			prepare: async () => {
+				await clickElement('button[role="combobox"]');
+				await expect.poll(() => document.querySelector('[role="option"]')).not.toBeNull();
+				const group = document.querySelector('[role="option"]')!.parentElement!;
+				expect(group.scrollHeight).toBeGreaterThan(group.clientHeight);
+				// 7rem, as in the searchable select.
+				expect(group.clientHeight).toBeLessThanOrEqual(
+					parseFloat(getComputedStyle(document.documentElement).fontSize) * 7
+				);
+				expect(getComputedStyle(group).overflowY).toBe('auto');
+			}
 		});
 	});
 });

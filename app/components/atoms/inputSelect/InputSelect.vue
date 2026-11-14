@@ -21,7 +21,8 @@
 				:side-offset="FLOATING_POSITION_PX.selectSideOffset"
 				position="popper">
 				<Select.Viewport class="p-1">
-					<Select.Group>
+					<!-- Same height limit as InputSelectSearchable: a long list scrolls instead of growing. -->
+					<Select.Group class="max-h-28 overflow-y-auto">
 						<Select.Item
 							v-for="(option, index) in props.options"
 							:key="index"
