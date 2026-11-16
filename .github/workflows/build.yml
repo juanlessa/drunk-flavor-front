@@ -1,0 +1,36 @@
+name: build flow
+on:
+    pull_request:
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+permissions:
+    contents: read
+jobs:
+    build:
+        name: production build
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        # The build otherwise only runs in the deploy workflow after merging into main.
+        # Run it on release PRs (into main) and on Renovate PRs, where dependency bumps can break it.
+        # Skipped jobs report success, so this is safe for required checks.
+        if: ${{ github.base_ref == 'main' || startsWith(github.head_ref, 'renovate/') }}
+        env:
+            NODE_ENV: production
+            NUXT_PUBLIC_API_BASE: ${{ vars.NUXT_PUBLIC_API_BASE }}
+            NUXT_PUBLIC_IMAGE_HOST: ${{ vars.NUXT_PUBLIC_IMAGE_HOST }}
+            NUXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ vars.NUXT_PUBLIC_GOOGLE_CLIENT_ID }}
+            NUXT_PUBLIC_SITE_URL: ${{ vars.NUXT_PUBLIC_SITE_URL }}
+        steps:
+            - name: Git checkout
+              uses: actions/checkout@v7
+            - name: Use Node.js from .nvmrc
+              uses: actions/setup-node@v7
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: npm
+            # NODE_ENV=production makes npm skip devDependencies, but the build tooling lives there.
+            - name: Install dependencies
+              run: npm ci --include=dev
+            - name: Build
+              run: npm run build

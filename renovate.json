@@ -2,5 +2,18 @@
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["config:recommended"],
 	"baseBranches": ["develop"],
-	"dependencyDashboard": true
+	"dependencyDashboard": true,
+	"lockFileMaintenance": {
+		"enabled": true,
+		"automerge": true
+	},
+	"packageRules": [
+		{
+			"description": "Group non-major devDependencies and automerge them once required checks pass",
+			"matchDepTypes": ["devDependencies"],
+			"matchUpdateTypes": ["minor", "patch"],
+			"groupName": "dev dependencies (non-major)",
+			"automerge": true
+		}
+	]
 }
