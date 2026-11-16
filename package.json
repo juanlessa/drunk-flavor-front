@@ -76,7 +76,7 @@
 		"@vueuse/core": "15.0.0",
 		"@vueuse/nuxt": "15.0.0",
 		"axe-core": "4.14.0",
-		"eslint": "10.14.0",
+		"eslint": "10.15.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-prettier": "5.5.7",
 		"happy-dom": "21.0.4",
