@@ -50,7 +50,7 @@ jobs:
             # Failure screenshots written by Vitest Browser Mode, to help diagnose contrast and open-state findings.
             - name: Upload failure screenshots
               if: ${{ !cancelled() }}
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: a11y-browser-screenshots
                   path: .vitest/attachments/
