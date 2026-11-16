@@ -70,8 +70,8 @@
 		"@types/sortablejs": "1.15.9",
 		"@vite-pwa/assets-generator": "1.0.4",
 		"@vite-pwa/nuxt": "1.1.1",
-		"@vitest/browser-playwright": "5.0.5",
-		"@vitest/coverage-v8": "5.0.5",
+		"@vitest/browser-playwright": "5.1.0",
+		"@vitest/coverage-v8": "5.1.0",
 		"@vue/test-utils": "2.6.0",
 		"@vueuse/core": "15.0.0",
 		"@vueuse/nuxt": "15.0.0",
@@ -91,7 +91,7 @@
 		"pretty-quick": "4.2.2",
 		"tailwindcss": "4.3.3",
 		"typescript": "6.0.3",
-		"vitest": "5.0.5",
+		"vitest": "5.1.0",
 		"vue-tsc": "3.3.14"
 	}
 }
