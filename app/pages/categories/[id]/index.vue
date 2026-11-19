@@ -10,5 +10,5 @@ definePageMeta({
 });
 
 const route = useRoute('categories-id');
-const categoryId = route.params.id;
+const categoryId = String(route.params.id);
 </script>

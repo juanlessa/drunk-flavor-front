@@ -10,7 +10,8 @@
 		"@intlify/shared": "11.4.23",
 		"@intlify/core-base": "11.4.20",
 		"@intlify/message-compiler": "11.4.23",
-		"glob": "14.0.6"
+		"glob": "14.0.6",
+		"vite": "8.3.8"
 	},
 	"scripts": {
 		"build": "nuxt build",
@@ -45,7 +46,7 @@
 		"@fontsource/roboto": "5.3.0",
 		"@vueuse/integrations": "15.0.0",
 		"nanoid": "6.0.2",
-		"nuxt": "4.4.8",
+		"nuxt": "4.6.4",
 		"radix-vue": "1.9.17",
 		"sortablejs": "1.15.7",
 		"tailwind-merge": "3.7.0",

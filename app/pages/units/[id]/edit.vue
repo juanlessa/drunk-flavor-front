@@ -11,5 +11,5 @@ definePageMeta({
 });
 
 const route = useRoute('units-id-edit');
-const unitId = route.params.id;
+const unitId = String(route.params.id);
 </script>

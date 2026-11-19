@@ -26,8 +26,8 @@ useHead(() => ({
 // Icons and manifest never change, so they are rendered on the server only. nuxt-security adds a
 // nonce to every server-rendered <link>; a client-side copy has none, does not match it during
 // hydration and ends up in the page a second time.
-useHead(
-	{
+if (import.meta.server) {
+	useHead({
 		link: [
 			// Google Search shows the favicon from the home page's `<link rel="icon">` tags. It reads
 			// ICO and PNG (not SVG), and wants a square image whose side is a multiple of 48px.
@@ -37,9 +37,8 @@ useHead(
 			{ rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
 			{ rel: 'manifest', href: '/manifest.webmanifest' }
 		]
-	},
-	{ mode: 'server' }
-);
+	});
+}
 
 // Loads the favorites with the session and saves the drink a signed-out visitor tapped before signing in.
 useFavoritesSync();

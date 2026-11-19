@@ -1,12 +1,12 @@
-import { useFetch } from '#app';
+import { useFetch, type UseFetchOptions } from '#app';
 
-type useFetchType = typeof useFetch;
+type UseFetch = typeof useFetch;
 
-export const useAPIFetch: useFetchType = (path, options = {}) => {
+/** `useFetch` bound to the API origin, sending the session cookie. */
+export const useAPIFetch = ((
+	path: Parameters<UseFetch>[0],
+	options: UseFetchOptions<unknown> = {}
+) => {
 	const config = useRuntimeConfig();
-
-	options.baseURL = config.public.apiBase;
-	options.credentials = 'include';
-
-	return useFetch(path, options);
-};
+	return useFetch(path, { ...options, baseURL: config.public.apiBase, credentials: 'include' });
+}) as UseFetch;
