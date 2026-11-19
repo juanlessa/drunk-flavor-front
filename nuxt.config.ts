@@ -1,7 +1,7 @@
 import tailwindcss from '@tailwindcss/vite';
 import { parseEnvs } from './env/index';
 import { securityOptions } from './config/security';
-import { pwaOptions } from './config/pwa';
+import { appendOfflinePageEntry, pwaOptions } from './config/pwa';
 
 const { NODE_ENV, HISTOIRE, NUXT_PUBLIC_SITE_URL } = parseEnvs();
 
@@ -169,5 +169,10 @@ export default defineNuxtConfig({
 
 	security: securityOptions,
 
-	pwa: pwaOptions
+	pwa: pwaOptions,
+
+	hooks: {
+		// Adds the offline page to the service worker precache (see `appendOfflinePageEntry`).
+		'pwa:beforeBuildServiceWorker': appendOfflinePageEntry
+	}
 });
