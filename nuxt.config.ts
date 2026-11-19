@@ -110,10 +110,10 @@ export default defineNuxtConfig({
 		}
 	},
 
-	// Canonical origin and brand used by the sitemap, robots and i18n SEO tags. The URL is also read
-	// from NUXT_PUBLIC_SITE_URL at runtime, so the server environment must carry the same value.
+	// Brand used by the sitemap, robots and i18n SEO tags. The site URL is deliberately not set here:
+	// `@nuxtjs/sitemap` and `@nuxtjs/robots` read it from NUXT_PUBLIC_SITE_URL when the server
+	// starts, so it never has to exist at build time.
 	site: {
-		url: NUXT_PUBLIC_SITE_URL,
 		name: 'DrunkFlavor'
 	},
 
@@ -133,8 +133,10 @@ export default defineNuxtConfig({
 	},
 
 	i18n: {
-		// Builds the fully-qualified hreflang and canonical URLs.
-		baseUrl: NUXT_PUBLIC_SITE_URL,
+		// Builds the fully-qualified hreflang and canonical URLs. In production it is left empty on
+		// purpose: a build-time value would also become the sitemap and robots origin, so the server
+		// sets it at startup through NUXT_PUBLIC_I18N_BASE_URL (same value as NUXT_PUBLIC_SITE_URL).
+		baseUrl: NODE_ENV === 'production' ? undefined : NUXT_PUBLIC_SITE_URL,
 		// Every language lives under its own prefix (/en, /pt), so each page has one crawlable URL per
 		// language and prefixed URLs are never redirected (search engines and shared links get exactly
 		// the page they asked for). Paths without a prefix (the bare domain, links in emails, typed
