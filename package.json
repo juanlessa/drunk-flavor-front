@@ -9,7 +9,7 @@
 		"vue-i18n": "11.4.16",
 		"@intlify/shared": "11.4.23",
 		"@intlify/core-base": "11.4.20",
-		"@intlify/message-compiler": "11.4.16",
+		"@intlify/message-compiler": "11.4.23",
 		"glob": "14.0.6"
 	},
 	"scripts": {
