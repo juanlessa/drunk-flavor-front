@@ -86,7 +86,7 @@
 		"lint-staged": "17.6.1",
 		"magicast": "0.5.5",
 		"nuxt-security": "2.7.0",
-		"nuxt-typed-router": "4.0.10",
+		"nuxt-typed-router": "4.0.11",
 		"playwright": "1.65.1",
 		"playwright-core": "1.65.1",
 		"prettier": "3.10.1",
