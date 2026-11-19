@@ -1,4 +1,6 @@
-import { createTV } from 'tailwind-variants';
+// `twMergeConfig` is only accepted by the `/config` entry since tailwind-variants v4; the default
+// entry throws on it.
+import { createTV } from 'tailwind-variants/config';
 
 /**
  * Design-system font sizes declared in `styles/tokens/typography.css`.
