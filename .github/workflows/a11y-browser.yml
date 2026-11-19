@@ -2,6 +2,9 @@ name: accessibility browser flow
 
 on:
     pull_request:
+    schedule:
+        # Weekly run on the default branch so dependency-driven regressions are caught without running on every Renovate PR.
+        - cron: '47 4 * * 1'
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,6 +18,8 @@ jobs:
         name: color contrast and open states in Chromium (informational)
         runs-on: ubuntu-latest
         timeout-minutes: 20
+        # Renovate PRs only change dependencies. Skipped jobs report success, so this is safe for required checks.
+        if: ${{ !startsWith(github.head_ref, 'renovate/') }}
 
         env:
             NODE_ENV: test
@@ -27,6 +32,7 @@ jobs:
               uses: actions/setup-node@v7
               with:
                   node-version-file: '.nvmrc'
+                  cache: npm
 
             - name: Install dependencies
               run: npm ci
@@ -44,7 +50,7 @@ jobs:
             # Failure screenshots written by Vitest Browser Mode, to help diagnose contrast and open-state findings.
             - name: Upload failure screenshots
               if: ${{ !cancelled() }}
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                   name: a11y-browser-screenshots
                   path: .vitest/attachments/

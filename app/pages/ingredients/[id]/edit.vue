@@ -10,5 +10,5 @@ definePageMeta({
 });
 
 const route = useRoute('ingredients-id-edit');
-const ingredientId = route.params.id;
+const ingredientId = String(route.params.id);
 </script>
