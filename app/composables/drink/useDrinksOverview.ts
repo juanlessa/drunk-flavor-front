@@ -115,6 +115,11 @@ export const useDrinksOverview = async () => {
 			return;
 		}
 		state.value.drinks = [...state.value.drinks, ...page];
+		// A later page with fewer drinks than asked for is the last one. Without this the list asks once more
+		// for an empty page, and the placeholder rows of that request appear and vanish at the end of the page.
+		if (state.value.filter.page > 1 && page.length < state.value.filter.limit) {
+			state.value.filter.isLastPage = true;
+		}
 	};
 
 	watch(data, (newData) => {

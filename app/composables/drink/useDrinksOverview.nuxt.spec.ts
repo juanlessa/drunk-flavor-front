@@ -112,6 +112,19 @@ describe('useDrinksOverview', () => {
 		expect(drinkIds(overview)).toEqual(['a1']);
 	});
 
+	it('marks the last page when a later page has fewer drinks than asked for, without asking for an empty one', async () => {
+		const { wrapper, overview } = await mountOverview();
+		unmount = () => wrapper.unmount();
+		await vi.waitFor(() => expect(drinkIds(overview)).toHaveLength(2));
+
+		overview.loadNextPage();
+		await vi.waitFor(() => expect(drinkIds(overview)).toEqual(['a1', 'a2', 'b1']));
+
+		expect(overview.overviewState.value.filter.isLastPage).toBe(true);
+		overview.loadNextPage();
+		expect(receivedPages).toEqual(['1', '2']);
+	});
+
 	it('does not request another page while one is still loading', async () => {
 		const { wrapper, overview } = await mountOverview();
 		unmount = () => wrapper.unmount();

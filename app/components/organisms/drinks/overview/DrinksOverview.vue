@@ -51,7 +51,7 @@
 				</template>
 				<template #loading>
 					<Box
-						v-for="idx in Math.ceil(overviewState.filter.limit / gridColumns)"
+						v-for="idx in skeletonRows"
 						:key="idx"
 						direction="row"
 						:class="virtualGridRowStyle({ fixedHeight: true })">
@@ -109,6 +109,13 @@ const { overviewState, searchTerm, sort, isSearching, isEmpty, loadNextPage } =
 	await useDrinksOverview();
 
 const gridColumns = useGridColumns();
+// Placeholder rows shown while a page loads. Kept short on purpose: they sit at the end of the page, and
+// when the request ends without new rows (the empty last page) they disappear, shrinking the page. A tall
+// placeholder makes that a jump of thousands of px under the finger, which iOS Safari does not smooth out.
+const MAX_SKELETON_ROWS = 3;
+const skeletonRows = computed(() =>
+	Math.min(MAX_SKELETON_ROWS, Math.ceil(overviewState.value.filter.limit / gridColumns.value))
+);
 const sortOptions = computed<InputSelectOption[]>(() =>
 	drinkListSorts.map((option) => ({
 		value: option,
