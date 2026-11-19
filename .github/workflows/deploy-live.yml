@@ -39,13 +39,10 @@ jobs:
             - name: Install, verify, and build
               env:
                   NODE_ENV: production
-                  NUXT_PUBLIC_API_BASE: ${{ vars.NUXT_PUBLIC_API_BASE }}
-                  NUXT_PUBLIC_IMAGE_HOST: ${{ vars.NUXT_PUBLIC_IMAGE_HOST }}
-                  NUXT_PUBLIC_GOOGLE_CLIENT_ID: ${{ vars.NUXT_PUBLIC_GOOGLE_CLIENT_ID }}
-                  NUXT_PUBLIC_SITE_URL: ${{ vars.NUXT_PUBLIC_SITE_URL }}
               run: |
                   set -Eeuo pipefail
-                  # NODE_ENV=production (needed for the production CSP and parseEnvs)
+                  # NODE_ENV=production selects the production build mode (the public origins are not needed here;
+                  # the server reads and validates them when it starts)
                   # makes npm skip devDependencies by default, but the build tooling
                   # (tailwind, nuxt-security, vue-tsc, vitest, eslint) lives there.
                   # --include=dev installs them while keeping the prod build mode.
