@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import type { ModuleOptions as PwaModuleOptions } from '@vite-pwa/nuxt';
+import type { ModuleOptions } from '@vite-pwa/nuxt';
+import type { ResolvedVitePWAOptions } from '@unplugin-pwa/core';
 
 // Dark theme background, also used as the icon background by `pwa-assets.config.ts`. A manifest
 // cannot follow the user's theme, so the installed app opens (splash screen and window frame) in
@@ -16,7 +17,37 @@ const offlinePageRevision = () =>
 		.update(readFileSync(fileURLToPath(new URL('../public/offline.html', import.meta.url))))
 		.digest('hex');
 
-export const pwaOptions: PwaModuleOptions = {
+type ManifestTransform = NonNullable<
+	NonNullable<
+		ResolvedVitePWAOptions<'generate-sw', 'classic'>['generateSW']
+	>['manifestTransforms']
+>[number];
+
+/**
+ * Adds the offline page to the precache manifest.
+ *
+ * The module rewrites `.html` entries to extensionless URLs (`/offline`), which this static file
+ * is not served under (the server answers 404 and the service worker fails to install). Since
+ * @vite-pwa/nuxt v2, `additionalManifestEntries` go through that rewrite too, so the entry is added
+ * by a transform that runs after the module's own. The revision changes with the file so the
+ * worker refreshes its copy when the page is edited.
+ */
+const addOfflinePageEntry: ManifestTransform = async (entries) => ({
+	manifest: [...entries, { url: OFFLINE_FALLBACK_URL, revision: offlinePageRevision(), size: 0 }],
+	warnings: []
+});
+
+/** `pwa:beforeBuildServiceWorker` hook: appends the offline page after the module's transforms. */
+export const appendOfflinePageEntry = (
+	options: ResolvedVitePWAOptions<'generate-sw', 'classic'>
+) => {
+	options.generateSW.manifestTransforms = [
+		...(options.generateSW.manifestTransforms ?? []),
+		addOfflinePageEntry
+	];
+};
+
+export const pwaOptions: Partial<ModuleOptions> = {
 	// A new service worker waits until the installed app is reopened instead of reloading the page
 	// under the user, which could drop what they were typing in a form.
 	registerType: 'prompt',
@@ -58,10 +89,6 @@ export const pwaOptions: PwaModuleOptions = {
 		navigateFallback: null,
 		globPatterns: ['**/*.{js,css,png,svg,ico,woff,woff2}'],
 		globIgnores: ['images/og-default.png'],
-		// Listed by hand because the module rewrites globbed `.html` entries to extensionless URLs
-		// (`/offline`), which this static file is not served under. The revision changes with the
-		// file so the worker refreshes its copy when the page is edited.
-		additionalManifestEntries: [{ url: OFFLINE_FALLBACK_URL, revision: offlinePageRevision() }],
 		cleanupOutdatedCaches: true,
 		runtimeCaching: [
 			{
