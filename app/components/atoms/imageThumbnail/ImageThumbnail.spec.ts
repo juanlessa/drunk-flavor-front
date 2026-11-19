@@ -3,7 +3,9 @@ import { mount, flushPromises } from '@vue/test-utils';
 import { nextTick } from 'vue';
 import ImageThumbnail from './ImageThumbnail.vue';
 
-const PRIMARY_SRC = 'https://example.com/thumb.png';
+// A new source per test: the component remembers the sources that already loaded.
+let sourceCount = 0;
+let primarySrc = '';
 const FALLBACK_SRC = '/images/logo-mark.svg';
 const ALT_TEXT = 'thumbnail';
 const LOAD_DELAY = 150;
@@ -62,6 +64,8 @@ const mountThumbnail = (src: string) =>
 
 describe('ImageThumbnail', () => {
 	beforeEach(() => {
+		sourceCount += 1;
+		primarySrc = `https://example.com/thumb-${sourceCount}.png`;
 		vi.useFakeTimers();
 	});
 
@@ -72,7 +76,7 @@ describe('ImageThumbnail', () => {
 	describe('while the primary image is loading', () => {
 		it('shows the animated placeholder', () => {
 			mockImages();
-			const wrapper = mountThumbnail(PRIMARY_SRC);
+			const wrapper = mountThumbnail(primarySrc);
 
 			expect(wrapper.find('[data-testid="placeholder"]').exists()).toBe(true);
 			expect(wrapper.find('img').exists()).toBe(false);
@@ -83,12 +87,12 @@ describe('ImageThumbnail', () => {
 	describe('when the primary image loads', () => {
 		it('shows the primary image', async () => {
 			mockImages();
-			const wrapper = mountThumbnail(PRIMARY_SRC);
+			const wrapper = mountThumbnail(primarySrc);
 			await settleLoads();
 
 			const img = wrapper.find('img');
 			expect(img.exists()).toBe(true);
-			expect(img.attributes('src')).toBe(PRIMARY_SRC);
+			expect(img.attributes('src')).toBe(primarySrc);
 			expect(img.attributes('alt')).toBe(ALT_TEXT);
 			expect(wrapper.find('[data-testid="placeholder"]').exists()).toBe(false);
 			wrapper.unmount();
@@ -97,8 +101,8 @@ describe('ImageThumbnail', () => {
 
 	describe('when the primary image fails', () => {
 		it('shows the fallback image', async () => {
-			mockImages([PRIMARY_SRC]);
-			const wrapper = mountThumbnail(PRIMARY_SRC);
+			mockImages([primarySrc]);
+			const wrapper = mountThumbnail(primarySrc);
 			await settleLoads();
 
 			const img = wrapper.find('img');
@@ -110,8 +114,8 @@ describe('ImageThumbnail', () => {
 
 	describe('when both the primary and fallback images fail', () => {
 		it('renders no image, leaving the grey surface visible', async () => {
-			mockImages([PRIMARY_SRC, FALLBACK_SRC]);
-			const wrapper = mountThumbnail(PRIMARY_SRC);
+			mockImages([primarySrc, FALLBACK_SRC]);
+			const wrapper = mountThumbnail(primarySrc);
 			await settleErrors();
 
 			expect(wrapper.find('img').exists()).toBe(false);
@@ -159,8 +163,8 @@ describe('ImageThumbnail', () => {
 		});
 
 		it('does not report a broken primary image as an uncaught error', async () => {
-			mockImages([PRIMARY_SRC]);
-			const wrapper = mountThumbnail(PRIMARY_SRC);
+			mockImages([primarySrc]);
+			const wrapper = mountThumbnail(primarySrc);
 			await settleLoads();
 
 			expect(wrapper.find('img').attributes('src')).toBe(FALLBACK_SRC);
@@ -188,8 +192,8 @@ describe('ImageThumbnail', () => {
 		});
 
 		it('shows the slot when the primary image fails', async () => {
-			mockImages([PRIMARY_SRC]);
-			const wrapper = mountWithSlot(PRIMARY_SRC);
+			mockImages([primarySrc]);
+			const wrapper = mountWithSlot(primarySrc);
 			await settleLoads();
 
 			expect(wrapper.find('[data-testid="fallback-slot"]').exists()).toBe(true);
@@ -199,12 +203,27 @@ describe('ImageThumbnail', () => {
 
 		it('shows the primary image instead of the slot when it loads', async () => {
 			mockImages();
-			const wrapper = mountWithSlot(PRIMARY_SRC);
+			const wrapper = mountWithSlot(primarySrc);
 			await settleLoads();
 
-			expect(wrapper.find('img').attributes('src')).toBe(PRIMARY_SRC);
+			expect(wrapper.find('img').attributes('src')).toBe(primarySrc);
 			expect(wrapper.find('[data-testid="fallback-slot"]').exists()).toBe(false);
 			wrapper.unmount();
+		});
+	});
+	describe('when the same source is mounted again', () => {
+		it('shows the image at once instead of the placeholder', async () => {
+			mockImages();
+			const first = mountThumbnail(primarySrc);
+			await settleLoads();
+			expect(first.find('img').exists()).toBe(true);
+			first.unmount();
+
+			const second = mountThumbnail(primarySrc);
+
+			expect(second.find('img').exists()).toBe(true);
+			expect(second.find('[data-testid="placeholder"]').exists()).toBe(false);
+			second.unmount();
 		});
 	});
 });

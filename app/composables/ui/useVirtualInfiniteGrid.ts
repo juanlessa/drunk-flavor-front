@@ -13,8 +13,11 @@ import { findScrollParent, getTopBarInset } from '~/helpers/scroll.helpers';
 import { chunkArray } from '~/helpers/array';
 /** Rows ahead of the viewport at which the next page starts loading. */
 const PREFETCH_ROWS = 2;
-/** Rows rendered above and below the viewport by default, so fast scrolling does not show blanks. */
-const DEFAULT_OVERSCAN_ROWS = 5;
+/**
+ * Rows rendered above and below the viewport by default, so fast scrolling does not show blanks and a list
+ * that jumps back a few rows (the page height changed under the finger) finds its rows still mounted.
+ */
+const DEFAULT_OVERSCAN_ROWS = 10;
 export type UseVirtualInfiniteGridOptions<T> = {
 	items: MaybeRefOrGetter<T[]>;
 	/** Height of one row in px, without the gap. */

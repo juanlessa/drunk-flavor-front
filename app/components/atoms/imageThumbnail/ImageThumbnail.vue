@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useImage } from '@vueuse/core';
 
 const props = defineProps({
@@ -51,7 +51,16 @@ const fallback = useImage(() => ({ src: props.srcFallback }), IMAGE_OPTIONS);
 const darkFallback = useImage(() => ({ src: props.srcFallbackDark ?? '' }), IMAGE_OPTIONS);
 
 /** Primary resolved to a usable image. An empty src can never be ready. */
-const isPrimaryReady = computed(() => !!props.src && primary.isReady.value);
+const isPrimaryReady = computed(
+	() => !!props.src && (primary.isReady.value || loadedSources.has(props.src))
+);
+watch(
+	() => primary.isReady.value,
+	(ready) => {
+		if (ready && props.src) loadedSources.add(props.src);
+	},
+	{ immediate: true }
+);
 
 /** Primary is done and did not produce an image, so the fallback takes over. */
 const isPrimaryDone = computed(
@@ -72,4 +81,12 @@ const isLoading = computed(() => {
 	if (isPrimaryDone.value && !fallback.isReady.value && fallback.isLoading.value) return true;
 	return false;
 });
+</script>
+<script lang="ts">
+/**
+ * Sources that already loaded in this session. `useImage` starts every instance as not ready, even for a
+ * cached image, so a thumbnail that is mounted again (a virtualized list unmounts the rows that leave the
+ * screen) would show an empty box for a few frames before its image appears. A known source skips that wait.
+ */
+const loadedSources = new Set<string>();
 </script>
