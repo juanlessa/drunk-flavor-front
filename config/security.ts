@@ -1,12 +1,10 @@
 import type { ModuleOptions as SecurityModuleOptions } from 'nuxt-security';
 import { parseEnvs } from '../env/index';
+import { buildOriginCspDirectives } from './csp';
 
 const { NODE_ENV, NUXT_PUBLIC_API_BASE, NUXT_PUBLIC_IMAGE_HOST } = parseEnvs();
 
 const isProduction = NODE_ENV === 'production';
-
-const GOOGLE_IDENTITY_ORIGIN_PATH = 'https://accounts.google.com/gsi/';
-const GOOGLE_AVATAR_IMAGE_ORIGIN = 'https://*.googleusercontent.com';
 
 type SecurityHeaders = Exclude<NonNullable<SecurityModuleOptions['headers']>, false>;
 type CspDirectives = NonNullable<SecurityHeaders['contentSecurityPolicy']>;
@@ -32,13 +30,15 @@ const weakCspDirectives: CspDirectives = {
 	'upgrade-insecure-requests': false
 };
 
+// The origins come from the build environment only as a placeholder. The server replaces them with
+// the runtime values when it starts (see `server/plugins/00-runtime-env.ts`).
 const productionCspDirectives: CspDirectives = {
-	'img-src': ["'self'", 'data:', 'blob:', NUXT_PUBLIC_IMAGE_HOST, GOOGLE_AVATAR_IMAGE_ORIGIN],
-	// The Google Identity Services client library calls its own endpoints under /gsi/.
-	'connect-src': ["'self'", NUXT_PUBLIC_API_BASE, GOOGLE_IDENTITY_ORIGIN_PATH],
+	...buildOriginCspDirectives({
+		apiBase: NUXT_PUBLIC_API_BASE,
+		imageHost: NUXT_PUBLIC_IMAGE_HOST
+	}),
 	'upgrade-insecure-requests': true
 };
-
 const contentSecurityPolicy: CspDirectives = {
 	...commonCspDirectives,
 	...(isProduction ? productionCspDirectives : weakCspDirectives)

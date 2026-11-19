@@ -66,6 +66,21 @@ NUXT_PUBLIC_API_BASE=http://localhost:3333
 
 Now your environment setup is ready.
 
+#### Production
+
+The build does not need these variables. The server reads them when it starts and refuses to start in production if one is missing or malformed (see `server/plugins/00-runtime-env.ts`), so set them in the server environment:
+
+```dotenv
+NUXT_PUBLIC_API_BASE=https://api.example.com
+NUXT_PUBLIC_IMAGE_HOST=https://cdn.example.com
+NUXT_PUBLIC_SITE_URL=https://example.com
+# Same value as NUXT_PUBLIC_SITE_URL. @nuxtjs/i18n reads its canonical and hreflang origin from this name.
+NUXT_PUBLIC_I18N_BASE_URL=https://example.com
+NUXT_PUBLIC_GOOGLE_CLIENT_ID=<google-oauth-client-id>
+```
+
+Every origin must be a bare origin: no path, query, fragment or trailing slash.
+
 ## Dev
 
 Once your setup is ready, you are able to run the drunkflavor website in development mode by using the command below.

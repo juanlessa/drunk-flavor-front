@@ -39,7 +39,11 @@ export default defineConfig({
 				test: {
 					name: 'node',
 					environment: 'node',
-					include: ['app/helpers/**/*.spec.ts', 'app/**/*.helpers.spec.ts']
+					include: [
+						'app/helpers/**/*.spec.ts',
+						'app/**/*.helpers.spec.ts',
+						'env/**/*.spec.ts'
+					]
 				}
 			},
 			{
